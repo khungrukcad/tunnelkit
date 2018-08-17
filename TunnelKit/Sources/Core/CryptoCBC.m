@@ -229,6 +229,8 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return self;
 }
 
+#pragma mark DataPathChannel
+
 - (int)overheadLength
 {
     return self.crypto.overheadLength;
@@ -257,13 +259,15 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 #pragma mark DataPathEncrypter
 
-- (void)assembleDataPacketWithPacketId:(uint32_t)packetId compression:(uint8_t)compression payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
+- (void)assembleDataPacketWithPacketId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
 {
     uint8_t *ptr = dest;
     *(uint32_t *)ptr = htonl(packetId);
     ptr += sizeof(uint32_t);
-    *ptr = compression;
-    ptr += sizeof(uint8_t);
+    if (self.LZOFraming) {
+        *ptr = DataPacketLZONoCompress;
+        ptr += sizeof(uint8_t);
+    }
     memcpy(ptr, payload.bytes, payload.length);
     *length = (int)(ptr - dest + payload.length);
 }
@@ -316,12 +320,15 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return YES;
 }
 
-- (const uint8_t *)parsePayloadWithDataPacket:(const uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length compression:(uint8_t *)compression
+- (const uint8_t *)parsePayloadWithDataPacket:(const uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length
 {
     const uint8_t *ptr = packet;
     ptr += sizeof(uint32_t); // packet id
-    *compression = *ptr;
-    ptr += sizeof(uint8_t); // compression byte
+    if (self.LZOFraming) {
+        NSAssert(*ptr == DataPacketLZONoCompress, @"Expected LZO NO_COMPRESS");
+//        *compression = *ptr;
+        ptr += sizeof(uint8_t); // compression byte
+    }
     *length = packetLength - (int)(ptr - packet);
     return ptr;
 }

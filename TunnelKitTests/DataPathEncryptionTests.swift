@@ -52,27 +52,26 @@ class DataPathEncryptionTests: XCTestCase {
             XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
             XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
         }
+//        enc.setDeprecatedLZOFraming(true)
+//        dec.setDeprecatedLZOFraming(true)
 
         let payload = Data(hex: "00112233445566778899")
         let packetId: UInt32 = 0x56341200
         let key: UInt8 = 4
-        let compression: UInt8 = DataPacketCompressNone
         var encryptedPayload: [UInt8] = [UInt8](repeating: 0, count: 1000)
         var encryptedPayloadLength: Int = 0
-        enc.assembleDataPacket(withPacketId: packetId, compression: compression, payload: payload, into: &encryptedPayload, length: &encryptedPayloadLength)
+        enc.assembleDataPacket(withPacketId: packetId, payload: payload, into: &encryptedPayload, length: &encryptedPayloadLength)
         let encrypted = try! enc.encryptedDataPacket(withKey: key, packetId: packetId, payload: encryptedPayload, payloadLength: encryptedPayloadLength)
 
         var decrypted: [UInt8] = [UInt8](repeating: 0, count: 1000)
         var decryptedLength: Int = 0
         var decryptedPacketId: UInt32 = 0
         var decryptedPayloadLength: Int = 0
-        var decryptedCompression: UInt8 = 0
         try! dec.decryptDataPacket(encrypted, into: &decrypted, length: &decryptedLength, packetId: &decryptedPacketId)
-        let decryptedPtr = dec.parsePayload(withDataPacket: &decrypted, packetLength: decryptedLength, length: &decryptedPayloadLength, compression: &decryptedCompression)
+        let decryptedPtr = dec.parsePayload(withDataPacket: &decrypted, packetLength: decryptedLength, length: &decryptedPayloadLength)
         let decryptedPayload = Data(bytes: decryptedPtr, count: decryptedPayloadLength)
 
         XCTAssertEqual(payload, decryptedPayload)
         XCTAssertEqual(packetId, decryptedPacketId)
-        XCTAssertEqual(compression, decryptedCompression)
     }
 }
