@@ -113,10 +113,5 @@ extension SessionProxy {
             }
             return decrypted
         }
-        
-    //    func dispose() {
-    //        tlsOptional = nil
-    //        dataPath = nil
-    //    }
     }
 }

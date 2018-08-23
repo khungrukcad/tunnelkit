@@ -899,7 +899,6 @@ public class SessionProxy {
         while (oldKeys.count > 1) {
             let key = oldKeys.removeFirst()
             keys.removeValue(forKey: key.id)
-//            key.dispose()
         }
     }
     
