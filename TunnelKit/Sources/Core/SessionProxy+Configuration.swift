@@ -57,6 +57,10 @@ extension SessionProxy {
         
         /// The path to the optional CA for TLS negotiation (PEM format).
         public var caPath: String?
+        
+        /// Enables LZO compression framing (deprecated in OpenVPN 2.4).
+        @available(*, deprecated)
+        public var LZOFraming: Bool
     
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
@@ -71,6 +75,7 @@ extension SessionProxy {
             cipher = .aes128cbc
             digest = .sha1
             caPath = nil
+            LZOFraming = false
             keepAliveInterval = nil
             renegotiatesAfter = nil
         }
@@ -87,6 +92,7 @@ extension SessionProxy {
                 cipher: cipher,
                 digest: digest,
                 caPath: caPath,
+                LZOFraming: LZOFraming,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter
             )
@@ -110,6 +116,9 @@ extension SessionProxy {
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
         public let caPath: String?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.LZOFraming`
+        public let LZOFraming: Bool
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?

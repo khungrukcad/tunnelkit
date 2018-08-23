@@ -52,8 +52,8 @@ class DataPathEncryptionTests: XCTestCase {
             XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
             XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
         }
-//        enc.setDeprecatedLZOFraming(true)
-//        dec.setDeprecatedLZOFraming(true)
+//        enc.setLZOFraming(true)
+//        dec.setLZOFraming(true)
 
         let payload = Data(hex: "00112233445566778899")
         let packetId: UInt32 = 0x56341200
