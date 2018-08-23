@@ -39,15 +39,17 @@
 extern NSString *const TunnelKitErrorDomain;
 
 typedef NS_ENUM(NSInteger, TunnelKitErrorCode) {
-    TunnelKitErrorCodeCryptoBoxRandomGenerator = 101,
-    TunnelKitErrorCodeCryptoBoxHMAC,
-    TunnelKitErrorCodeCryptoBoxEncryption,
-    TunnelKitErrorCodeCryptoBoxAlgorithm,
-    TunnelKitErrorCodeTLSBoxCA = 201,
-    TunnelKitErrorCodeTLSBoxHandshake,
-    TunnelKitErrorCodeTLSBoxGeneric,
-    TunnelKitErrorCodeDataPathOverflow = 301,
-    TunnelKitErrorCodeDataPathPeerIdMismatch
+    TunnelKitErrorCodeCryptoBoxRandomGenerator  = 101,
+    TunnelKitErrorCodeCryptoBoxHMAC             = 102,
+    TunnelKitErrorCodeCryptoBoxEncryption       = 103,
+    TunnelKitErrorCodeCryptoBoxAlgorithm        = 104,
+    TunnelKitErrorCodeTLSBoxCA                  = 201,
+    TunnelKitErrorCodeTLSBoxHandshake           = 202,
+    TunnelKitErrorCodeTLSBoxGeneric             = 203,
+    TunnelKitErrorCodeTLSBoxClientCertificate   = 204,
+    TunnelKitErrorCodeTLSBoxClientKey           = 205,
+    TunnelKitErrorCodeDataPathOverflow          = 301,
+    TunnelKitErrorCodeDataPathPeerIdMismatch    = 302
 };
 
 static inline NSError *TunnelKitErrorWithCode(TunnelKitErrorCode code) {

@@ -59,6 +59,8 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 @interface TLSBox ()
 
 @property (nonatomic, strong) NSString *caPath;
+@property (nonatomic, strong) NSString *clientCertificatePath;
+@property (nonatomic, strong) NSString *clientKeyPath;
 @property (nonatomic, assign) BOOL isConnected;
 
 @property (nonatomic, unsafe_unretained) SSL_CTX *ctx;
@@ -75,13 +77,15 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 - (instancetype)init
 {
-    return [self initWithCAPath:nil];
+    return [self initWithCAPath:nil clientCertificatePath:nil clientKeyPath:nil];
 }
 
-- (instancetype)initWithCAPath:(NSString *)caPath
+- (instancetype)initWithCAPath:(NSString *)caPath clientCertificatePath:(NSString *)clientCertificatePath clientKeyPath:(NSString *)clientKeyPath
 {
     if ((self = [super init])) {
         self.caPath = caPath;
+        self.clientCertificatePath = clientCertificatePath;
+        self.clientKeyPath = clientKeyPath;
         self.bufferCipherText = allocate_safely(TLSBoxMaxBufferLength);
     }
     return self;
@@ -123,6 +127,26 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
     else {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_NONE, NULL);
+    }
+    
+    if (self.clientCertificatePath) {
+        if (!SSL_CTX_use_certificate_file(self.ctx, [self.clientCertificatePath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
+            ERR_print_errors_fp(stdout);
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientCertificate);
+            }
+            return NO;
+        }
+
+        if (self.clientKeyPath) {
+            if (!SSL_CTX_use_PrivateKey_file(self.ctx, [self.clientKeyPath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
+                ERR_print_errors_fp(stdout);
+                if (error) {
+                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientKey);
+                }
+                return NO;
+            }
+        }
     }
 
     self.ssl = SSL_new(self.ctx);
