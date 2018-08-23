@@ -62,6 +62,8 @@
 		0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA420D71190007C4C7B /* DNSResolver.swift */; };
 		0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */; };
 		0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */; };
+		0ECE3528212EB7770040F253 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* Certificate.swift */; };
+		0ECE352A212EB88E0040F253 /* Certificate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* Certificate.swift */; };
 		0EE7A79520F61EDC00B42E6A /* PacketMacros.h in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EE7A79620F61EDC00B42E6A /* PacketMacros.h in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
@@ -213,6 +215,7 @@
 		0EBBF2FF2085196000E36B40 /* NWTCPConnectionState+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NWTCPConnectionState+Description.swift"; sourceTree = "<group>"; };
 		0EC1BBA420D71190007C4C7B /* DNSResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
+		0ECE3527212EB7770040F253 /* Certificate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Certificate.swift; sourceTree = "<group>"; };
 		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
 		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
 		0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathEncryption.h; sourceTree = "<group>"; };
@@ -459,6 +462,7 @@
 			isa = PBXGroup;
 			children = (
 				0EBBF2E32084FDF400E36B40 /* Transport */,
+				0ECE3527212EB7770040F253 /* Certificate.swift */,
 				0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */,
 				0EC1BBA420D71190007C4C7B /* DNSResolver.swift */,
 				0EBBF2E42084FE6F00E36B40 /* GenericSocket.swift */,
@@ -887,6 +891,7 @@
 				0EFEB4AC200760EC00F81029 /* InterfaceObserver.swift in Sources */,
 				0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */,
 				0EFEB47B2006D3C800F81029 /* TunnelKitProvider.swift in Sources */,
+				0ECE3528212EB7770040F253 /* Certificate.swift in Sources */,
 				0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */,
 				0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
 				0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
@@ -935,6 +940,7 @@
 				0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */,
 				0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */,
 				0EFEB49A2006D7F300F81029 /* MSS.m in Sources */,
+				0ECE352A212EB88E0040F253 /* Certificate.swift in Sources */,
 				0EFEB48D2006D7F300F81029 /* EncryptionProxy.swift in Sources */,
 				0EFEB4922006D7F300F81029 /* ZeroingData.m in Sources */,
 				0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */,

@@ -91,17 +91,13 @@ public class SessionProxy {
         public let digestName: String
 
         /// The path to the CA for TLS negotiation (PEM format).
-        public let caPath: String
-
-        /// The MD5 digest of the CA (computed from DER format).
-        public let caDigest: String?
+        public let caPath: String?
 
         /// :nodoc:
-        public init(_ cipherName: String, _ digestName: String, _ caPath: String, _ caDigest: String?) {
+        public init(_ cipherName: String, _ digestName: String, _ caPath: String?) {
             self.cipherName = cipherName
             self.digestName = digestName
             self.caPath = caPath
-            self.caDigest = caDigest
         }
     }
     
@@ -834,7 +830,7 @@ public class SessionProxy {
 
             negotiationKey.tlsOptional = TLSBox(caPath: encryption.caPath)
             do {
-                try negotiationKey.tls.start(withPeerVerification: true)
+                try negotiationKey.tls.start()
             } catch let e {
                 deferStop(.shutdown, e)
                 return

@@ -39,7 +39,7 @@ class AppExtensionTests: XCTestCase {
 
         builder.cipher = .aes128cbc
         builder.digest = .sha256
-        builder.handshake = .rsa3072
+        builder.ca = Certificate(pem: "abcdef")
         cfg = builder.build()
 
         let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, endpoint: endpoint)
@@ -58,7 +58,7 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, cfg.appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.handshakeCertificate] as? String, cfg.handshake.rawValue)
+        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca?.pem)
         XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? NSNumber, cfg.mtu)
         XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? Int, cfg.renegotiatesAfterSeconds)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)

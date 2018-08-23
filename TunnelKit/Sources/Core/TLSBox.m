@@ -74,7 +74,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     free(self.bufferCipherText);
 }
 
-- (BOOL)startWithPeerVerification:(BOOL)peerVerification error:(NSError *__autoreleasing *)error
+- (BOOL)startWithError:(NSError *__autoreleasing *)error
 {
     if (!TLSBoxIsOpenSSLLoaded) {
 //        OPENSSL_init_ssl(0, NULL);
@@ -84,7 +84,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     
     self.ctx = SSL_CTX_new(TLS_client_method());
     SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2|SSL_OP_NO_SSLv3|SSL_OP_NO_COMPRESSION);
-    if (peerVerification && self.caPath) {
+    if (self.caPath) {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
         if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
             ERR_print_errors_fp(stdout);

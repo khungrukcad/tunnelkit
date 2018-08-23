@@ -45,64 +45,6 @@ extension TunnelKitProvider {
         /// SHA256 message digest.
         case sha256 = "SHA256"
     }
-    
-    /// The available certificates for handshake.
-    public enum Handshake: String {
-        
-        /// Certificate with RSA 2048-bit key.
-        case rsa2048 = "RSA-2048"
-        
-        /// Certificate with RSA 3072-bit key.
-        case rsa3072 = "RSA-3072"
-
-        /// Certificate with RSA 4096-bit key.
-        case rsa4096 = "RSA-4096"
-        
-        /// Certificate with ECC based on secp256r1 curve.
-        case ecc256r1 = "ECC-256r1"
-        
-        /// Certificate with ECC based on secp256k1 curve.
-        case ecc256k1 = "ECC-256k1"
-
-        /// Certificate with ECC based on secp521r1 curve.
-        case ecc521r1 = "ECC-521r1"
-        
-        /// Custom certificate.
-        ///
-        /// - Seealso:
-        case custom = "Custom"
-        
-        private static let allDigests: [Handshake: String] = [
-            .rsa2048: "e2fccccaba712ccc68449b1c56427ac1",
-            .rsa3072: "2fcdb65712df9db7dae34a1f4a84e32d",
-            .rsa4096: "ec085790314aa0ad4b01dda7b756a932",
-            .ecc256r1: "6f0f23a616479329ce54614f76b52254",
-            .ecc256k1: "80c3b0f34001e4101e34fde9eb1dfa87",
-            .ecc521r1: "82446e0c80706e33e6e793cebf1b0c59"
-        ]
-        
-        var digest: String? {
-            return Handshake.allDigests[self]
-        }
-        
-        func write(to url: URL, custom: String? = nil) throws {
-            precondition((self != .custom) || (custom != nil))
-            
-            // custom certificate?
-            if self == .custom, let content = custom {
-                try content.write(to: url, atomically: true, encoding: .ascii)
-                return
-            }
-
-            let bundle = Bundle(for: TunnelKitProvider.self)
-            let certName = "PIA-\(rawValue)"
-            guard let certUrl = bundle.url(forResource: certName, withExtension: "pem") else {
-                fatalError("Could not find \(certName) TLS certificate")
-            }
-            let content = try String(contentsOf: certUrl)
-            try content.write(to: url, atomically: true, encoding: .ascii)
-        }
-    }
 }
 
 extension TunnelKitProvider {
@@ -215,16 +157,13 @@ extension TunnelKitProvider {
         /// The message digest algorithm.
         public var digest: Digest
         
-        /// The handshake certificate.
-        public var handshake: Handshake
-        
-        /// The custom CA certificate in PEM format in case `handshake == .custom`. Ignored otherwise.
-        public var ca: String?
+        /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
+        public var ca: Certificate?
         
         /// The MTU of the tunnel.
         public var mtu: NSNumber
         
-        /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation.
+        /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
         
         // MARK: Debugging
@@ -252,7 +191,6 @@ extension TunnelKitProvider {
             endpointProtocols = [EndpointProtocol(.udp, 1194)]
             cipher = .aes128cbc
             digest = .sha1
-            handshake = .rsa2048
             ca = nil
             mtu = 1500
             renegotiatesAfterSeconds = nil
@@ -274,20 +212,12 @@ extension TunnelKitProvider {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
             }
 
-            // fallback to .rsa2048 in < 0.7 configurations (ca/caDigest)
-            let fallbackHandshake: Handshake = .rsa2048
-            var handshake: Handshake = fallbackHandshake
-            if let handshakeCertificate = providerConfiguration[S.handshakeCertificate] as? String {
-                handshake = Handshake(rawValue: handshakeCertificate) ?? fallbackHandshake
+            let ca: Certificate?
+            if let caPEM = providerConfiguration[S.ca] as? String {
+                ca = Certificate(pem: caPEM)
+            } else {
+                ca = nil
             }
-            if handshake == .custom {
-                guard let ca = providerConfiguration[S.ca] as? String else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.ca)]")
-                }
-                self.ca = ca
-            }
-
-            self.appGroup = appGroup
 
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
@@ -310,9 +240,10 @@ extension TunnelKitProvider {
                 return EndpointProtocol(socketType, port)
             }
             
+            self.appGroup = appGroup
             self.cipher = cipher
             self.digest = digest
-            self.handshake = handshake
+            self.ca = ca
             mtu = providerConfiguration[S.mtu] as? NSNumber ?? 1500
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
 
@@ -345,7 +276,6 @@ extension TunnelKitProvider {
                 endpointProtocols: endpointProtocols,
                 cipher: cipher,
                 digest: digest,
-                handshake: handshake,
                 ca: ca,
                 mtu: mtu,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
@@ -370,8 +300,6 @@ extension TunnelKitProvider {
             static let cipherAlgorithm = "CipherAlgorithm"
             
             static let digestAlgorithm = "DigestAlgorithm"
-            
-            static let handshakeCertificate = "HandshakeCertificate"
             
             static let ca = "CA"
             
@@ -404,11 +332,8 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.digest`
         public let digest: Digest
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.handshake`
-        public let handshake: Handshake
-        
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
-        public let ca: String?
+        public let ca: Certificate?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: NSNumber
@@ -468,12 +393,11 @@ extension TunnelKitProvider {
                 },
                 S.cipherAlgorithm: cipher.rawValue,
                 S.digestAlgorithm: digest.rawValue,
-                S.handshakeCertificate: handshake.rawValue,
                 S.mtu: mtu,
                 S.debug: shouldDebug
             ]
             if let ca = ca {
-                dict[S.ca] = ca
+                dict[S.ca] = ca.pem
             }
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
@@ -526,7 +450,11 @@ extension TunnelKitProvider {
             log.info("Protocols: \(endpointProtocols)")
             log.info("Cipher: \(cipher.rawValue)")
             log.info("Digest: \(digest.rawValue)")
-            log.info("Handshake: \(handshake.rawValue)")
+            if let _ = ca {
+                log.info("CA verification: enabled")
+            } else {
+                log.info("CA verification: disabled")
+            }
             log.info("MTU: \(mtu)")
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
@@ -552,7 +480,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.endpointProtocols = endpointProtocols
         builder.cipher = cipher
         builder.digest = digest
-        builder.handshake = handshake
+        builder.ca = ca
         builder.mtu = mtu
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.shouldDebug = shouldDebug
@@ -566,7 +494,7 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.endpointProtocols == rhs.endpointProtocols) &&
             (lhs.cipher == rhs.cipher) &&
             (lhs.digest == rhs.digest) &&
-            (lhs.handshake == rhs.handshake) &&
+            (lhs.ca == rhs.ca) &&
             (lhs.mtu == rhs.mtu) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
         )

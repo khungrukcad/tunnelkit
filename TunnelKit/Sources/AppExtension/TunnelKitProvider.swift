@@ -139,18 +139,23 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             return
         }
         
-        do {
-            try cfg.handshake.write(to: tmpCaURL, custom: cfg.ca)
-        } catch {
-            completionHandler(ProviderError.certificateSerialization)
-            return
+        let caPath: String?
+        if let ca = cfg.ca {
+            do {
+                try ca.write(to: tmpCaURL)
+                caPath = tmpCaURL.path
+            } catch {
+                completionHandler(ProviderError.certificateSerialization)
+                return
+            }
+        } else {
+            caPath = nil
         }
 
         cfg.print(appVersion: appVersion)
         
-        let caPath = tmpCaURL.path
 //        log.info("Temporary CA is stored to: \(caPath)")
-        let encryption = SessionProxy.EncryptionParameters(cfg.cipher.rawValue, cfg.digest.rawValue, caPath, cfg.handshake.digest)
+        let encryption = SessionProxy.EncryptionParameters(cfg.cipher.rawValue, cfg.digest.rawValue, caPath)
         let credentials = SessionProxy.Credentials(endpoint.username, endpoint.password)
         
         let proxy: SessionProxy
