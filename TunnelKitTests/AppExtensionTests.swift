@@ -68,7 +68,7 @@ class AppExtensionTests: XCTestCase {
 
         builder.cipher = .aes128cbc
         builder.digest = .sha256
-        builder.ca = Certificate(pem: "abcdef")
+        builder.ca = CryptoContainer(pem: "abcdef")
         cfg = builder.build()
 
         let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, endpoint: endpoint)

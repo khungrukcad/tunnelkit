@@ -152,13 +152,13 @@ extension TunnelKitProvider {
         public var digest: SessionProxy.Digest
         
         /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
-        public var ca: Certificate?
+        public var ca: CryptoContainer?
         
         /// The optional client certificate to authenticate with. Set to `nil` to disable client authentication (default).
-        public var clientCertificate: Certificate?
+        public var clientCertificate: CryptoContainer?
         
         /// The optional key for `clientCertificate`. Set to `nil` if client authentication unused (default).
-        public var clientKey: Certificate?
+        public var clientKey: CryptoContainer?
         
         /// The MTU of the link.
         public var mtu: Int
@@ -217,11 +217,11 @@ extension TunnelKitProvider {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
             }
 
-            let ca: Certificate?
-            let clientCertificate: Certificate?
-            let clientKey: Certificate?
+            let ca: CryptoContainer?
+            let clientCertificate: CryptoContainer?
+            let clientKey: CryptoContainer?
             if let pem = providerConfiguration[S.ca] as? String {
-                ca = Certificate(pem: pem)
+                ca = CryptoContainer(pem: pem)
             } else {
                 ca = nil
             }
@@ -230,8 +230,8 @@ extension TunnelKitProvider {
                     throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
                 }
 
-                clientCertificate = Certificate(pem: pem)
-                clientKey = Certificate(pem: keyPEM)
+                clientCertificate = CryptoContainer(pem: pem)
+                clientKey = CryptoContainer(pem: keyPEM)
             } else {
                 clientCertificate = nil
                 clientKey = nil
@@ -363,13 +363,13 @@ extension TunnelKitProvider {
         public let digest: SessionProxy.Digest
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
-        public let ca: Certificate?
+        public let ca: CryptoContainer?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientCertificate`
-        public let clientCertificate: Certificate?
+        public let clientCertificate: CryptoContainer?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientKey`
-        public let clientKey: Certificate?
+        public let clientKey: CryptoContainer?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: Int

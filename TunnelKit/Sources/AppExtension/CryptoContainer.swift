@@ -1,5 +1,5 @@
 //
-//  Certificate.swift
+//  CryptoContainer.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 8/22/18.
@@ -37,10 +37,10 @@
 
 import Foundation
 
-/// Represents a TLS certificate in PEM format.
-public struct Certificate: Equatable {
+/// Represents a cryptographic container in PEM format.
+public struct CryptoContainer: Equatable {
 
-    /// The content of the certificates in PEM format (ASCII).
+    /// The content in PEM format (ASCII).
     public let pem: String
     
     /// :nodoc:
@@ -55,7 +55,7 @@ public struct Certificate: Equatable {
     // MARK: Equatable
     
     /// :nodoc:
-    public static func ==(lhs: Certificate, rhs: Certificate) -> Bool {
+    public static func ==(lhs: CryptoContainer, rhs: CryptoContainer) -> Bool {
         return lhs.pem == rhs.pem
     }
 }
