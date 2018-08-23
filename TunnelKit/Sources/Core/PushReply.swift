@@ -1,6 +1,6 @@
 //
 //  PushReply.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 25/07/2018.
 //  Copyright © 2018 London Trust Media. All rights reserved.

@@ -1,6 +1,6 @@
 //
-//  PIATunnelProvider.swift
-//  PIATunnel
+//  TunnelKitProvider.swift
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 2/1/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -15,7 +15,7 @@ private let log = SwiftyBeaver.self
  Provides an all-in-one `NEPacketTunnelProvider` implementation for use in a
  Packet Tunnel Provider extension both on iOS and macOS.
  */
-open class PIATunnelProvider: NEPacketTunnelProvider {
+open class TunnelKitProvider: NEPacketTunnelProvider {
     
     // MARK: Tweaks
     
@@ -49,7 +49,7 @@ open class PIATunnelProvider: NEPacketTunnelProvider {
 
     private let observer = InterfaceObserver()
     
-    private let tunnelQueue = DispatchQueue(label: PIATunnelProvider.description())
+    private let tunnelQueue = DispatchQueue(label: TunnelKitProvider.description())
     
     private let prngSeedLength = 64
     
@@ -305,7 +305,7 @@ open class PIATunnelProvider: NEPacketTunnelProvider {
     }
 }
 
-extension PIATunnelProvider: GenericSocketDelegate {
+extension TunnelKitProvider: GenericSocketDelegate {
     
     // MARK: GenericSocketDelegate (tunnel queue)
     
@@ -380,7 +380,7 @@ extension PIATunnelProvider: GenericSocketDelegate {
     }
 }
 
-extension PIATunnelProvider: SessionProxyDelegate {
+extension TunnelKitProvider: SessionProxyDelegate {
     
     // MARK: SessionProxyDelegate (tunnel queue)
     
@@ -444,7 +444,7 @@ extension PIATunnelProvider: SessionProxyDelegate {
     }
 }
 
-extension PIATunnelProvider {
+extension TunnelKitProvider {
     
     // MARK: Helpers
     

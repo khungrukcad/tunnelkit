@@ -1,6 +1,6 @@
 //
 //  TLSBox.m
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 2/3/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -89,7 +89,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
         if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
             ERR_print_errors_fp(stdout);
             if (error) {
-                *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxCA);
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
             }
             return NO;
         }
@@ -112,7 +112,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     
     if (!SSL_do_handshake(self.ssl)) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
         }
         return NO;
     }
@@ -135,7 +135,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
     if ((ret < 0) && !BIO_should_retry(self.bioCipherTextOut)) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
         }
     }
     return nil;
@@ -153,7 +153,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
     if ((ret < 0) && !BIO_should_retry(self.bioPlainText)) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
         }
     }
     return NO;
@@ -175,7 +175,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     const int ret = BIO_write(self.bioCipherTextIn, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
         }
         return NO;
     }
@@ -196,7 +196,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     const int ret = BIO_write(self.bioPlainText, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
         }
         return NO;
     }

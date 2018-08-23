@@ -1,6 +1,6 @@
 //
-//  PIATunnelProvider+Configuration.swift
-//  PIATunnel
+//  TunnelKitProvider+Configuration.swift
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 10/23/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -12,7 +12,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-extension PIATunnelProvider {
+extension TunnelKitProvider {
     
     // MARK: Cryptography
     
@@ -94,7 +94,7 @@ extension PIATunnelProvider {
                 return
             }
 
-            let bundle = Bundle(for: PIATunnelProvider.self)
+            let bundle = Bundle(for: TunnelKitProvider.self)
             let certName = "PIA-\(rawValue)"
             guard let certUrl = bundle.url(forResource: certName, withExtension: "pem") else {
                 fatalError("Could not find \(certName) TLS certificate")
@@ -105,7 +105,7 @@ extension PIATunnelProvider {
     }
 }
 
-extension PIATunnelProvider {
+extension TunnelKitProvider {
 
     // MARK: Configuration
     
@@ -192,7 +192,7 @@ extension PIATunnelProvider {
         }
     }
     
-    /// The way to create a `PIATunnelProvider.Configuration` object for the tunnel profile.
+    /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
         
         // MARK: App group
@@ -341,9 +341,9 @@ extension PIATunnelProvider {
         }
         
         /**
-         Builds a `PIATunnelProvider.Configuration` object that will connect to the provided endpoint.
+         Builds a `TunnelKitProvider.Configuration` object that will connect to the provided endpoint.
          
-         - Returns: A `PIATunnelProvider.Configuration` object with this builder and the additional method parameters.
+         - Returns: A `TunnelKitProvider.Configuration` object with this builder and the additional method parameters.
          */
         public func build() -> Configuration {
             return Configuration(
@@ -364,7 +364,7 @@ extension PIATunnelProvider {
         }
     }
     
-    /// Offers a bridge between the abstract `PIATunnelProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
+    /// Offers a bridge between the abstract `TunnelKitProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
     public struct Configuration {
         struct Keys {
             static let appGroup = "AppGroup"
@@ -394,43 +394,43 @@ extension PIATunnelProvider {
             static let debugLogFormat = "DebugLogFormat"
         }
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.appGroup`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.appGroup`
         public let appGroup: String
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.prefersResolvedAddresses`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
         public let prefersResolvedAddresses: Bool
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.resolvedAddresses`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.endpointProtocols`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.endpointProtocols`
         public let endpointProtocols: [EndpointProtocol]
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.cipher`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.cipher`
         public let cipher: Cipher
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.digest`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.digest`
         public let digest: Digest
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.handshake`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.handshake`
         public let handshake: Handshake
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.ca`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
         public let ca: String?
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.mtu`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: NSNumber
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.shouldDebug`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.debugLogKey`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogKey`
         public let debugLogKey: String?
         
-        /// - Seealso: `PIATunnelProvider.ConfigurationBuilder.debugLogFormat`
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
         
         // MARK: Shortcuts
@@ -449,10 +449,10 @@ extension PIATunnelProvider {
         // MARK: API
         
         /**
-         Parses a new `PIATunnelProvider.Configuration` object from a provider configuration map.
+         Parses a new `TunnelKitProvider.Configuration` object from a provider configuration map.
          
          - Parameter from: The map to parse.
-         - Returns: The parsed `PIATunnelProvider.Configuration` object.
+         - Returns: The parsed `TunnelKitProvider.Configuration` object.
          - Throws: `ProviderError.configuration` if `providerConfiguration` is incomplete.
          */
         public static func parsed(from providerConfiguration: [String: Any]) throws -> Configuration {
@@ -502,7 +502,7 @@ extension PIATunnelProvider {
          Generates a `NETunnelProviderProtocol` from this configuration.
          
          - Parameter bundleIdentifier: The provider bundle identifier required to locate the tunnel extension.
-         - Parameter endpoint: The `PIATunnelProvider.AuthenticatedEndpoint` the tunnel will connect to.
+         - Parameter endpoint: The `TunnelKitProvider.AuthenticatedEndpoint` the tunnel will connect to.
          - Returns: The generated `NETunnelProviderProtocol` object.
          - Throws: `ProviderError.configuration` if unable to store the `endpoint.password` to the `appGroup` keychain.
          */
@@ -548,15 +548,15 @@ extension PIATunnelProvider {
 
 // MARK: Modification
 
-extension PIATunnelProvider.Configuration: Equatable {
+extension TunnelKitProvider.Configuration: Equatable {
 
     /**
-     Returns a `PIATunnelProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+     Returns a `TunnelKitProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
 
-     - Returns: An editable `PIATunnelProvider.ConfigurationBuilder` initialized with this configuration.
+     - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
      */
-    public func builder() -> PIATunnelProvider.ConfigurationBuilder {
-        var builder = PIATunnelProvider.ConfigurationBuilder(appGroup: appGroup)
+    public func builder() -> TunnelKitProvider.ConfigurationBuilder {
+        var builder = TunnelKitProvider.ConfigurationBuilder(appGroup: appGroup)
         builder.endpointProtocols = endpointProtocols
         builder.cipher = cipher
         builder.digest = digest
@@ -569,7 +569,7 @@ extension PIATunnelProvider.Configuration: Equatable {
     }
 
     /// :nodoc:
-    public static func ==(lhs: PIATunnelProvider.Configuration, rhs: PIATunnelProvider.Configuration) -> Bool {
+    public static func ==(lhs: TunnelKitProvider.Configuration, rhs: TunnelKitProvider.Configuration) -> Bool {
         return (
             (lhs.endpointProtocols == rhs.endpointProtocols) &&
             (lhs.cipher == rhs.cipher) &&

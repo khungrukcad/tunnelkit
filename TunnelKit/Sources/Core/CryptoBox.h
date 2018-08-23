@@ -1,6 +1,6 @@
 //
 //  CryptoBox.h
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 2/4/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.

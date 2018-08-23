@@ -1,6 +1,6 @@
 //
 //  Errors.h
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 10/10/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -8,20 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-extern NSString *const PIATunnelErrorDomain;
+extern NSString *const TunnelKitErrorDomain;
 
-typedef NS_ENUM(NSInteger, PIATunnelErrorCode) {
-    PIATunnelErrorCodeCryptoBoxRandomGenerator = 101,
-    PIATunnelErrorCodeCryptoBoxHMAC,
-    PIATunnelErrorCodeCryptoBoxEncryption,
-    PIATunnelErrorCodeCryptoBoxAlgorithm,
-    PIATunnelErrorCodeTLSBoxCA = 201,
-    PIATunnelErrorCodeTLSBoxHandshake,
-    PIATunnelErrorCodeTLSBoxGeneric,
-    PIATunnelErrorCodeDataPathOverflow = 301,
-    PIATunnelErrorCodeDataPathPeerIdMismatch
+typedef NS_ENUM(NSInteger, TunnelKitErrorCode) {
+    TunnelKitErrorCodeCryptoBoxRandomGenerator = 101,
+    TunnelKitErrorCodeCryptoBoxHMAC,
+    TunnelKitErrorCodeCryptoBoxEncryption,
+    TunnelKitErrorCodeCryptoBoxAlgorithm,
+    TunnelKitErrorCodeTLSBoxCA = 201,
+    TunnelKitErrorCodeTLSBoxHandshake,
+    TunnelKitErrorCodeTLSBoxGeneric,
+    TunnelKitErrorCodeDataPathOverflow = 301,
+    TunnelKitErrorCodeDataPathPeerIdMismatch
 };
 
-static inline NSError *PIATunnelErrorWithCode(PIATunnelErrorCode code) {
-    return [NSError errorWithDomain:PIATunnelErrorDomain code:code userInfo:nil];
+static inline NSError *TunnelKitErrorWithCode(TunnelKitErrorCode code) {
+    return [NSError errorWithDomain:TunnelKitErrorDomain code:code userInfo:nil];
 }

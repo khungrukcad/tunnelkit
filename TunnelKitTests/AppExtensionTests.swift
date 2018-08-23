@@ -1,6 +1,6 @@
 //
 //  AppExtensionTests.swift
-//  PIATunnelTests
+//  TunnelKitTests
 //
 //  Created by Davide De Rosa on 10/23/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -23,18 +23,18 @@ class AppExtensionTests: XCTestCase {
     }
 
     func testConfiguration() {
-        var builder: PIATunnelProvider.ConfigurationBuilder!
-        var cfg: PIATunnelProvider.Configuration!
+        var builder: TunnelKitProvider.ConfigurationBuilder!
+        var cfg: TunnelKitProvider.Configuration!
 
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
-        let endpoint = PIATunnelProvider.AuthenticatedEndpoint(
+        let endpoint = TunnelKitProvider.AuthenticatedEndpoint(
             hostname: "example.com",
             username: "foo",
             password: "bar"
         )
 
-        builder = PIATunnelProvider.ConfigurationBuilder(appGroup: appGroup)
+        builder = TunnelKitProvider.ConfigurationBuilder(appGroup: appGroup)
         XCTAssertNotNil(builder)
 
         builder.cipher = .aes128cbc
@@ -54,7 +54,7 @@ class AppExtensionTests: XCTestCase {
             print("\(pc)")
         }
         
-        let K = PIATunnelProvider.Configuration.Keys.self
+        let K = TunnelKitProvider.Configuration.Keys.self
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, cfg.appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)

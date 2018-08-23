@@ -1,6 +1,6 @@
 //
 //  MemoryDestination.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 7/26/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.

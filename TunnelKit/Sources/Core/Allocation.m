@@ -1,6 +1,6 @@
 //
 //  Allocation.m
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 5/5/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.

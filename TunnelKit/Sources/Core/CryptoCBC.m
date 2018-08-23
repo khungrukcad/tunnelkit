@@ -1,6 +1,6 @@
 //
 //  CryptoCBC.m
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 06/07/2018.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -120,22 +120,22 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     
     if (RAND_bytes(outIV, self.cipherIVLength) != 1) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeCryptoBoxRandomGenerator);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxRandomGenerator);
         }
         return NO;
     }
     
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, outIV, -1);
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, outEncrypted, &l1, bytes, (int)length);
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxEnc, outEncrypted + l1, &l2);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, outIV, -1);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, outEncrypted, &l1, bytes, (int)length);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxEnc, outEncrypted + l1, &l2);
     
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxEnc, NULL, 0, NULL, NULL);
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxEnc, outIV, l1 + l2 + self.cipherIVLength);
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Final(self.hmacCtxEnc, dest, &l3);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxEnc, NULL, 0, NULL, NULL);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxEnc, outIV, l1 + l2 + self.cipherIVLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Final(self.hmacCtxEnc, dest, &l3);
     
     *destLength = l1 + l2 + self.cipherIVLength + self.digestLength;
     
-    PIA_CRYPTO_RETURN_STATUS(code)
+    TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
 - (id<DataPathEncrypter>)dataPathEncrypter
@@ -180,24 +180,24 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     int l1 = 0, l2 = 0;
     int code = 1;
     
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxDec, NULL, 0, NULL, NULL);
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxDec, bytes + self.digestLength, length - self.digestLength);
-    PIA_CRYPTO_TRACK_STATUS(code) HMAC_Final(self.hmacCtxDec, self.bufferDecHMAC, (unsigned *)&l1);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxDec, NULL, 0, NULL, NULL);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxDec, bytes + self.digestLength, length - self.digestLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Final(self.hmacCtxDec, self.bufferDecHMAC, (unsigned *)&l1);
     
-    if (PIA_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, self.digestLength) != 0) {
+    if (TUNNEL_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, self.digestLength) != 0) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeCryptoBoxHMAC);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxHMAC);
         }
         return NO;
     }
     
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxDec, NULL, NULL, iv, -1);
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, dest, &l1, encrypted, (int)length - self.digestLength - self.cipherIVLength);
-    PIA_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxDec, dest + l1, &l2);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxDec, NULL, NULL, iv, -1);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, dest, &l1, encrypted, (int)length - self.digestLength - self.cipherIVLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxDec, dest + l1, &l2);
     
     *destLength = l1 + l2;
     
-    PIA_CRYPTO_RETURN_STATUS(code)
+    TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
 - (id<DataPathDecrypter>)dataPathDecrypter
@@ -308,7 +308,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     }
     if (self.checkPeerId && !self.checkPeerId(packet.bytes)) {
         if (error) {
-            *error = PIATunnelErrorWithCode(PIATunnelErrorCodeDataPathPeerIdMismatch);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathPeerIdMismatch);
         }
         return NO;
     }

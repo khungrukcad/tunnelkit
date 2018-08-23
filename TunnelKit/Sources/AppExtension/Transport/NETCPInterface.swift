@@ -1,6 +1,6 @@
 //
 //  NETCPInterface.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 4/15/18.
 //  Copyright © 2018 London Trust Media. All rights reserved.

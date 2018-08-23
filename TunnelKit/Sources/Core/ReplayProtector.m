@@ -1,6 +1,6 @@
 //
 //  ReplayProtector.m
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 2/17/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.

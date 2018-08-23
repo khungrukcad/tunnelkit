@@ -1,6 +1,6 @@
 //
 //  SessionProxy.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 2/3/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -15,7 +15,7 @@ private let log = SwiftyBeaver.self
 private extension Error {
     func isDataPathOverflow() -> Bool {
         let te = self as NSError
-        return te.domain == PIATunnelErrorDomain && te.code == PIATunnelErrorCode.dataPathOverflow.rawValue
+        return te.domain == TunnelKitErrorDomain && te.code == TunnelKitErrorCode.dataPathOverflow.rawValue
     }
 }
 

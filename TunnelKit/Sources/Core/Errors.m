@@ -1,6 +1,6 @@
 //
 //  Errors.m
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 10/10/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -8,4 +8,4 @@
 
 #import "Errors.h"
 
-NSString *const PIATunnelErrorDomain = @"PIATunnelNative";
+NSString *const TunnelKitErrorDomain = @"TunnelKitNative";

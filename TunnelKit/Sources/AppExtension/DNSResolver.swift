@@ -1,6 +1,6 @@
 //
 //  DNSResolver.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 12/15/17.
 //  Copyright © 2017 London Trust Media. All rights reserved.

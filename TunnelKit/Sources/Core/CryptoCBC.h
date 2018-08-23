@@ -1,6 +1,6 @@
 //
 //  CryptoCBC.h
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 06/07/2018.
 //  Copyright © 2018 London Trust Media. All rights reserved.

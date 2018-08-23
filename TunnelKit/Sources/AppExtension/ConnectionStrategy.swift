@@ -1,6 +1,6 @@
 //
 //  ConnectionStrategy.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 6/18/18.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -19,11 +19,11 @@ class ConnectionStrategy {
 
     private var resolvedAddresses: [String]?
     
-    private let endpointProtocols: [PIATunnelProvider.EndpointProtocol]
+    private let endpointProtocols: [TunnelKitProvider.EndpointProtocol]
     
     private var currentProtocolIndex = 0
 
-    init(hostname: String, configuration: PIATunnelProvider.Configuration) {
+    init(hostname: String, configuration: TunnelKitProvider.Configuration) {
         precondition(!configuration.prefersResolvedAddresses || !(configuration.resolvedAddresses?.isEmpty ?? true))
         
         self.hostname = hostname
@@ -70,7 +70,7 @@ class ConnectionStrategy {
 
             guard let targetAddress = self.resolvedAddress(from: addresses) else {
                 log.error("No resolved or fallback address available")
-                completionHandler(nil, PIATunnelProvider.ProviderError.dnsFailure)
+                completionHandler(nil, TunnelKitProvider.ProviderError.dnsFailure)
                 return
             }
 
@@ -90,7 +90,7 @@ class ConnectionStrategy {
         return true
     }
     
-    private func currentProtocol() -> PIATunnelProvider.EndpointProtocol {
+    private func currentProtocol() -> TunnelKitProvider.EndpointProtocol {
         return endpointProtocols[currentProtocolIndex]
     }
 
@@ -111,7 +111,7 @@ class ConnectionStrategy {
 }
 
 private extension NEProvider {
-    func createSocket(to address: String, protocol endpointProtocol: PIATunnelProvider.EndpointProtocol) -> GenericSocket {
+    func createSocket(to address: String, protocol endpointProtocol: TunnelKitProvider.EndpointProtocol) -> GenericSocket {
         let endpoint = NWHostEndpoint(hostname: address, port: "\(endpointProtocol.port)")
         switch endpointProtocol.socketType {
         case .udp:

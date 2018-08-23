@@ -1,6 +1,6 @@
 //
 //  DataPathEncryptionTests.swift
-//  PIATunnelTests
+//  TunnelKitTests
 //
 //  Created by Davide De Rosa on 11/07/2018.
 //  Copyright © 2018 London Trust Media. All rights reserved.

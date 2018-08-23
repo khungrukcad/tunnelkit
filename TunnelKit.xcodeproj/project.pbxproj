@@ -111,15 +111,15 @@
 		0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
 		0EFEB4752006D3C800F81029 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44B2006D3C800F81029 /* Errors.m */; };
 		0EFEB4762006D3C800F81029 /* DataPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44C2006D3C800F81029 /* DataPath.m */; };
-		0EFEB4782006D3C800F81029 /* PIATunnelProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* PIATunnelProvider+Configuration.swift */; };
-		0EFEB4792006D3C800F81029 /* PIATunnelProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* PIATunnelProvider+Interaction.swift */; };
-		0EFEB47B2006D3C800F81029 /* PIATunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* PIATunnelProvider.swift */; };
+		0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */; };
+		0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */; };
+		0EFEB47B2006D3C800F81029 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */; };
 		0EFEB4832006D3D000F81029 /* PIA-RSA-3072.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */; };
 		0EFEB4842006D3D000F81029 /* PIA-RSA-4096.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */; };
 		0EFEB4852006D3D000F81029 /* PIA-RSA-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */; };
-		0EFEB4872006D7C400F81029 /* PIATunnelProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* PIATunnelProvider+Configuration.swift */; };
-		0EFEB4882006D7C400F81029 /* PIATunnelProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* PIATunnelProvider+Interaction.swift */; };
-		0EFEB48A2006D7C400F81029 /* PIATunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* PIATunnelProvider.swift */; };
+		0EFEB4872006D7C400F81029 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */; };
+		0EFEB4882006D7C400F81029 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */; };
+		0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */; };
 		0EFEB48D2006D7F300F81029 /* EncryptionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* EncryptionProxy.swift */; };
 		0EFEB48E2006D7F300F81029 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionKey.swift */; };
 		0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */; };
@@ -257,9 +257,9 @@
 		0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreConfiguration.swift; sourceTree = "<group>"; };
 		0EFEB44B2006D3C800F81029 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
 		0EFEB44C2006D3C800F81029 /* DataPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPath.m; sourceTree = "<group>"; };
-		0EFEB44F2006D3C800F81029 /* PIATunnelProvider+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PIATunnelProvider+Configuration.swift"; sourceTree = "<group>"; };
-		0EFEB4502006D3C800F81029 /* PIATunnelProvider+Interaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PIATunnelProvider+Interaction.swift"; sourceTree = "<group>"; };
-		0EFEB4522006D3C800F81029 /* PIATunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PIATunnelProvider.swift; sourceTree = "<group>"; };
+		0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Configuration.swift"; sourceTree = "<group>"; };
+		0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Interaction.swift"; sourceTree = "<group>"; };
+		0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelKitProvider.swift; sourceTree = "<group>"; };
 		0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-3072.pem"; sourceTree = "<group>"; };
 		0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-4096.pem"; sourceTree = "<group>"; };
 		0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-2048.pem"; sourceTree = "<group>"; };
@@ -477,9 +477,9 @@
 				0EFEB4AA200760EC00F81029 /* InterfaceObserver.swift */,
 				0EFEB4AD2007625E00F81029 /* Keychain.swift */,
 				0EFEB4A9200760EB00F81029 /* MemoryDestination.swift */,
-				0EFEB4522006D3C800F81029 /* PIATunnelProvider.swift */,
-				0EFEB44F2006D3C800F81029 /* PIATunnelProvider+Configuration.swift */,
-				0EFEB4502006D3C800F81029 /* PIATunnelProvider+Interaction.swift */,
+				0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */,
+				0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */,
+				0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */,
 				0EEC49DB20B5E732008FEB91 /* Utils.swift */,
 			);
 			path = AppExtension;
@@ -900,7 +900,7 @@
 				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
 				0EFEB4AC200760EC00F81029 /* InterfaceObserver.swift in Sources */,
 				0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */,
-				0EFEB47B2006D3C800F81029 /* PIATunnelProvider.swift in Sources */,
+				0EFEB47B2006D3C800F81029 /* TunnelKitProvider.swift in Sources */,
 				0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */,
 				0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
 				0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
@@ -910,12 +910,12 @@
 				0EBBF2F3208505D300E36B40 /* NEUDPInterface.swift in Sources */,
 				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
 				0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */,
-				0EFEB4792006D3C800F81029 /* PIATunnelProvider+Interaction.swift in Sources */,
+				0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
 				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0EFEB4712006D3C800F81029 /* TunnelSettings.swift in Sources */,
-				0EFEB4782006D3C800F81029 /* PIATunnelProvider+Configuration.swift in Sources */,
+				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
 				0EBBF2E52084FE6F00E36B40 /* GenericSocket.swift in Sources */,
@@ -932,9 +932,9 @@
 				0EBBF2F6208505D700E36B40 /* NETunnelInterface.swift in Sources */,
 				0EAAD70A20E4F2BC0088754A /* CommunicationType.swift in Sources */,
 				0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */,
-				0EFEB4872006D7C400F81029 /* PIATunnelProvider+Configuration.swift in Sources */,
+				0EFEB4872006D7C400F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0EBBF2F7208505DD00E36B40 /* NWUDPSessionState+Description.swift in Sources */,
-				0EFEB4882006D7C400F81029 /* PIATunnelProvider+Interaction.swift in Sources */,
+				0EFEB4882006D7C400F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0EE7A79920F6296F00B42E6A /* PacketMacros.m in Sources */,
 				0EEC49DD20B5E732008FEB91 /* Utils.swift in Sources */,
 				0EAAD70D20E4F85A0088754A /* LinkInterface+Strategy.swift in Sources */,
@@ -945,7 +945,7 @@
 				0EBBF3012085196000E36B40 /* NWTCPConnectionState+Description.swift in Sources */,
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0EE7A79620F61EDC00B42E6A /* PacketMacros.h in Sources */,
-				0EFEB48A2006D7C400F81029 /* PIATunnelProvider.swift in Sources */,
+				0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */,
 				0EBBF2FB2085061600E36B40 /* NETCPInterface.swift in Sources */,
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,

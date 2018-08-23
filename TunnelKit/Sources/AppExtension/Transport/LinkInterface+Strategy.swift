@@ -1,6 +1,6 @@
 //
 //  LinkInterface+Strategy.swift
-//  PIATunnel
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 6/28/18.
 //  Copyright © 2018 London Trust Media. All rights reserved.

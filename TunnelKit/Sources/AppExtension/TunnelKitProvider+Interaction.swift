@@ -1,6 +1,6 @@
 //
-//  PIATunnelProvider+Interaction.swift
-//  PIATunnel
+//  TunnelKitProvider+Interaction.swift
+//  TunnelKit
 //
 //  Created by Davide De Rosa on 9/24/17.
 //  Copyright © 2018 London Trust Media. All rights reserved.
@@ -8,11 +8,11 @@
 
 import Foundation
 
-extension PIATunnelProvider {
+extension TunnelKitProvider {
 
     // MARK: Interaction
 
-    /// The messages accepted by `PIATunnelProvider`.
+    /// The messages accepted by `TunnelKitProvider`.
     public class Message: Equatable {
         
         /// Requests a snapshot of the latest debug log. Returns the log data decoded from UTF-8.
@@ -42,10 +42,10 @@ extension PIATunnelProvider {
         }
     }
 
-    /// The errors raised by `PIATunnelProvider`.
+    /// The errors raised by `TunnelKitProvider`.
     public enum ProviderError: Error {
 
-        /// The `PIATunnelProvider.Configuration` provided is incorrect or incomplete.
+        /// The `TunnelKitProvider.Configuration` provided is incorrect or incomplete.
         case configuration(field: String)
         
         /// Credentials are missing or protected (e.g. device locked).
