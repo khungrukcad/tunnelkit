@@ -128,6 +128,10 @@ extension TunnelKitProvider {
         /// The MTU of the tunnel.
         public var mtu: NSNumber
         
+        /// Enables LZO framing (deprecated).
+//        @available(*, deprecated)
+        public var LZOFraming: Bool
+
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
         
@@ -158,6 +162,7 @@ extension TunnelKitProvider {
             digest = .sha1
             ca = nil
             mtu = 1500
+            LZOFraming = false
             renegotiatesAfterSeconds = nil
             shouldDebug = false
             debugLogKey = nil
@@ -210,6 +215,7 @@ extension TunnelKitProvider {
             self.digest = digest
             self.ca = ca
             mtu = providerConfiguration[S.mtu] as? NSNumber ?? 1500
+            LZOFraming = providerConfiguration[S.LZOFraming] as? Bool ?? false
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
@@ -243,6 +249,7 @@ extension TunnelKitProvider {
                 digest: digest,
                 ca: ca,
                 mtu: mtu,
+                LZOFraming: LZOFraming,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
@@ -269,6 +276,8 @@ extension TunnelKitProvider {
             static let ca = "CA"
             
             static let mtu = "MTU"
+            
+            static let LZOFraming = "LZOFraming"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
             
@@ -302,6 +311,9 @@ extension TunnelKitProvider {
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: NSNumber
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.LZOFraming`
+        public let LZOFraming: Bool
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?
@@ -367,6 +379,9 @@ extension TunnelKitProvider {
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
+            if LZOFraming {
+                dict[S.LZOFraming] = LZOFraming
+            }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
             }
@@ -421,6 +436,7 @@ extension TunnelKitProvider {
                 log.info("CA verification: disabled")
             }
             log.info("MTU: \(mtu)")
+            log.info("LZO framing: \(LZOFraming ? "enabled" : "disabled")")
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
@@ -461,6 +477,7 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.digest == rhs.digest) &&
             (lhs.ca == rhs.ca) &&
             (lhs.mtu == rhs.mtu) &&
+            (lhs.LZOFraming == rhs.LZOFraming) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
         )
     }

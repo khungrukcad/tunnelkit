@@ -128,8 +128,17 @@
     NSAssert(self.encrypter, @"Setting peer-id to nil encrypter");
     NSAssert(self.decrypter, @"Setting peer-id to nil decrypter");
 
-    [self.encrypter setPeerId:peerId];
-    [self.decrypter setPeerId:peerId];
+    self.encrypter.peerId = peerId;
+    self.decrypter.peerId = peerId;
+}
+
+- (void)setLZOFraming:(BOOL)LZOFraming
+{
+    NSAssert(self.encrypter, @"Setting LZOFraming to nil encrypter");
+    NSAssert(self.decrypter, @"Setting LZOFraming to nil decrypter");
+    
+    self.encrypter.LZOFraming = LZOFraming;
+    self.decrypter.LZOFraming = LZOFraming;
 }
 
 #pragma mark DataPath
@@ -156,7 +165,6 @@
         uint8_t *payload = self.encBufferAligned;
         NSInteger payloadLength;
         [self.encrypter assembleDataPacketWithPacketId:self.outPacketId
-                                           compression:DataPacketCompressNone
                                                payload:raw
                                                   into:payload
                                                 length:&payloadLength];
@@ -211,11 +219,9 @@
         }
         
         NSInteger payloadLength;
-        uint8_t compression;
         const uint8_t *payload = [self.decrypter parsePayloadWithDataPacket:packet
                                                                packetLength:packetLength
-                                                                     length:&payloadLength
-                                                                compression:&compression];
+                                                                     length:&payloadLength];
         
         if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payload, DataPacketPingData, payloadLength)) {
             if (keepAlive) {

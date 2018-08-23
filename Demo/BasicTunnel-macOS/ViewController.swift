@@ -37,6 +37,7 @@ extension ViewController {
         builder.cipher = .aes128cbc
         builder.digest = .sha1
         builder.mtu = 1350
+        builder.LZOFraming = true
         builder.renegotiatesAfterSeconds = nil
         builder.shouldDebug = true
         builder.debugLogKey = "Log"
@@ -71,10 +72,7 @@ class ViewController: NSViewController {
         
         textServer.stringValue = "germany"
         textDomain.stringValue = "privateinternetaccess.com"
-//        textServer.text = "159.122.133.238"
-//        textDomain.text = ""
         textPort.stringValue = "1198"
-//        textPort.text = "8080"
         textUsername.stringValue = "myusername"
         textPassword.stringValue = "mypassword"
         
