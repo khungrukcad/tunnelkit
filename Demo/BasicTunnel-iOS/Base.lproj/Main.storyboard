@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14269.14" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14252.5"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -55,7 +55,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Teo-8d-LYJ">
-                                <rect key="frame" x="20" y="240" width="237" height="70"/>
+                                <rect key="frame" x="20" y="240" width="276" height="70"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="48"/>
                                 <state key="normal" title="Connect"/>
                                 <connections>
@@ -74,22 +74,8 @@
                                     <action selector="tcpClicked:" destination="BYZ-38-t0r" eventType="valueChanged" id="ZJI-Jw-pow"/>
                                 </connections>
                             </switch>
-                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gg2-18-Pq8">
-                                <rect key="frame" x="267" y="257" width="88" height="36"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                <state key="normal" title="Download"/>
-                                <connections>
-                                    <action selector="download" destination="BYZ-38-t0r" eventType="touchUpInside" id="D3u-Dg-Bcd"/>
-                                </connections>
-                            </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="??" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="b1e-IE-2kv">
-                                <rect key="frame" x="179" y="318" width="17" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6dU-fF-FSg">
-                                <rect key="frame" x="20" y="310" width="78" height="41"/>
+                                <rect key="frame" x="20" y="310" width="335" height="41"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                 <state key="normal" title="See log"/>
                                 <connections>
@@ -113,35 +99,30 @@
                             <constraint firstItem="WZf-S5-SqC" firstAttribute="bottom" secondItem="Teo-8d-LYJ" secondAttribute="bottom" id="HGt-O3-p5F"/>
                             <constraint firstItem="ONL-vF-iUY" firstAttribute="trailing" secondItem="bc6-yT-aty" secondAttribute="trailing" id="OS0-Uz-cCz"/>
                             <constraint firstItem="6dU-fF-FSg" firstAttribute="leading" secondItem="Teo-8d-LYJ" secondAttribute="leading" id="P9y-bj-2tC"/>
+                            <constraint firstItem="WZf-S5-SqC" firstAttribute="leading" secondItem="Teo-8d-LYJ" secondAttribute="trailing" constant="10" id="QqJ-GR-aGp"/>
                             <constraint firstItem="XwE-sE-aPN" firstAttribute="top" secondItem="ONL-vF-iUY" secondAttribute="bottom" constant="20" id="XvO-b0-4Pl"/>
                             <constraint firstItem="UNN-CR-rdr" firstAttribute="trailing" secondItem="bc6-yT-aty" secondAttribute="trailing" id="Zep-Ze-DNM"/>
                             <constraint firstItem="UNN-CR-rdr" firstAttribute="leading" secondItem="bc6-yT-aty" secondAttribute="leading" id="Zix-pG-8bU"/>
+                            <constraint firstItem="6dU-fF-FSg" firstAttribute="trailing" secondItem="WZf-S5-SqC" secondAttribute="trailing" id="a7z-pJ-hKf"/>
                             <constraint firstAttribute="trailing" secondItem="bc6-yT-aty" secondAttribute="trailing" constant="20" id="cR0-Np-zTX"/>
                             <constraint firstItem="dQS-Ma-dYP" firstAttribute="trailing" secondItem="bc6-yT-aty" secondAttribute="trailing" id="eNP-iD-wgR"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="UNN-CR-rdr" secondAttribute="bottom" constant="20" id="efh-iS-51K"/>
                             <constraint firstItem="XwE-sE-aPN" firstAttribute="leading" secondItem="ONL-vF-iUY" secondAttribute="leading" id="fJB-38-JYZ"/>
-                            <constraint firstItem="b1e-IE-2kv" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="fuR-6q-fd6"/>
                             <constraint firstItem="sA4-W9-jxo" firstAttribute="top" secondItem="Teo-8d-LYJ" secondAttribute="top" id="grl-36-NDr"/>
                             <constraint firstItem="ONL-vF-iUY" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="20" id="lNh-0d-b3b"/>
                             <constraint firstItem="dQS-Ma-dYP" firstAttribute="top" secondItem="XwE-sE-aPN" secondAttribute="bottom" constant="20" id="lxB-za-cHQ"/>
                             <constraint firstItem="7LH-tE-it9" firstAttribute="leading" secondItem="XwE-sE-aPN" secondAttribute="trailing" constant="10" id="oYJ-8E-Ieq"/>
                             <constraint firstItem="6dU-fF-FSg" firstAttribute="top" secondItem="Teo-8d-LYJ" secondAttribute="bottom" id="pAc-Ee-Ryj"/>
                             <constraint firstItem="Teo-8d-LYJ" firstAttribute="top" secondItem="bc6-yT-aty" secondAttribute="bottom" constant="20" id="qnB-Iz-Gbp"/>
-                            <constraint firstItem="b1e-IE-2kv" firstAttribute="top" secondItem="Teo-8d-LYJ" secondAttribute="bottom" constant="8" id="rCG-di-kDu"/>
                             <constraint firstItem="ONL-vF-iUY" firstAttribute="leading" secondItem="bc6-yT-aty" secondAttribute="leading" id="sez-Cv-mp9"/>
-                            <constraint firstItem="Gg2-18-Pq8" firstAttribute="centerY" secondItem="Teo-8d-LYJ" secondAttribute="centerY" id="tHU-1i-TyC"/>
                             <constraint firstItem="bc6-yT-aty" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="20" id="tZc-ru-OTc"/>
                             <constraint firstItem="7LH-tE-it9" firstAttribute="trailing" secondItem="ONL-vF-iUY" secondAttribute="trailing" id="tlD-XS-qwO"/>
                             <constraint firstItem="sA4-W9-jxo" firstAttribute="centerX" secondItem="WZf-S5-SqC" secondAttribute="centerX" id="v80-dG-aB7"/>
-                            <constraint firstAttribute="trailing" secondItem="Gg2-18-Pq8" secondAttribute="trailing" constant="20" id="vzB-UP-pVi"/>
                             <constraint firstAttribute="trailing" secondItem="WZf-S5-SqC" secondAttribute="trailing" constant="20" id="wMy-Qf-9Bi"/>
-                            <constraint firstItem="Gg2-18-Pq8" firstAttribute="leading" secondItem="Teo-8d-LYJ" secondAttribute="trailing" constant="10" id="yWA-EY-Qao"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="buttonConnection" destination="Teo-8d-LYJ" id="evE-2I-13A"/>
-                        <outlet property="buttonDownload" destination="Gg2-18-Pq8" id="3u5-YL-8tg"/>
-                        <outlet property="labelDownload" destination="b1e-IE-2kv" id="AXL-Lj-KVd"/>
                         <outlet property="switchTCP" destination="WZf-S5-SqC" id="UyR-J2-iX0"/>
                         <outlet property="textDomain" destination="XwE-sE-aPN" id="byL-Ai-eAD"/>
                         <outlet property="textLog" destination="UNN-CR-rdr" id="a9o-b3-nHT"/>
