@@ -106,13 +106,11 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 - (BOOL)startWithError:(NSError *__autoreleasing *)error
 {
     if (!TLSBoxIsOpenSSLLoaded) {
-//        OPENSSL_init_ssl(0, NULL);
-
         TLSBoxIsOpenSSLLoaded = YES;
     }
     
     self.ctx = SSL_CTX_new(TLS_client_method());
-    SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2|SSL_OP_NO_SSLv3|SSL_OP_NO_COMPRESSION);
+    SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
     if (self.caPath) {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
         if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
@@ -126,7 +124,6 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     else {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_NONE, NULL);
     }
-    SSL_CTX_set1_curves_list(self.ctx, "X25519:prime256v1:secp521r1:secp384r1:secp256k1");
 
     self.ssl = SSL_new(self.ctx);
     
