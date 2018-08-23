@@ -19,9 +19,8 @@ class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
     
     private let maxDatagrams: Int
 
-    init(impl: NWUDPSession, communicationType: CommunicationType, maxDatagrams: Int? = nil) {
+    init(impl: NWUDPSession, maxDatagrams: Int? = nil) {
         self.impl = impl
-        self.communicationType = communicationType
         self.maxDatagrams = maxDatagrams ?? 200
 
         isActive = false
@@ -76,7 +75,7 @@ class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
         guard impl.hasBetterPath else {
             return nil
         }
-        return NEUDPInterface(impl: NWUDPSession(upgradeFor: impl), communicationType: communicationType)
+        return NEUDPInterface(impl: NWUDPSession(upgradeFor: impl))
     }
     
     func link() -> LinkInterface {
@@ -162,8 +161,6 @@ class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
         return maxDatagrams
     }
 
-    let communicationType: CommunicationType
-    
     let negotiationTimeout: TimeInterval = 10.0
     
     let hardResetTimeout: TimeInterval = 5.0

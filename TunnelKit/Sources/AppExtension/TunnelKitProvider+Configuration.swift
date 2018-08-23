@@ -128,21 +128,17 @@ extension TunnelKitProvider {
         /// The remote port.
         public let port: UInt16
         
-        /// The communication type.
-        public let communicationType: CommunicationType
-
         /// :nodoc:
-        public init(_ socketType: SocketType, _ port: UInt16, _ communicationType: CommunicationType) {
+        public init(_ socketType: SocketType, _ port: UInt16) {
             self.socketType = socketType
             self.port = port
-            self.communicationType = communicationType
         }
         
         // MARK: Equatable
         
         /// :nodoc:
         public static func ==(lhs: EndpointProtocol, rhs: EndpointProtocol) -> Bool {
-            return (lhs.socketType == rhs.socketType) && (lhs.port == rhs.port) && (lhs.communicationType == rhs.communicationType)
+            return (lhs.socketType == rhs.socketType) && (lhs.port == rhs.port)
         }
         
         // MARK: CustomStringConvertible
@@ -253,7 +249,7 @@ extension TunnelKitProvider {
             self.appGroup = appGroup
             prefersResolvedAddresses = false
             resolvedAddresses = nil
-            endpointProtocols = [EndpointProtocol(.udp, 1194, .pia)]
+            endpointProtocols = [EndpointProtocol(.udp, 1194)]
             cipher = .aes128cbc
             digest = .sha1
             handshake = .rsa2048
@@ -300,22 +296,18 @@ extension TunnelKitProvider {
             }
             endpointProtocols = try endpointProtocolsStrings.map {
                 let components = $0.components(separatedBy: ":")
-                guard components.count == 3 else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] entries must be in the form 'socketType:port:communicationType'")
+                guard components.count == 2 else {
+                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] entries must be in the form 'socketType:port'")
                 }
                 let socketTypeString = components[0]
                 let portString = components[1]
-                let communicationTypeString = components[2]
                 guard let socketType = SocketType(rawValue: socketTypeString) else {
                     throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] unrecognized socketType '\(socketTypeString)'")
                 }
                 guard let port = UInt16(portString) else {
                     throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] non-numeric port '\(portString)'")
                 }
-                guard let communicationType = CommunicationType(rawValue: communicationTypeString) else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] unrecognized communicationType '\(communicationTypeString)'")
-                }
-                return EndpointProtocol(socketType, port, communicationType)
+                return EndpointProtocol(socketType, port)
             }
             
             self.cipher = cipher
@@ -472,7 +464,7 @@ extension TunnelKitProvider {
                 S.appGroup: appGroup,
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
                 S.endpointProtocols: endpointProtocols.map {
-                    "\($0.socketType.rawValue):\($0.port):\($0.communicationType.rawValue)"
+                    "\($0.socketType.rawValue):\($0.port)"
                 },
                 S.cipherAlgorithm: cipher.rawValue,
                 S.digestAlgorithm: digest.rawValue,

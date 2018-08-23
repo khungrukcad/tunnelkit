@@ -38,10 +38,6 @@
 		0EA8E20D2024D5D500A92DB6 /* PIA-RSA-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */; };
 		0EA8E20E2024D5D500A92DB6 /* PIA-RSA-3072.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */; };
 		0EA8E20F2024D5D500A92DB6 /* PIA-RSA-4096.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */; };
-		0EAAD70920E4F2BC0088754A /* CommunicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAAD70820E4F2BC0088754A /* CommunicationType.swift */; };
-		0EAAD70A20E4F2BC0088754A /* CommunicationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAAD70820E4F2BC0088754A /* CommunicationType.swift */; };
-		0EAAD70C20E4F85A0088754A /* LinkInterface+Strategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAAD70B20E4F85A0088754A /* LinkInterface+Strategy.swift */; };
-		0EAAD70D20E4F85A0088754A /* LinkInterface+Strategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAAD70B20E4F85A0088754A /* LinkInterface+Strategy.swift */; };
 		0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */; };
 		0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */; };
 		0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45620F0BD16004233D7 /* RandomTests.swift */; };
@@ -105,7 +101,6 @@
 		0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4442006D3C800F81029 /* TLSBox.h */; };
 		0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4452006D3C800F81029 /* IOInterface.swift */; };
 		0EFEB4702006D3C800F81029 /* Allocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4462006D3C800F81029 /* Allocation.m */; };
-		0EFEB4712006D3C800F81029 /* TunnelSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4472006D3C800F81029 /* TunnelSettings.swift */; };
 		0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4482006D3C800F81029 /* ReplayProtector.m */; };
 		0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4492006D3C800F81029 /* LinkInterface.swift */; };
 		0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
@@ -136,7 +131,6 @@
 		0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */; };
 		0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4452006D3C800F81029 /* IOInterface.swift */; };
 		0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4462006D3C800F81029 /* Allocation.m */; };
-		0EFEB49F2006D7F300F81029 /* TunnelSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4472006D3C800F81029 /* TunnelSettings.swift */; };
 		0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4482006D3C800F81029 /* ReplayProtector.m */; };
 		0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4492006D3C800F81029 /* LinkInterface.swift */; };
 		0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
@@ -203,8 +197,6 @@
 		0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-256k1.pem"; sourceTree = "<group>"; };
 		0EA8E2052024D4B100A92DB6 /* PIA-ECC-256r1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-256r1.pem"; sourceTree = "<group>"; };
 		0EA8E2062024D4B200A92DB6 /* PIA-ECC-521r1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-521r1.pem"; sourceTree = "<group>"; };
-		0EAAD70820E4F2BC0088754A /* CommunicationType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommunicationType.swift; sourceTree = "<group>"; };
-		0EAAD70B20E4F85A0088754A /* LinkInterface+Strategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LinkInterface+Strategy.swift"; sourceTree = "<group>"; };
 		0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManipulationTests.swift; sourceTree = "<group>"; };
 		0EB2B45620F0BD16004233D7 /* RandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomTests.swift; sourceTree = "<group>"; };
@@ -251,7 +243,6 @@
 		0EFEB4442006D3C800F81029 /* TLSBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLSBox.h; sourceTree = "<group>"; };
 		0EFEB4452006D3C800F81029 /* IOInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IOInterface.swift; sourceTree = "<group>"; };
 		0EFEB4462006D3C800F81029 /* Allocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Allocation.m; sourceTree = "<group>"; };
-		0EFEB4472006D3C800F81029 /* TunnelSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelSettings.swift; sourceTree = "<group>"; };
 		0EFEB4482006D3C800F81029 /* ReplayProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayProtector.m; sourceTree = "<group>"; };
 		0EFEB4492006D3C800F81029 /* LinkInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkInterface.swift; sourceTree = "<group>"; };
 		0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreConfiguration.swift; sourceTree = "<group>"; };
@@ -408,7 +399,6 @@
 		0EBBF2E32084FDF400E36B40 /* Transport */ = {
 			isa = PBXGroup;
 			children = (
-				0EAAD70B20E4F85A0088754A /* LinkInterface+Strategy.swift */,
 				0EBBF2F92085061600E36B40 /* NETCPInterface.swift */,
 				0EBBF2EB2085055100E36B40 /* NETunnelInterface.swift */,
 				0EBBF2EC2085055100E36B40 /* NEUDPInterface.swift */,
@@ -424,7 +414,6 @@
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
 				0EFEB43A2006D3C800F81029 /* Authenticator.swift */,
-				0EAAD70820E4F2BC0088754A /* CommunicationType.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -459,7 +448,6 @@
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
 				0EFEB4302006D3C800F81029 /* TLSBox.m */,
 				0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */,
-				0EFEB4472006D3C800F81029 /* TunnelSettings.swift */,
 				0EFEB4412006D3C800F81029 /* ZeroingData.h */,
 				0EFEB4312006D3C800F81029 /* ZeroingData.m */,
 				0EFEB43B2006D3C800F81029 /* ZeroingData.swift */,
@@ -879,13 +867,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EBBF2F5208505D700E36B40 /* NETunnelInterface.swift in Sources */,
-				0EAAD70920E4F2BC0088754A /* CommunicationType.swift in Sources */,
 				0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */,
 				0EBBF2F8208505DD00E36B40 /* NWUDPSessionState+Description.swift in Sources */,
 				0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */,
 				0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */,
 				0EEC49DC20B5E732008FEB91 /* Utils.swift in Sources */,
-				0EAAD70C20E4F85A0088754A /* LinkInterface+Strategy.swift in Sources */,
 				0EFEB4562006D3C800F81029 /* SessionKey.swift in Sources */,
 				0EC1BBA520D71190007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4AB200760EC00F81029 /* MemoryDestination.swift in Sources */,
@@ -914,7 +900,6 @@
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
 				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
-				0EFEB4712006D3C800F81029 /* TunnelSettings.swift in Sources */,
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
@@ -930,14 +915,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EBBF2F6208505D700E36B40 /* NETunnelInterface.swift in Sources */,
-				0EAAD70A20E4F2BC0088754A /* CommunicationType.swift in Sources */,
 				0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */,
 				0EFEB4872006D7C400F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0EBBF2F7208505DD00E36B40 /* NWUDPSessionState+Description.swift in Sources */,
 				0EFEB4882006D7C400F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0EE7A79920F6296F00B42E6A /* PacketMacros.m in Sources */,
 				0EEC49DD20B5E732008FEB91 /* Utils.swift in Sources */,
-				0EAAD70D20E4F85A0088754A /* LinkInterface+Strategy.swift in Sources */,
 				0EFEB4B12007627700F81029 /* MemoryDestination.swift in Sources */,
 				0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */,
@@ -971,7 +954,6 @@
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
 				0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */,
-				0EFEB49F2006D7F300F81029 /* TunnelSettings.swift in Sources */,
 				0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

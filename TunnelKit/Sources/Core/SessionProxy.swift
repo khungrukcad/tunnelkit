@@ -702,9 +702,8 @@ public class SessionProxy {
         keys[negotiationKeyIdx] = newKey
         log.debug("Negotiation key index is \(negotiationKeyIdx)")
 
-        let payload = link?.hardReset(with: encryption) ?? Data()
         negotiationKey.state = .hardReset
-        enqueueControlPackets(code: .hardResetClientV2, key: UInt8(negotiationKeyIdx), payload: payload)
+        enqueueControlPackets(code: .hardResetClientV2, key: UInt8(negotiationKeyIdx), payload: Data())
     }
     
     // Ruby: soft_reset
