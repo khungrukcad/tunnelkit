@@ -23,6 +23,8 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegoti
     - SHA-256
 - [x] TLS CA validation
 
+Today the library does not support compression, yet requires legacy compression framing. You must set the `comp-lzo no` option server-side (deprecated in OpenVPN 2.4) in order to avoid a confusing loss of data packets. Compression behavior will be properly patched in future versions.
+
 ## Installation
 
 ### Requirements
