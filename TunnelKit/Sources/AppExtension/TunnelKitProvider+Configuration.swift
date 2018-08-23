@@ -13,41 +13,6 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 extension TunnelKitProvider {
-    
-    // MARK: Cryptography
-    
-    /// The available encryption algorithms.
-    public enum Cipher: String {
-
-        // WARNING: must match OpenSSL algorithm names
-
-        /// AES encryption with 128-bit key size and CBC.
-        case aes128cbc = "AES-128-CBC"
-        
-        /// AES encryption with 256-bit key size and CBC.
-        case aes256cbc = "AES-256-CBC"
-
-        /// AES encryption with 128-bit key size and GCM.
-        case aes128gcm = "AES-128-GCM"
-
-        /// AES encryption with 256-bit key size and GCM.
-        case aes256gcm = "AES-256-GCM"
-    }
-    
-    /// The available message digest algorithms.
-    public enum Digest: String {
-        
-        // WARNING: must match OpenSSL algorithm names
-        
-        /// SHA1 message digest.
-        case sha1 = "SHA1"
-        
-        /// SHA256 message digest.
-        case sha256 = "SHA256"
-    }
-}
-
-extension TunnelKitProvider {
 
     // MARK: Configuration
     
@@ -152,10 +117,10 @@ extension TunnelKitProvider {
         public var endpointProtocols: [EndpointProtocol]
 
         /// The encryption algorithm.
-        public var cipher: Cipher
+        public var cipher: SessionProxy.Cipher
         
         /// The message digest algorithm.
-        public var digest: Digest
+        public var digest: SessionProxy.Digest
         
         /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
         public var ca: Certificate?
@@ -205,10 +170,10 @@ extension TunnelKitProvider {
             guard let appGroup = providerConfiguration[S.appGroup] as? String else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.appGroup)]")
             }
-            guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = Cipher(rawValue: cipherAlgorithm) else {
+            guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm) else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
             }
-            guard let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String, let digest = Digest(rawValue: digestAlgorithm) else {
+            guard let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String, let digest = SessionProxy.Digest(rawValue: digestAlgorithm) else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
             }
 
@@ -327,10 +292,10 @@ extension TunnelKitProvider {
         public let endpointProtocols: [EndpointProtocol]
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.cipher`
-        public let cipher: Cipher
+        public let cipher: SessionProxy.Cipher
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.digest`
-        public let digest: Digest
+        public let digest: SessionProxy.Digest
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
         public let ca: Certificate?

@@ -10,6 +10,36 @@ import Foundation
 
 extension SessionProxy {
 
+    /// The available encryption algorithms.
+    public enum Cipher: String {
+        
+        // WARNING: must match OpenSSL algorithm names
+        
+        /// AES encryption with 128-bit key size and CBC.
+        case aes128cbc = "AES-128-CBC"
+        
+        /// AES encryption with 256-bit key size and CBC.
+        case aes256cbc = "AES-256-CBC"
+        
+        /// AES encryption with 128-bit key size and GCM.
+        case aes128gcm = "AES-128-GCM"
+        
+        /// AES encryption with 256-bit key size and GCM.
+        case aes256gcm = "AES-256-GCM"
+    }
+    
+    /// The available message digest algorithms.
+    public enum Digest: String {
+        
+        // WARNING: must match OpenSSL algorithm names
+        
+        /// SHA1 message digest.
+        case sha1 = "SHA1"
+        
+        /// SHA256 message digest.
+        case sha256 = "SHA256"
+    }
+    
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
         
@@ -19,11 +49,11 @@ extension SessionProxy {
         /// A password.
         public let password: String
         
-        /// The cipher algorithm for data encryption. Must follow OpenSSL nomenclature, e.g. "AES-128-CBC".
-        public var cipherName: String
+        /// The cipher algorithm for data encryption.
+        public var cipher: Cipher
         
-        /// The digest algorithm for HMAC. Must follow OpenSSL nomenclature, e.g. "SHA-1".
-        public var digestName: String
+        /// The digest algorithm for HMAC.
+        public var digest: Digest
         
         /// The path to the optional CA for TLS negotiation (PEM format).
         public var caPath: String?
@@ -38,8 +68,8 @@ extension SessionProxy {
         public init(username: String, password: String) {
             self.username = username
             self.password = password
-            cipherName = "AES-128-CBC"
-            digestName = "SHA-1"
+            cipher = .aes128cbc
+            digest = .sha1
             caPath = nil
             keepAliveInterval = nil
             renegotiatesAfter = nil
@@ -54,8 +84,8 @@ extension SessionProxy {
             return Configuration(
                 username: username,
                 password: password,
-                cipherName: cipherName,
-                digestName: digestName,
+                cipher: cipher,
+                digest: digest,
                 caPath: caPath,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter
@@ -72,11 +102,11 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.password`
         public let password: String
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.cipherName`
-        public let cipherName: String
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
+        public let cipher: Cipher
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.digestName`
-        public let digestName: String
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
+        public let digest: Digest
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
         public let caPath: String?

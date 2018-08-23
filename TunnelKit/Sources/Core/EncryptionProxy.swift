@@ -96,7 +96,7 @@ public class EncryptionProxy {
         return buffer.withOffset(0, count: length)
     }
     
-    convenience init(_ cipher: String, _ digest: String, _ auth: Authenticator,
+    convenience init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ auth: Authenticator,
                      _ sessionId: Data, _ remoteSessionId: Data) throws {
         
         guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
@@ -130,8 +130,8 @@ public class EncryptionProxy {
         try self.init(cipher, digest, cipherEncKey, cipherDecKey, hmacEncKey, hmacDecKey)
     }
     
-    init(_ cipher: String, _ digest: String, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
-        box = CryptoBox(cipherAlgorithm: cipher, digestAlgorithm: digest)
+    init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
+        box = CryptoBox(cipherAlgorithm: cipher.rawValue, digestAlgorithm: digest.rawValue)
         try box.configure(
             withCipherEncKey: cipherEncKey,
             cipherDecKey: cipherDecKey,

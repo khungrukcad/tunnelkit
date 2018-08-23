@@ -1010,7 +1010,13 @@ public class SessionProxy {
 
         let proxy: EncryptionProxy
         do {
-            proxy = try EncryptionProxy(configuration.cipherName, configuration.digestName, auth, sessionId, remoteSessionId)
+            proxy = try EncryptionProxy(
+                configuration.cipher,
+                configuration.digest,
+                auth,
+                sessionId,
+                remoteSessionId
+            )
         } catch let e {
             deferStop(.shutdown, e)
             return

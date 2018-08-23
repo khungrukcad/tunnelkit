@@ -156,8 +156,8 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         
 //        log.info("Temporary CA is stored to: \(caPath)")
         var sessionConfiguration = SessionProxy.ConfigurationBuilder(username: endpoint.username, password: endpoint.password)
-        sessionConfiguration.cipherName = cfg.cipher.rawValue
-        sessionConfiguration.digestName = cfg.digest.rawValue
+        sessionConfiguration.cipher = cfg.cipher
+        sessionConfiguration.digest = cfg.digest
         sessionConfiguration.caPath = caPath
         if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
             sessionConfiguration.renegotiatesAfter = Double(renegotiatesAfterSeconds)
