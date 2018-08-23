@@ -134,7 +134,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         
         log.info("Starting tunnel...")
         
-        guard EncryptionProxy.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
+        guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderError.prngInitialization)
             return
         }
@@ -155,20 +155,22 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         cfg.print(appVersion: appVersion)
         
 //        log.info("Temporary CA is stored to: \(caPath)")
-        let encryption = SessionProxy.EncryptionParameters(cfg.cipher.rawValue, cfg.digest.rawValue, caPath)
-        let credentials = SessionProxy.Credentials(endpoint.username, endpoint.password)
-        
+        var sessionConfiguration = SessionProxy.ConfigurationBuilder(username: endpoint.username, password: endpoint.password)
+        sessionConfiguration.cipher = cfg.cipher
+        sessionConfiguration.digest = cfg.digest
+        sessionConfiguration.caPath = caPath
+        if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
+            sessionConfiguration.renegotiatesAfter = Double(renegotiatesAfterSeconds)
+        }
+        sessionConfiguration.keepAliveInterval = CoreConfiguration.pingInterval
+
         let proxy: SessionProxy
         do {
-            proxy = try SessionProxy(queue: tunnelQueue, encryption: encryption, credentials: credentials)
+            proxy = try SessionProxy(queue: tunnelQueue, configuration: sessionConfiguration.build())
         } catch let e {
             completionHandler(e)
             return
         }
-        if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
-            proxy.renegotiatesAfter = Double(renegotiatesAfterSeconds)
-        }
-        proxy.keepAliveInterval = CoreConfiguration.pingInterval
         proxy.delegate = self
         self.proxy = proxy
 

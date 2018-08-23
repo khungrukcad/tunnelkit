@@ -16,8 +16,6 @@ struct CoreConfiguration {
 
     static let usesReplayProtection = true
 
-//    static let usesDataOptimization = true
-
     static let tickInterval = 0.2
     
     static let pingInterval = 10.0

@@ -19,43 +19,6 @@ private extension Error {
     }
 }
 
-/// The possible errors raised/thrown during `SessionProxy` operation.
-public enum SessionError: Error {
-
-    /// The negotiation timed out.
-    case negotiationTimeout
-    
-    /// The peer failed to verify.
-    case peerVerification
-
-    /// The VPN session id is missing.
-    case missingSessionId
-    
-    /// The VPN session id doesn't match.
-    case sessionMismatch
-    
-    /// The connection key is wrong or wasn't expected.
-    case badKey
-    
-    /// The TLS negotiation failed.
-    case tlsError
-
-    /// The control packet has an incorrect prefix payload.
-    case wrongControlDataPrefix
-
-    /// The provided credentials failed authentication.
-    case badCredentials
-    
-    /// The reply to PUSH_REQUEST is malformed.
-    case malformedPushReply
-
-    /// A write operation failed at the link layer (e.g. network unreachable).
-    case failedLinkWrite
-    
-    /// The server couldn't ping back before timeout.
-    case pingTimeout
-}
-
 /// Observes major events notified by a `SessionProxy`.
 public protocol SessionProxyDelegate: class {
 
@@ -80,43 +43,6 @@ public protocol SessionProxyDelegate: class {
 
 /// Provides methods to set up and maintain an OpenVPN session.
 public class SessionProxy {
-
-    /// Wraps the encryption parameters of the session.
-    public struct EncryptionParameters {
-
-        /// The cipher algorithm for data encryption. Must follow OpenSSL nomenclature, e.g. "AES-128-CBC".
-        public let cipherName: String
-        
-        /// The digest algorithm for HMAC. Must follow OpenSSL nomenclature, e.g. "SHA-1".
-        public let digestName: String
-
-        /// The path to the CA for TLS negotiation (PEM format).
-        public let caPath: String?
-
-        /// :nodoc:
-        public init(_ cipherName: String, _ digestName: String, _ caPath: String?) {
-            self.cipherName = cipherName
-            self.digestName = digestName
-            self.caPath = caPath
-        }
-    }
-    
-    /// A set of credentials.
-    public struct Credentials {
-
-        /// An username.
-        public let username: String
-
-        /// A password.
-        public let password: String
-
-        /// :nodoc:
-        public init(_ username: String, _ password: String) {
-            self.username = username
-            self.password = password
-        }
-    }
-    
     private enum StopMethod {
         case shutdown
         
@@ -125,15 +51,7 @@ public class SessionProxy {
     
     // MARK: Configuration
     
-    private let encryption: EncryptionParameters
-    
-    private let credentials: Credentials
-    
-    /// Sends periodical keep-alive packets if set.
-    public var keepAliveInterval: TimeInterval?
-
-    /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
-    public var renegotiatesAfter: TimeInterval?
+    private let configuration: Configuration
     
     /// An optional `SessionProxyDelegate` for receiving session events.
     public weak var delegate: SessionProxyDelegate?
@@ -223,17 +141,12 @@ public class SessionProxy {
      Creates a VPN session.
      
      - Parameter queue: The `DispatchQueue` where to run the session loop.
-     - Parameter encryption: The `SessionProxy.EncryptionParameters` to establish for this session.
-     - Parameter credentials: The `SessionProxy.Credentials` required for authentication.
+     - Parameter configuration: The `SessionProxy.Configuration` to use for this session.
      */
-    public init(queue: DispatchQueue, encryption: EncryptionParameters, credentials: Credentials) throws {
+    public init(queue: DispatchQueue, configuration: Configuration) throws {
         self.queue = queue
-        self.encryption = encryption
-        self.credentials = credentials
+        self.configuration = configuration
 
-        keepAliveInterval = nil
-        renegotiatesAfter = nil
-        
         keys = [:]
         oldKeys = []
         negotiationKeyIdx = 0
@@ -369,9 +282,6 @@ public class SessionProxy {
             tlsObserver = nil
         }
         
-//        for (_, key) in keys {
-//            key.dispose()
-//        }
         keys.removeAll()
         oldKeys.removeAll()
         negotiationKeyIdx = 0
@@ -644,7 +554,7 @@ public class SessionProxy {
             return
         }
 
-        if let interval = keepAliveInterval {
+        if let interval = configuration.keepAliveInterval {
             let elapsed = now.timeIntervalSince(lastPingOut)
             guard (elapsed >= interval) else {
                 let remaining = min(interval, interval - elapsed)
@@ -659,7 +569,7 @@ public class SessionProxy {
         sendDataPackets([DataPacket.pingString])
         lastPingOut = Date()
 
-        if let interval = keepAliveInterval {
+        if let interval = configuration.keepAliveInterval {
             queue.asyncAfter(deadline: .now() + interval) { [weak self] in
                 self?.ping()
             }
@@ -725,7 +635,7 @@ public class SessionProxy {
         negotiationKey.controlState = .preAuth
         
         do {
-            authenticator = try Authenticator(credentials.username, authToken ?? credentials.password)
+            authenticator = try Authenticator(configuration.username, authToken ?? configuration.password)
             try authenticator?.putAuth(into: negotiationKey.tls)
         } catch let e {
             deferStop(.shutdown, e)
@@ -774,7 +684,7 @@ public class SessionProxy {
     }
     
     private func maybeRenegotiate() {
-        guard let renegotiatesAfter = renegotiatesAfter else {
+        guard let renegotiatesAfter = configuration.renegotiatesAfter else {
             return
         }
         guard (negotiationKeyIdx == currentKeyIdx) else {
@@ -828,7 +738,7 @@ public class SessionProxy {
             log.debug("Remote sessionId is \(remoteSessionId.toHex())")
             log.debug("Start TLS handshake")
 
-            negotiationKey.tlsOptional = TLSBox(caPath: encryption.caPath)
+            negotiationKey.tlsOptional = TLSBox(caPath: configuration.caPath)
             do {
                 try negotiationKey.tls.start()
             } catch let e {
@@ -968,7 +878,7 @@ public class SessionProxy {
             dnsServers: reply.dnsServers
         )
 
-        if let interval = keepAliveInterval {
+        if let interval = configuration.keepAliveInterval {
             queue.asyncAfter(deadline: .now() + interval) { [weak self] in
                 self?.ping()
             }
@@ -989,7 +899,6 @@ public class SessionProxy {
         while (oldKeys.count > 1) {
             let key = oldKeys.removeFirst()
             keys.removeValue(forKey: key.id)
-//            key.dispose()
         }
     }
     
@@ -1098,17 +1007,23 @@ public class SessionProxy {
             log.debug("Setup keys")
         }
 
-        let proxy: EncryptionProxy
+        let bridge: EncryptionBridge
         do {
-            proxy = try EncryptionProxy(encryption.cipherName, encryption.digestName, auth, sessionId, remoteSessionId)
+            bridge = try EncryptionBridge(
+                configuration.cipher,
+                configuration.digest,
+                auth,
+                sessionId,
+                remoteSessionId
+            )
         } catch let e {
             deferStop(.shutdown, e)
             return
         }
 
         negotiationKey.dataPath = DataPath(
-            encrypter: proxy.encrypter(),
-            decrypter: proxy.decrypter(),
+            encrypter: bridge.encrypter(),
+            decrypter: bridge.decrypter(),
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )

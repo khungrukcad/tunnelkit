@@ -19,14 +19,18 @@
 		0E07597F20F0060E00F38FD8 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */; };
 		0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
 		0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
+		0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
+		0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
+		0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */; };
+		0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */; };
 		0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0E1108AC1F77B9F900A92462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AB1F77B9F900A92462 /* AppDelegate.swift */; };
 		0E1108AE1F77B9F900A92462 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AD1F77B9F900A92462 /* ViewController.swift */; };
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
-		0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* PushReply.swift */; };
-		0E3E0F222108A8CC00B371C1 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* PushReply.swift */; };
+		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
+		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EA8E2072024D4B200A92DB6 /* PIA-ECC-256k1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */; };
@@ -79,8 +83,8 @@
 		0EEC49E820B5F7F6008FEB91 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4392006D3C800F81029 /* ReplayProtector.h */; };
 		0EEC49E920B5F7F6008FEB91 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4442006D3C800F81029 /* TLSBox.h */; };
 		0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4412006D3C800F81029 /* ZeroingData.h */; };
-		0EFEB4552006D3C800F81029 /* EncryptionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* EncryptionProxy.swift */; };
-		0EFEB4562006D3C800F81029 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionKey.swift */; };
+		0EFEB4552006D3C800F81029 /* SessionProxy+EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */; };
+		0EFEB4562006D3C800F81029 /* SessionProxy+SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */; };
 		0EFEB4582006D3C800F81029 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42D2006D3C800F81029 /* MSS.h */; };
 		0EFEB4592006D3C800F81029 /* Allocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42E2006D3C800F81029 /* Allocation.h */; };
 		0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */; };
@@ -92,7 +96,7 @@
 		0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4372006D3C800F81029 /* SecureRandom.swift */; };
 		0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */; };
 		0EFEB4642006D3C800F81029 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4392006D3C800F81029 /* ReplayProtector.h */; };
-		0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
+		0EFEB4652006D3C800F81029 /* SessionProxy+Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* SessionProxy+Authenticator.swift */; };
 		0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
 		0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* SessionProxy.swift */; };
 		0EFEB4682006D3C800F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
@@ -117,15 +121,15 @@
 		0EFEB4872006D7C400F81029 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */; };
 		0EFEB4882006D7C400F81029 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */; };
 		0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */; };
-		0EFEB48D2006D7F300F81029 /* EncryptionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* EncryptionProxy.swift */; };
-		0EFEB48E2006D7F300F81029 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionKey.swift */; };
+		0EFEB48D2006D7F300F81029 /* SessionProxy+EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */; };
+		0EFEB48E2006D7F300F81029 /* SessionProxy+SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */; };
 		0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */; };
 		0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4302006D3C800F81029 /* TLSBox.m */; };
 		0EFEB4922006D7F300F81029 /* ZeroingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4312006D3C800F81029 /* ZeroingData.m */; };
 		0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4322006D3C800F81029 /* CryptoBox.m */; };
 		0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4372006D3C800F81029 /* SecureRandom.swift */; };
 		0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */; };
-		0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
+		0EFEB4972006D7F300F81029 /* SessionProxy+Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* SessionProxy+Authenticator.swift */; };
 		0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
 		0EFEB4992006D7F300F81029 /* SessionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* SessionProxy.swift */; };
 		0EFEB49A2006D7F300F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
@@ -180,6 +184,8 @@
 		0E07596D20EF79B400F38FD8 /* CryptoCBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCBC.h; sourceTree = "<group>"; };
 		0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoAEAD.h; sourceTree = "<group>"; };
 		0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
+		0E0C2123212ED29D008AB282 /* SessionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionError.swift; sourceTree = "<group>"; };
+		0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+Configuration.swift"; sourceTree = "<group>"; };
 		0E11089A1F77B9E800A92462 /* TunnelKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TunnelKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E11089E1F77B9E800A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E1108A91F77B9F900A92462 /* TunnelKitHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TunnelKitHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -191,7 +197,7 @@
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E3E0F202108A8CC00B371C1 /* PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushReply.swift; sourceTree = "<group>"; };
+		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtensionTests.swift; sourceTree = "<group>"; };
@@ -221,8 +227,8 @@
 		0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathEncryption.h; sourceTree = "<group>"; };
 		0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPathEncryptionTests.swift; sourceTree = "<group>"; };
 		0EEC49DB20B5E732008FEB91 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		0EFEB42A2006D3C800F81029 /* EncryptionProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionProxy.swift; sourceTree = "<group>"; };
-		0EFEB42B2006D3C800F81029 /* SessionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionKey.swift; sourceTree = "<group>"; };
+		0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+EncryptionBridge.swift"; sourceTree = "<group>"; };
+		0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+SessionKey.swift"; sourceTree = "<group>"; };
 		0EFEB42D2006D3C800F81029 /* MSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSS.h; sourceTree = "<group>"; };
 		0EFEB42E2006D3C800F81029 /* Allocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Allocation.h; sourceTree = "<group>"; };
 		0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelInterface.swift; sourceTree = "<group>"; };
@@ -234,7 +240,7 @@
 		0EFEB4372006D3C800F81029 /* SecureRandom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureRandom.swift; sourceTree = "<group>"; };
 		0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolMacros.swift; sourceTree = "<group>"; };
 		0EFEB4392006D3C800F81029 /* ReplayProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayProtector.h; sourceTree = "<group>"; };
-		0EFEB43A2006D3C800F81029 /* Authenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
+		0EFEB43A2006D3C800F81029 /* SessionProxy+Authenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+Authenticator.swift"; sourceTree = "<group>"; };
 		0EFEB43B2006D3C800F81029 /* ZeroingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZeroingData.swift; sourceTree = "<group>"; };
 		0EFEB43C2006D3C800F81029 /* SessionProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProxy.swift; sourceTree = "<group>"; };
 		0EFEB43D2006D3C800F81029 /* MSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSS.m; sourceTree = "<group>"; };
@@ -416,7 +422,6 @@
 			children = (
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
-				0EFEB43A2006D3C800F81029 /* Authenticator.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -430,7 +435,6 @@
 				0EFEB44C2006D3C800F81029 /* DataPath.m */,
 				0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */,
 				0E07596A20EF79AB00F38FD8 /* Encryption.h */,
-				0EFEB42A2006D3C800F81029 /* EncryptionProxy.swift */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
 				0EFEB4452006D3C800F81029 /* IOInterface.swift */,
@@ -442,12 +446,16 @@
 				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
 				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
 				0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */,
-				0E3E0F202108A8CC00B371C1 /* PushReply.swift */,
 				0EFEB4392006D3C800F81029 /* ReplayProtector.h */,
 				0EFEB4482006D3C800F81029 /* ReplayProtector.m */,
 				0EFEB4372006D3C800F81029 /* SecureRandom.swift */,
-				0EFEB42B2006D3C800F81029 /* SessionKey.swift */,
+				0E0C2123212ED29D008AB282 /* SessionError.swift */,
 				0EFEB43C2006D3C800F81029 /* SessionProxy.swift */,
+				0EFEB43A2006D3C800F81029 /* SessionProxy+Authenticator.swift */,
+				0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */,
+				0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */,
+				0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */,
+				0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */,
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
 				0EFEB4302006D3C800F81029 /* TLSBox.m */,
 				0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */,
@@ -873,10 +881,10 @@
 				0EBBF2F5208505D700E36B40 /* NETunnelInterface.swift in Sources */,
 				0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */,
 				0EBBF2F8208505DD00E36B40 /* NWUDPSessionState+Description.swift in Sources */,
-				0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */,
+				0EFEB4652006D3C800F81029 /* SessionProxy+Authenticator.swift in Sources */,
 				0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */,
 				0EEC49DC20B5E732008FEB91 /* Utils.swift in Sources */,
-				0EFEB4562006D3C800F81029 /* SessionKey.swift in Sources */,
+				0EFEB4562006D3C800F81029 /* SessionProxy+SessionKey.swift in Sources */,
 				0EC1BBA520D71190007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4AB200760EC00F81029 /* MemoryDestination.swift in Sources */,
 				0EFEB4AE2007625E00F81029 /* Keychain.swift in Sources */,
@@ -885,7 +893,8 @@
 				0EE7A79520F61EDC00B42E6A /* PacketMacros.h in Sources */,
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
 				0EBBF2FA2085061600E36B40 /* NETCPInterface.swift in Sources */,
-				0EFEB4552006D3C800F81029 /* EncryptionProxy.swift in Sources */,
+				0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */,
+				0EFEB4552006D3C800F81029 /* SessionProxy+EncryptionBridge.swift in Sources */,
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
 				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
 				0EFEB4AC200760EC00F81029 /* InterfaceObserver.swift in Sources */,
@@ -906,10 +915,11 @@
 				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
-				0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */,
+				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
 				0EBBF2E52084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
+				0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
 				0EFEB4692006D3C800F81029 /* Packet.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
 			);
@@ -934,6 +944,7 @@
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0EE7A79620F61EDC00B42E6A /* PacketMacros.h in Sources */,
 				0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */,
+				0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */,
 				0EBBF2FB2085061600E36B40 /* NETCPInterface.swift in Sources */,
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,
@@ -941,7 +952,7 @@
 				0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */,
 				0EFEB49A2006D7F300F81029 /* MSS.m in Sources */,
 				0ECE352A212EB88E0040F253 /* Certificate.swift in Sources */,
-				0EFEB48D2006D7F300F81029 /* EncryptionProxy.swift in Sources */,
+				0EFEB48D2006D7F300F81029 /* SessionProxy+EncryptionBridge.swift in Sources */,
 				0EFEB4922006D7F300F81029 /* ZeroingData.m in Sources */,
 				0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
 				0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
@@ -952,14 +963,15 @@
 				0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */,
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
 				0EFEB4B02007627700F81029 /* Keychain.swift in Sources */,
-				0EFEB48E2006D7F300F81029 /* SessionKey.swift in Sources */,
+				0EFEB48E2006D7F300F81029 /* SessionProxy+SessionKey.swift in Sources */,
 				0EFEB4AF2007627700F81029 /* InterfaceObserver.swift in Sources */,
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
-				0E3E0F222108A8CC00B371C1 /* PushReply.swift in Sources */,
+				0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
-				0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */,
+				0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
+				0EFEB4972006D7F300F81029 /* SessionProxy+Authenticator.swift in Sources */,
 				0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

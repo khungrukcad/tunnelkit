@@ -14,7 +14,6 @@ xcodebuild_arguments:
 custom_categories:
     - name: Core
       children:
-        - EncryptionProxy
         - IOInterface
         - LinkInterface
         - TunnelInterface
