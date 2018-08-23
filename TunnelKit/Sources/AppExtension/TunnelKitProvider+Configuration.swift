@@ -129,7 +129,7 @@ extension TunnelKitProvider {
         public var mtu: NSNumber
         
         /// Enables LZO framing (deprecated).
-        @available(*, deprecated)
+//        @available(*, deprecated)
         public var LZOFraming: Bool
 
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).

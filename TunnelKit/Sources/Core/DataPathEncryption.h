@@ -13,8 +13,8 @@
 - (int)overheadLength;
 - (uint32_t)peerId;
 - (void)setPeerId:(uint32_t)peerId;
-- (BOOL)LZOFraming DEPRECATED_ATTRIBUTE;
-- (void)setLZOFraming:(BOOL)LZOFraming DEPRECATED_ATTRIBUTE;
+- (BOOL)LZOFraming;// DEPRECATED_ATTRIBUTE;
+- (void)setLZOFraming:(BOOL)LZOFraming;// DEPRECATED_ATTRIBUTE;
 
 @end
 

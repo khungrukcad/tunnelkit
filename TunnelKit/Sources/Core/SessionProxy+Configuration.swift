@@ -59,7 +59,7 @@ extension SessionProxy {
         public var caPath: String?
         
         /// Enables LZO compression framing (deprecated in OpenVPN 2.4).
-        @available(*, deprecated)
+//        @available(*, deprecated)
         public var LZOFraming: Bool
     
         /// Sends periodical keep-alive packets if set.
