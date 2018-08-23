@@ -769,8 +769,8 @@ public class SessionProxy {
 
             negotiationKey.tlsOptional = TLSBox(
                 caPath: configuration.caPath,
-                clientCertificatePath: nil,
-                clientKeyPath: nil
+                clientCertificatePath: configuration.clientCertificatePath,
+                clientKeyPath: configuration.clientKeyPath
             )
             do {
                 try negotiationKey.tls.start()

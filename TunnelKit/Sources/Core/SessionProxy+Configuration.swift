@@ -91,6 +91,12 @@ extension SessionProxy {
 //        @available(*, deprecated)
         public var LZOFraming: Bool
     
+        /// The path to the optional client certificate for TLS negotiation (PEM format).
+        public var clientCertificatePath: String?
+        
+        /// The path to the private key for the certificate at `clientCertificatePath` (PEM format).
+        public var clientKeyPath: String?
+        
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
@@ -104,6 +110,8 @@ extension SessionProxy {
             cipher = .aes128cbc
             digest = .sha1
             caPath = nil
+            clientCertificatePath = nil
+            clientKeyPath = nil
             LZOFraming = false
             keepAliveInterval = nil
             renegotiatesAfter = nil
@@ -121,6 +129,8 @@ extension SessionProxy {
                 cipher: cipher,
                 digest: digest,
                 caPath: caPath,
+                clientCertificatePath: clientCertificatePath,
+                clientKeyPath: clientKeyPath,
                 LZOFraming: LZOFraming,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter
@@ -145,6 +155,12 @@ extension SessionProxy {
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
         public let caPath: String?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificatePath`
+        public let clientCertificatePath: String?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKeyPath`
+        public let clientKeyPath: String?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.LZOFraming`
         public let LZOFraming: Bool
