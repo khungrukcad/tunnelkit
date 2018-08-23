@@ -1,12 +1,12 @@
-[![PIA logo][pia-image]][pia-url]
+# TunnelKit
 
-# Private Internet Access
+This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms. The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0h, which in turn enables support for a certain range of encryption and digest algorithms.
 
-Private Internet Access is the world's leading consumer VPN service. At Private Internet Access we believe in unfettered access for all, and as a firm supporter of the open source ecosystem we have made the decision to open source our VPN clients. For more information about the PIA service, please visit our website [privateinternetaccess.com][pia-url] or check out the [Wiki][pia-wiki].
+## Contacts
 
-# Tunnel for Apple platforms
+Twitter: [@keeshux][me-twitter]
 
-This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms, while also taking advantage of the Private Internet Access [client patch customizations](https://www.privateinternetaccess.com/forum/discussion/9093/pia-openvpn-client-encryption-patch). The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0h, which in turn enables support for a certain range of encryption and digest algorithms.
+Website: [davidederosa.com][me-website]
 
 ## Getting started
 
@@ -22,9 +22,6 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegoti
     - SHA-1
     - SHA-256
 - [x] TLS CA validation
-    - RSA (2048, 3072 and 4096 bit)
-    - ECC (secp256r1, secp521r1, secp256k1)
-    - Custom certificate
 
 ## Installation
 
@@ -44,20 +41,20 @@ It's highly recommended to use the Git and Ruby packages provided by [Homebrew][
 To use with CocoaPods just add this to your Podfile:
 
 ```ruby
-pod 'PIATunnel'
+pod 'TunnelKit'
 ```
 
 ### Testing
 
 Download the library codebase locally:
 
-    $ git clone https://github.com/pia-foss/tunnel-apple.git
+    $ git clone https://github.com/keeshux/TunnelKit.git
 
 Assuming you have a [working CocoaPods environment][dep-cocoapods], setting up the library workspace only requires installing the pod dependencies:
 
     $ pod install
 
-After that, open `PIATunnel.xcworkspace` in Xcode and run the unit tests found in the `PIATunnelTests` target. A simple CMD+U while on `PIATunnel-iOS` should do that as well.
+After that, open `TunnelKit.xcworkspace` in Xcode and run the unit tests found in the `TunnelKitTests` target. A simple CMD+U while on `TunnelKit-iOS` should do that as well.
 
 #### Demo
 
@@ -74,16 +71,11 @@ For the VPN to work properly, the `BasicTunnel` demo requires:
 
 both in the main app and the tunnel extension target.
 
-In order to test connection to your own server rather than a PIA server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to:
-
-- Replace `.pia` with `.vanilla` in `builder.endpointProtocols`.
-- Set `builder.handshake` to `.custom`.
-- Set `builder.ca` to the PEM formatted certificate of your VPN server's CA.
+In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `builder.ca` to the PEM encoded certificate of your VPN server's CA (or `nil` if none).
 
 Example:
 
-    builder.endpointProtocols = [PIATunnelProvider.EndpointProtocol(.udp, 1194, .vanilla)]
-    builder.handshake = .custom
+    builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(.udp, 1194)]
     builder.ca = """
     -----BEGIN CERTIFICATE-----
     MIIFJDCC...
@@ -112,38 +104,36 @@ The entry point is the `SessionProxy` class. The networking layer is fully abstr
 
 ### AppExtension
 
-The goal of this module is packaging up a black box implementation of a [NEPacketTunnelProvider][ne-ptp], which is the essential part of a Packet Tunnel Provider app extension. You will find the main implementation in the `PIATunnelProvider` class.
+The goal of this module is packaging up a black box implementation of a [NEPacketTunnelProvider][ne-ptp], which is the essential part of a Packet Tunnel Provider app extension. You will find the main implementation in the `TunnelKitProvider` class.
 
 Currently, the extension supports VPN over both [UDP][ne-udp] and [TCP][ne-tcp] sockets. A debug log snapshot is optionally maintained and shared to host apps via `UserDefaults` in a shared App Group.
 
 ## Contributing
 
-By contributing to this project you are agreeing to the terms stated in the Contributor License Agreement (CLA) [here](/CLA.rst).
-
 For more details please see [CONTRIBUTING](/CONTRIBUTING.md).
-
-Issues and Pull Requests should use these templates: [ISSUE](/.github/ISSUE_TEMPLATE.md) and [PULL REQUEST](/.github/PULL_REQUEST_TEMPLATE.md).
-
-## Authors
-
-- Davide De Rosa - [keeshux](https://github.com/keeshux)
-- Steve
 
 ## License
 
-This project is licensed under the [MIT (Expat) license](https://choosealicense.com/licenses/mit/), which can be found [here](/LICENSE).
+This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here](/LICENSE).
 
-## Acknowledgements
+## Credits
 
-- SwiftyBeaver - © 2015 Sebastian Kreutzberger
+- [PIATunnel][dep-piatunnel-repo] - TunnelKit is a hard fork of PIATunnel that repurposes it substantially. PIATunnel is licensed under the [MIT (Expat) license][license-mit], which can be found [here][dep-piatunnel-license].
+- [SwiftyBeaver][dep-swiftybeaver-repo] - A convenient logging library.
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. ([https://www.openssl.org/][dep-openssl])
 
 © 2002-2018 OpenVPN Inc. - OpenVPN is a registered trademark of OpenVPN Inc.
 
-[pia-image]: https://www.privateinternetaccess.com/assets/PIALogo2x-0d1e1094ac909ea4c93df06e2da3db4ee8a73d8b2770f0f7d768a8603c62a82f.png
-[pia-url]: https://www.privateinternetaccess.com/
-[pia-wiki]: https://en.wikipedia.org/wiki/Private_Internet_Access
+## Donations
+
+TunnelKit is free software, donations are extremely welcome.
+
+Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][me-btc]
+
+[me-twitter]: https://twitter.com/keeshux
+[me-website]: https://davidederosa.com
+[me-btc]: bitcoin:16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju
 
 [openvpn]: https://openvpn.net/index.php/open-source/overview.html
 [dep-cocoapods]: https://guides.cocoapods.org/using/getting-started.html
@@ -155,3 +145,10 @@ This product includes software developed by the OpenSSL Project for use in the O
 [ne-ptp]: https://developer.apple.com/documentation/networkextension/nepackettunnelprovider
 [ne-udp]: https://developer.apple.com/documentation/networkextension/nwudpsession
 [ne-tcp]: https://developer.apple.com/documentation/networkextension/nwtcpconnection
+
+[license-gpl3]: https://choosealicense.com/licenses/gpl-3.0/
+[license-mit]: https://choosealicense.com/licenses/mit/
+
+[dep-piatunnel-repo]: https://github.com/pia-foss/tunnel-apple
+[dep-piatunnel-license]: https://github.com/pia-foss/tunnel-apple/blob/master/LICENSE
+[dep-swiftybeaver-repo]: https://github.com/SwiftyBeaver/SwiftyBeaver

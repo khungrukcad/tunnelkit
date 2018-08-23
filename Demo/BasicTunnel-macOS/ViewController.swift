@@ -3,28 +3,53 @@
 //  BasicTunnel-macOS
 //
 //  Created by Davide De Rosa on 10/15/17.
-//  Copyright © 2018 London Trust Media. All rights reserved.
+//  Copyright © 2018 Davide De Rosa. All rights reserved.
 //
 
 import Cocoa
 import NetworkExtension
-import PIATunnel
+import TunnelKit
+
+extension ViewController {
+    private static let appGroup = "group.com.algoritmico.macos.demo.BasicTunnel"
+    
+    private static let bundleIdentifier = "com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension"
+    
+    private func makeProtocol() -> NETunnelProviderProtocol {
+        let server = textServer.stringValue
+        let domain = textDomain.stringValue
+        
+        let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
+        let port = UInt16(textPort.stringValue)!
+        let username = textUsername.stringValue
+        let password = textPassword.stringValue
+
+        let endpoint = TunnelKitProvider.AuthenticatedEndpoint(
+            hostname: hostname,
+            username: username,
+            password: password
+        )
+
+        var builder = TunnelKitProvider.ConfigurationBuilder(appGroup: ViewController.appGroup)
+//        let socketType: TunnelKitProvider.SocketType = isTCP ? .tcp : .udp
+        let socketType: TunnelKitProvider.SocketType = .udp
+        builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(socketType, port)]
+        builder.cipher = .aes128cbc
+        builder.digest = .sha1
+        builder.mtu = 1350
+        builder.renegotiatesAfterSeconds = nil
+        builder.shouldDebug = true
+        builder.debugLogKey = "Log"
+        
+        let configuration = builder.build()
+        return try! configuration.generatedTunnelProtocol(
+            withBundleIdentifier: ViewController.bundleIdentifier,
+            endpoint: endpoint
+        )
+    }
+}
 
 class ViewController: NSViewController {
-    static let APP_GROUP = "group.com.privateinternetaccess.macos.demo.BasicTunnel"
-
-    static let VPN_BUNDLE = "com.privateinternetaccess.macos.demo.BasicTunnel.BasicTunnelExtension"
-    
-    static let CIPHER: PIATunnelProvider.Cipher = .aes128cbc
-    
-    static let DIGEST: PIATunnelProvider.Digest = .sha1
-    
-    static let HANDSHAKE: PIATunnelProvider.Handshake = .rsa2048
-    
-    static let RENEG: Int? = nil
-    
-    static let DOWNLOAD_COUNT = 5
-    
     @IBOutlet var textUsername: NSTextField!
     
     @IBOutlet var textPassword: NSTextField!
@@ -41,12 +66,6 @@ class ViewController: NSViewController {
     
     var status = NEVPNStatus.invalid
     
-    var downloadTask: URLSessionDataTask!
-    
-    var downloadCount = 0
-    
-    var downloadTimes = [TimeInterval]()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -59,10 +78,12 @@ class ViewController: NSViewController {
         textUsername.stringValue = "myusername"
         textPassword.stringValue = "mypassword"
         
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(VPNStatusDidChange(notification:)),
-                                               name: .NEVPNStatusDidChange,
-                                               object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(VPNStatusDidChange(notification:)),
+            name: .NEVPNStatusDidChange,
+            object: nil
+        )
         
         reloadCurrentManager(nil)
         
@@ -96,38 +117,8 @@ class ViewController: NSViewController {
     }
     
     func connect() {
-        let server = textServer.stringValue
-        let domain = textDomain.stringValue
-        
-        let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
-        let port = UInt16(textPort.stringValue)!
-        let username = textUsername.stringValue
-        let password = textPassword.stringValue
-        
         configureVPN({ (manager) in
-//            manager.isOnDemandEnabled = true
-//            manager.onDemandRules = [NEOnDemandRuleConnect()]
-            
-            let endpoint = PIATunnelProvider.AuthenticatedEndpoint(
-                hostname: hostname,
-                username: username,
-                password: password
-            )
-            
-            var builder = PIATunnelProvider.ConfigurationBuilder(appGroup: ViewController.APP_GROUP)
-//            let socketType: PIATunnelProvider.SocketType = (self.switchTCP.isOn ? .tcp : .udp)
-            let socketType: PIATunnelProvider.SocketType = .udp
-            builder.endpointProtocols = [PIATunnelProvider.EndpointProtocol(socketType, port, .vanilla)]
-            builder.cipher = ViewController.CIPHER
-            builder.digest = ViewController.DIGEST
-            builder.handshake = ViewController.HANDSHAKE
-            builder.mtu = 1350
-            builder.renegotiatesAfterSeconds = ViewController.RENEG
-            builder.shouldDebug = true
-            builder.debugLogKey = "Log"
-            
-            let configuration = builder.build()
-            return try! configuration.generatedTunnelProtocol(withBundleIdentifier: ViewController.VPN_BUNDLE, endpoint: endpoint)
+            return self.makeProtocol()
         }, completionHandler: { (error) in
             if let error = error {
                 print("configure error: \(error)")
@@ -144,7 +135,6 @@ class ViewController: NSViewController {
     
     func disconnect() {
         configureVPN({ (manager) in
-            //            manager.isOnDemandEnabled = false
             return nil
         }, completionHandler: { (error) in
             self.currentManager?.connection.stopVPNTunnel()
@@ -188,7 +178,7 @@ class ViewController: NSViewController {
             
             for m in managers! {
                 if let p = m.protocolConfiguration as? NETunnelProviderProtocol {
-                    if (p.providerBundleIdentifier == ViewController.VPN_BUNDLE) {
+                    if (p.providerBundleIdentifier == ViewController.bundleIdentifier) {
                         manager = m
                         break
                     }

@@ -8,7 +8,7 @@
 	</array>
 	<key>com.apple.security.application-groups</key>
 	<array>
-		<string>group.com.privateinternetaccess.ios.demo.BasicTunnel</string>
+		<string>group.com.algoritmico.ios.demo.BasicTunnel</string>
 	</array>
 	<key>keychain-access-groups</key>
 	<array>

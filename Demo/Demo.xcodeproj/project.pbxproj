@@ -22,10 +22,10 @@
 		0EB6EED41F92D43D005F6221 /* BasicTunnelExtension-macOS.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 0EB6EECB1F92D43D005F6221 /* BasicTunnelExtension-macOS.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0EB6EEDA1F92D4BA005F6221 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB6EED91F92D4BA005F6221 /* NetworkExtension.framework */; };
 		0EE878F81F936469002A0D58 /* NetworkExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0EB6EED91F92D4BA005F6221 /* NetworkExtension.framework */; };
-		3908146517D6E4FB2A9D937D /* Pods_iOS_BasicTunnelExtension_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 793C61EE3021675F5E1E7851 /* Pods_iOS_BasicTunnelExtension_iOS.framework */; };
-		7A8E24264F7886297FF7360E /* Pods_iOS_BasicTunnel_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58CD8D66DB993CAA3D95BF58 /* Pods_iOS_BasicTunnel_iOS.framework */; };
-		DDB7740C50825D06A90A8F85 /* Pods_macOS_BasicTunnel_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FE4702495E15F3783163A9DD /* Pods_macOS_BasicTunnel_macOS.framework */; };
-		ED81344C597F479F327D005F /* Pods_macOS_BasicTunnelExtension_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64C5E38D0BFB111803E5B140 /* Pods_macOS_BasicTunnelExtension_macOS.framework */; };
+		1980C130D3B43C0024E59939 /* Pods_iOS_BasicTunnel_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 775CEE5DD8FFC11266A4D7F9 /* Pods_iOS_BasicTunnel_iOS.framework */; };
+		39CD1A9C1AE5F4ABF30C4F97 /* Pods_macOS_BasicTunnelExtension_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62EFD8BCD07B20EF83F42763 /* Pods_macOS_BasicTunnelExtension_macOS.framework */; };
+		3FB7C2F3C8148BF145FD2EF5 /* Pods_iOS_BasicTunnelExtension_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 61E77EB097E4DC1610F5E50F /* Pods_iOS_BasicTunnelExtension_iOS.framework */; };
+		F66522FC3C8356D4AE7D2428 /* Pods_macOS_BasicTunnel_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E4F71774745704B9CF8E36C1 /* Pods_macOS_BasicTunnel_macOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,18 +95,18 @@
 		0EB6EECF1F92D43D005F6221 /* PacketTunnelProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PacketTunnelProvider.swift; sourceTree = "<group>"; };
 		0EB6EED11F92D43D005F6221 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EB6EED91F92D4BA005F6221 /* NetworkExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NetworkExtension.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk/System/Library/Frameworks/NetworkExtension.framework; sourceTree = DEVELOPER_DIR; };
-		5052DB12F617640E1D481436 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnel-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		58CD8D66DB993CAA3D95BF58 /* Pods_iOS_BasicTunnel_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_BasicTunnel_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6435864DB434E6A2405C0A03 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnelExtension-iOS/Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		644A04AFE7563DC48EFAF754 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnelExtension-macOS/Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		64C5E38D0BFB111803E5B140 /* Pods_macOS_BasicTunnelExtension_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS_BasicTunnelExtension_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		793C61EE3021675F5E1E7851 /* Pods_iOS_BasicTunnelExtension_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_BasicTunnelExtension_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		86573C14FDBC5268162C4955 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnel-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		9E2D2F7DF58A0C0F6427E281 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnel-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		A288006EEDE2BE66F8448A44 /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnelExtension-macOS/Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		D43202F48A06F897845BB823 /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnel-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		EACBBF6B797755CE91FFFE75 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnelExtension-iOS/Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		FE4702495E15F3783163A9DD /* Pods_macOS_BasicTunnel_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS_BasicTunnel_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		484C87261073EF01BDC404F8 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnel-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		51B469FAC04F49DA76B86299 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnel-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		5900D83A429B34C1A705C5B7 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnelExtension-iOS/Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		61E77EB097E4DC1610F5E50F /* Pods_iOS_BasicTunnelExtension_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_BasicTunnelExtension_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		62EFD8BCD07B20EF83F42763 /* Pods_macOS_BasicTunnelExtension_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS_BasicTunnelExtension_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		775CEE5DD8FFC11266A4D7F9 /* Pods_iOS_BasicTunnel_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_iOS_BasicTunnel_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B87BC309D14310866825A4CE /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnel-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		BBFD61FA7BC0A2E0FE7FD2D5 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnelExtension-macOS/Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		D1271C71EB65C3EA62965A19 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnel-macOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		DC82CED2F66990DD0622CC78 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-iOS-BasicTunnelExtension-iOS/Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		E4A33190602EEF05A835166A /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-macOS-BasicTunnelExtension-macOS/Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E4F71774745704B9CF8E36C1 /* Pods_macOS_BasicTunnel_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macOS_BasicTunnel_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,7 +114,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7A8E24264F7886297FF7360E /* Pods_iOS_BasicTunnel_iOS.framework in Frameworks */,
+				1980C130D3B43C0024E59939 /* Pods_iOS_BasicTunnel_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,7 +122,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3908146517D6E4FB2A9D937D /* Pods_iOS_BasicTunnelExtension_iOS.framework in Frameworks */,
+				3FB7C2F3C8148BF145FD2EF5 /* Pods_iOS_BasicTunnelExtension_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -131,7 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EB6EEDA1F92D4BA005F6221 /* NetworkExtension.framework in Frameworks */,
-				DDB7740C50825D06A90A8F85 /* Pods_macOS_BasicTunnel_macOS.framework in Frameworks */,
+				F66522FC3C8356D4AE7D2428 /* Pods_macOS_BasicTunnel_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,7 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EE878F81F936469002A0D58 /* NetworkExtension.framework in Frameworks */,
-				ED81344C597F479F327D005F /* Pods_macOS_BasicTunnelExtension_macOS.framework in Frameworks */,
+				39CD1A9C1AE5F4ABF30C4F97 /* Pods_macOS_BasicTunnelExtension_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -156,7 +156,7 @@
 				0EB6EECC1F92D43D005F6221 /* BasicTunnelExtension-macOS */,
 				0EB39FCE1F7424580023AFFC /* Products */,
 				B850E57E641AD1B37E79BAB5 /* Frameworks */,
-				34D3F90470498D814E74A5C6 /* Pods */,
+				94C1D7B5B11C6CCE74B21D93 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -250,17 +250,17 @@
 			name = "Supporting files";
 			sourceTree = "<group>";
 		};
-		34D3F90470498D814E74A5C6 /* Pods */ = {
+		94C1D7B5B11C6CCE74B21D93 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5052DB12F617640E1D481436 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */,
-				9E2D2F7DF58A0C0F6427E281 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */,
-				6435864DB434E6A2405C0A03 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */,
-				EACBBF6B797755CE91FFFE75 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */,
-				D43202F48A06F897845BB823 /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */,
-				86573C14FDBC5268162C4955 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */,
-				A288006EEDE2BE66F8448A44 /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */,
-				644A04AFE7563DC48EFAF754 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */,
+				484C87261073EF01BDC404F8 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */,
+				51B469FAC04F49DA76B86299 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */,
+				5900D83A429B34C1A705C5B7 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */,
+				DC82CED2F66990DD0622CC78 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */,
+				B87BC309D14310866825A4CE /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */,
+				D1271C71EB65C3EA62965A19 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */,
+				E4A33190602EEF05A835166A /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */,
+				BBFD61FA7BC0A2E0FE7FD2D5 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -269,10 +269,10 @@
 			isa = PBXGroup;
 			children = (
 				0EB6EED91F92D4BA005F6221 /* NetworkExtension.framework */,
-				58CD8D66DB993CAA3D95BF58 /* Pods_iOS_BasicTunnel_iOS.framework */,
-				793C61EE3021675F5E1E7851 /* Pods_iOS_BasicTunnelExtension_iOS.framework */,
-				FE4702495E15F3783163A9DD /* Pods_macOS_BasicTunnel_macOS.framework */,
-				64C5E38D0BFB111803E5B140 /* Pods_macOS_BasicTunnelExtension_macOS.framework */,
+				775CEE5DD8FFC11266A4D7F9 /* Pods_iOS_BasicTunnel_iOS.framework */,
+				61E77EB097E4DC1610F5E50F /* Pods_iOS_BasicTunnelExtension_iOS.framework */,
+				E4F71774745704B9CF8E36C1 /* Pods_macOS_BasicTunnel_macOS.framework */,
+				62EFD8BCD07B20EF83F42763 /* Pods_macOS_BasicTunnelExtension_macOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -284,12 +284,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0EB39FF51F7424F80023AFFC /* Build configuration list for PBXNativeTarget "BasicTunnel-iOS" */;
 			buildPhases = (
-				8654E3AEB3A2369E83089DE1 /* [CP] Check Pods Manifest.lock */,
+				C772E0EE406756CD998F1DFD /* [CP] Check Pods Manifest.lock */,
 				0EB39FE21F7424F80023AFFC /* Sources */,
 				0EB39FE31F7424F80023AFFC /* Frameworks */,
 				0EB39FE41F7424F80023AFFC /* Resources */,
 				0EB3A0091F7425140023AFFC /* Embed App Extensions */,
-				C01795F3F1E523D48472410F /* [CP] Embed Pods Frameworks */,
+				A3C198CD449DD5434CB4A22E /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -305,7 +305,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0EB3A0061F7425140023AFFC /* Build configuration list for PBXNativeTarget "BasicTunnelExtension-iOS" */;
 			buildPhases = (
-				D83479D2193DDBE1F61F7994 /* [CP] Check Pods Manifest.lock */,
+				1D6B4C41FD2B3C5D8E3FA076 /* [CP] Check Pods Manifest.lock */,
 				0EB39FF81F7425140023AFFC /* Sources */,
 				0EB39FF91F7425140023AFFC /* Frameworks */,
 				0EB39FFA1F7425140023AFFC /* Resources */,
@@ -323,12 +323,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0EB6EEC61F92D417005F6221 /* Build configuration list for PBXNativeTarget "BasicTunnel-macOS" */;
 			buildPhases = (
-				52FA651791DFCB2780F05CC0 /* [CP] Check Pods Manifest.lock */,
+				F1880CC3FE9FC942D0F802BA /* [CP] Check Pods Manifest.lock */,
 				0EB6EEB31F92D417005F6221 /* Sources */,
 				0EB6EEB41F92D417005F6221 /* Frameworks */,
 				0EB6EEB51F92D417005F6221 /* Resources */,
 				0EB6EED81F92D43D005F6221 /* Embed App Extensions */,
-				C808C600FAEEFF648BCD5A99 /* [CP] Embed Pods Frameworks */,
+				AC2C3BCB219270755C04C726 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -344,7 +344,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 0EB6EED51F92D43D005F6221 /* Build configuration list for PBXNativeTarget "BasicTunnelExtension-macOS" */;
 			buildPhases = (
-				EEDE45EF0F6328D22A7732F5 /* [CP] Check Pods Manifest.lock */,
+				6A664C6A5F9D3538B3DA1207 /* [CP] Check Pods Manifest.lock */,
 				0EB6EEC71F92D43D005F6221 /* Sources */,
 				0EB6EEC81F92D43D005F6221 /* Frameworks */,
 				0EB6EEC91F92D43D005F6221 /* Resources */,
@@ -488,96 +488,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		52FA651791DFCB2780F05CC0 /* [CP] Check Pods Manifest.lock */ = {
+		1D6B4C41FD2B3C5D8E3FA076 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-macOS-BasicTunnel-macOS-checkManifestLockResult.txt",
+			outputFileListPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		8654E3AEB3A2369E83089DE1 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-iOS-BasicTunnel-iOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C01795F3F1E523D48472410F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
-				"${BUILT_PRODUCTS_DIR}/PIATunnel-iOS/PIATunnel.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PIATunnel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C808C600FAEEFF648BCD5A99 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/MacOSX/openssl.framework",
-				"${BUILT_PRODUCTS_DIR}/PIATunnel-macOS/PIATunnel.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-macOS/SwiftyBeaver.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PIATunnel.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D83479D2193DDBE1F61F7994 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-iOS-BasicTunnelExtension-iOS-checkManifestLockResult.txt",
 			);
@@ -586,18 +510,118 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		EEDE45EF0F6328D22A7732F5 /* [CP] Check Pods Manifest.lock */ = {
+		6A664C6A5F9D3538B3DA1207 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-macOS-BasicTunnelExtension-macOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A3C198CD449DD5434CB4A22E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh",
+				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/TunnelKit-iOS/TunnelKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TunnelKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AC2C3BCB219270755C04C726 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh",
+				"${PODS_ROOT}/OpenSSL-Apple/frameworks/MacOSX/openssl.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-macOS/SwiftyBeaver.framework",
+				"${BUILT_PRODUCTS_DIR}/TunnelKit-macOS/TunnelKit.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TunnelKit.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C772E0EE406756CD998F1DFD /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-iOS-BasicTunnel-iOS-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F1880CC3FE9FC942D0F802BA /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-macOS-BasicTunnel-macOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -797,15 +821,15 @@
 		};
 		0EB39FF61F7424F80023AFFC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5052DB12F617640E1D481436 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */;
+			baseConfigurationReference = 484C87261073EF01BDC404F8 /* Pods-iOS-BasicTunnel-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnel-iOS/BasicTunnel-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnel-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.ios.demo.BasicTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.demo.BasicTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -813,15 +837,15 @@
 		};
 		0EB39FF71F7424F80023AFFC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9E2D2F7DF58A0C0F6427E281 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */;
+			baseConfigurationReference = 51B469FAC04F49DA76B86299 /* Pods-iOS-BasicTunnel-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnel-iOS/BasicTunnel-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnel-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.ios.demo.BasicTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.demo.BasicTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -829,14 +853,14 @@
 		};
 		0EB3A0071F7425140023AFFC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6435864DB434E6A2405C0A03 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */;
+			baseConfigurationReference = 5900D83A429B34C1A705C5B7 /* Pods-iOS-BasicTunnelExtension-iOS.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnelExtension-iOS/BasicTunnelExtension-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnelExtension-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.ios.demo.BasicTunnel.BasicTunnelExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.demo.BasicTunnel.BasicTunnelExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -845,14 +869,14 @@
 		};
 		0EB3A0081F7425140023AFFC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EACBBF6B797755CE91FFFE75 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */;
+			baseConfigurationReference = DC82CED2F66990DD0622CC78 /* Pods-iOS-BasicTunnelExtension-iOS.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnelExtension-iOS/BasicTunnelExtension-iOS.entitlements";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnelExtension-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.ios.demo.BasicTunnel.BasicTunnelExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.demo.BasicTunnel.BasicTunnelExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -861,17 +885,17 @@
 		};
 		0EB6EEC41F92D417005F6221 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D43202F48A06F897845BB823 /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */;
+			baseConfigurationReference = B87BC309D14310866825A4CE /* Pods-macOS-BasicTunnel-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnel-macOS/BasicTunnel-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnel-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.macos.demo.BasicTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.macos.demo.BasicTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -880,17 +904,17 @@
 		};
 		0EB6EEC51F92D417005F6221 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 86573C14FDBC5268162C4955 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */;
+			baseConfigurationReference = D1271C71EB65C3EA62965A19 /* Pods-macOS-BasicTunnel-macOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnel-macOS/BasicTunnel-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnel-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.macos.demo.BasicTunnel;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.macos.demo.BasicTunnel;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -899,15 +923,15 @@
 		};
 		0EB6EED61F92D43D005F6221 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A288006EEDE2BE66F8448A44 /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */;
+			baseConfigurationReference = E4A33190602EEF05A835166A /* Pods-macOS-BasicTunnelExtension-macOS.debug.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnelExtension-macOS/BasicTunnelExtension-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnelExtension-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.macos.demo.BasicTunnel.BasicTunnelExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
@@ -917,15 +941,15 @@
 		};
 		0EB6EED71F92D43D005F6221 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 644A04AFE7563DC48EFAF754 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */;
+			baseConfigurationReference = BBFD61FA7BC0A2E0FE7FD2D5 /* Pods-macOS-BasicTunnelExtension-macOS.release.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_ENTITLEMENTS = "BasicTunnelExtension-macOS/BasicTunnelExtension-macOS.entitlements";
 				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 5357M5NW9W;
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "BasicTunnelExtension-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @executable_path/../../../../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.privateinternetaccess.macos.demo.BasicTunnel.BasicTunnelExtension;
+				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;

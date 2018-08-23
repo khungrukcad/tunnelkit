@@ -3,28 +3,52 @@
 //  BasicTunnel-iOS
 //
 //  Created by Davide De Rosa on 2/11/17.
-//  Copyright © 2018 London Trust Media. All rights reserved.
+//  Copyright © 2018 Davide De Rosa. All rights reserved.
 //
 
 import UIKit
 import NetworkExtension
-import PIATunnel
+import TunnelKit
+
+extension ViewController {
+    private static let appGroup = "group.com.algoritmico.ios.demo.BasicTunnel"
+    
+    private static let bundleIdentifier = "com.algoritmico.ios.demo.BasicTunnel.BasicTunnelExtension"
+    
+    private func makeProtocol() -> NETunnelProviderProtocol {
+        let server = textServer.text!
+        let domain = textDomain.text!
+        
+        let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
+        let port = UInt16(textPort.text!)!
+        let username = textUsername.text!
+        let password = textPassword.text!
+        
+        let endpoint = TunnelKitProvider.AuthenticatedEndpoint(
+            hostname: hostname,
+            username: username,
+            password: password
+        )
+        
+        var builder = TunnelKitProvider.ConfigurationBuilder(appGroup: ViewController.appGroup)
+        let socketType: TunnelKitProvider.SocketType = switchTCP.isOn ? .tcp : .udp
+        builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(socketType, port)]
+        builder.cipher = .aes128cbc
+        builder.digest = .sha1
+        builder.mtu = 1350
+        builder.renegotiatesAfterSeconds = nil
+        builder.shouldDebug = true
+        builder.debugLogKey = "Log"
+        
+        let configuration = builder.build()
+        return try! configuration.generatedTunnelProtocol(
+            withBundleIdentifier: ViewController.bundleIdentifier,
+            endpoint: endpoint
+        )
+    }
+}
 
 class ViewController: UIViewController, URLSessionDataDelegate {
-    static let APP_GROUP = "group.com.privateinternetaccess.ios.demo.BasicTunnel"
-    
-    static let VPN_BUNDLE = "com.privateinternetaccess.ios.demo.BasicTunnel.BasicTunnelExtension"
-
-    static let CIPHER: PIATunnelProvider.Cipher = .aes128cbc
-
-    static let DIGEST: PIATunnelProvider.Digest = .sha1
-
-    static let HANDSHAKE: PIATunnelProvider.Handshake = .rsa2048
-    
-    static let RENEG: Int? = nil
-    
-    static let DOWNLOAD_COUNT = 5
-    
     @IBOutlet var textUsername: UITextField!
     
     @IBOutlet var textPassword: UITextField!
@@ -43,20 +67,10 @@ class ViewController: UIViewController, URLSessionDataDelegate {
 
     //
     
-    @IBOutlet var buttonDownload: UIButton!
-
-    @IBOutlet var labelDownload: UILabel!
-    
     var currentManager: NETunnelProviderManager?
     
     var status = NEVPNStatus.invalid
     
-    var downloadTask: URLSessionDataTask!
-    
-    var downloadCount = 0
-
-    var downloadTimes = [TimeInterval]()
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -114,37 +128,8 @@ class ViewController: UIViewController, URLSessionDataDelegate {
     }
     
     func connect() {
-        let server = textServer.text!
-        let domain = textDomain.text!
-        
-        let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
-        let port = UInt16(textPort.text!)!
-        let username = textUsername.text!
-        let password = textPassword.text!
-
         configureVPN({ (manager) in
-//            manager.isOnDemandEnabled = true
-//            manager.onDemandRules = [NEOnDemandRuleConnect()]
-            
-            let endpoint = PIATunnelProvider.AuthenticatedEndpoint(
-                hostname: hostname,
-                username: username,
-                password: password
-            )
-
-            var builder = PIATunnelProvider.ConfigurationBuilder(appGroup: ViewController.APP_GROUP)
-            let socketType: PIATunnelProvider.SocketType = (self.switchTCP.isOn ? .tcp : .udp)
-            builder.endpointProtocols = [PIATunnelProvider.EndpointProtocol(socketType, port, .vanilla)]
-            builder.cipher = ViewController.CIPHER
-            builder.digest = ViewController.DIGEST
-            builder.handshake = ViewController.HANDSHAKE
-            builder.mtu = 1350
-            builder.renegotiatesAfterSeconds = ViewController.RENEG
-            builder.shouldDebug = true
-            builder.debugLogKey = "Log"
-            
-            let configuration = builder.build()
-            return try! configuration.generatedTunnelProtocol(withBundleIdentifier: ViewController.VPN_BUNDLE, endpoint: endpoint)
+            return self.makeProtocol()
         }, completionHandler: { (error) in
             if let error = error {
                 print("configure error: \(error)")
@@ -161,7 +146,6 @@ class ViewController: UIViewController, URLSessionDataDelegate {
     
     func disconnect() {
         configureVPN({ (manager) in
-//            manager.isOnDemandEnabled = false
             return nil
         }, completionHandler: { (error) in
             self.currentManager?.connection.stopVPNTunnel()
@@ -172,7 +156,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
         guard let vpn = currentManager?.connection as? NETunnelProviderSession else {
             return
         }
-        try? vpn.sendProviderMessage(PIATunnelProvider.Message.requestLog.data) { (data) in
+        try? vpn.sendProviderMessage(TunnelKitProvider.Message.requestLog.data) { (data) in
             guard let log = String(data: data!, encoding: .utf8) else {
                 return
             }
@@ -180,57 +164,6 @@ class ViewController: UIViewController, URLSessionDataDelegate {
         }
     }
 
-    @IBAction func download() {
-        downloadCount = ViewController.DOWNLOAD_COUNT
-        downloadTimes.removeAll()
-        buttonDownload.isEnabled = false
-        labelDownload.text = ""
-
-        doDownload()
-    }
-    
-    func doDownload() {
-        let url = URL(string: "https://example.bogus/test/100mb")!
-        var req = URLRequest(url: url)
-        req.httpMethod = "GET"
-        let cfg = URLSessionConfiguration.ephemeral
-        let sess = URLSession(configuration: cfg, delegate: self, delegateQueue: nil)
-        
-        let start = Date()
-        downloadTask = sess.dataTask(with: req) { (data, response, error) in
-            if let error = error {
-                print("error downloading: \(error)")
-                return
-            }
-            
-            let elapsed = -start.timeIntervalSinceNow
-            print("download finished: \(elapsed) seconds")
-            self.downloadTimes.append(elapsed)
-            
-            DispatchQueue.main.async {
-                self.downloadCount -= 1
-                if (self.downloadCount > 0) {
-                    self.labelDownload.text = "\(self.labelDownload.text!)\(elapsed) seconds\n"
-                    self.doDownload()
-                } else {
-                    var avg = 0.0
-                    for n in self.downloadTimes {
-                        avg += n
-                    }
-                    avg /= Double(ViewController.DOWNLOAD_COUNT)
-                    
-                    self.labelDownload.text = "\(avg) seconds"
-                    self.buttonDownload.isEnabled = true
-                }
-            }
-        }
-        downloadTask.resume()
-    }
-    
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
-        print("received \(data.count) bytes")
-    }
-    
     func configureVPN(_ configure: @escaping (NETunnelProviderManager) -> NETunnelProviderProtocol?, completionHandler: @escaping (Error?) -> Void) {
         reloadCurrentManager { (error) in
             if let error = error {
@@ -268,7 +201,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
             
             for m in managers! {
                 if let p = m.protocolConfiguration as? NETunnelProviderProtocol {
-                    if (p.providerBundleIdentifier == ViewController.VPN_BUNDLE) {
+                    if (p.providerBundleIdentifier == ViewController.bundleIdentifier) {
                         manager = m
                         break
                     }
