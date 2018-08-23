@@ -154,6 +154,12 @@ extension TunnelKitProvider {
         /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
         public var ca: Certificate?
         
+        /// The optional client certificate to authenticate with. Set to `nil` to disable client authentication (default).
+        public var clientCertificate: Certificate?
+        
+        /// The optional key for `clientCertificate`. Set to `nil` if client authentication unused (default).
+        public var clientKey: Certificate?
+        
         /// The MTU of the link.
         public var mtu: Int
         
@@ -212,12 +218,25 @@ extension TunnelKitProvider {
             }
 
             let ca: Certificate?
-            if let caPEM = providerConfiguration[S.ca] as? String {
-                ca = Certificate(pem: caPEM)
+            let clientCertificate: Certificate?
+            let clientKey: Certificate?
+            if let pem = providerConfiguration[S.ca] as? String {
+                ca = Certificate(pem: pem)
             } else {
                 ca = nil
             }
+            if let pem = providerConfiguration[S.clientCertificate] as? String {
+                guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
+                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
+                }
 
+                clientCertificate = Certificate(pem: pem)
+                clientKey = Certificate(pem: keyPEM)
+            } else {
+                clientCertificate = nil
+                clientKey = nil
+            }
+            
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
             guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
@@ -243,6 +262,8 @@ extension TunnelKitProvider {
             self.cipher = cipher
             self.digest = digest
             self.ca = ca
+            self.clientCertificate = clientCertificate
+            self.clientKey = clientKey
             mtu = providerConfiguration[S.mtu] as? Int ?? 1250
             LZOFraming = providerConfiguration[S.LZOFraming] as? Bool ?? false
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
@@ -277,6 +298,8 @@ extension TunnelKitProvider {
                 cipher: cipher,
                 digest: digest,
                 ca: ca,
+                clientCertificate: clientCertificate,
+                clientKey: clientKey,
                 mtu: mtu,
                 LZOFraming: LZOFraming,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
@@ -303,6 +326,10 @@ extension TunnelKitProvider {
             static let digestAlgorithm = "DigestAlgorithm"
             
             static let ca = "CA"
+            
+            static let clientCertificate = "ClientCertificate"
+            
+            static let clientKey = "ClientKey"
             
             static let mtu = "MTU"
             
@@ -337,6 +364,12 @@ extension TunnelKitProvider {
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
         public let ca: Certificate?
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientCertificate`
+        public let clientCertificate: Certificate?
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientKey`
+        public let clientKey: Certificate?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
@@ -405,6 +438,12 @@ extension TunnelKitProvider {
             if let ca = ca {
                 dict[S.ca] = ca.pem
             }
+            if let clientCertificate = clientCertificate {
+                dict[S.clientCertificate] = clientCertificate.pem
+            }
+            if let clientKey = clientKey {
+                dict[S.clientKey] = clientKey.pem
+            }
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
@@ -464,6 +503,11 @@ extension TunnelKitProvider {
             } else {
                 log.info("CA verification: disabled")
             }
+            if let _ = clientCertificate {
+                log.info("Client verification: enabled")
+            } else {
+                log.info("Client verification: disabled")
+            }
             log.info("MTU: \(mtu)")
             log.info("LZO framing: \(LZOFraming ? "enabled" : "disabled")")
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
@@ -491,7 +535,10 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.cipher = cipher
         builder.digest = digest
         builder.ca = ca
+        builder.clientCertificate = clientCertificate
+        builder.clientKey = clientKey
         builder.mtu = mtu
+        builder.LZOFraming = LZOFraming
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
@@ -505,6 +552,8 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.cipher == rhs.cipher) &&
             (lhs.digest == rhs.digest) &&
             (lhs.ca == rhs.ca) &&
+            (lhs.clientCertificate == rhs.clientCertificate) &&
+            (lhs.clientKey == rhs.clientKey) &&
             (lhs.mtu == rhs.mtu) &&
             (lhs.LZOFraming == rhs.LZOFraming) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
