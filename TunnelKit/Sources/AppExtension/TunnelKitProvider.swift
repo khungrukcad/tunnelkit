@@ -134,7 +134,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         
         log.info("Starting tunnel...")
         
-        guard EncryptionProxy.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
+        guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderError.prngInitialization)
             return
         }

@@ -1008,9 +1008,9 @@ public class SessionProxy {
             log.debug("Setup keys")
         }
 
-        let proxy: EncryptionProxy
+        let bridge: EncryptionBridge
         do {
-            proxy = try EncryptionProxy(
+            bridge = try EncryptionBridge(
                 configuration.cipher,
                 configuration.digest,
                 auth,
@@ -1023,8 +1023,8 @@ public class SessionProxy {
         }
 
         negotiationKey.dataPath = DataPath(
-            encrypter: proxy.encrypter(),
-            decrypter: proxy.decrypter(),
+            encrypter: bridge.encrypter(),
+            decrypter: bridge.decrypter(),
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )
