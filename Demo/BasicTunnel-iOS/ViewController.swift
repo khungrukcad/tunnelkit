@@ -36,6 +36,7 @@ extension ViewController {
         builder.cipher = .aes128cbc
         builder.digest = .sha1
         builder.mtu = 1350
+        builder.LZOFraming = true
         builder.renegotiatesAfterSeconds = nil
         builder.shouldDebug = true
         builder.debugLogKey = "Log"
@@ -76,8 +77,6 @@ class ViewController: UIViewController, URLSessionDataDelegate {
         
         textServer.text = "germany"
         textDomain.text = "privateinternetaccess.com"
-//        textServer.text = "159.122.133.238"
-//        textDomain.text = ""
         textPort.text = "1198"
         switchTCP.isOn = false
         textUsername.text = "myusername"
@@ -121,9 +120,9 @@ class ViewController: UIViewController, URLSessionDataDelegate {
     
     @IBAction func tcpClicked(_ sender: Any) {
         if switchTCP.isOn {
-            textPort.text = "443"
+            textPort.text = "502"
         } else {
-            textPort.text = "8080"
+            textPort.text = "1198"
         }
     }
     
