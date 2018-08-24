@@ -59,7 +59,6 @@
 
 // inbound -> TUN
 @property (nonatomic, strong) NSMutableArray *inPackets;
-@property (nonatomic, strong) NSArray *inProtocols;
 @property (nonatomic, unsafe_unretained) uint8_t *decBuffer;
 @property (nonatomic, assign) int decBufferCapacity;
 @property (nonatomic, strong) ReplayProtector *inReplay;
@@ -98,11 +97,6 @@
         self.encBuffer = allocate_safely(self.encBufferCapacity);
         
         self.inPackets = [[NSMutableArray alloc] initWithCapacity:maxPackets];
-        NSMutableArray *protocols = [[NSMutableArray alloc] initWithCapacity:maxPackets];
-        for (NSUInteger i = 0; i < maxPackets; ++i) {
-            [protocols addObject:@(AF_INET)];
-        }
-        self.inProtocols = protocols;
         self.decBufferCapacity = 65000;
         self.decBuffer = allocate_safely(self.decBufferCapacity);
         if (usesReplayProtection) {
