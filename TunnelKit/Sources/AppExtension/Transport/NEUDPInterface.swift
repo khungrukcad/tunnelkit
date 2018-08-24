@@ -12,16 +12,13 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
+class NEUDPInterface: NSObject, GenericSocket {
     private static var linkContext = 0
     
     private let impl: NWUDPSession
     
-    private let maxDatagrams: Int
-
-    init(impl: NWUDPSession, maxDatagrams: Int? = nil) {
+    init(impl: NWUDPSession) {
         self.impl = impl
-        self.maxDatagrams = maxDatagrams ?? 200
 
         isActive = false
         isShutdown = false
@@ -78,8 +75,8 @@ class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
         return NEUDPInterface(impl: NWUDPSession(upgradeFor: impl))
     }
     
-    func link() -> LinkInterface {
-        return self
+    func link(withMTU mtu: Int) -> LinkInterface {
+        return NEUDPLinkInterface(impl: impl, mtu: mtu)
     }
     
     // MARK: Connection KVO (any queue)
@@ -150,12 +147,28 @@ class NEUDPInterface: NSObject, GenericSocket, LinkInterface {
             break
         }
     }
+}
+
+class NEUDPLinkInterface: LinkInterface {
+    private let impl: NWUDPSession
+    
+    private let maxDatagrams: Int
+    
+    init(impl: NWUDPSession, mtu: Int, maxDatagrams: Int? = nil) {
+        self.impl = impl
+        self.mtu = mtu
+        self.maxDatagrams = maxDatagrams ?? 200
+    }
 
     // MARK: LinkInterface
     
     let isReliable: Bool = false
     
-    let mtu: Int = 1000
+    var remoteAddress: String? {
+        return (impl.resolvedEndpoint as? NWHostEndpoint)?.hostname
+    }
+
+    let mtu: Int
 
     var packetBufferSize: Int {
         return maxDatagrams

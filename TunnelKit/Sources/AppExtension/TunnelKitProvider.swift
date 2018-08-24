@@ -335,10 +335,10 @@ extension TunnelKitProvider: GenericSocketDelegate {
             return
         }
         if proxy.canRebindLink() {
-            proxy.rebindLink(socket.link())
+            proxy.rebindLink(socket.link(withMTU: 1000))
             reasserting = false
         } else {
-            proxy.setLink(socket.link())
+            proxy.setLink(socket.link(withMTU: 1000))
         }
     }
     

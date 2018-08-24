@@ -12,16 +12,13 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NETCPInterface: NSObject, GenericSocket, LinkInterface {
+class NETCPInterface: NSObject, GenericSocket {
     private static var linkContext = 0
     
     private let impl: NWTCPConnection
     
-    private let maxPacketSize: Int
-
-    init(impl: NWTCPConnection, maxPacketSize: Int? = nil) {
+    init(impl: NWTCPConnection) {
         self.impl = impl
-        self.maxPacketSize = maxPacketSize ?? (512 * 1024)
         isActive = false
         isShutdown = false
     }
@@ -79,8 +76,8 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
         return NETCPInterface(impl: NWTCPConnection(upgradeFor: impl))
     }
     
-    func link() -> LinkInterface {
-        return self
+    func link(withMTU mtu: Int) -> LinkInterface {
+        return NETCPLinkInterface(impl: impl)
     }
     
     // MARK: Connection KVO (any queue)
@@ -148,12 +145,28 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
             break
         }
     }
+}
+
+class NETCPLinkInterface: LinkInterface {
+    private let impl: NWTCPConnection
+    
+    private let maxPacketSize: Int
+    
+    init(impl: NWTCPConnection, maxPacketSize: Int? = nil) {
+        self.impl = impl
+        self.mtu = .max
+        self.maxPacketSize = maxPacketSize ?? (512 * 1024)
+    }
 
     // MARK: LinkInterface
     
     let isReliable: Bool = true
 
-    let mtu: Int = .max
+    var remoteAddress: String? {
+        return (impl.remoteAddress as? NWHostEndpoint)?.hostname
+    }
+    
+    let mtu: Int
     
     var packetBufferSize: Int {
         return maxPacketSize
