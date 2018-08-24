@@ -12,7 +12,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NEUDPInterface: NSObject, GenericSocket {
+class NEUDPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
     private let impl: NWUDPSession
@@ -55,13 +55,13 @@ class NEUDPInterface: NSObject, GenericSocket {
                 return
             }
         }
-        impl.addObserver(self, forKeyPath: #keyPath(NWUDPSession.state), options: [.initial, .new], context: &NEUDPInterface.linkContext)
-        impl.addObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), options: .new, context: &NEUDPInterface.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWUDPSession.state), options: [.initial, .new], context: &NEUDPSocket.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), options: .new, context: &NEUDPSocket.linkContext)
     }
     
     func unobserve() {
-        impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state), context: &NEUDPInterface.linkContext)
-        impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), context: &NEUDPInterface.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state), context: &NEUDPSocket.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), context: &NEUDPSocket.linkContext)
     }
     
     func shutdown() {
@@ -72,17 +72,17 @@ class NEUDPInterface: NSObject, GenericSocket {
         guard impl.hasBetterPath else {
             return nil
         }
-        return NEUDPInterface(impl: NWUDPSession(upgradeFor: impl))
+        return NEUDPSocket(impl: NWUDPSession(upgradeFor: impl))
     }
     
     func link(withMTU mtu: Int) -> LinkInterface {
-        return NEUDPLinkInterface(impl: impl, mtu: mtu)
+        return NEUDPLink(impl: impl, mtu: mtu)
     }
     
     // MARK: Connection KVO (any queue)
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard (context == &NEUDPInterface.linkContext) else {
+        guard (context == &NEUDPSocket.linkContext) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -149,7 +149,7 @@ class NEUDPInterface: NSObject, GenericSocket {
     }
 }
 
-class NEUDPLinkInterface: LinkInterface {
+class NEUDPLink: LinkInterface {
     private let impl: NWUDPSession
     
     private let maxDatagrams: Int
@@ -204,7 +204,7 @@ class NEUDPLinkInterface: LinkInterface {
     }
 }
 
-extension NEUDPInterface {
+extension NEUDPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.description

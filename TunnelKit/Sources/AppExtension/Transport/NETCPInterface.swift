@@ -12,7 +12,7 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NETCPInterface: NSObject, GenericSocket {
+class NETCPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
     private let impl: NWTCPConnection
@@ -55,13 +55,13 @@ class NETCPInterface: NSObject, GenericSocket {
                 return
             }
         }
-        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), options: [.initial, .new], context: &NETCPInterface.linkContext)
-        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), options: .new, context: &NETCPInterface.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), options: [.initial, .new], context: &NETCPSocket.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), options: .new, context: &NETCPSocket.linkContext)
     }
     
     func unobserve() {
-        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), context: &NETCPInterface.linkContext)
-        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), context: &NETCPInterface.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), context: &NETCPSocket.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), context: &NETCPSocket.linkContext)
     }
     
     func shutdown() {
@@ -73,17 +73,17 @@ class NETCPInterface: NSObject, GenericSocket {
         guard impl.hasBetterPath else {
             return nil
         }
-        return NETCPInterface(impl: NWTCPConnection(upgradeFor: impl))
+        return NETCPSocket(impl: NWTCPConnection(upgradeFor: impl))
     }
     
     func link(withMTU mtu: Int) -> LinkInterface {
-        return NETCPLinkInterface(impl: impl)
+        return NETCPLink(impl: impl)
     }
     
     // MARK: Connection KVO (any queue)
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard (context == &NETCPInterface.linkContext) else {
+        guard (context == &NETCPSocket.linkContext) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -147,7 +147,7 @@ class NETCPInterface: NSObject, GenericSocket {
     }
 }
 
-class NETCPLinkInterface: LinkInterface {
+class NETCPLink: LinkInterface {
     private let impl: NWTCPConnection
     
     private let maxPacketSize: Int
@@ -219,7 +219,7 @@ class NETCPLinkInterface: LinkInterface {
     }
 }
 
-extension NETCPInterface {
+extension NETCPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.description
