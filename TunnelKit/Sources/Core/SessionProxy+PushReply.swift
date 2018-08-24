@@ -37,8 +37,27 @@
 
 import Foundation
 
+/// Represents the reply of a successful session start.
+public protocol SessionReply {
+
+    /// The obtained address.
+    var address: String { get }
+
+    /// The obtained address mask.
+    var addressMask: String { get }
+
+    /// The address of the default gateway.
+    var gatewayAddress: String { get }
+
+    /// The DNS servers set up for this session.
+    var dnsServers: [String] { get }
+}
+
 extension SessionProxy {
-    struct PushReply {
+
+    // XXX: parsing is very optimistic
+    
+    struct PushReply: SessionReply {
         private static let ifconfigRegexp = try! NSRegularExpression(pattern: "ifconfig [\\d\\.]+ [\\d\\.]+", options: [])
 
         private static let dnsRegexp = try! NSRegularExpression(pattern: "dhcp-option DNS [\\d\\.]+", options: [])
@@ -48,6 +67,8 @@ extension SessionProxy {
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
         
         let address: String
+
+        let addressMask: String
 
         let gatewayAddress: String
         
@@ -110,6 +131,7 @@ extension SessionProxy {
             }
 
             address = addresses[1]
+            addressMask = "255.255.255.255"
             gatewayAddress = addresses[2]
             self.dnsServers = dnsServers
             self.authToken = authToken

@@ -55,11 +55,9 @@ public protocol SessionProxyDelegate: class {
      Called after starting a session.
 
      - Parameter remoteAddress: The address of the VPN server.
-     - Parameter address: The obtained address.
-     - Parameter gatewayAddress: The address of the gateway.
-     - Parameter dnsServers: The DNS servers set up for this session.
+     - Parameter reply: The compound `SessionReply` containing tunnel settings.
      */
-    func sessionDidStart(_: SessionProxy, remoteAddress: String, address: String, gatewayAddress: String, dnsServers: [String])
+    func sessionDidStart(_: SessionProxy, remoteAddress: String, reply: SessionReply)
     
     /**
      Called after stopping a session.
@@ -905,14 +903,7 @@ public class SessionProxy {
         guard let remoteAddress = link?.remoteAddress else {
             fatalError("Could not resolve link remote address")
         }
-
-        delegate?.sessionDidStart(
-            self,
-            remoteAddress: remoteAddress,
-            address: reply.address,
-            gatewayAddress: reply.gatewayAddress,
-            dnsServers: reply.dnsServers
-        )
+        delegate?.sessionDidStart(self, remoteAddress: remoteAddress, reply: reply)
 
         if let interval = configuration.keepAliveInterval {
             queue.asyncAfter(deadline: .now() + interval) { [weak self] in
