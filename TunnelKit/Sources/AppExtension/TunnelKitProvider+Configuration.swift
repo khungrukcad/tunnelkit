@@ -125,8 +125,8 @@ extension TunnelKitProvider {
         /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
         public var ca: Certificate?
         
-        /// The MTU of the tunnel.
-        public var mtu: NSNumber
+        /// The MTU of the link.
+        public var mtu: Int
         
         /// Enables LZO framing (deprecated).
 //        @available(*, deprecated)
@@ -214,7 +214,7 @@ extension TunnelKitProvider {
             self.cipher = cipher
             self.digest = digest
             self.ca = ca
-            mtu = providerConfiguration[S.mtu] as? NSNumber ?? 1500
+            mtu = providerConfiguration[S.mtu] as? Int ?? 1250
             LZOFraming = providerConfiguration[S.LZOFraming] as? Bool ?? false
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
 
@@ -310,7 +310,7 @@ extension TunnelKitProvider {
         public let ca: Certificate?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
-        public let mtu: NSNumber
+        public let mtu: Int
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.LZOFraming`
         public let LZOFraming: Bool

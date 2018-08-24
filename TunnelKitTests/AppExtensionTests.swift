@@ -59,7 +59,7 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca?.pem)
-        XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? NSNumber, cfg.mtu)
+        XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.mtu)
         XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? Int, cfg.renegotiatesAfterSeconds)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)
         XCTAssertEqual(proto?.providerConfiguration?[K.debugLogKey] as? String, cfg.debugLogKey)
