@@ -335,10 +335,10 @@ extension TunnelKitProvider: GenericSocketDelegate {
             return
         }
         if proxy.canRebindLink() {
-            proxy.rebindLink(socket.link())
+            proxy.rebindLink(socket.link(withMTU: cfg.mtu))
             reasserting = false
         } else {
-            proxy.setLink(socket.link())
+            proxy.setLink(socket.link(withMTU: cfg.mtu))
         }
     }
     
@@ -446,7 +446,6 @@ extension TunnelKitProvider: SessionProxyDelegate {
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: tunnel)
         newSettings.ipv4Settings = ipv4Settings
         newSettings.dnsSettings = dnsSettings
-        newSettings.mtu = cfg.mtu
         
         setTunnelNetworkSettings(newSettings, completionHandler: completionHandler)
     }

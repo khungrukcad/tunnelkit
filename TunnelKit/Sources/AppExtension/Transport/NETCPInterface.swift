@@ -12,16 +12,13 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NETCPInterface: NSObject, GenericSocket, LinkInterface {
+class NETCPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
     private let impl: NWTCPConnection
     
-    private let maxPacketSize: Int
-
-    init(impl: NWTCPConnection, maxPacketSize: Int? = nil) {
+    init(impl: NWTCPConnection) {
         self.impl = impl
-        self.maxPacketSize = maxPacketSize ?? (512 * 1024)
         isActive = false
         isShutdown = false
     }
@@ -58,13 +55,13 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
                 return
             }
         }
-        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), options: [.initial, .new], context: &NETCPInterface.linkContext)
-        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), options: .new, context: &NETCPInterface.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), options: [.initial, .new], context: &NETCPSocket.linkContext)
+        impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), options: .new, context: &NETCPSocket.linkContext)
     }
     
     func unobserve() {
-        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), context: &NETCPInterface.linkContext)
-        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), context: &NETCPInterface.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), context: &NETCPSocket.linkContext)
+        impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), context: &NETCPSocket.linkContext)
     }
     
     func shutdown() {
@@ -76,17 +73,17 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
         guard impl.hasBetterPath else {
             return nil
         }
-        return NETCPInterface(impl: NWTCPConnection(upgradeFor: impl))
+        return NETCPSocket(impl: NWTCPConnection(upgradeFor: impl))
     }
     
-    func link() -> LinkInterface {
-        return self
+    func link(withMTU mtu: Int) -> LinkInterface {
+        return NETCPLink(impl: impl)
     }
     
     // MARK: Connection KVO (any queue)
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        guard (context == &NETCPInterface.linkContext) else {
+        guard (context == &NETCPSocket.linkContext) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
         }
@@ -148,12 +145,28 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
             break
         }
     }
+}
+
+class NETCPLink: LinkInterface {
+    private let impl: NWTCPConnection
+    
+    private let maxPacketSize: Int
+    
+    init(impl: NWTCPConnection, maxPacketSize: Int? = nil) {
+        self.impl = impl
+        self.mtu = .max
+        self.maxPacketSize = maxPacketSize ?? (512 * 1024)
+    }
 
     // MARK: LinkInterface
     
     let isReliable: Bool = true
 
-    let mtu: Int = .max
+    var remoteAddress: String? {
+        return (impl.remoteAddress as? NWHostEndpoint)?.hostname
+    }
+    
+    let mtu: Int
     
     var packetBufferSize: Int {
         return maxPacketSize
@@ -206,7 +219,7 @@ class NETCPInterface: NSObject, GenericSocket, LinkInterface {
     }
 }
 
-extension NETCPInterface {
+extension NETCPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.description

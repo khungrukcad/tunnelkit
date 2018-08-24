@@ -9,7 +9,7 @@
 import Foundation
 
 protocol LinkProducer {
-    func link() -> LinkInterface
+    func link(withMTU mtu: Int) -> LinkInterface
 }
 
 protocol GenericSocketDelegate: class {
