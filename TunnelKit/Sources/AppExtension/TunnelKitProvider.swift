@@ -459,7 +459,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("Returned ifconfig parameters:")
         log.info("\tRemote: \(remoteAddress)")
         log.info("\tLocal: \(reply.address)/\(reply.addressMask)")
-        log.info("\tGateway: \(reply.gatewayAddress)")
+        log.info("\tGateway: \(reply.defaultGateway)")
         log.info("\tDNS: \(reply.dnsServers)")
         
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
@@ -493,10 +493,17 @@ extension TunnelKitProvider: SessionProxyDelegate {
         
         // route all traffic to VPN
         let defaultRoute = NEIPv4Route.default()
-        defaultRoute.gatewayAddress = reply.gatewayAddress
+        defaultRoute.gatewayAddress = reply.defaultGateway
+        
+        var routes: [NEIPv4Route] = [defaultRoute]
+        for r in reply.routes {
+            let ipv4Route = NEIPv4Route(destinationAddress: r.destination, subnetMask: r.mask)
+            ipv4Route.gatewayAddress = r.gateway ?? reply.defaultGateway
+            routes.append(ipv4Route)
+        }
         
         let ipv4Settings = NEIPv4Settings(addresses: [reply.address], subnetMasks: [reply.addressMask])
-        ipv4Settings.includedRoutes = [defaultRoute]
+        ipv4Settings.includedRoutes = routes
         ipv4Settings.excludedRoutes = []
         
         let dnsSettings = NEDNSSettings(servers: reply.dnsServers)
