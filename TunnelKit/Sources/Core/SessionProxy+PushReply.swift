@@ -96,7 +96,7 @@ extension SessionProxy {
         
         private static let routeRegexp = try! NSRegularExpression(pattern: "route [\\d\\.]+( [\\d\\.]+){0,2}", options: [])
         
-        private static let dnsRegexp = try! NSRegularExpression(pattern: "dhcp-option DNS [\\d\\.]+", options: [])
+        private static let dnsRegexp = try! NSRegularExpression(pattern: "dhcp-option DNS6? [\\d\\.a-fA-F:]+", options: [])
 
         private static let authTokenRegexp = try! NSRegularExpression(pattern: "auth-token [a-zA-Z0-9/=+]+", options: [])
 

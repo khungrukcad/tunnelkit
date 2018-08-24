@@ -78,4 +78,15 @@ class PushTests: XCTestCase {
         XCTAssertEqual(route.mask, "255.255.255.0")
         XCTAssertEqual(route.gateway, "10.8.0.12")
     }
+
+    func testIPv6() {
+        let msg = "PUSH_REPLY,dhcp-option DNS6 2001:4860:4860::8888,dhcp-option DNS6 2001:4860:4860::8844,tun-ipv6,route-gateway 10.8.0.1,topology subnet,ping 10,ping-restart 120,ifconfig-ipv6 fe80::601:30ff:feb7:ec01/64 fe80::601:30ff:feb7:dc02,ifconfig 10.8.0.2 255.255.255.0,peer-id 0"
+        let reply = try! SessionProxy.PushReply(message: msg)!
+        reply.debug()
+        
+//        XCTAssertEqual(reply.address, "10.5.10.6")
+//        XCTAssertEqual(reply.addressMask, "255.255.255.255")
+//        XCTAssertEqual(reply.gatewayAddress, "10.5.10.5")
+        XCTAssertEqual(reply.dnsServers, ["2001:4860:4860::8888", "2001:4860:4860::8844"])
+    }
 }
