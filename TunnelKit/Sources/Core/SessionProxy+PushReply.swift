@@ -37,32 +37,12 @@
 
 import Foundation
 
-/// Represents the reply of a successful session start.
-public protocol SessionReply {
+/// Encapsulates the IPv4 settings for the tunnel.
+public struct IPv4Settings: CustomStringConvertible {
 
-    /// The obtained address.
-    var address: String { get }
-
-    /// The obtained address mask.
-    var addressMask: String { get }
-
-    /// The address of the default gateway.
-    var defaultGateway: String { get }
-
-    /// The additional routes.
-    var routes: [SessionProxy.Route] { get }
-
-    /// The DNS servers set up for this session.
-    var dnsServers: [String] { get }
-}
-
-extension SessionProxy {
-
-    // XXX: parsing is very optimistic
-    
     /// Represents a route in the routing table.
     public struct Route {
-
+        
         /// The destination host or subnet.
         public let destination: String
         
@@ -78,6 +58,85 @@ extension SessionProxy {
             self.gateway = gateway
         }
     }
+
+    /// The address.
+    let address: String
+    
+    /// The address mask.
+    let addressMask: String
+    
+    /// The address of the default gateway.
+    let defaultGateway: String
+
+    /// The additional routes.
+    let routes: [Route]
+
+    // MARK: CustomStringConvertible
+
+    /// :nodoc:
+    public var description: String {
+        return "addr \(address) netmask \(addressMask) gw \(defaultGateway)"
+    }
+}
+
+/// Encapsulates the IPv6 settings for the tunnel.
+public struct IPv6Settings: CustomStringConvertible {
+
+    /// Represents a route in the routing table.
+    public struct Route {
+
+        /// The destination host or subnet.
+        public let destination: String
+        
+        /// The address prefix length.
+        public let prefixLength: UInt8
+        
+        /// The address of the gateway (uses default gateway if not set).
+        public let gateway: String?
+        
+        fileprivate init(_ destination: String, _ prefixLength: UInt8?, _ gateway: String?) {
+            self.destination = destination
+            self.prefixLength = prefixLength ?? 3
+            self.gateway = gateway
+        }
+    }
+
+    /// The address.
+    public let address: String
+    
+    /// The address prefix length.
+    public let addressPrefixLength: UInt8
+    
+    /// The address of the default gateway.
+    public let defaultGateway: String
+    
+    /// The additional routes.
+    public let routes: [Route]
+
+    // MARK: CustomStringConvertible
+    
+    /// :nodoc:
+    public var description: String {
+        return "addr \(address)/\(addressPrefixLength) gw \(defaultGateway)"
+    }
+}
+
+/// Groups the parsed reply of a successfully started session.
+public protocol SessionReply {
+
+    /// The IPv4 settings.
+    var ipv4: IPv4Settings? { get }
+    
+    /// The IPv6 settings.
+    var ipv6: IPv6Settings? { get }
+    
+    /// The DNS servers set up for this session.
+    var dnsServers: [String] { get }
+}
+
+extension SessionProxy {
+
+    // XXX: parsing is very optimistic
     
     struct PushReply: SessionReply {
         private enum Topology: String {
@@ -92,23 +151,23 @@ extension SessionProxy {
         
         private static let ifconfigRegexp = try! NSRegularExpression(pattern: "ifconfig [\\d\\.]+ [\\d\\.]+", options: [])
 
+        private static let ifconfig6Regexp = try! NSRegularExpression(pattern: "ifconfig-ipv6 [\\da-fA-F:]+/\\d+ [\\da-fA-F:]+", options: [])
+
         private static let gatewayRegexp = try! NSRegularExpression(pattern: "route-gateway [\\d\\.]+", options: [])
         
         private static let routeRegexp = try! NSRegularExpression(pattern: "route [\\d\\.]+( [\\d\\.]+){0,2}", options: [])
-        
+
+        private static let route6Regexp = try! NSRegularExpression(pattern: "route-ipv6 [\\da-fA-F:]+/\\d+( [\\da-fA-F:]+){0,2}", options: [])
+
         private static let dnsRegexp = try! NSRegularExpression(pattern: "dhcp-option DNS6? [\\d\\.a-fA-F:]+", options: [])
 
         private static let authTokenRegexp = try! NSRegularExpression(pattern: "auth-token [a-zA-Z0-9/=+]+", options: [])
 
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
+
+        let ipv4: IPv4Settings?
         
-        let address: String
-
-        let addressMask: String
-
-        let defaultGateway: String
-
-        let routes: [Route]
+        let ipv6: IPv6Settings?
         
         let dnsServers: [String]
         
@@ -122,18 +181,20 @@ extension SessionProxy {
             }
             
             var optTopologyComponents: [String]?
-            var optIfconfigComponents: [String]?
-            var optGatewayComponents: [String]?
+            var optIfconfig4Components: [String]?
+            var optGateway4Components: [String]?
+            let address4: String
+            let addressMask4: String
+            let defaultGateway4: String
+            var routes4: [IPv4Settings.Route] = []
 
-            let address: String
-            let addressMask: String
-            let defaultGateway: String
-            var routes: [Route] = []
+            var optIfconfig6Components: [String]?
+
             var dnsServers: [String] = []
             var authToken: String?
             var peerId: UInt32?
             
-            // MARK: Routing
+            // MARK: Routing (IPv4)
 
             PushReply.topologyRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
                 guard let range = result?.range else { return }
@@ -154,9 +215,9 @@ extension SessionProxy {
                 guard let range = result?.range else { return }
                 
                 let match = (message as NSString).substring(with: range)
-                optIfconfigComponents = match.components(separatedBy: " ")
+                optIfconfig4Components = match.components(separatedBy: " ")
             }
-            guard let ifconfigComponents = optIfconfigComponents, ifconfigComponents.count == 3 else {
+            guard let ifconfig4Components = optIfconfig4Components, ifconfig4Components.count == 3 else {
                 throw SessionError.malformedPushReply
             }
             
@@ -164,9 +225,9 @@ extension SessionProxy {
                 guard let range = result?.range else { return }
 
                 let match = (message as NSString).substring(with: range)
-                optGatewayComponents = match.components(separatedBy: " ")
+                optGateway4Components = match.components(separatedBy: " ")
             }
-
+            
             //
             // excerpts from OpenVPN manpage
             //
@@ -182,41 +243,28 @@ extension SessionProxy {
             //
             switch topology {
             case .subnet:
-
+                
                 // default gateway required when topology is subnet
-                guard let gatewayComponents = optGatewayComponents, gatewayComponents.count == 2 else {
+                guard let gateway4Components = optGateway4Components, gateway4Components.count == 2 else {
                     throw SessionError.malformedPushReply
                 }
-                address = ifconfigComponents[1]
-                addressMask = ifconfigComponents[2]
-                defaultGateway = gatewayComponents[1]
+                address4 = ifconfig4Components[1]
+                addressMask4 = ifconfig4Components[2]
+                defaultGateway4 = gateway4Components[1]
                 
             default:
-                address = ifconfigComponents[1]
-                addressMask = "255.255.255.255"
-                defaultGateway = ifconfigComponents[2]
+                address4 = ifconfig4Components[1]
+                addressMask4 = "255.255.255.255"
+                defaultGateway4 = ifconfig4Components[2]
             }
-            
-            // MARK: DNS
 
-            PushReply.dnsRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                let dnsEntryComponents = match.components(separatedBy: " ")
-                
-                dnsServers.append(dnsEntryComponents[2])
-            }
-            
-            // MARK: Routes
-            
             PushReply.routeRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
                 guard let range = result?.range else { return }
-
+                
                 let match = (message as NSString).substring(with: range)
                 let routeEntryComponents = match.components(separatedBy: " ")
-
-                let destination = routeEntryComponents[1]
+                
+                let address = routeEntryComponents[1]
                 let mask: String?
                 let gateway: String?
                 if routeEntryComponents.count > 2 {
@@ -227,9 +275,83 @@ extension SessionProxy {
                 if routeEntryComponents.count > 3 {
                     gateway = routeEntryComponents[3]
                 } else {
-                    gateway = defaultGateway
+                    gateway = defaultGateway4
                 }
-                routes.append(Route(destination, mask, gateway))
+                routes4.append(IPv4Settings.Route(address, mask, gateway))
+            }
+
+            ipv4 = IPv4Settings(
+                address: address4,
+                addressMask: addressMask4,
+                defaultGateway: defaultGateway4,
+                routes: routes4
+            )
+
+            // MARK: Routing (IPv6)
+            
+            PushReply.ifconfig6Regexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
+                guard let range = result?.range else { return }
+                
+                let match = (message as NSString).substring(with: range)
+                optIfconfig6Components = match.components(separatedBy: " ")
+            }
+            if let ifconfig6Components = optIfconfig6Components, ifconfig6Components.count == 3 {
+                let address6Components = ifconfig6Components[1].components(separatedBy: "/")
+                guard address6Components.count == 2 else {
+                    throw SessionError.malformedPushReply
+                }
+                guard let addressPrefix6 = UInt8(address6Components[1]) else {
+                    throw SessionError.malformedPushReply
+                }
+                let address6 = address6Components[0]
+                let defaultGateway6 = ifconfig6Components[2]
+                
+                var routes6: [IPv6Settings.Route] = []
+                PushReply.route6Regexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
+                    guard let range = result?.range else { return }
+                        
+                    let match = (message as NSString).substring(with: range)
+                    let routeEntryComponents = match.components(separatedBy: " ")
+                    
+                    let destinationComponents = routeEntryComponents[1].components(separatedBy: "/")
+                    guard destinationComponents.count == 2 else {
+//                        throw SessionError.malformedPushReply
+                        return
+                    }
+                    guard let prefix = UInt8(destinationComponents[1]) else {
+//                        throw SessionError.malformedPushReply
+                        return
+                    }
+
+                    let destination = destinationComponents[0]
+                    let gateway: String?
+                    if routeEntryComponents.count > 2 {
+                        gateway = routeEntryComponents[2]
+                    } else {
+                        gateway = defaultGateway6
+                    }
+                    routes6.append(IPv6Settings.Route(destination, prefix, gateway))
+                }
+
+                ipv6 = IPv6Settings(
+                    address: address6,
+                    addressPrefixLength: addressPrefix6,
+                    defaultGateway: defaultGateway6,
+                    routes: routes6
+                )
+            } else {
+                ipv6 = nil
+            }
+
+            // MARK: DNS
+
+            PushReply.dnsRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
+                guard let range = result?.range else { return }
+                
+                let match = (message as NSString).substring(with: range)
+                let dnsEntryComponents = match.components(separatedBy: " ")
+                
+                dnsServers.append(dnsEntryComponents[2])
             }
             
             // MARK: Authentication
@@ -256,11 +378,7 @@ extension SessionProxy {
                 }
             }
 
-            self.address = address
-            self.addressMask = addressMask
-            self.defaultGateway = defaultGateway
             self.dnsServers = dnsServers
-            self.routes = routes
             self.authToken = authToken
             self.peerId = peerId
         }
