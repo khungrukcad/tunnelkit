@@ -472,7 +472,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             
             log.info("Tunnel interface is now UP")
             
-            proxy.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow))
+            proxy.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow, isIPv6: reply.ipv6 != nil))
 
             self.pendingStartHandler?(nil)
             self.pendingStartHandler = nil
@@ -529,8 +529,11 @@ extension TunnelKitProvider: SessionProxyDelegate {
         let dnsSettings = NEDNSSettings(servers: reply.dnsServers)
         
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
-        newSettings.ipv4Settings = ipv4Settings
-        newSettings.ipv6Settings = ipv6Settings
+        if let _ = ipv6Settings {
+            newSettings.ipv6Settings = ipv6Settings
+        } else {
+            newSettings.ipv4Settings = ipv4Settings
+        }
         newSettings.dnsSettings = dnsSettings
         
         setTunnelNetworkSettings(newSettings, completionHandler: completionHandler)

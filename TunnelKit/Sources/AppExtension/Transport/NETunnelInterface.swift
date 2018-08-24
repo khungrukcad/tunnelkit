@@ -41,13 +41,20 @@ import NetworkExtension
 class NETunnelInterface: TunnelInterface {
     private weak var impl: NEPacketTunnelFlow?
     
+    private let protocolNumber: NSNumber
+    
+    init(impl: NEPacketTunnelFlow, isIPv6: Bool) {
+        self.impl = impl
+        protocolNumber = (isIPv6 ? AF_INET6 : AF_INET) as NSNumber
+    }
+    
+    // MARK: TunnelInterface
+    
     var isPersistent: Bool {
         return false
     }
     
-    init(impl: NEPacketTunnelFlow) {
-        self.impl = impl
-    }
+    // MARK: IOInterface
     
     func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
         loopReadPackets(queue, handler)
@@ -65,12 +72,12 @@ class NETunnelInterface: TunnelInterface {
     }
     
     func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
-        impl?.writePackets([packet], withProtocols: [AF_INET] as [NSNumber])
+        impl?.writePackets([packet], withProtocols: [protocolNumber])
         completionHandler?(nil)
     }
     
     func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
-        let protocols = [Int32](repeating: AF_INET, count: packets.count) as [NSNumber]
+        let protocols = [NSNumber](repeating: protocolNumber, count: packets.count)
         impl?.writePackets(packets, withProtocols: protocols)
         completionHandler?(nil)
     }
