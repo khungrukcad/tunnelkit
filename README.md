@@ -112,11 +112,13 @@ Currently, the extension supports VPN over both [UDP][ne-udp] and [TCP][ne-tcp] 
 
 ## Contributing
 
-For more details please see [CONTRIBUTING](/CONTRIBUTING.md).
+By contributing to this project you are agreeing to the terms stated in the [Contributor License Agreement (CLA)][contrib-cla].
+
+For more details please see [CONTRIBUTING][contrib-readme].
 
 ## License
 
-This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here](/LICENSE).
+This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content].
 
 ## Credits
 
@@ -148,8 +150,12 @@ Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][me-btc]
 [ne-udp]: https://developer.apple.com/documentation/networkextension/nwudpsession
 [ne-tcp]: https://developer.apple.com/documentation/networkextension/nwtcpconnection
 
+[license-content]: /LICENSE
 [license-gpl3]: https://choosealicense.com/licenses/gpl-3.0/
 [license-mit]: https://choosealicense.com/licenses/mit/
+
+[contrib-cla]: /CLA.rst
+[contrib-readme]: /CONTRIBUTING.md
 
 [dep-piatunnel-repo]: https://github.com/pia-foss/tunnel-apple
 [dep-piatunnel-license]: https://github.com/pia-foss/tunnel-apple/blob/master/LICENSE
