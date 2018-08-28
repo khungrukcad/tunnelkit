@@ -33,15 +33,6 @@
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
-		0EA8E2072024D4B200A92DB6 /* PIA-ECC-256k1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */; };
-		0EA8E2082024D4B200A92DB6 /* PIA-ECC-256r1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2052024D4B100A92DB6 /* PIA-ECC-256r1.pem */; };
-		0EA8E2092024D4B200A92DB6 /* PIA-ECC-521r1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2062024D4B200A92DB6 /* PIA-ECC-521r1.pem */; };
-		0EA8E20A2024D5D500A92DB6 /* PIA-ECC-256r1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2052024D4B100A92DB6 /* PIA-ECC-256r1.pem */; };
-		0EA8E20B2024D5D500A92DB6 /* PIA-ECC-256k1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */; };
-		0EA8E20C2024D5D500A92DB6 /* PIA-ECC-521r1.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EA8E2062024D4B200A92DB6 /* PIA-ECC-521r1.pem */; };
-		0EA8E20D2024D5D500A92DB6 /* PIA-RSA-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */; };
-		0EA8E20E2024D5D500A92DB6 /* PIA-RSA-3072.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */; };
-		0EA8E20F2024D5D500A92DB6 /* PIA-RSA-4096.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */; };
 		0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */; };
 		0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */; };
 		0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45620F0BD16004233D7 /* RandomTests.swift */; };
@@ -115,9 +106,6 @@
 		0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */; };
 		0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */; };
 		0EFEB47B2006D3C800F81029 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */; };
-		0EFEB4832006D3D000F81029 /* PIA-RSA-3072.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */; };
-		0EFEB4842006D3D000F81029 /* PIA-RSA-4096.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */; };
-		0EFEB4852006D3D000F81029 /* PIA-RSA-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */; };
 		0EFEB4872006D7C400F81029 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */; };
 		0EFEB4882006D7C400F81029 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */; };
 		0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */; };
@@ -202,9 +190,6 @@
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtensionTests.swift; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
-		0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-256k1.pem"; sourceTree = "<group>"; };
-		0EA8E2052024D4B100A92DB6 /* PIA-ECC-256r1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-256r1.pem"; sourceTree = "<group>"; };
-		0EA8E2062024D4B200A92DB6 /* PIA-ECC-521r1.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-ECC-521r1.pem"; sourceTree = "<group>"; };
 		0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
 		0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataManipulationTests.swift; sourceTree = "<group>"; };
 		0EB2B45620F0BD16004233D7 /* RandomTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RandomTests.swift; sourceTree = "<group>"; };
@@ -260,9 +245,6 @@
 		0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Configuration.swift"; sourceTree = "<group>"; };
 		0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Interaction.swift"; sourceTree = "<group>"; };
 		0EFEB4522006D3C800F81029 /* TunnelKitProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelKitProvider.swift; sourceTree = "<group>"; };
-		0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-3072.pem"; sourceTree = "<group>"; };
-		0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-4096.pem"; sourceTree = "<group>"; };
-		0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "PIA-RSA-2048.pem"; sourceTree = "<group>"; };
 		0EFEB4A9200760EB00F81029 /* MemoryDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryDestination.swift; sourceTree = "<group>"; };
 		0EFEB4AA200760EC00F81029 /* InterfaceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceObserver.swift; sourceTree = "<group>"; };
 		0EFEB4AD2007625E00F81029 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
@@ -374,7 +356,6 @@
 		0E17D7FB1F730D9F009EE129 /* TunnelKit */ = {
 			isa = PBXGroup;
 			children = (
-				0EFEB47E2006D3D000F81029 /* Resources */,
 				0E17D8041F730DDD009EE129 /* Sources */,
 			);
 			path = TunnelKit;
@@ -481,27 +462,6 @@
 				0EFEB44F2006D3C800F81029 /* TunnelKitProvider+Configuration.swift */,
 				0EFEB4502006D3C800F81029 /* TunnelKitProvider+Interaction.swift */,
 				0EEC49DB20B5E732008FEB91 /* Utils.swift */,
-			);
-			path = AppExtension;
-			sourceTree = "<group>";
-		};
-		0EFEB47E2006D3D000F81029 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				0EFEB47F2006D3D000F81029 /* AppExtension */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
-		0EFEB47F2006D3D000F81029 /* AppExtension */ = {
-			isa = PBXGroup;
-			children = (
-				0EA8E2042024D4B100A92DB6 /* PIA-ECC-256k1.pem */,
-				0EA8E2052024D4B100A92DB6 /* PIA-ECC-256r1.pem */,
-				0EA8E2062024D4B200A92DB6 /* PIA-ECC-521r1.pem */,
-				0EFEB4822006D3D000F81029 /* PIA-RSA-2048.pem */,
-				0EFEB4802006D3D000F81029 /* PIA-RSA-3072.pem */,
-				0EFEB4812006D3D000F81029 /* PIA-RSA-4096.pem */,
 			);
 			path = AppExtension;
 			sourceTree = "<group>";
@@ -730,12 +690,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EA8E2072024D4B200A92DB6 /* PIA-ECC-256k1.pem in Resources */,
-				0EFEB4852006D3D000F81029 /* PIA-RSA-2048.pem in Resources */,
-				0EA8E2082024D4B200A92DB6 /* PIA-ECC-256r1.pem in Resources */,
-				0EA8E2092024D4B200A92DB6 /* PIA-ECC-521r1.pem in Resources */,
-				0EFEB4832006D3D000F81029 /* PIA-RSA-3072.pem in Resources */,
-				0EFEB4842006D3D000F81029 /* PIA-RSA-4096.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -743,12 +697,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0EA8E20D2024D5D500A92DB6 /* PIA-RSA-2048.pem in Resources */,
-				0EA8E20E2024D5D500A92DB6 /* PIA-RSA-3072.pem in Resources */,
-				0EA8E20C2024D5D500A92DB6 /* PIA-ECC-521r1.pem in Resources */,
-				0EA8E20F2024D5D500A92DB6 /* PIA-RSA-4096.pem in Resources */,
-				0EA8E20B2024D5D500A92DB6 /* PIA-ECC-256k1.pem in Resources */,
-				0EA8E20A2024D5D500A92DB6 /* PIA-ECC-256r1.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
