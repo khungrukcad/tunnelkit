@@ -118,7 +118,7 @@ For more details please see [CONTRIBUTING][contrib-readme].
 
 ## License
 
-This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content].
+This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content]. I can provide a different license on request, e.g. if you want to use the library on the App Store. Feel free to contact me in such case.
 
 ## Credits
 
