@@ -40,8 +40,8 @@ import Foundation
 /// Encapsulates the IPv4 settings for the tunnel.
 public struct IPv4Settings: CustomStringConvertible {
 
-    /// Represents a route in the routing table.
-    public struct Route {
+    /// Represents an IPv4 route in the routing table.
+    public struct Route: CustomStringConvertible {
         
         /// The destination host or subnet.
         public let destination: String
@@ -56,6 +56,13 @@ public struct IPv4Settings: CustomStringConvertible {
             self.destination = destination
             self.mask = mask ?? "255.255.255.255"
             self.gateway = gateway
+        }
+
+        // MARK: CustomStringConvertible
+        
+        /// :nodoc:
+        public var description: String {
+            return "{\(destination)/\(mask) \(gateway ?? "default")}"
         }
     }
 
@@ -75,16 +82,16 @@ public struct IPv4Settings: CustomStringConvertible {
 
     /// :nodoc:
     public var description: String {
-        return "addr \(address) netmask \(addressMask) gw \(defaultGateway)"
+        return "addr \(address) netmask \(addressMask) gw \(defaultGateway) routes \(routes)"
     }
 }
 
 /// Encapsulates the IPv6 settings for the tunnel.
 public struct IPv6Settings: CustomStringConvertible {
 
-    /// Represents a route in the routing table.
-    public struct Route {
-
+    /// Represents an IPv6 route in the routing table.
+    public struct Route: CustomStringConvertible {
+        
         /// The destination host or subnet.
         public let destination: String
         
@@ -98,6 +105,13 @@ public struct IPv6Settings: CustomStringConvertible {
             self.destination = destination
             self.prefixLength = prefixLength ?? 3
             self.gateway = gateway
+        }
+
+        // MARK: CustomStringConvertible
+        
+        /// :nodoc:
+        public var description: String {
+            return "{\(destination)/\(prefixLength) \(gateway ?? "default")}"
         }
     }
 
@@ -117,7 +131,7 @@ public struct IPv6Settings: CustomStringConvertible {
     
     /// :nodoc:
     public var description: String {
-        return "addr \(address)/\(addressPrefixLength) gw \(defaultGateway)"
+        return "addr \(address)/\(addressPrefixLength) gw \(defaultGateway) routes \(routes)"
     }
 }
 
