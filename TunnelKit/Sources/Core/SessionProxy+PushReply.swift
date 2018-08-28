@@ -210,11 +210,8 @@ extension SessionProxy {
             
             // MARK: Routing (IPv4)
 
-            PushReply.topologyRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                optTopologyComponents = match.components(separatedBy: " ")
+            PushReply.topologyRegexp.enumerateMatches(in: message) {
+                optTopologyComponents = $0.components(separatedBy: " ")
             }
             guard let topologyComponents = optTopologyComponents, topologyComponents.count == 2 else {
                 throw SessionError.malformedPushReply
@@ -225,21 +222,15 @@ extension SessionProxy {
                 fatalError("Bad topology regexp, accepted unrecognized value: \(topologyComponents[1])")
             }
 
-            PushReply.ifconfigRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                optIfconfig4Components = match.components(separatedBy: " ")
+            PushReply.ifconfigRegexp.enumerateMatches(in: message) {
+                optIfconfig4Components = $0.components(separatedBy: " ")
             }
             guard let ifconfig4Components = optIfconfig4Components, ifconfig4Components.count == 3 else {
                 throw SessionError.malformedPushReply
             }
             
-            PushReply.gatewayRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-
-                let match = (message as NSString).substring(with: range)
-                optGateway4Components = match.components(separatedBy: " ")
+            PushReply.gatewayRegexp.enumerateMatches(in: message) {
+                optGateway4Components = $0.components(separatedBy: " ")
             }
             
             //
@@ -272,11 +263,8 @@ extension SessionProxy {
                 defaultGateway4 = ifconfig4Components[2]
             }
 
-            PushReply.routeRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                let routeEntryComponents = match.components(separatedBy: " ")
+            PushReply.routeRegexp.enumerateMatches(in: message) {
+                let routeEntryComponents = $0.components(separatedBy: " ")
                 
                 let address = routeEntryComponents[1]
                 let mask: String?
@@ -303,11 +291,8 @@ extension SessionProxy {
 
             // MARK: Routing (IPv6)
             
-            PushReply.ifconfig6Regexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                optIfconfig6Components = match.components(separatedBy: " ")
+            PushReply.ifconfig6Regexp.enumerateMatches(in: message) {
+                optIfconfig6Components = $0.components(separatedBy: " ")
             }
             if let ifconfig6Components = optIfconfig6Components, ifconfig6Components.count == 3 {
                 let address6Components = ifconfig6Components[1].components(separatedBy: "/")
@@ -321,11 +306,8 @@ extension SessionProxy {
                 let defaultGateway6 = ifconfig6Components[2]
                 
                 var routes6: [IPv6Settings.Route] = []
-                PushReply.route6Regexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                    guard let range = result?.range else { return }
-                        
-                    let match = (message as NSString).substring(with: range)
-                    let routeEntryComponents = match.components(separatedBy: " ")
+                PushReply.route6Regexp.enumerateMatches(in: message) {
+                    let routeEntryComponents = $0.components(separatedBy: " ")
                     
                     let destinationComponents = routeEntryComponents[1].components(separatedBy: "/")
                     guard destinationComponents.count == 2 else {
@@ -359,35 +341,26 @@ extension SessionProxy {
 
             // MARK: DNS
 
-            PushReply.dnsRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
-                
-                let match = (message as NSString).substring(with: range)
-                let dnsEntryComponents = match.components(separatedBy: " ")
+            PushReply.dnsRegexp.enumerateMatches(in: message) {
+                let dnsEntryComponents = $0.components(separatedBy: " ")
                 
                 dnsServers.append(dnsEntryComponents[2])
             }
             
             // MARK: Authentication
 
-            PushReply.authTokenRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
+            PushReply.authTokenRegexp.enumerateMatches(in: message) {
+                let tokenComponents = $0.components(separatedBy: " ")
                 
-                let match = (message as NSString).substring(with: range)
-                let tokenComponents = match.components(separatedBy: " ")
-                
-                if (tokenComponents.count > 1) {
+                if tokenComponents.count > 1 {
                     authToken = tokenComponents[1]
                 }
             }
             
-            PushReply.peerIdRegexp.enumerateMatches(in: message, options: [], range: NSMakeRange(0, message.count)) { (result, flags, _) in
-                guard let range = result?.range else { return }
+            PushReply.peerIdRegexp.enumerateMatches(in: message) {
+                let tokenComponents = $0.components(separatedBy: " ")
                 
-                let match = (message as NSString).substring(with: range)
-                let tokenComponents = match.components(separatedBy: " ")
-                
-                if (tokenComponents.count > 1) {
+                if tokenComponents.count > 1 {
                     peerId = UInt32(tokenComponents[1])
                 }
             }
@@ -395,6 +368,18 @@ extension SessionProxy {
             self.dnsServers = dnsServers
             self.authToken = authToken
             self.peerId = peerId
+        }
+    }
+}
+
+private extension NSRegularExpression {
+    func enumerateMatches(in string: String, using block: (String) -> Void) {
+        enumerateMatches(in: string, options: [], range: NSMakeRange(0, string.count)) { (result, flags, stop) in
+            guard let range = result?.range else {
+                return
+            }
+            let match = (string as NSString).substring(with: range)
+            block(match)
         }
     }
 }
