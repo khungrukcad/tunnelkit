@@ -767,7 +767,11 @@ public class SessionProxy {
             log.debug("Remote sessionId is \(remoteSessionId.toHex())")
             log.debug("Start TLS handshake")
 
-            negotiationKey.tlsOptional = TLSBox(caPath: configuration.caPath)
+            negotiationKey.tlsOptional = TLSBox(
+                caPath: configuration.caPath,
+                clientCertificatePath: configuration.clientCertificatePath,
+                clientKeyPath: configuration.clientKeyPath
+            )
             do {
                 try negotiationKey.tls.start()
             } catch let e {

@@ -13,15 +13,17 @@ Website: [davidederosa.com][me-website]
 The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegotiation and replay protection are also included, but full-fledged configuration files (.ovpn) are not currently supported.
 
 - [x] Handshake and tunneling over UDP or TCP
-- [x] Client-initiated renegotiation
-- [x] Replay protection (hardcoded window)
-- [x] Data encryption
+- [x] Ciphers
     - AES-CBC (128 and 256 bit)
     - AES-GCM (128 and 256 bit)
-- [x] HMAC digest
+- [x] HMAC digests
     - SHA-1
     - SHA-256
-- [x] TLS CA validation
+- [x] TLS handshake
+    - CA validation
+    - Client certificate
+- [x] Key renegotiation (client-initiated)
+- [x] Replay protection (hardcoded window)
 
 The library does not currently support compression, so you must disable it server-side in order to avoid a confusing loss of data packets. The `TunnelKitProvider.Configuration.LZOFraming` option is deprecated and only provided for interoperability with `comp-lzo no`.
 
@@ -73,7 +75,7 @@ For the VPN to work properly, the `BasicTunnel` demo requires:
 
 both in the main app and the tunnel extension target.
 
-In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `builder.ca` to the PEM encoded certificate of your VPN server's CA (or `nil` if none).
+In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `builder.ca` to the PEM encoded certificate of your VPN server's CA (or `nil` to skip CA validation, however discouraged).
 
 Example:
 

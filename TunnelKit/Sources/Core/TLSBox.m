@@ -59,6 +59,8 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 @interface TLSBox ()
 
 @property (nonatomic, strong) NSString *caPath;
+@property (nonatomic, strong) NSString *clientCertificatePath;
+@property (nonatomic, strong) NSString *clientKeyPath;
 @property (nonatomic, assign) BOOL isConnected;
 
 @property (nonatomic, unsafe_unretained) SSL_CTX *ctx;
@@ -75,13 +77,15 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 - (instancetype)init
 {
-    return [self initWithCAPath:nil];
+    return [self initWithCAPath:nil clientCertificatePath:nil clientKeyPath:nil];
 }
 
-- (instancetype)initWithCAPath:(NSString *)caPath
+- (instancetype)initWithCAPath:(NSString *)caPath clientCertificatePath:(NSString *)clientCertificatePath clientKeyPath:(NSString *)clientKeyPath
 {
     if ((self = [super init])) {
         self.caPath = caPath;
+        self.clientCertificatePath = clientCertificatePath;
+        self.clientKeyPath = clientKeyPath;
         self.bufferCipherText = allocate_safely(TLSBoxMaxBufferLength);
     }
     return self;
@@ -106,13 +110,11 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 - (BOOL)startWithError:(NSError *__autoreleasing *)error
 {
     if (!TLSBoxIsOpenSSLLoaded) {
-//        OPENSSL_init_ssl(0, NULL);
-
         TLSBoxIsOpenSSLLoaded = YES;
     }
     
     self.ctx = SSL_CTX_new(TLS_client_method());
-    SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2|SSL_OP_NO_SSLv3|SSL_OP_NO_COMPRESSION);
+    SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
     if (self.caPath) {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
         if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
@@ -126,7 +128,26 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     else {
         SSL_CTX_set_verify(self.ctx, SSL_VERIFY_NONE, NULL);
     }
-    SSL_CTX_set1_curves_list(self.ctx, "X25519:prime256v1:secp521r1:secp384r1:secp256k1");
+    
+    if (self.clientCertificatePath) {
+        if (!SSL_CTX_use_certificate_file(self.ctx, [self.clientCertificatePath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
+            ERR_print_errors_fp(stdout);
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientCertificate);
+            }
+            return NO;
+        }
+
+        if (self.clientKeyPath) {
+            if (!SSL_CTX_use_PrivateKey_file(self.ctx, [self.clientKeyPath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
+                ERR_print_errors_fp(stdout);
+                if (error) {
+                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientKey);
+                }
+                return NO;
+            }
+        }
+    }
 
     self.ssl = SSL_new(self.ctx);
     
