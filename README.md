@@ -22,10 +22,13 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegoti
 - [x] TLS handshake
     - CA validation
     - Client certificate
-- [x] Key renegotiation (client-initiated)
+- [x] Compression framing
+    - Disabled
+    - Compress (2.4)
+    - LZO (deprecated in 2.4)
 - [x] Replay protection (hardcoded window)
 
-The library does not currently support compression, so you must disable it server-side in order to avoid a confusing loss of data packets. The `TunnelKitProvider.Configuration.LZOFraming` option is deprecated and only provided for interoperability with `comp-lzo no`.
+The library therefore supports compression framing, just not compression. Remember to match server-side compression framing in order to avoid a confusing loss of data packets. E.g. if server has `comp-lzo no`, client must use `compressionFraming = .compLZO`.
 
 ## Installation
 

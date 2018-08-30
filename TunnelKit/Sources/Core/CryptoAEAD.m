@@ -292,12 +292,30 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (void)assembleDataPacketWithPacketId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
 {
     uint8_t *ptr = dest;
-    if (self.LZOFraming) {
-        *ptr = DataPacketLZONoCompress;
-        ptr += sizeof(uint8_t);
-    }
     memcpy(ptr, payload.bytes, payload.length);
     *length = (int)(ptr - dest + payload.length);
+
+    switch (self.compressionFraming) {
+        case CompressionFramingDisabled:
+            memcpy(ptr, payload.bytes, payload.length);
+            break;
+            
+        case CompressionFramingCompress:
+            memcpy(ptr, payload.bytes, payload.length);
+            ptr[payload.length] = *ptr;
+            *ptr = CompressionFramingNoCompressSwap;
+            *length += sizeof(uint8_t);
+            break;
+            
+        case CompressionFramingCompLZO:
+            memcpy(ptr + sizeof(uint8_t), payload.bytes, payload.length);
+            *ptr = CompressionFramingNoCompress;
+            *length += sizeof(uint8_t);
+            break;
+            
+        default:
+            break;
+    }
 }
 
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId payload:(const uint8_t *)payload payloadLength:(NSInteger)payloadLength error:(NSError *__autoreleasing *)error
@@ -361,15 +379,26 @@ const NSInteger CryptoAEADTagLength     = 16;
     return YES;
 }
 
-- (const uint8_t *)parsePayloadWithDataPacket:(const uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length
+- (const uint8_t *)parsePayloadWithDataPacket:(uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length
 {
-    const uint8_t *ptr = packet;
-    if (self.LZOFraming) {
-        NSAssert(*ptr == DataPacketLZONoCompress, @"Expected LZO NO_COMPRESS");
-//        *compression = *ptr;
-        ptr += sizeof(uint8_t); // compression byte
-    }
+    uint8_t *ptr = packet;
     *length = packetLength - (int)(ptr - packet);
+    if (self.compressionFraming != CompressionFramingDisabled) {
+        switch (*ptr) {
+            case CompressionFramingNoCompress:
+                ptr += sizeof(uint8_t);
+                break;
+                
+            case CompressionFramingNoCompressSwap:
+                *ptr = packet[packetLength - 1];
+                break;
+                
+            default:
+                NSAssert(NO, @"Compression not supported (found %X)", *ptr);
+                break;
+        }
+        *length -= sizeof(uint8_t);
+    }
     return ptr;
 }
 

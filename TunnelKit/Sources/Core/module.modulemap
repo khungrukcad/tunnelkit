@@ -43,6 +43,7 @@ module __TunnelKitNative {
     header "MSS.h"
     header "PacketMacros.h"
     header "ReplayProtector.h"
+    header "CompressionFraming.h"
     header "DataPath.h"
     header "DataPathEncryption.h"
     export *

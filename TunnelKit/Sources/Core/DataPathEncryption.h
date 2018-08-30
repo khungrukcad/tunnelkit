@@ -41,8 +41,8 @@
 - (int)overheadLength;
 - (uint32_t)peerId;
 - (void)setPeerId:(uint32_t)peerId;
-- (BOOL)LZOFraming;// DEPRECATED_ATTRIBUTE;
-- (void)setLZOFraming:(BOOL)LZOFraming;// DEPRECATED_ATTRIBUTE;
+- (CompressionFraming)compressionFraming;
+- (void)setCompressionFraming:(CompressionFraming)compressionFraming;
 
 @end
 
@@ -56,6 +56,6 @@
 @protocol DataPathDecrypter <DataPathChannel>
 
 - (BOOL)decryptDataPacket:(nonnull NSData *)packet into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length packetId:(nonnull uint32_t *)packetId error:(NSError **)error;
-- (nonnull const uint8_t *)parsePayloadWithDataPacket:(nonnull const uint8_t *)packet packetLength:(NSInteger)packetLength length:(nonnull NSInteger *)length;
+- (nonnull const uint8_t *)parsePayloadWithDataPacket:(nonnull uint8_t *)packet packetLength:(NSInteger)packetLength length:(nonnull NSInteger *)length;
 
 @end

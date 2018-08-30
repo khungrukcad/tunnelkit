@@ -29,6 +29,7 @@
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
+		0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFraming.h */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
@@ -59,6 +60,8 @@
 		0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */; };
 		0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
+		0ED9C8642138139000621BA3 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED9C8632138139000621BA3 /* CompressionFraming.swift */; };
+		0ED9C8652138139000621BA3 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED9C8632138139000621BA3 /* CompressionFraming.swift */; };
 		0EE7A79520F61EDC00B42E6A /* PacketMacros.h in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EE7A79620F61EDC00B42E6A /* PacketMacros.h in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
@@ -184,6 +187,7 @@
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E245D6B2137F73600B012A2 /* CompressionFraming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFraming.h; sourceTree = "<group>"; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -207,6 +211,7 @@
 		0EC1BBA420D71190007C4C7B /* DNSResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
 		0ECE3527212EB7770040F253 /* CryptoContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoContainer.swift; sourceTree = "<group>"; };
+		0ED9C8632138139000621BA3 /* CompressionFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressionFraming.swift; sourceTree = "<group>"; };
 		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
 		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
 		0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathEncryption.h; sourceTree = "<group>"; };
@@ -403,6 +408,8 @@
 			children = (
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
+				0E245D6B2137F73600B012A2 /* CompressionFraming.h */,
+				0ED9C8632138139000621BA3 /* CompressionFraming.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -505,6 +512,7 @@
 				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
 				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
+				0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */,
 				0EFEB4602006D3C800F81029 /* DataPath.h in Headers */,
 				0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
 				0EFEB46C2006D3C800F81029 /* ZeroingData.h in Headers */,
@@ -861,6 +869,7 @@
 				0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
 				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
+				0ED9C8642138139000621BA3 /* CompressionFraming.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
@@ -912,6 +921,7 @@
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
 				0EFEB4B02007627700F81029 /* Keychain.swift in Sources */,
 				0EFEB48E2006D7F300F81029 /* SessionProxy+SessionKey.swift in Sources */,
+				0ED9C8652138139000621BA3 /* CompressionFraming.swift in Sources */,
 				0EFEB4AF2007627700F81029 /* InterfaceObserver.swift in Sources */,
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,

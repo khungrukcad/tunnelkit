@@ -215,7 +215,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         sessionConfiguration.caPath = caPath
         sessionConfiguration.clientCertificatePath = clientCertificatePath
         sessionConfiguration.clientKeyPath = clientKeyPath
-        sessionConfiguration.LZOFraming = cfg.LZOFraming
+        sessionConfiguration.compressionFraming = cfg.compressionFraming
         if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
             sessionConfiguration.renegotiatesAfter = Double(renegotiatesAfterSeconds)
         }

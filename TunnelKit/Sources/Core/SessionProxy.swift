@@ -896,7 +896,7 @@ public class SessionProxy {
         authenticator = nil
         negotiationKey.startHandlingPackets(
             withPeerId: peerId,
-            LZOFraming: configuration.LZOFraming
+            compressionFraming: configuration.compressionFraming
         )
         negotiationKey.controlState = .connected
         connectedDate = Date()

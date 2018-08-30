@@ -22,5 +22,5 @@ custom_categories:
         - SessionError
     - name: AppExtension
       children:
-        - Certificate
+        - CryptoContainer
         - TunnelKitProvider

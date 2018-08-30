@@ -36,6 +36,7 @@
 //
 
 import Foundation
+import __TunnelKitNative
 
 extension SessionProxy {
 
@@ -71,7 +72,7 @@ extension SessionProxy {
     
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
-        
+
         /// An username.
         public let username: String
         
@@ -87,9 +88,8 @@ extension SessionProxy {
         /// The path to the optional CA for TLS negotiation (PEM format).
         public var caPath: String?
         
-        /// Enables LZO compression framing (deprecated in OpenVPN 2.4).
-//        @available(*, deprecated)
-        public var LZOFraming: Bool
+        /// Sets compression framing, disabled by default.
+        public var compressionFraming: CompressionFraming
     
         /// The path to the optional client certificate for TLS negotiation (PEM format).
         public var clientCertificatePath: String?
@@ -112,7 +112,7 @@ extension SessionProxy {
             caPath = nil
             clientCertificatePath = nil
             clientKeyPath = nil
-            LZOFraming = false
+            compressionFraming = .disabled
             keepAliveInterval = nil
             renegotiatesAfter = nil
         }
@@ -131,7 +131,7 @@ extension SessionProxy {
                 caPath: caPath,
                 clientCertificatePath: clientCertificatePath,
                 clientKeyPath: clientKeyPath,
-                LZOFraming: LZOFraming,
+                compressionFraming: compressionFraming,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter
             )
@@ -162,8 +162,8 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKeyPath`
         public let clientKeyPath: String?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.LZOFraming`
-        public let LZOFraming: Bool
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
+        public let compressionFraming: CompressionFraming
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?
