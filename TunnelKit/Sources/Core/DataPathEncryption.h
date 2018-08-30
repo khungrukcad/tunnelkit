@@ -36,18 +36,19 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^DataPathAssembleBlock)(uint8_t *_Nonnull packetDest, NSInteger *_Nonnull packetLengthOffset, NSData *_Nonnull payload);
+typedef void (^DataPathParseBlock)(uint8_t *_Nonnull payload, NSInteger *_Nonnull payloadOffset, NSInteger *_Nonnull headerLength, const uint8_t *_Nonnull packet, NSInteger packetLength);
+
 @protocol DataPathChannel
 
 - (int)overheadLength;
 - (void)setPeerId:(uint32_t)peerId;
-- (CompressionFraming)compressionFraming;
-- (void)setCompressionFraming:(CompressionFraming)compressionFraming;
 
 @end
 
 @protocol DataPathEncrypter <DataPathChannel>
 
-- (void)assembleDataPacketWithPacketId:(uint32_t)packetId payload:(NSData *)payload into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length;
+- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length;
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId payload:(const uint8_t *)payload payloadLength:(NSInteger)payloadLength error:(NSError **)error;
 
 @end
@@ -55,6 +56,6 @@
 @protocol DataPathDecrypter <DataPathChannel>
 
 - (BOOL)decryptDataPacket:(nonnull NSData *)packet into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length packetId:(nonnull uint32_t *)packetId error:(NSError **)error;
-- (nonnull const uint8_t *)parsePayloadWithDataPacket:(nonnull uint8_t *)packet packetLength:(NSInteger)packetLength length:(nonnull NSInteger *)length;
+- (nonnull const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block dataPacket:(nonnull uint8_t *)packet packetLength:(NSInteger)packetLength length:(nonnull NSInteger *)length;
 
 @end

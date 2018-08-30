@@ -50,8 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DataPathCryptoCBC : NSObject <DataPathEncrypter, DataPathDecrypter>
 
-@property (nonatomic, assign) CompressionFraming compressionFraming;
-
 - (instancetype)initWithCrypto:(nonnull CryptoCBC *)crypto;
 
 @end

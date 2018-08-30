@@ -64,6 +64,9 @@
 @property (nonatomic, assign) int decBufferCapacity;
 @property (nonatomic, strong) ReplayProtector *inReplay;
 
+@property (nonatomic, copy) DataPathAssembleBlock assemblePayloadBlock;
+@property (nonatomic, copy) DataPathParseBlock parsePayloadBlock;
+
 @end
 
 @implementation DataPath
@@ -105,6 +108,8 @@
         if (usesReplayProtection) {
             self.inReplay = [[ReplayProtector alloc] init];
         }
+
+        self.compressionFraming = CompressionFramingDisabled;
     }
     return self;
 }
@@ -162,11 +167,47 @@
 
 - (void)setCompressionFraming:(CompressionFraming)compressionFraming
 {
-    NSAssert(self.encrypter, @"Setting compressionFraming to nil encrypter");
-    NSAssert(self.decrypter, @"Setting compressionFraming to nil decrypter");
-    
-    [self.encrypter setCompressionFraming:compressionFraming];
-    [self.decrypter setCompressionFraming:compressionFraming];
+    switch (compressionFraming) {
+        case CompressionFramingDisabled: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest, payload.bytes, payload.length);
+                *packetLengthOffset = 0;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                *payloadOffset = 0;
+                *headerLength = 0;
+            };
+            break;
+        }
+        case CompressionFramingCompress: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest, payload.bytes, payload.length);
+                packetDest[payload.length] = packetDest[0];
+                packetDest[0] = CompressionFramingNoCompressSwap;
+                *packetLengthOffset = 1;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                NSCAssert(payload[0] == CompressionFramingNoCompressSwap, @"Expected NO_COMPRESS_SWAP (found %X != %X)", payload[0], CompressionFramingNoCompressSwap);
+                payload[0] = packet[packetLength - 1];
+                *payloadOffset = 0;
+                *headerLength = 1;
+            };
+            break;
+        }
+        case CompressionFramingCompLZO: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest + 1, payload.bytes, payload.length);
+                packetDest[0] = CompressionFramingNoCompress;
+                *packetLengthOffset = 1;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                NSCAssert(payload[0] == CompressionFramingNoCompress, @"Expected NO_COMPRESS (found %X != %X)", payload[0], CompressionFramingNoCompress);
+                *payloadOffset = 1;
+                *headerLength = 1;
+            };
+            break;
+        }
+    }
 }
 
 #pragma mark DataPath
@@ -192,10 +233,11 @@
         
         uint8_t *payload = self.encBufferAligned;
         NSInteger payloadLength;
-        [self.encrypter assembleDataPacketWithPacketId:self.outPacketId
-                                               payload:raw
-                                                  into:payload
-                                                length:&payloadLength];
+        [self.encrypter assembleDataPacketWithBlock:self.assemblePayloadBlock
+                                           packetId:self.outPacketId
+                                            payload:raw
+                                               into:payload
+                                             length:&payloadLength];
         MSSFix(payload, payloadLength);
         
         NSData *encryptedPacket = [self.encrypter encryptedDataPacketWithKey:key
@@ -246,9 +288,10 @@
         }
         
         NSInteger payloadLength;
-        const uint8_t *payload = [self.decrypter parsePayloadWithDataPacket:packet
-                                                               packetLength:packetLength
-                                                                     length:&payloadLength];
+        const uint8_t *payload = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
+                                                            dataPacket:packet
+                                                          packetLength:packetLength
+                                                                length:&payloadLength];
         
         if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payload, DataPacketPingData, payloadLength)) {
             if (keepAlive) {
