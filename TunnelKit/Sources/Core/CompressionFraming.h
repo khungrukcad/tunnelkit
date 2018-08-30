@@ -30,6 +30,3 @@ typedef NS_ENUM(NSInteger, CompressionFraming) {
     CompressionFramingCompress,
     CompressionFramingCompLZO __attribute__((deprecated))
 };
-
-#define CompressionFramingNoCompress        0xfa
-#define CompressionFramingNoCompressSwap    0xfb

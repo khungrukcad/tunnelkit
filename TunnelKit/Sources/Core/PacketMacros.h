@@ -51,6 +51,9 @@ typedef NS_ENUM(uint8_t, PacketCode) {
     PacketCodeUnknown               = 0xff
 };
 
+#define DataPacketNoCompress        0xfa
+#define DataPacketNoCompressSwap    0xfb
+
 extern const uint8_t DataPacketPingData[16];
 
 static inline int PacketHeaderSet(uint8_t *_Nonnull to, PacketCode code, uint8_t key)
