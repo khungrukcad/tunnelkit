@@ -292,7 +292,6 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (void)assembleDataPacketWithPacketId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
 {
     uint8_t *ptr = dest;
-    memcpy(ptr, payload.bytes, payload.length);
     *length = (int)(ptr - dest + payload.length);
 
     switch (self.compressionFraming) {
