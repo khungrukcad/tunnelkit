@@ -39,7 +39,6 @@
 @protocol DataPathChannel
 
 - (int)overheadLength;
-- (uint32_t)peerId;
 - (void)setPeerId:(uint32_t)peerId;
 - (CompressionFraming)compressionFraming;
 - (void)setCompressionFraming:(CompressionFraming)compressionFraming;

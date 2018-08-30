@@ -266,13 +266,14 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (void)setPeerId:(uint32_t)peerId
 {
-    _peerId = peerId & 0xffffff;
+    peerId &= 0xffffff;
 
-    if (_peerId == PacketPeerIdDisabled) {
+    if (peerId == PacketPeerIdDisabled) {
         self.headerLength = 1;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
             PacketHeaderSet(to, PacketCodeDataV1, key);
         };
+        self.checkPeerId = NULL;
     }
     else {
         self.headerLength = 4;
@@ -280,7 +281,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
             PacketHeaderSetDataV2(to, key, peerId);
         };
         self.checkPeerId = ^BOOL(const uint8_t *ptr) {
-            return (PacketHeaderGetDataV2PeerId(ptr) == self.peerId);
+            return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
         };
     }
 }

@@ -156,8 +156,8 @@
     NSAssert(self.encrypter, @"Setting peer-id to nil encrypter");
     NSAssert(self.decrypter, @"Setting peer-id to nil decrypter");
 
-    self.encrypter.peerId = peerId;
-    self.decrypter.peerId = peerId;
+    [self.encrypter setPeerId:peerId];
+    [self.decrypter setPeerId:peerId];
 }
 
 - (void)setCompressionFraming:(CompressionFraming)compressionFraming
@@ -165,15 +165,15 @@
     NSAssert(self.encrypter, @"Setting compressionFraming to nil encrypter");
     NSAssert(self.decrypter, @"Setting compressionFraming to nil decrypter");
     
-    self.encrypter.compressionFraming = compressionFraming;
-    self.decrypter.compressionFraming = compressionFraming;
+    [self.encrypter setCompressionFraming:compressionFraming];
+    [self.decrypter setCompressionFraming:compressionFraming];
 }
 
 #pragma mark DataPath
 
 - (NSArray<NSData *> *)encryptPackets:(NSArray<NSData *> *)packets key:(uint8_t)key error:(NSError *__autoreleasing *)error
 {
-    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
+//    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
     
     if (self.outPacketId > self.maxPacketId) {
         if (error) {
@@ -213,10 +213,9 @@
     return self.outPackets;
 }
 
-//- (NSArray<NSData *> *)decryptPackets:(NSArray<NSData *> *)packets error:(NSError *__autoreleasing *)error
 - (NSArray<NSData *> *)decryptPackets:(NSArray<NSData *> *)packets keepAlive:(bool *)keepAlive error:(NSError *__autoreleasing *)error
 {
-    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
+//    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
 
     [self.inPackets removeAllObjects];
     

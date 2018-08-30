@@ -264,15 +264,16 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (void)setPeerId:(uint32_t)peerId
 {
-    _peerId = peerId & 0xffffff;
+    peerId &= 0xffffff;
     
-    if (_peerId == PacketPeerIdDisabled) {
+    if (peerId == PacketPeerIdDisabled) {
         self.headerLength = 1;
         self.crypto.extraLength = PacketIdLength;
         self.crypto.extraPacketIdOffset = 0;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
             PacketHeaderSet(to, PacketCodeDataV1, key);
         };
+        self.checkPeerId = NULL;
     }
     else {
         self.headerLength = 4;
@@ -282,7 +283,7 @@ const NSInteger CryptoAEADTagLength     = 16;
             PacketHeaderSetDataV2(to, key, peerId);
         };
         self.checkPeerId = ^BOOL(const uint8_t *ptr) {
-            return (PacketHeaderGetDataV2PeerId(ptr) == self.peerId);
+            return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
         };
     }
 }
@@ -328,7 +329,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     *(uint32_t *)(ptr + self.headerLength) = htonl(packetId);
 
     const uint8_t *extra = ptr; // AD = header + peer id + packet id
-    if (self.peerId == PacketPeerIdDisabled) {
+    if (!self.checkPeerId) {
         extra += self.headerLength; // AD = packet id only
     }
 
@@ -354,7 +355,7 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)dest length:(NSInteger *)length packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
     const uint8_t *extra = packet.bytes; // AD = header + peer id + packet id
-    if (self.peerId == PacketPeerIdDisabled) {
+    if (!self.checkPeerId) {
         extra += self.headerLength; // AD = packet id only
     }
 
