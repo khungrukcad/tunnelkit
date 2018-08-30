@@ -34,13 +34,13 @@ extension SessionProxy {
         /// No compression framing.
         case disabled
         
-        /// Framing compatible with 2.4 `compress`.
-        case compress
-        
         /// Framing compatible with `comp-lzo` (deprecated).
         @available(*, deprecated)
         case compLZO
 
+        /// Framing compatible with 2.4 `compress`.
+        case compress
+        
         var native: CompressionFramingNative {
             guard let val = CompressionFramingNative(rawValue: rawValue) else {
                 fatalError("Unhandled CompressionFraming bridging")
