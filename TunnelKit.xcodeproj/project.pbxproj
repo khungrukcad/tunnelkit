@@ -29,6 +29,7 @@
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
+		0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFraming.h */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
@@ -184,6 +185,7 @@
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E245D6B2137F73600B012A2 /* CompressionFraming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFraming.h; sourceTree = "<group>"; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -403,6 +405,7 @@
 			children = (
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
+				0E245D6B2137F73600B012A2 /* CompressionFraming.h */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -505,6 +508,7 @@
 				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
 				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
+				0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */,
 				0EFEB4602006D3C800F81029 /* DataPath.h in Headers */,
 				0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
 				0EFEB46C2006D3C800F81029 /* ZeroingData.h in Headers */,

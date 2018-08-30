@@ -38,6 +38,7 @@
 import Foundation
 import NetworkExtension
 import SwiftyBeaver
+import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
@@ -163,9 +164,8 @@ extension TunnelKitProvider {
         /// The MTU of the link.
         public var mtu: Int
         
-        /// Enables LZO framing (deprecated).
-//        @available(*, deprecated)
-        public var LZOFraming: Bool
+        /// Sets compression framing, disabled by default.
+        public var compressionFraming: CompressionFraming
 
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
@@ -197,7 +197,7 @@ extension TunnelKitProvider {
             digest = .sha1
             ca = nil
             mtu = 1500
-            LZOFraming = false
+            compressionFraming = .disabled
             renegotiatesAfterSeconds = nil
             shouldDebug = false
             debugLogKey = nil
@@ -265,7 +265,11 @@ extension TunnelKitProvider {
             self.clientCertificate = clientCertificate
             self.clientKey = clientKey
             mtu = providerConfiguration[S.mtu] as? Int ?? 1250
-            LZOFraming = providerConfiguration[S.LZOFraming] as? Bool ?? false
+            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = CompressionFraming(rawValue: compressionFramingValue) {
+                self.compressionFraming = compressionFraming
+            } else {
+                compressionFraming = .disabled
+            }
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
@@ -301,7 +305,7 @@ extension TunnelKitProvider {
                 clientCertificate: clientCertificate,
                 clientKey: clientKey,
                 mtu: mtu,
-                LZOFraming: LZOFraming,
+                compressionFraming: compressionFraming,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
@@ -333,7 +337,7 @@ extension TunnelKitProvider {
             
             static let mtu = "MTU"
             
-            static let LZOFraming = "LZOFraming"
+            static let compressionFraming = "CompressionFraming"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
             
@@ -374,8 +378,8 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.LZOFraming`
-        public let LZOFraming: Bool
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.compressionFraming`
+        public let compressionFraming: CompressionFraming
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?
@@ -447,9 +451,7 @@ extension TunnelKitProvider {
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
-            if LZOFraming {
-                dict[S.LZOFraming] = LZOFraming
-            }
+            dict[S.compressionFraming] = compressionFraming.rawValue
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
             }
@@ -509,7 +511,7 @@ extension TunnelKitProvider {
                 log.info("Client verification: disabled")
             }
             log.info("MTU: \(mtu)")
-            log.info("LZO framing: \(LZOFraming ? "enabled" : "disabled")")
+            log.info("Compression framing: \(compressionFraming)")
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
@@ -538,7 +540,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.clientCertificate = clientCertificate
         builder.clientKey = clientKey
         builder.mtu = mtu
-        builder.LZOFraming = LZOFraming
+        builder.compressionFraming = compressionFraming
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
@@ -555,7 +557,7 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.clientCertificate == rhs.clientCertificate) &&
             (lhs.clientKey == rhs.clientKey) &&
             (lhs.mtu == rhs.mtu) &&
-            (lhs.LZOFraming == rhs.LZOFraming) &&
+            (lhs.compressionFraming == rhs.compressionFraming) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
         )
     }

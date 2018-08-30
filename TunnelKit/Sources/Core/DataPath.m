@@ -160,13 +160,13 @@
     self.decrypter.peerId = peerId;
 }
 
-- (void)setLZOFraming:(BOOL)LZOFraming
+- (void)setCompressionFraming:(CompressionFraming)compressionFraming
 {
-    NSAssert(self.encrypter, @"Setting LZOFraming to nil encrypter");
-    NSAssert(self.decrypter, @"Setting LZOFraming to nil decrypter");
+    NSAssert(self.encrypter, @"Setting compressionFraming to nil encrypter");
+    NSAssert(self.decrypter, @"Setting compressionFraming to nil decrypter");
     
-    self.encrypter.LZOFraming = LZOFraming;
-    self.decrypter.LZOFraming = LZOFraming;
+    self.encrypter.compressionFraming = compressionFraming;
+    self.decrypter.compressionFraming = compressionFraming;
 }
 
 #pragma mark DataPath

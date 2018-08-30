@@ -37,7 +37,7 @@ extension ViewController {
         builder.cipher = .aes128cbc
         builder.digest = .sha1
         builder.mtu = 1350
-        builder.LZOFraming = true
+        builder.compressionFraming = .compLZO
         builder.renegotiatesAfterSeconds = nil
         builder.shouldDebug = true
         builder.debugLogKey = "Log"

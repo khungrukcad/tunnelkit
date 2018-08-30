@@ -109,9 +109,9 @@ extension SessionProxy {
             return isTLSConnected
         }
         
-        func startHandlingPackets(withPeerId peerId: UInt32? = nil, LZOFraming: Bool = false) {
+        func startHandlingPackets(withPeerId peerId: UInt32? = nil, compressionFraming: CompressionFraming = .disabled) {
             dataPath?.setPeerId(peerId ?? PacketPeerIdDisabled)
-            dataPath?.setLZOFraming(LZOFraming)
+            dataPath?.setCompressionFraming(compressionFraming)
             canHandlePackets = true
         }
         
