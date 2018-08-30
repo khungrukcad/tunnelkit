@@ -36,7 +36,6 @@
 //
 
 import Foundation
-import __TunnelKitNative
 
 extension SessionProxy {
 

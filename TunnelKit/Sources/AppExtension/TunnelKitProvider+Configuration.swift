@@ -38,7 +38,6 @@
 import Foundation
 import NetworkExtension
 import SwiftyBeaver
-import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
@@ -165,7 +164,7 @@ extension TunnelKitProvider {
         public var mtu: Int
         
         /// Sets compression framing, disabled by default.
-        public var compressionFraming: CompressionFraming
+        public var compressionFraming: SessionProxy.CompressionFraming
 
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
@@ -265,7 +264,7 @@ extension TunnelKitProvider {
             self.clientCertificate = clientCertificate
             self.clientKey = clientKey
             mtu = providerConfiguration[S.mtu] as? Int ?? 1250
-            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = CompressionFraming(rawValue: compressionFramingValue) {
+            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = SessionProxy.CompressionFraming(rawValue: compressionFramingValue) {
                 self.compressionFraming = compressionFraming
             } else {
                 compressionFraming = .disabled
@@ -379,7 +378,7 @@ extension TunnelKitProvider {
         public let mtu: Int
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.compressionFraming`
-        public let compressionFraming: CompressionFraming
+        public let compressionFraming: SessionProxy.CompressionFraming
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?

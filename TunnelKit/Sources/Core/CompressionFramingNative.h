@@ -1,5 +1,5 @@
 //
-//  CompressionFraming.h
+//  CompressionFramingNative.h
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 8/30/18.
@@ -25,8 +25,8 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_ENUM(NSInteger, CompressionFraming) {
-    CompressionFramingDisabled,
-    CompressionFramingCompress,
-    CompressionFramingCompLZO __attribute__((deprecated))
+typedef NS_ENUM(NSInteger, CompressionFramingNative) {
+    CompressionFramingNativeDisabled,
+    CompressionFramingNativeCompress,
+    CompressionFramingNativeCompLZO __attribute__((deprecated))
 };

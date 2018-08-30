@@ -111,7 +111,7 @@ extension SessionProxy {
         
         func startHandlingPackets(withPeerId peerId: UInt32? = nil, compressionFraming: CompressionFraming = .disabled) {
             dataPath?.setPeerId(peerId ?? PacketPeerIdDisabled)
-            dataPath?.setCompressionFraming(compressionFraming)
+            dataPath?.setCompressionFraming(compressionFraming.native)
             canHandlePackets = true
         }
         
