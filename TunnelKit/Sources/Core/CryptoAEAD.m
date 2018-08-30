@@ -264,15 +264,16 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (void)setPeerId:(uint32_t)peerId
 {
-    _peerId = peerId & 0xffffff;
+    peerId &= 0xffffff;
     
-    if (_peerId == PacketPeerIdDisabled) {
+    if (peerId == PacketPeerIdDisabled) {
         self.headerLength = 1;
         self.crypto.extraLength = PacketIdLength;
         self.crypto.extraPacketIdOffset = 0;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
             PacketHeaderSet(to, PacketCodeDataV1, key);
         };
+        self.checkPeerId = NULL;
     }
     else {
         self.headerLength = 4;
@@ -282,87 +283,72 @@ const NSInteger CryptoAEADTagLength     = 16;
             PacketHeaderSetDataV2(to, key, peerId);
         };
         self.checkPeerId = ^BOOL(const uint8_t *ptr) {
-            return (PacketHeaderGetDataV2PeerId(ptr) == self.peerId);
+            return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
         };
     }
 }
 
 #pragma mark DataPathEncrypter
 
-- (void)assembleDataPacketWithPacketId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
+- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)packetBytes length:(NSInteger *)packetLength
 {
-    uint8_t *ptr = dest;
-    *length = (int)(ptr - dest + payload.length);
-
-    switch (self.compressionFraming) {
-        case CompressionFramingDisabled:
-            memcpy(ptr, payload.bytes, payload.length);
-            break;
-            
-        case CompressionFramingCompress:
-            memcpy(ptr, payload.bytes, payload.length);
-            ptr[payload.length] = *ptr;
-            *ptr = CompressionFramingNoCompressSwap;
-            *length += sizeof(uint8_t);
-            break;
-            
-        case CompressionFramingCompLZO:
-            memcpy(ptr + sizeof(uint8_t), payload.bytes, payload.length);
-            *ptr = CompressionFramingNoCompress;
-            *length += sizeof(uint8_t);
-            break;
-            
-        default:
-            break;
+    *packetLength = payload.length;
+    if (!block) {
+        memcpy(packetBytes, payload.bytes, payload.length);
+        return;
     }
+
+    NSInteger packetLengthOffset;
+    block(packetBytes, &packetLengthOffset, payload);
+    *packetLength += packetLengthOffset;
 }
 
-- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId payload:(const uint8_t *)payload payloadLength:(NSInteger)payloadLength error:(NSError *__autoreleasing *)error
+- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + PacketIdLength + (int)safe_crypto_capacity(payloadLength, self.crypto.overheadLength);
+    const int capacity = self.headerLength + PacketIdLength + (int)safe_crypto_capacity(packetLength, self.crypto.overheadLength);
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
-    NSInteger encryptedPayloadLength = INT_MAX;
+    NSInteger encryptedPacketLength = INT_MAX;
 
     self.setDataHeader(ptr, key);
     *(uint32_t *)(ptr + self.headerLength) = htonl(packetId);
 
     const uint8_t *extra = ptr; // AD = header + peer id + packet id
-    if (self.peerId == PacketPeerIdDisabled) {
+    if (!self.checkPeerId) {
         extra += self.headerLength; // AD = packet id only
     }
 
-    const BOOL success = [self.crypto encryptBytes:payload
-                                            length:payloadLength
+    const BOOL success = [self.crypto encryptBytes:packetBytes
+                                            length:packetLength
                                               dest:(ptr + self.headerLength + PacketIdLength) // skip header and packet id
-                                        destLength:&encryptedPayloadLength
+                                        destLength:&encryptedPacketLength
                                              extra:extra
                                              error:error];
     
-    NSAssert(encryptedPayloadLength <= capacity, @"Did not allocate enough bytes for payload");
+    NSAssert(encryptedPacketLength <= capacity, @"Did not allocate enough bytes for payload");
     
     if (!success) {
         return nil;
     }
     
-    encryptedPacket.length = self.headerLength + PacketIdLength + encryptedPayloadLength;
+    encryptedPacket.length = self.headerLength + PacketIdLength + encryptedPacketLength;
     return encryptedPacket;
 }
 
 #pragma mark DataPathDecrypter
 
-- (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)dest length:(NSInteger *)length packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
+- (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
     const uint8_t *extra = packet.bytes; // AD = header + peer id + packet id
-    if (self.peerId == PacketPeerIdDisabled) {
+    if (!self.checkPeerId) {
         extra += self.headerLength; // AD = packet id only
     }
 
     // skip header + packet id
     const BOOL success = [self.crypto decryptBytes:(packet.bytes + self.headerLength + PacketIdLength)
                                             length:(int)(packet.length - (self.headerLength + PacketIdLength))
-                                              dest:dest
-                                        destLength:length
+                                              dest:packetBytes
+                                        destLength:packetLength
                                              extra:extra
                                              error:error];
     if (!success) {
@@ -378,27 +364,19 @@ const NSInteger CryptoAEADTagLength     = 16;
     return YES;
 }
 
-- (const uint8_t *)parsePayloadWithDataPacket:(uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length
+- (const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block length:(NSInteger *)length packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength
 {
-    uint8_t *ptr = packet;
-    *length = packetLength - (int)(ptr - packet);
-    if (self.compressionFraming != CompressionFramingDisabled) {
-        switch (*ptr) {
-            case CompressionFramingNoCompress:
-                ptr += sizeof(uint8_t);
-                break;
-                
-            case CompressionFramingNoCompressSwap:
-                *ptr = packet[packetLength - 1];
-                break;
-                
-            default:
-                NSAssert(NO, @"Compression not supported (found %X)", *ptr);
-                break;
-        }
-        *length -= sizeof(uint8_t);
+    uint8_t *payload = packetBytes;
+    *length = packetLength - (int)(payload - packetBytes);
+    if (!block) {
+        return payload;
     }
-    return ptr;
+    
+    NSInteger payloadOffset;
+    NSInteger payloadHeaderLength;
+    block(payload, &payloadOffset, &payloadHeaderLength, packetBytes, packetLength);
+    *length -= payloadHeaderLength;
+    return payload + payloadOffset;
 }
 
 @end

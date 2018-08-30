@@ -64,6 +64,9 @@
 @property (nonatomic, assign) int decBufferCapacity;
 @property (nonatomic, strong) ReplayProtector *inReplay;
 
+@property (nonatomic, copy) DataPathAssembleBlock assemblePayloadBlock;
+@property (nonatomic, copy) DataPathParseBlock parsePayloadBlock;
+
 @end
 
 @implementation DataPath
@@ -105,6 +108,8 @@
         if (usesReplayProtection) {
             self.inReplay = [[ReplayProtector alloc] init];
         }
+
+        self.compressionFraming = CompressionFramingDisabled;
     }
     return self;
 }
@@ -156,24 +161,60 @@
     NSAssert(self.encrypter, @"Setting peer-id to nil encrypter");
     NSAssert(self.decrypter, @"Setting peer-id to nil decrypter");
 
-    self.encrypter.peerId = peerId;
-    self.decrypter.peerId = peerId;
+    [self.encrypter setPeerId:peerId];
+    [self.decrypter setPeerId:peerId];
 }
 
 - (void)setCompressionFraming:(CompressionFraming)compressionFraming
 {
-    NSAssert(self.encrypter, @"Setting compressionFraming to nil encrypter");
-    NSAssert(self.decrypter, @"Setting compressionFraming to nil decrypter");
-    
-    self.encrypter.compressionFraming = compressionFraming;
-    self.decrypter.compressionFraming = compressionFraming;
+    switch (compressionFraming) {
+        case CompressionFramingDisabled: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest, payload.bytes, payload.length);
+                *packetLengthOffset = 0;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                *payloadOffset = 0;
+                *headerLength = 0;
+            };
+            break;
+        }
+        case CompressionFramingCompress: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest, payload.bytes, payload.length);
+                packetDest[payload.length] = packetDest[0];
+                packetDest[0] = CompressionFramingNoCompressSwap;
+                *packetLengthOffset = 1;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                NSCAssert(payload[0] == CompressionFramingNoCompressSwap, @"Expected NO_COMPRESS_SWAP (found %X != %X)", payload[0], CompressionFramingNoCompressSwap);
+                payload[0] = packet[packetLength - 1];
+                *payloadOffset = 0;
+                *headerLength = 1;
+            };
+            break;
+        }
+        case CompressionFramingCompLZO: {
+            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+                memcpy(packetDest + 1, payload.bytes, payload.length);
+                packetDest[0] = CompressionFramingNoCompress;
+                *packetLengthOffset = 1;
+            };
+            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+                NSCAssert(payload[0] == CompressionFramingNoCompress, @"Expected NO_COMPRESS (found %X != %X)", payload[0], CompressionFramingNoCompress);
+                *payloadOffset = 1;
+                *headerLength = 1;
+            };
+            break;
+        }
+    }
 }
 
 #pragma mark DataPath
 
 - (NSArray<NSData *> *)encryptPackets:(NSArray<NSData *> *)packets key:(uint8_t)key error:(NSError *__autoreleasing *)error
 {
-    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
+//    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
     
     if (self.outPacketId > self.maxPacketId) {
         if (error) {
@@ -184,53 +225,53 @@
     
     [self.outPackets removeAllObjects];
     
-    for (NSData *raw in packets) {
+    for (NSData *payload in packets) {
         self.outPacketId += 1;
         
         // may resize encBuffer to hold encrypted payload
-        [self adjustEncBufferToPacketSize:(int)raw.length];
+        [self adjustEncBufferToPacketSize:(int)payload.length];
         
-        uint8_t *payload = self.encBufferAligned;
-        NSInteger payloadLength;
-        [self.encrypter assembleDataPacketWithPacketId:self.outPacketId
-                                               payload:raw
-                                                  into:payload
-                                                length:&payloadLength];
-        MSSFix(payload, payloadLength);
+        uint8_t *dataPacketBytes = self.encBufferAligned;
+        NSInteger dataPacketLength;
+        [self.encrypter assembleDataPacketWithBlock:self.assemblePayloadBlock
+                                           packetId:self.outPacketId
+                                            payload:payload
+                                               into:dataPacketBytes
+                                             length:&dataPacketLength];
+        MSSFix(dataPacketBytes, dataPacketLength);
         
-        NSData *encryptedPacket = [self.encrypter encryptedDataPacketWithKey:key
-                                                                    packetId:self.outPacketId
-                                                                     payload:payload
-                                                               payloadLength:payloadLength
-                                                                       error:error];
-        if (!encryptedPacket) {
+        NSData *encryptedDataPacket = [self.encrypter encryptedDataPacketWithKey:key
+                                                                        packetId:self.outPacketId
+                                                                     packetBytes:dataPacketBytes
+                                                                    packetLength:dataPacketLength
+                                                                           error:error];
+        if (!encryptedDataPacket) {
             return nil;
         }
         
-        [self.outPackets addObject:encryptedPacket];
+        [self.outPackets addObject:encryptedDataPacket];
     }
     
     return self.outPackets;
 }
 
-//- (NSArray<NSData *> *)decryptPackets:(NSArray<NSData *> *)packets error:(NSError *__autoreleasing *)error
 - (NSArray<NSData *> *)decryptPackets:(NSArray<NSData *> *)packets keepAlive:(bool *)keepAlive error:(NSError *__autoreleasing *)error
 {
-    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
+//    NSAssert(self.encrypter.peerId == self.decrypter.peerId, @"Peer-id mismatch in DataPath encrypter/decrypter");
 
     [self.inPackets removeAllObjects];
     
-    for (NSData *encryptedPacket in packets) {
+    for (NSData *encryptedDataPacket in packets) {
         
         // may resize decBuffer to encryptedPacket.length
-        [self adjustDecBufferToPacketSize:(int)encryptedPacket.length];
+        [self adjustDecBufferToPacketSize:(int)encryptedDataPacket.length];
         
-        uint8_t *packet = self.decBufferAligned;
-        NSInteger packetLength = INT_MAX;
+        uint8_t *dataPacketBytes = self.decBufferAligned;
+        NSInteger dataPacketLength = INT_MAX;
         uint32_t packetId;
-        const BOOL success = [self.decrypter decryptDataPacket:encryptedPacket
-                                                          into:packet
-                                                        length:&packetLength
+        const BOOL success = [self.decrypter decryptDataPacket:encryptedDataPacket
+                                                          into:dataPacketBytes
+                                                        length:&dataPacketLength
                                                       packetId:&packetId
                                                          error:error];
         if (!success) {
@@ -247,21 +288,22 @@
         }
         
         NSInteger payloadLength;
-        const uint8_t *payload = [self.decrypter parsePayloadWithDataPacket:packet
-                                                               packetLength:packetLength
-                                                                     length:&payloadLength];
+        const uint8_t *payloadBytes = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
+                                                                     length:&payloadLength
+                                                                packetBytes:dataPacketBytes
+                                                               packetLength:dataPacketLength];
         
-        if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payload, DataPacketPingData, payloadLength)) {
+        if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payloadBytes, DataPacketPingData, payloadLength)) {
             if (keepAlive) {
                 *keepAlive = true;
             }
             continue;
         }
         
-//        MSSFix(payload, payloadLength);
+//        MSSFix(payloadBytes, payloadLength);
         
-        NSData *raw = [[NSData alloc] initWithBytes:payload length:payloadLength];
-        [self.inPackets addObject:raw];
+        NSData *payload = [[NSData alloc] initWithBytes:payloadBytes length:payloadLength];
+        [self.inPackets addObject:payload];
     }
     
     return self.inPackets;

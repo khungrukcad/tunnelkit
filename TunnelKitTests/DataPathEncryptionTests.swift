@@ -40,13 +40,15 @@ import XCTest
 @testable import __TunnelKitNative
 
 class DataPathEncryptionTests: XCTestCase {
-    private var cipherKey: ZeroingData!
+    private let cipherKey = try! SecureRandom.safeData(length: 32)
+
+    private let hmacKey = try! SecureRandom.safeData(length: 32)
+
+    private var enc: DataPathEncrypter!
     
-    private var hmacKey: ZeroingData!
+    private var dec: DataPathDecrypter!
     
     override func setUp() {
-        cipherKey = try! SecureRandom.safeData(length: 32)
-        hmacKey = try! SecureRandom.safeData(length: 32)
     }
     
     override func tearDown() {
@@ -54,53 +56,83 @@ class DataPathEncryptionTests: XCTestCase {
     }
     
     func testCBC() {
-        privateTestDataPath(cipher: "aes-128-cbc", digest: "sha256", peerId: nil)
+        prepareBox(cipher: "aes-128-cbc", digest: "sha256")
+        privateTestDataPathHigh(peerId: nil)
+        privateTestDataPathLow(peerId: nil)
     }
     
     func testFloatingCBC() {
-        privateTestDataPath(cipher: "aes-128-cbc", digest: "sha256", peerId: 0x64385837)
+        prepareBox(cipher: "aes-128-cbc", digest: "sha256")
+        privateTestDataPathHigh(peerId: 0x64385837)
+        privateTestDataPathLow(peerId: 0x64385837)
     }
     
     func testGCM() {
-        privateTestDataPath(cipher: "aes-256-gcm", digest: nil, peerId: nil)
+        prepareBox(cipher: "aes-256-gcm", digest: nil)
+        privateTestDataPathHigh(peerId: nil)
+        privateTestDataPathLow(peerId: nil)
     }
 
     func testFloatingGCM() {
-        privateTestDataPath(cipher: "aes-256-gcm", digest: nil, peerId: 0x64385837)
+        prepareBox(cipher: "aes-256-gcm", digest: nil)
+        privateTestDataPathHigh(peerId: 0x64385837)
+        privateTestDataPathLow(peerId: 0x64385837)
     }
     
-    func privateTestDataPath(cipher: String, digest: String?, peerId: UInt32?) {
+    func prepareBox(cipher: String, digest: String?) {
         let box = CryptoBox(cipherAlgorithm: cipher, digestAlgorithm: digest)
         try! box.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        let enc = box.encrypter().dataPathEncrypter()
-        let dec = box.decrypter().dataPathDecrypter()
-        
+        enc = box.encrypter().dataPathEncrypter()
+        dec = box.decrypter().dataPathDecrypter()
+    }
+    
+    func privateTestDataPathHigh(peerId: UInt32?) {
+        let path = DataPath(encrypter: enc, decrypter: dec, maxPackets: 1000, usesReplayProtection: false)
+        path.setCompressionFraming(.disabled)
+
         if let peerId = peerId {
             enc.setPeerId(peerId)
             dec.setPeerId(peerId)
-            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
-            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
+//            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
+//            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
         }
-//        enc.setLZOFraming(true)
-//        dec.setLZOFraming(true)
 
-        let payload = Data(hex: "00112233445566778899")
-        let packetId: UInt32 = 0x56341200
+        let expectedPayload = Data(hex: "00112233445566778899")
         let key: UInt8 = 4
-        var encryptedPayload: [UInt8] = [UInt8](repeating: 0, count: 1000)
-        var encryptedPayloadLength: Int = 0
-        enc.assembleDataPacket(withPacketId: packetId, payload: payload, into: &encryptedPayload, length: &encryptedPayloadLength)
-        let encrypted = try! enc.encryptedDataPacket(withKey: key, packetId: packetId, payload: encryptedPayload, payloadLength: encryptedPayloadLength)
 
-        var decrypted: [UInt8] = [UInt8](repeating: 0, count: 1000)
+        let encrypted = try! path.encryptPackets([expectedPayload], key: key)
+        let decrypted = try! path.decryptPackets(encrypted, keepAlive: nil)
+        let payload = decrypted.first!
+
+        XCTAssertEqual(payload, expectedPayload)
+    }
+
+    func privateTestDataPathLow(peerId: UInt32?) {
+        if let peerId = peerId {
+            enc.setPeerId(peerId)
+            dec.setPeerId(peerId)
+//            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
+//            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
+        }
+
+        let expectedPayload = Data(hex: "00112233445566778899")
+        let expectedPacketId: UInt32 = 0x56341200
+        let key: UInt8 = 4
+
+        var encryptedPacketBytes: [UInt8] = [UInt8](repeating: 0, count: 1000)
+        var encryptedPacketLength: Int = 0
+        enc.assembleDataPacket(nil, packetId: expectedPacketId, payload: expectedPayload, into: &encryptedPacketBytes, length: &encryptedPacketLength)
+        let encrypted = try! enc.encryptedDataPacket(withKey: key, packetId: expectedPacketId, packetBytes: encryptedPacketBytes, packetLength: encryptedPacketLength)
+
+        var decryptedBytes: [UInt8] = [UInt8](repeating: 0, count: 1000)
         var decryptedLength: Int = 0
-        var decryptedPacketId: UInt32 = 0
-        var decryptedPayloadLength: Int = 0
-        try! dec.decryptDataPacket(encrypted, into: &decrypted, length: &decryptedLength, packetId: &decryptedPacketId)
-        let decryptedPtr = dec.parsePayload(withDataPacket: &decrypted, packetLength: decryptedLength, length: &decryptedPayloadLength)
-        let decryptedPayload = Data(bytes: decryptedPtr, count: decryptedPayloadLength)
+        var packetId: UInt32 = 0
+        var payloadLength: Int = 0
+        try! dec.decryptDataPacket(encrypted, into: &decryptedBytes, length: &decryptedLength, packetId: &packetId)
+        let payloadBytes = dec.parsePayload(nil, length: &payloadLength, packetBytes: &decryptedBytes, packetLength: decryptedLength)
+        let payload = Data(bytes: payloadBytes, count: payloadLength)
 
-        XCTAssertEqual(payload, decryptedPayload)
-        XCTAssertEqual(packetId, decryptedPacketId)
+        XCTAssertEqual(payload, expectedPayload)
+        XCTAssertEqual(packetId, expectedPacketId)
     }
 }

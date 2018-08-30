@@ -51,9 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DataPathCryptoAEAD : NSObject <DataPathEncrypter, DataPathDecrypter>
 
-@property (nonatomic, assign) uint32_t peerId;
-@property (nonatomic, assign) CompressionFraming compressionFraming;
-
 - (instancetype)initWithCrypto:(nonnull CryptoAEAD *)crypto;
 
 @end
