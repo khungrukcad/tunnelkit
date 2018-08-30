@@ -48,14 +48,14 @@ typedef void (^DataPathParseBlock)(uint8_t *_Nonnull payload, NSInteger *_Nonnul
 
 @protocol DataPathEncrypter <DataPathChannel>
 
-- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length;
-- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId payload:(const uint8_t *)payload payloadLength:(NSInteger)payloadLength error:(NSError **)error;
+- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(nonnull uint8_t *)packetBytes length:(nonnull NSInteger *)packetLength;
+- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError **)error;
 
 @end
 
 @protocol DataPathDecrypter <DataPathChannel>
 
-- (BOOL)decryptDataPacket:(nonnull NSData *)packet into:(nonnull uint8_t *)dest length:(nonnull NSInteger *)length packetId:(nonnull uint32_t *)packetId error:(NSError **)error;
-- (nonnull const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block dataPacket:(nonnull uint8_t *)packet packetLength:(NSInteger)packetLength length:(nonnull NSInteger *)length;
+- (BOOL)decryptDataPacket:(nonnull NSData *)packet into:(nonnull uint8_t *)packetBytes length:(nonnull NSInteger *)packetLength packetId:(nonnull uint32_t *)packetId error:(NSError **)error;
+- (nonnull const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block length:(nonnull NSInteger *)length packetBytes:(nonnull uint8_t *)packetBytes packetLength:(NSInteger)packetLength;
 
 @end

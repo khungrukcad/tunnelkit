@@ -288,12 +288,12 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 #pragma mark DataPathEncrypter
 
-- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)dest length:(NSInteger *)length
+- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)packetBytes length:(NSInteger *)packetLength
 {
-    uint8_t *ptr = dest;
+    uint8_t *ptr = packetBytes;
     *(uint32_t *)ptr = htonl(packetId);
     ptr += sizeof(uint32_t);
-    *length = (int)(ptr - dest + payload.length);
+    *packetLength = (int)(ptr - packetBytes + payload.length);
     if (!block) {
         memcpy(ptr, payload.bytes, payload.length);
         return;
@@ -301,42 +301,42 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
     NSInteger packetLengthOffset;
     block(ptr, &packetLengthOffset, payload);
-    *length += packetLengthOffset;
+    *packetLength += packetLengthOffset;
 }
 
-- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId payload:(const uint8_t *)payload payloadLength:(NSInteger)payloadLength error:(NSError *__autoreleasing *)error
+- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + (int)safe_crypto_capacity(payloadLength, self.crypto.overheadLength);
+    const int capacity = self.headerLength + (int)safe_crypto_capacity(packetLength, self.crypto.overheadLength);
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
-    NSInteger encryptedPayloadLength = INT_MAX;
-    const BOOL success = [self.crypto encryptBytes:payload
-                                            length:payloadLength
+    NSInteger encryptedPacketLength = INT_MAX;
+    const BOOL success = [self.crypto encryptBytes:packetBytes
+                                            length:packetLength
                                               dest:(ptr + self.headerLength) // skip header byte
-                                        destLength:&encryptedPayloadLength
+                                        destLength:&encryptedPacketLength
                                              extra:NULL
                                              error:error];
     
-    NSAssert(encryptedPayloadLength <= capacity, @"Did not allocate enough bytes for payload");
+    NSAssert(encryptedPacketLength <= capacity, @"Did not allocate enough bytes for payload");
     
     if (!success) {
         return nil;
     }
 
     self.setDataHeader(ptr, key);
-    encryptedPacket.length = self.headerLength + encryptedPayloadLength;
+    encryptedPacket.length = self.headerLength + encryptedPacketLength;
     return encryptedPacket;
 }
 
 #pragma mark DataPathDecrypter
 
-- (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)dest length:(NSInteger *)length packetId:(nonnull uint32_t *)packetId error:(NSError *__autoreleasing *)error
+- (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
     // skip header = (code, key)
     const BOOL success = [self.crypto decryptBytes:(packet.bytes + self.headerLength)
                                             length:(int)(packet.length - self.headerLength)
-                                              dest:dest
-                                        destLength:length
+                                              dest:packetBytes
+                                        destLength:packetLength
                                              extra:NULL
                                              error:error];
     if (!success) {
@@ -348,22 +348,22 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
         }
         return NO;
     }
-    *packetId = ntohl(*(uint32_t *)dest);
+    *packetId = ntohl(*(uint32_t *)packetBytes);
     return YES;
 }
 
-- (const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block dataPacket:(uint8_t *)packet packetLength:(NSInteger)packetLength length:(NSInteger *)length
+- (const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block length:(NSInteger *)length packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength
 {
-    uint8_t *payload = packet;
+    uint8_t *payload = packetBytes;
     payload += sizeof(uint32_t); // packet id
-    *length = packetLength - (int)(payload - packet);
+    *length = packetLength - (int)(payload - packetBytes);
     if (!block) {
         return payload;
     }
 
     NSInteger payloadOffset;
     NSInteger payloadHeaderLength;
-    block(payload, &payloadOffset, &payloadHeaderLength, packet, packetLength);
+    block(payload, &payloadOffset, &payloadHeaderLength, packetBytes, packetLength);
     *length -= payloadHeaderLength;
     return payload + payloadOffset;
 }

@@ -225,31 +225,31 @@
     
     [self.outPackets removeAllObjects];
     
-    for (NSData *raw in packets) {
+    for (NSData *payload in packets) {
         self.outPacketId += 1;
         
         // may resize encBuffer to hold encrypted payload
-        [self adjustEncBufferToPacketSize:(int)raw.length];
+        [self adjustEncBufferToPacketSize:(int)payload.length];
         
-        uint8_t *payload = self.encBufferAligned;
-        NSInteger payloadLength;
+        uint8_t *dataPacketBytes = self.encBufferAligned;
+        NSInteger dataPacketLength;
         [self.encrypter assembleDataPacketWithBlock:self.assemblePayloadBlock
                                            packetId:self.outPacketId
-                                            payload:raw
-                                               into:payload
-                                             length:&payloadLength];
-        MSSFix(payload, payloadLength);
+                                            payload:payload
+                                               into:dataPacketBytes
+                                             length:&dataPacketLength];
+        MSSFix(dataPacketBytes, dataPacketLength);
         
-        NSData *encryptedPacket = [self.encrypter encryptedDataPacketWithKey:key
-                                                                    packetId:self.outPacketId
-                                                                     payload:payload
-                                                               payloadLength:payloadLength
-                                                                       error:error];
-        if (!encryptedPacket) {
+        NSData *encryptedDataPacket = [self.encrypter encryptedDataPacketWithKey:key
+                                                                        packetId:self.outPacketId
+                                                                     packetBytes:dataPacketBytes
+                                                                    packetLength:dataPacketLength
+                                                                           error:error];
+        if (!encryptedDataPacket) {
             return nil;
         }
         
-        [self.outPackets addObject:encryptedPacket];
+        [self.outPackets addObject:encryptedDataPacket];
     }
     
     return self.outPackets;
@@ -261,17 +261,17 @@
 
     [self.inPackets removeAllObjects];
     
-    for (NSData *encryptedPacket in packets) {
+    for (NSData *encryptedDataPacket in packets) {
         
         // may resize decBuffer to encryptedPacket.length
-        [self adjustDecBufferToPacketSize:(int)encryptedPacket.length];
+        [self adjustDecBufferToPacketSize:(int)encryptedDataPacket.length];
         
-        uint8_t *packet = self.decBufferAligned;
-        NSInteger packetLength = INT_MAX;
+        uint8_t *dataPacketBytes = self.decBufferAligned;
+        NSInteger dataPacketLength = INT_MAX;
         uint32_t packetId;
-        const BOOL success = [self.decrypter decryptDataPacket:encryptedPacket
-                                                          into:packet
-                                                        length:&packetLength
+        const BOOL success = [self.decrypter decryptDataPacket:encryptedDataPacket
+                                                          into:dataPacketBytes
+                                                        length:&dataPacketLength
                                                       packetId:&packetId
                                                          error:error];
         if (!success) {
@@ -288,22 +288,22 @@
         }
         
         NSInteger payloadLength;
-        const uint8_t *payload = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
-                                                            dataPacket:packet
-                                                          packetLength:packetLength
-                                                                length:&payloadLength];
+        const uint8_t *payloadBytes = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
+                                                                     length:&payloadLength
+                                                                packetBytes:dataPacketBytes
+                                                               packetLength:dataPacketLength];
         
-        if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payload, DataPacketPingData, payloadLength)) {
+        if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payloadBytes, DataPacketPingData, payloadLength)) {
             if (keepAlive) {
                 *keepAlive = true;
             }
             continue;
         }
         
-//        MSSFix(payload, payloadLength);
+//        MSSFix(payloadBytes, payloadLength);
         
-        NSData *raw = [[NSData alloc] initWithBytes:payload length:payloadLength];
-        [self.inPackets addObject:raw];
+        NSData *payload = [[NSData alloc] initWithBytes:payloadBytes length:payloadLength];
+        [self.inPackets addObject:payload];
     }
     
     return self.inPackets;
