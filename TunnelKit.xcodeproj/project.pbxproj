@@ -29,10 +29,11 @@
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
-		0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFraming.h */; };
 		0E245D692135972800B012A2 /* PushTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E245D682135972800B012A2 /* PushTests.swift */; };
+		0E245D6C2137F73600B012A2 /* CompressionFraming.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFraming.h */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
+		0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58F12F2138AC2F00A49F27 /* DNSTests.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */; };
@@ -188,10 +189,11 @@
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E245D6B2137F73600B012A2 /* CompressionFraming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFraming.h; sourceTree = "<group>"; };
 		0E245D682135972800B012A2 /* PushTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTests.swift; sourceTree = "<group>"; };
+		0E245D6B2137F73600B012A2 /* CompressionFraming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFraming.h; sourceTree = "<group>"; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
+		0E58F12F2138AC2F00A49F27 /* DNSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSTests.swift; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtensionTests.swift; sourceTree = "<group>"; };
@@ -311,6 +313,7 @@
 				0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */,
 				0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */,
 				0EB2B46020F0C0A4004233D7 /* DataPathPerformanceTests.swift */,
+				0E58F12F2138AC2F00A49F27 /* DNSTests.swift */,
 				0EB2B45E20F0C098004233D7 /* EncryptionPerformanceTests.swift */,
 				0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */,
 				0EB2B45820F0BD9A004233D7 /* LinkTests.swift */,
@@ -816,6 +819,7 @@
 				0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */,
 				0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */,
 				0EB2B45B20F0BE4C004233D7 /* TestUtils.swift in Sources */,
+				0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */,
 				0E245D692135972800B012A2 /* PushTests.swift in Sources */,
 				0EB2B46120F0C0A4004233D7 /* DataPathPerformanceTests.swift in Sources */,
 				0EB2B45F20F0C098004233D7 /* EncryptionPerformanceTests.swift in Sources */,
