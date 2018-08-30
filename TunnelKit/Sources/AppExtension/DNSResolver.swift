@@ -104,6 +104,23 @@ public class DNSResolver {
         return "\(a).\(b).\(c).\(d)"
     }
     
+    public static func ipv4(fromString string: String) -> UInt32 {
+        let comps = string.components(separatedBy: ".")
+        guard comps.count == 4 else {
+            preconditionFailure()
+        }
+        var ipv4: UInt32 = 0
+        var bits: UInt32 = 0
+        comps.forEach {
+            guard let octet = UInt32($0), octet <= 255 else {
+                return
+            }
+            ipv4 |= octet << bits
+            bits += 8
+        }
+        return ipv4
+    }
+
     private init() {
     }
 }
