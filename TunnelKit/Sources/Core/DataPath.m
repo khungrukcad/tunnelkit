@@ -109,7 +109,7 @@
             self.inReplay = [[ReplayProtector alloc] init];
         }
 
-        self.compressionFraming = CompressionFramingDisabled;
+        self.compressionFraming = CompressionFramingNativeDisabled;
     }
     return self;
 }
@@ -165,10 +165,10 @@
     [self.decrypter setPeerId:peerId];
 }
 
-- (void)setCompressionFraming:(CompressionFraming)compressionFraming
+- (void)setCompressionFraming:(CompressionFramingNative)compressionFraming
 {
     switch (compressionFraming) {
-        case CompressionFramingDisabled: {
+        case CompressionFramingNativeDisabled: {
             self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
                 memcpy(packetDest, payload.bytes, payload.length);
                 *packetLengthOffset = 0;
@@ -179,7 +179,7 @@
             };
             break;
         }
-        case CompressionFramingCompress: {
+        case CompressionFramingNativeCompress: {
             self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
                 memcpy(packetDest, payload.bytes, payload.length);
                 packetDest[payload.length] = packetDest[0];
@@ -194,7 +194,7 @@
             };
             break;
         }
-        case CompressionFramingCompLZO: {
+        case CompressionFramingNativeCompLZO: {
             self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
                 memcpy(packetDest + 1, payload.bytes, payload.length);
                 packetDest[0] = DataPacketNoCompress;

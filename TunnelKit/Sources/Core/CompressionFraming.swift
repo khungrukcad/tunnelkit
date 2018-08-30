@@ -26,19 +26,42 @@
 import Foundation
 import __TunnelKitNative
 
-extension CompressionFraming: CustomStringConvertible {
-    
-    /// :nodoc:
-    public var description: String {
-        switch self {
-        case .disabled:
-            return "disabled"
-            
-        case .compress:
-            return "compress"
-            
-        case .compLZO:
-            return "comp-lzo"
+extension SessionProxy {
+
+    /// Defines the type of compression framing.
+    public enum CompressionFraming: Int, CustomStringConvertible {
+
+        /// No compression framing.
+        case disabled
+        
+        /// Framing compatible with 2.4 `compress`.
+        case compress
+        
+        /// Framing compatible with `comp-lzo` (deprecated).
+        @available(*, deprecated)
+        case compLZO
+
+        var native: CompressionFramingNative {
+            guard let val = CompressionFramingNative(rawValue: rawValue) else {
+                fatalError("Unhandled CompressionFraming bridging")
+            }
+            return val
+        }
+        
+        // MARK: CustomStringConvertible
+        
+        /// :nodoc:
+        public var description: String {
+            switch self {
+            case .disabled:
+                return "disabled"
+                
+            case .compress:
+                return "compress"
+                
+            case .compLZO:
+                return "comp-lzo"
+            }
         }
     }
 }
