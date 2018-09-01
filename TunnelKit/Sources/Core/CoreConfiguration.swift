@@ -59,7 +59,7 @@ struct CoreConfiguration {
     // MARK: Authentication
     
     static let peerInfo = [
-        "IV_VER=2.3.99",
+        "IV_VER=2.4",
         "IV_PROTO=2",
         "IV_NCP=2",
         ""
