@@ -147,6 +147,9 @@ public protocol SessionReply {
     /// The DNS servers set up for this session.
     var dnsServers: [String] { get }
     
+    /// The optional authentication token.
+    var authToken: String? { get }
+    
     /// The optional 24-bit peer-id.
     var peerId: UInt32? { get }
 
