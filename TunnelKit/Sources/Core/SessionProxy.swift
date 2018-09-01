@@ -848,8 +848,6 @@ public class SessionProxy {
                 return
             }
             
-            setupKeys()
-
             negotiationKey.controlState = .preIfConfig
             nextPushRequestDate = Date().addingTimeInterval(negotiationKey.softReset ? CoreConfiguration.softResetDelay : CoreConfiguration.retransmissionLimit)
             pushRequest()
@@ -890,6 +888,8 @@ public class SessionProxy {
             deferStop(.shutdown, e)
             return
         }
+        
+        setupEncryption()
         
         authenticator = nil
         negotiationKey.startHandlingPackets(
@@ -1007,7 +1007,7 @@ public class SessionProxy {
     }
     
     // Ruby: setup_keys
-    private func setupKeys() {
+    private func setupEncryption() {
         guard let auth = authenticator else {
             fatalError("Setting up keys without having authenticated")
         }
