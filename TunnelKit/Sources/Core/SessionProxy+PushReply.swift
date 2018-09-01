@@ -194,15 +194,15 @@ extension SessionProxy {
                 return nil
             }
             
-            var optTopologyComponents: [String]?
-            var optIfconfig4Components: [String]?
-            var optGateway4Components: [String]?
+            var optTopologyArguments: [String]?
+            var optIfconfig4Arguments: [String]?
+            var optGateway4Arguments: [String]?
             let address4: String
             let addressMask4: String
             let defaultGateway4: String
             var routes4: [IPv4Settings.Route] = []
 
-            var optIfconfig6Components: [String]?
+            var optIfconfig6Arguments: [String]?
 
             var dnsServers: [String] = []
             var authToken: String?
@@ -210,27 +210,27 @@ extension SessionProxy {
             
             // MARK: Routing (IPv4)
 
-            PushReply.topologyRegexp.enumerateMatches(in: message) {
-                optTopologyComponents = $0.components(separatedBy: " ")
+            PushReply.topologyRegexp.enumerateArguments(in: message) {
+                optTopologyArguments = $0
             }
-            guard let topologyComponents = optTopologyComponents, topologyComponents.count == 2 else {
+            guard let topologyArguments = optTopologyArguments, topologyArguments.count == 1 else {
                 throw SessionError.malformedPushReply
             }
 
             // assumes "topology" to be always pushed to clients, even when not explicitly set (defaults to net30)
-            guard let topology = Topology(rawValue: topologyComponents[1]) else {
-                fatalError("Bad topology regexp, accepted unrecognized value: \(topologyComponents[1])")
+            guard let topology = Topology(rawValue: topologyArguments[0]) else {
+                fatalError("Bad topology regexp, accepted unrecognized value: \(topologyArguments[0])")
             }
 
-            PushReply.ifconfigRegexp.enumerateMatches(in: message) {
-                optIfconfig4Components = $0.components(separatedBy: " ")
+            PushReply.ifconfigRegexp.enumerateArguments(in: message) {
+                optIfconfig4Arguments = $0
             }
-            guard let ifconfig4Components = optIfconfig4Components, ifconfig4Components.count == 3 else {
+            guard let ifconfig4Arguments = optIfconfig4Arguments, ifconfig4Arguments.count == 2 else {
                 throw SessionError.malformedPushReply
             }
             
-            PushReply.gatewayRegexp.enumerateMatches(in: message) {
-                optGateway4Components = $0.components(separatedBy: " ")
+            PushReply.gatewayRegexp.enumerateArguments(in: message) {
+                optGateway4Arguments = $0
             }
             
             //
@@ -250,32 +250,32 @@ extension SessionProxy {
             case .subnet:
                 
                 // default gateway required when topology is subnet
-                guard let gateway4Components = optGateway4Components, gateway4Components.count == 2 else {
+                guard let gateway4Arguments = optGateway4Arguments, gateway4Arguments.count == 1 else {
                     throw SessionError.malformedPushReply
                 }
-                address4 = ifconfig4Components[1]
-                addressMask4 = ifconfig4Components[2]
-                defaultGateway4 = gateway4Components[1]
+                address4 = ifconfig4Arguments[0]
+                addressMask4 = ifconfig4Arguments[1]
+                defaultGateway4 = gateway4Arguments[0]
                 
             default:
-                address4 = ifconfig4Components[1]
+                address4 = ifconfig4Arguments[0]
                 addressMask4 = "255.255.255.255"
-                defaultGateway4 = ifconfig4Components[2]
+                defaultGateway4 = ifconfig4Arguments[1]
             }
 
-            PushReply.routeRegexp.enumerateMatches(in: message) {
-                let routeEntryComponents = $0.components(separatedBy: " ")
+            PushReply.routeRegexp.enumerateArguments(in: message) {
+                let routeEntryArguments = $0
                 
-                let address = routeEntryComponents[1]
+                let address = routeEntryArguments[0]
                 let mask: String?
                 let gateway: String?
-                if routeEntryComponents.count > 2 {
-                    mask = routeEntryComponents[2]
+                if routeEntryArguments.count > 1 {
+                    mask = routeEntryArguments[1]
                 } else {
                     mask = nil
                 }
-                if routeEntryComponents.count > 3 {
-                    gateway = routeEntryComponents[3]
+                if routeEntryArguments.count > 2 {
+                    gateway = routeEntryArguments[2]
                 } else {
                     gateway = defaultGateway4
                 }
@@ -291,11 +291,11 @@ extension SessionProxy {
 
             // MARK: Routing (IPv6)
             
-            PushReply.ifconfig6Regexp.enumerateMatches(in: message) {
-                optIfconfig6Components = $0.components(separatedBy: " ")
+            PushReply.ifconfig6Regexp.enumerateArguments(in: message) {
+                optIfconfig6Arguments = $0
             }
-            if let ifconfig6Components = optIfconfig6Components, ifconfig6Components.count == 3 {
-                let address6Components = ifconfig6Components[1].components(separatedBy: "/")
+            if let ifconfig6Arguments = optIfconfig6Arguments, ifconfig6Arguments.count == 2 {
+                let address6Components = ifconfig6Arguments[0].components(separatedBy: "/")
                 guard address6Components.count == 2 else {
                     throw SessionError.malformedPushReply
                 }
@@ -303,13 +303,13 @@ extension SessionProxy {
                     throw SessionError.malformedPushReply
                 }
                 let address6 = address6Components[0]
-                let defaultGateway6 = ifconfig6Components[2]
+                let defaultGateway6 = ifconfig6Arguments[1]
                 
                 var routes6: [IPv6Settings.Route] = []
-                PushReply.route6Regexp.enumerateMatches(in: message) {
-                    let routeEntryComponents = $0.components(separatedBy: " ")
+                PushReply.route6Regexp.enumerateArguments(in: message) {
+                    let routeEntryArguments = $0
                     
-                    let destinationComponents = routeEntryComponents[1].components(separatedBy: "/")
+                    let destinationComponents = routeEntryArguments[0].components(separatedBy: "/")
                     guard destinationComponents.count == 2 else {
 //                        throw SessionError.malformedPushReply
                         return
@@ -321,8 +321,8 @@ extension SessionProxy {
 
                     let destination = destinationComponents[0]
                     let gateway: String?
-                    if routeEntryComponents.count > 2 {
-                        gateway = routeEntryComponents[2]
+                    if routeEntryArguments.count > 1 {
+                        gateway = routeEntryArguments[1]
                     } else {
                         gateway = defaultGateway6
                     }
@@ -341,28 +341,18 @@ extension SessionProxy {
 
             // MARK: DNS
 
-            PushReply.dnsRegexp.enumerateMatches(in: message) {
-                let dnsEntryComponents = $0.components(separatedBy: " ")
-                
-                dnsServers.append(dnsEntryComponents[2])
+            PushReply.dnsRegexp.enumerateArguments(in: message) {
+                dnsServers.append($0[1])
             }
             
             // MARK: Authentication
 
-            PushReply.authTokenRegexp.enumerateMatches(in: message) {
-                let tokenComponents = $0.components(separatedBy: " ")
-                
-                if tokenComponents.count > 1 {
-                    authToken = tokenComponents[1]
-                }
+            PushReply.authTokenRegexp.enumerateArguments(in: message) {
+                authToken = $0[0]
             }
             
-            PushReply.peerIdRegexp.enumerateMatches(in: message) {
-                let tokenComponents = $0.components(separatedBy: " ")
-                
-                if tokenComponents.count > 1 {
-                    peerId = UInt32(tokenComponents[1])
-                }
+            PushReply.peerIdRegexp.enumerateArguments(in: message) {
+                peerId = UInt32($0[0])
             }
 
             self.dnsServers = dnsServers
@@ -373,13 +363,15 @@ extension SessionProxy {
 }
 
 private extension NSRegularExpression {
-    func enumerateMatches(in string: String, using block: (String) -> Void) {
+    func enumerateArguments(in string: String, using block: ([String]) -> Void) {
         enumerateMatches(in: string, options: [], range: NSMakeRange(0, string.count)) { (result, flags, stop) in
             guard let range = result?.range else {
                 return
             }
             let match = (string as NSString).substring(with: range)
-            block(match)
+            var tokens = match.components(separatedBy: " ")
+            tokens.removeFirst()
+            block(tokens)
         }
     }
 }
