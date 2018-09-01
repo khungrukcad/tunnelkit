@@ -702,7 +702,6 @@ public class SessionProxy {
         
         if negotiationKey.softReset {
             authenticator = nil
-            negotiationKey.startHandlingPackets(withPeerId: peerId)
             negotiationKey.controlState = .connected
             connectedDate = Date()
             transitionKeys()
@@ -890,12 +889,7 @@ public class SessionProxy {
         }
         
         setupEncryption()
-        
         authenticator = nil
-        negotiationKey.startHandlingPackets(
-            withPeerId: peerId,
-            compressionFraming: configuration.compressionFraming
-        )
         negotiationKey.controlState = .connected
         connectedDate = Date()
         transitionKeys()
@@ -1051,6 +1045,8 @@ public class SessionProxy {
         negotiationKey.dataPath = DataPath(
             encrypter: bridge.encrypter(),
             decrypter: bridge.decrypter(),
+            peerId: peerId ?? PacketPeerIdDisabled,
+            compressionFraming: configuration.compressionFraming.native,
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )

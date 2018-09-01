@@ -80,7 +80,7 @@
     return (uint8_t *)addr;
 }
 
-- (instancetype)initWithEncrypter:(id<DataPathEncrypter>)encrypter decrypter:(id<DataPathDecrypter>)decrypter maxPackets:(NSInteger)maxPackets usesReplayProtection:(BOOL)usesReplayProtection
+- (instancetype)initWithEncrypter:(id<DataPathEncrypter>)encrypter decrypter:(id<DataPathDecrypter>)decrypter peerId:(uint32_t)peerId compressionFraming:(CompressionFramingNative)compressionFraming maxPackets:(NSInteger)maxPackets usesReplayProtection:(BOOL)usesReplayProtection
 {
     NSParameterAssert(encrypter);
     NSParameterAssert(decrypter);
@@ -103,7 +103,9 @@
             self.inReplay = [[ReplayProtector alloc] init];
         }
 
-        self.compressionFraming = CompressionFramingNativeDisabled;
+        [self.encrypter setPeerId:peerId];
+        [self.decrypter setPeerId:peerId];
+        [self setCompressionFraming:compressionFraming];
     }
     return self;
 }
@@ -148,15 +150,6 @@
 - (uint8_t *)decBufferAligned
 {
     return [[self class] alignedPointer:self.decBuffer];
-}
-
-- (void)setPeerId:(uint32_t)peerId
-{
-    NSAssert(self.encrypter, @"Setting peer-id to nil encrypter");
-    NSAssert(self.decrypter, @"Setting peer-id to nil decrypter");
-
-    [self.encrypter setPeerId:peerId];
-    [self.decrypter setPeerId:peerId];
 }
 
 - (void)setCompressionFraming:(CompressionFramingNative)compressionFraming
