@@ -146,6 +146,12 @@ public protocol SessionReply {
     
     /// The DNS servers set up for this session.
     var dnsServers: [String] { get }
+    
+    /// The optional 24-bit peer-id.
+    var peerId: UInt32? { get }
+
+    /// The negotiated cipher if any (NCP).
+    var cipher: SessionProxy.Cipher? { get }
 }
 
 extension SessionProxy {
@@ -179,6 +185,8 @@ extension SessionProxy {
 
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
 
+        private static let cipherRegexp = try! NSRegularExpression(pattern: "cipher [^\\s]+", options: [])
+
         let ipv4: IPv4Settings?
         
         let ipv6: IPv6Settings?
@@ -188,6 +196,8 @@ extension SessionProxy {
         let authToken: String?
         
         let peerId: UInt32?
+        
+        let cipher: SessionProxy.Cipher?
         
         init?(message: String) throws {
             guard message.hasPrefix("PUSH_REPLY") else {
@@ -207,6 +217,7 @@ extension SessionProxy {
             var dnsServers: [String] = []
             var authToken: String?
             var peerId: UInt32?
+            var cipher: SessionProxy.Cipher?
             
             // MARK: Routing (IPv4)
 
@@ -354,10 +365,17 @@ extension SessionProxy {
             PushReply.peerIdRegexp.enumerateArguments(in: message) {
                 peerId = UInt32($0[0])
             }
+            
+            // MARK: NCP
+            
+            PushReply.cipherRegexp.enumerateArguments(in: message) {
+                cipher = SessionProxy.Cipher(rawValue: $0[0].uppercased())
+            }
 
             self.dnsServers = dnsServers
             self.authToken = authToken
             self.peerId = peerId
+            self.cipher = cipher
         }
     }
 }

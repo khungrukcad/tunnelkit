@@ -91,4 +91,12 @@ class PushTests: XCTestCase {
         XCTAssertEqual(reply.ipv6?.defaultGateway, "fe80::601:30ff:feb7:dc02")
         XCTAssertEqual(reply.dnsServers, ["2001:4860:4860::8888", "2001:4860:4860::8844"])
     }
+    
+    func testNCP() {
+        let msg = "PUSH_REPLY,dhcp-option DNS 8.8.8.8,dhcp-option DNS 4.4.4.4,comp-lzo no,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.6 10.8.0.5,peer-id 0,cipher AES-256-CBC"
+        let reply = try! SessionProxy.PushReply(message: msg)!
+        reply.debug()
+
+        XCTAssertEqual(reply.cipher, .aes256cbc)
+    }
 }
