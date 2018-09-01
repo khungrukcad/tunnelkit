@@ -701,10 +701,7 @@ public class SessionProxy {
         enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
         
         if negotiationKey.softReset {
-            authenticator = nil
-            negotiationKey.controlState = .connected
-            connectedDate = Date()
-            transitionKeys()
+            completeConnection()
         }
         nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.retransmissionLimit)
     }
@@ -722,6 +719,14 @@ public class SessionProxy {
             log.debug("Renegotiating after \(elapsed) seconds")
             softReset()
         }
+    }
+    
+    private func completeConnection() {
+        setupEncryption()
+        authenticator = nil
+        negotiationKey.controlState = .connected
+        connectedDate = Date()
+        transitionKeys()
     }
     
     // MARK: Control
@@ -888,11 +893,7 @@ public class SessionProxy {
             return
         }
         
-        setupEncryption()
-        authenticator = nil
-        negotiationKey.controlState = .connected
-        connectedDate = Date()
-        transitionKeys()
+        completeConnection()
 
         guard let remoteAddress = link?.remoteAddress else {
             fatalError("Could not resolve link remote address")
