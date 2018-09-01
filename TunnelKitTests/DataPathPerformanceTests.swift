@@ -54,7 +54,14 @@ class DataPathPerformanceTests: XCTestCase {
         encrypter = crypto.encrypter()
         decrypter = crypto.decrypter()
         
-        dataPath = DataPath(encrypter: encrypter, decrypter: decrypter, maxPackets: 200, usesReplayProtection: false)
+        dataPath = DataPath(
+            encrypter: encrypter,
+            decrypter: decrypter,
+            peerId: PacketPeerIdDisabled,
+            compressionFraming: .disabled,
+            maxPackets: 200,
+            usesReplayProtection: false
+        )
     }
 
     override func tearDown() {
