@@ -28,9 +28,8 @@ import XCTest
 
 private extension SessionReply {
     func debug() {
-        print("Address: \(address)")
-        print("Mask: \(addressMask)")
-        print("Gateway: \(defaultGateway)")
+        print("IPv4: \(ipv4?.description ?? "none")")
+        print("IPv6: \(ipv6?.description ?? "none")")
         print("DNS: \(dnsServers)")
     }
 }
@@ -50,9 +49,9 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
 
-        XCTAssertEqual(reply.address, "10.5.10.6")
-        XCTAssertEqual(reply.addressMask, "255.255.255.255")
-        XCTAssertEqual(reply.defaultGateway, "10.5.10.5")
+        XCTAssertEqual(reply.ipv4?.address, "10.5.10.6")
+        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.255")
+        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.5.10.5")
         XCTAssertEqual(reply.dnsServers, ["209.222.18.222", "209.222.18.218"])
     }
     
@@ -61,9 +60,9 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.address, "10.8.0.2")
-        XCTAssertEqual(reply.addressMask, "255.255.255.0")
-        XCTAssertEqual(reply.defaultGateway, "10.8.0.1")
+        XCTAssertEqual(reply.ipv4?.address, "10.8.0.2")
+        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.0")
+        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.8.0.1")
         XCTAssertEqual(reply.dnsServers, ["8.8.8.8", "4.4.4.4"])
     }
     
@@ -72,10 +71,24 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        let route = reply.routes.first!
+        let route = reply.ipv4!.routes.first!
         
         XCTAssertEqual(route.destination, "192.168.0.0")
         XCTAssertEqual(route.mask, "255.255.255.0")
         XCTAssertEqual(route.gateway, "10.8.0.12")
+    }
+
+    func testIPv6() {
+        let msg = "PUSH_REPLY,dhcp-option DNS6 2001:4860:4860::8888,dhcp-option DNS6 2001:4860:4860::8844,tun-ipv6,route-gateway 10.8.0.1,topology subnet,ping 10,ping-restart 120,ifconfig-ipv6 fe80::601:30ff:feb7:ec01/64 fe80::601:30ff:feb7:dc02,ifconfig 10.8.0.2 255.255.255.0,peer-id 0"
+        let reply = try! SessionProxy.PushReply(message: msg)!
+        reply.debug()
+        
+        XCTAssertEqual(reply.ipv4?.address, "10.8.0.2")
+        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.0")
+        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.8.0.1")
+        XCTAssertEqual(reply.ipv6?.address, "fe80::601:30ff:feb7:ec01")
+        XCTAssertEqual(reply.ipv6?.addressPrefixLength, 64)
+        XCTAssertEqual(reply.ipv6?.defaultGateway, "fe80::601:30ff:feb7:dc02")
+        XCTAssertEqual(reply.dnsServers, ["2001:4860:4860::8888", "2001:4860:4860::8844"])
     }
 }
