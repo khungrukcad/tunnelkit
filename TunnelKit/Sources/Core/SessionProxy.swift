@@ -875,7 +875,9 @@ public class SessionProxy {
             return
         }
 
-        log.debug("Received control message: \"\(message)\"")
+        if CoreConfiguration.logsSensitiveData {
+            log.debug("Received control message: \"\(message)\"")
+        }
         
         let reply: PushReply
         do {
@@ -883,6 +885,7 @@ public class SessionProxy {
                 return
             }
             reply = optionalReply
+            log.debug("Received PUSH_REPLY: \"\(reply)\"")
         } catch let e {
             deferStop(.shutdown, e)
             return
