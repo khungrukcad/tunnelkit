@@ -87,8 +87,14 @@ class DataPathEncryptionTests: XCTestCase {
     }
     
     func privateTestDataPathHigh(peerId: UInt32?) {
-        let path = DataPath(encrypter: enc, decrypter: dec, maxPackets: 1000, usesReplayProtection: false)
-        path.setCompressionFraming(.disabled)
+        let path = DataPath(
+            encrypter: enc,
+            decrypter: dec,
+            peerId: peerId ?? PacketPeerIdDisabled,
+            compressionFraming: .disabled,
+            maxPackets: 1000,
+            usesReplayProtection: false
+        )
 
         if let peerId = peerId {
             enc.setPeerId(peerId)

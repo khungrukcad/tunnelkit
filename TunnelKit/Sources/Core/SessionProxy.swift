@@ -123,9 +123,7 @@ public class SessionProxy {
     
     private var remoteSessionId: Data?
 
-    private var authToken: String?
-    
-    private var peerId: UInt32?
+    private var pushReply: SessionReply?
     
     private var nextPushRequestDate: Date?
     
@@ -229,7 +227,7 @@ public class SessionProxy {
      - Returns: `true` if supports link rebinding.
      */
     public func canRebindLink() -> Bool {
-        return (peerId != nil)
+        return (pushReply?.peerId != nil)
     }
     
     /**
@@ -241,7 +239,7 @@ public class SessionProxy {
      - Seealso: `canRebindLink()`.
      */
     public func rebindLink(_ link: LinkInterface) {
-        guard let _ = peerId else {
+        guard let _ = pushReply?.peerId else {
             log.warning("Session doesn't support link rebinding!")
             return
         }
@@ -316,11 +314,10 @@ public class SessionProxy {
         
         sessionId = nil
         remoteSessionId = nil
-        authToken = nil
         nextPushRequestDate = nil
         connectedDate = nil
         authenticator = nil
-        peerId = nil
+        pushReply = nil
         link = nil
         if !(tunnel?.isPersistent ?? false) {
             tunnel = nil
@@ -614,7 +611,6 @@ public class SessionProxy {
         controlPacketIdOut = 0
         controlPacketIdIn = 0
         authenticator = nil
-        peerId = nil
         bytesIn = 0
         bytesOut = 0
     }
@@ -624,6 +620,7 @@ public class SessionProxy {
         log.debug("Send hard reset")
 
         resetControlChannel()
+        pushReply = nil
         do {
             try sessionId = SecureRandom.data(length: ProtocolMacros.sessionIdLength)
         } catch let e {
@@ -662,7 +659,7 @@ public class SessionProxy {
         negotiationKey.controlState = .preAuth
         
         do {
-            authenticator = try Authenticator(configuration.username, authToken ?? configuration.password)
+            authenticator = try Authenticator(configuration.username, pushReply?.authToken ?? configuration.password)
             try authenticator?.putAuth(into: negotiationKey.tls)
         } catch let e {
             deferStop(.shutdown, e)
@@ -701,11 +698,7 @@ public class SessionProxy {
         enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
         
         if negotiationKey.softReset {
-            authenticator = nil
-            negotiationKey.startHandlingPackets(withPeerId: peerId)
-            negotiationKey.controlState = .connected
-            connectedDate = Date()
-            transitionKeys()
+            completeConnection()
         }
         nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.retransmissionLimit)
     }
@@ -723,6 +716,14 @@ public class SessionProxy {
             log.debug("Renegotiating after \(elapsed) seconds")
             softReset()
         }
+    }
+    
+    private func completeConnection() {
+        setupEncryption()
+        authenticator = nil
+        negotiationKey.controlState = .connected
+        connectedDate = Date()
+        transitionKeys()
     }
     
     // MARK: Control
@@ -848,8 +849,6 @@ public class SessionProxy {
                 return
             }
             
-            setupKeys()
-
             negotiationKey.controlState = .preIfConfig
             nextPushRequestDate = Date().addingTimeInterval(negotiationKey.softReset ? CoreConfiguration.softResetDelay : CoreConfiguration.retransmissionLimit)
             pushRequest()
@@ -884,21 +883,13 @@ public class SessionProxy {
                 return
             }
             reply = optionalReply
-            authToken = reply.authToken
-            peerId = reply.peerId
         } catch let e {
             deferStop(.shutdown, e)
             return
         }
         
-        authenticator = nil
-        negotiationKey.startHandlingPackets(
-            withPeerId: peerId,
-            compressionFraming: configuration.compressionFraming
-        )
-        negotiationKey.controlState = .connected
-        connectedDate = Date()
-        transitionKeys()
+        pushReply = reply
+        completeConnection()
 
         guard let remoteAddress = link?.remoteAddress else {
             fatalError("Could not resolve link remote address")
@@ -1007,22 +998,25 @@ public class SessionProxy {
     }
     
     // Ruby: setup_keys
-    private func setupKeys() {
+    private func setupEncryption() {
         guard let auth = authenticator else {
-            fatalError("Setting up keys without having authenticated")
+            fatalError("Setting up encryption without having authenticated")
         }
         guard let sessionId = sessionId else {
-            fatalError("Setting up keys without a local sessionId")
+            fatalError("Setting up encryption without a local sessionId")
         }
         guard let remoteSessionId = remoteSessionId else {
-            fatalError("Setting up keys without a remote sessionId")
+            fatalError("Setting up encryption without a remote sessionId")
         }
         guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
-            fatalError("Setting up keys without server randoms")
+            fatalError("Setting up encryption without server randoms")
         }
-        
+        guard let pushReply = pushReply else {
+            fatalError("Setting up encryption without a former PUSH_REPLY")
+        }
+
         if CoreConfiguration.logsSensitiveData {
-            log.debug("Setup keys from the following components:")
+            log.debug("Set up encryption from the following components:")
             log.debug("\tpreMaster: \(auth.preMaster.toHex())")
             log.debug("\trandom1: \(auth.random1.toHex())")
             log.debug("\trandom2: \(auth.random2.toHex())")
@@ -1031,13 +1025,18 @@ public class SessionProxy {
             log.debug("\tsessionId: \(sessionId.toHex())")
             log.debug("\tremoteSessionId: \(remoteSessionId.toHex())")
         } else {
-            log.debug("Setup keys")
+            log.debug("Set up encryption")
+        }
+        
+        let pushedCipher = pushReply.cipher
+        if let negCipher = pushedCipher {
+            log.debug("Negotiated cipher: \(negCipher.rawValue)")
         }
 
         let bridge: EncryptionBridge
         do {
             bridge = try EncryptionBridge(
-                configuration.cipher,
+                pushedCipher ?? configuration.cipher,
                 configuration.digest,
                 auth,
                 sessionId,
@@ -1051,6 +1050,8 @@ public class SessionProxy {
         negotiationKey.dataPath = DataPath(
             encrypter: bridge.encrypter(),
             decrypter: bridge.decrypter(),
+            peerId: pushReply.peerId ?? PacketPeerIdDisabled,
+            compressionFraming: configuration.compressionFraming.native,
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )
