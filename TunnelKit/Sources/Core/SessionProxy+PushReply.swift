@@ -161,7 +161,7 @@ extension SessionProxy {
 
     // XXX: parsing is very optimistic
     
-    struct PushReply: SessionReply {
+    struct PushReply: SessionReply, CustomStringConvertible {
         private enum Topology: String {
             case net30
             
@@ -169,6 +169,8 @@ extension SessionProxy {
             
             case subnet
         }
+        
+        private static let prefix = "PUSH_REPLY,"
         
         private static let topologyRegexp = try! NSRegularExpression(pattern: "topology (net30|p2p|subnet)", options: [])
         
@@ -189,6 +191,8 @@ extension SessionProxy {
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
 
         private static let cipherRegexp = try! NSRegularExpression(pattern: "cipher [^\\s]+", options: [])
+        
+        private let original: String
 
         let ipv4: IPv4Settings?
         
@@ -203,10 +207,12 @@ extension SessionProxy {
         let cipher: SessionProxy.Cipher?
         
         init?(message: String) throws {
-            guard message.hasPrefix("PUSH_REPLY") else {
+            guard message.hasPrefix(PushReply.prefix) else {
                 return nil
             }
-            
+            let prefixOffset = message.index(message.startIndex, offsetBy: PushReply.prefix.count)
+            original = String(message[prefixOffset..<message.endIndex])
+
             var optTopologyArguments: [String]?
             var optIfconfig4Arguments: [String]?
             var optGateway4Arguments: [String]?
@@ -379,6 +385,19 @@ extension SessionProxy {
             self.authToken = authToken
             self.peerId = peerId
             self.cipher = cipher
+        }
+        
+        // MARK: CustomStringConvertible
+        
+        var description: String {
+            let stripped = NSMutableString(string: original)
+            PushReply.authTokenRegexp.replaceMatches(
+                in: stripped,
+                options: [],
+                range: NSMakeRange(0, stripped.length),
+                withTemplate: "auth-token"
+            )
+            return stripped as String
         }
     }
 }
