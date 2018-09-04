@@ -70,6 +70,26 @@ extension TunnelKitProvider {
             self.port = port
         }
         
+        /// :nodoc:
+        public static func deserialized(_ string: String) throws -> EndpointProtocol {
+            let components = string.components(separatedBy: ":")
+            guard components.count == 2 else {
+                throw ProviderError.configuration(field: "endpointProtocol")
+            }
+            guard let socketType = SocketType(rawValue: components[0]) else {
+                throw ProviderError.configuration(field: "endpointProtocol.socketType")
+            }
+            guard let port = UInt16(components[1]) else {
+                throw ProviderError.configuration(field: "endpointProtocol.port")
+            }
+            return EndpointProtocol(socketType, port)
+        }
+        
+        /// :nodoc:
+        public func serialized() -> String {
+            return "\(socketType.rawValue):\(port)"
+        }
+
         // MARK: Equatable
         
         /// :nodoc:
@@ -81,7 +101,7 @@ extension TunnelKitProvider {
         
         /// :nodoc:
         public var description: String {
-            return "\(socketType.rawValue):\(port)"
+            return serialized()
         }
     }
 
@@ -238,24 +258,11 @@ extension TunnelKitProvider {
             
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
+            
             guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
             }
-            endpointProtocols = try endpointProtocolsStrings.map {
-                let components = $0.components(separatedBy: ":")
-                guard components.count == 2 else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] entries must be in the form 'socketType:port'")
-                }
-                let socketTypeString = components[0]
-                let portString = components[1]
-                guard let socketType = SocketType(rawValue: socketTypeString) else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] unrecognized socketType '\(socketTypeString)'")
-                }
-                guard let port = UInt16(portString) else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] non-numeric port '\(portString)'")
-                }
-                return EndpointProtocol(socketType, port)
-            }
+            endpointProtocols = try endpointProtocolsStrings.map { try EndpointProtocol.deserialized($0) }
             
             self.appGroup = appGroup
             self.cipher = cipher
@@ -430,9 +437,7 @@ extension TunnelKitProvider {
             var dict: [String: Any] = [
                 S.appGroup: appGroup,
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
-                S.endpointProtocols: endpointProtocols.map {
-                    "\($0.socketType.rawValue):\($0.port)"
-                },
+                S.endpointProtocols: endpointProtocols.map { $0.serialized() },
                 S.cipherAlgorithm: cipher.rawValue,
                 S.digestAlgorithm: digest.rawValue,
                 S.mtu: mtu,
