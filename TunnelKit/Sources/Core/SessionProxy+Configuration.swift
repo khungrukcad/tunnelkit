@@ -55,6 +55,11 @@ extension SessionProxy {
         
         /// AES encryption with 256-bit key size and GCM.
         case aes256gcm = "AES-256-GCM"
+        
+        /// Digest should be ignored when this is `true`.
+        public var embedsDigest: Bool {
+            return rawValue.hasSuffix("-GCM")
+        }
     }
     
     /// The available message digest algorithms.
