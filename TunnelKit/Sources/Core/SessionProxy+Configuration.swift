@@ -40,7 +40,7 @@ import Foundation
 extension SessionProxy {
 
     /// The available encryption algorithms.
-    public enum Cipher: String {
+    public enum Cipher: String, Codable {
         
         // WARNING: must match OpenSSL algorithm names
         
@@ -63,7 +63,7 @@ extension SessionProxy {
     }
     
     /// The available message digest algorithms.
-    public enum Digest: String {
+    public enum Digest: String, Codable {
         
         // WARNING: must match OpenSSL algorithm names
         
@@ -143,7 +143,7 @@ extension SessionProxy {
     }
     
     /// The immutable configuration for `SessionProxy`.
-    public struct Configuration {
+    public struct Configuration: Codable {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.username`
         public let username: String

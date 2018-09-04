@@ -321,7 +321,7 @@ extension TunnelKitProvider {
     }
     
     /// Offers a bridge between the abstract `TunnelKitProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
-    public struct Configuration {
+    public struct Configuration: Codable {
         struct Keys {
             static let appGroup = "AppGroup"
             
@@ -564,5 +564,19 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.compressionFraming == rhs.compressionFraming) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
         )
+    }
+}
+
+/// :nodoc:
+extension TunnelKitProvider.EndpointProtocol: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let proto = try TunnelKitProvider.EndpointProtocol.deserialized(container.decode(String.self))
+        self.init(proto.socketType, proto.port)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(serialized())
     }
 }

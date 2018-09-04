@@ -59,3 +59,17 @@ public struct CryptoContainer: Equatable {
         return lhs.pem == rhs.pem
     }
 }
+
+/// :nodoc:
+extension CryptoContainer: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let pem = try container.decode(String.self)
+        self.init(pem: pem)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(pem)
+    }
+}
