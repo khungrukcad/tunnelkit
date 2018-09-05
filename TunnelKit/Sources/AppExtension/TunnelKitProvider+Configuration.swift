@@ -548,6 +548,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
+        builder.debugLogFormat = debugLogFormat
         return builder
     }
 
