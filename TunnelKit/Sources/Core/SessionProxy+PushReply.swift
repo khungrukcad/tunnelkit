@@ -190,7 +190,7 @@ extension SessionProxy {
 
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
 
-        private static let cipherRegexp = try! NSRegularExpression(pattern: "cipher [^\\s]+", options: [])
+        private static let cipherRegexp = try! NSRegularExpression(pattern: "cipher [^,\\s]+", options: [])
         
         private let original: String
 

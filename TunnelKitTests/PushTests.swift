@@ -97,6 +97,14 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
 
-        XCTAssertEqual(reply.cipher, .aes256cbc)
+        XCTAssertEqual(reply.cipher, .aes256gcm)
+    }
+
+    func testNCPTrailing() {
+        let msg = "PUSH_REPLY,dhcp-option DNS 8.8.8.8,dhcp-option DNS 4.4.4.4,comp-lzo no,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.18 10.8.0.17,peer-id 3,cipher AES-256-GCM,auth-token"
+        let reply = try! SessionProxy.PushReply(message: msg)!
+        reply.debug()
+        
+        XCTAssertEqual(reply.cipher, .aes256gcm)
     }
 }
