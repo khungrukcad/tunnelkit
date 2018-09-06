@@ -30,7 +30,7 @@ extension ViewController {
             password: password
         )
         
-        var builder = TunnelKitProvider.ConfigurationBuilder(appGroup: ViewController.appGroup)
+        var builder = TunnelKitProvider.ConfigurationBuilder()
         let socketType: TunnelKitProvider.SocketType = switchTCP.isOn ? .tcp : .udp
         builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(socketType, port)]
         builder.cipher = .aes128cbc
@@ -44,6 +44,7 @@ extension ViewController {
         let configuration = builder.build()
         return try! configuration.generatedTunnelProtocol(
             withBundleIdentifier: ViewController.bundleIdentifier,
+            appGroup: ViewController.appGroup,
             endpoint: endpoint
         )
     }
