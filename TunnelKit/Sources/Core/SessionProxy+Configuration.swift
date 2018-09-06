@@ -40,7 +40,7 @@ import Foundation
 extension SessionProxy {
 
     /// The available encryption algorithms.
-    public enum Cipher: String, Codable {
+    public enum Cipher: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
         
@@ -66,10 +66,19 @@ extension SessionProxy {
         public var embedsDigest: Bool {
             return rawValue.hasSuffix("-GCM")
         }
+        
+        public var genericName: String {
+            return "AES"
+        }
+        
+        /// :nodoc:
+        public var description: String {
+            return rawValue
+        }
     }
     
     /// The available message digest algorithms.
-    public enum Digest: String, Codable {
+    public enum Digest: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
         
@@ -87,6 +96,15 @@ extension SessionProxy {
 
         /// SHA256 message digest.
         case sha512 = "SHA512"
+        
+        public var genericName: String {
+            return "HMAC"
+        }
+        
+        /// :nodoc:
+        public var description: String {
+            return "\(genericName)-\(rawValue)"
+        }
     }
     
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
