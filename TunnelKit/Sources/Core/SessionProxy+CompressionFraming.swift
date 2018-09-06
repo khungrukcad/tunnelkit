@@ -1,5 +1,5 @@
 //
-//  CompressionFraming.swift
+//  SessionProxy+CompressionFraming.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 8/30/18.
@@ -29,7 +29,7 @@ import __TunnelKitNative
 extension SessionProxy {
 
     /// Defines the type of compression framing.
-    public enum CompressionFraming: Int, CustomStringConvertible {
+    public enum CompressionFraming: Int, Codable, CustomStringConvertible {
 
         /// No compression framing.
         case disabled
