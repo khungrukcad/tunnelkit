@@ -67,6 +67,7 @@ extension SessionProxy {
             return rawValue.hasSuffix("-GCM")
         }
         
+        /// Returns a generic name for this cipher.
         public var genericName: String {
             return rawValue.hasSuffix("-GCM") ? "AES-GCM" : "AES-CBC"
         }
@@ -97,6 +98,7 @@ extension SessionProxy {
         /// SHA256 message digest.
         case sha512 = "SHA512"
         
+        /// Returns a generic name for this digest.
         public var genericName: String {
             return "HMAC"
         }
