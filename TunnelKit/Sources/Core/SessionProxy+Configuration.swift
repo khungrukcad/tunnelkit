@@ -47,11 +47,17 @@ extension SessionProxy {
         /// AES encryption with 128-bit key size and CBC.
         case aes128cbc = "AES-128-CBC"
         
+        /// AES encryption with 192-bit key size and CBC.
+        case aes192cbc = "AES-192-CBC"
+        
         /// AES encryption with 256-bit key size and CBC.
         case aes256cbc = "AES-256-CBC"
         
         /// AES encryption with 128-bit key size and GCM.
         case aes128gcm = "AES-128-GCM"
+        
+        /// AES encryption with 192-bit key size and GCM.
+        case aes192gcm = "AES-192-GCM"
         
         /// AES encryption with 256-bit key size and GCM.
         case aes256gcm = "AES-256-GCM"
@@ -70,8 +76,17 @@ extension SessionProxy {
         /// SHA1 message digest.
         case sha1 = "SHA1"
         
+        /// SHA224 message digest.
+        case sha224 = "SHA224"
+
         /// SHA256 message digest.
         case sha256 = "SHA256"
+
+        /// SHA256 message digest.
+        case sha384 = "SHA384"
+
+        /// SHA256 message digest.
+        case sha512 = "SHA512"
     }
     
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
