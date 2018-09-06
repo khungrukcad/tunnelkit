@@ -40,18 +40,24 @@ import Foundation
 extension SessionProxy {
 
     /// The available encryption algorithms.
-    public enum Cipher: String, Codable {
+    public enum Cipher: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
         
         /// AES encryption with 128-bit key size and CBC.
         case aes128cbc = "AES-128-CBC"
         
+        /// AES encryption with 192-bit key size and CBC.
+        case aes192cbc = "AES-192-CBC"
+        
         /// AES encryption with 256-bit key size and CBC.
         case aes256cbc = "AES-256-CBC"
         
         /// AES encryption with 128-bit key size and GCM.
         case aes128gcm = "AES-128-GCM"
+        
+        /// AES encryption with 192-bit key size and GCM.
+        case aes192gcm = "AES-192-GCM"
         
         /// AES encryption with 256-bit key size and GCM.
         case aes256gcm = "AES-256-GCM"
@@ -60,18 +66,47 @@ extension SessionProxy {
         public var embedsDigest: Bool {
             return rawValue.hasSuffix("-GCM")
         }
+        
+        /// Returns a generic name for this cipher.
+        public var genericName: String {
+            return rawValue.hasSuffix("-GCM") ? "AES-GCM" : "AES-CBC"
+        }
+        
+        /// :nodoc:
+        public var description: String {
+            return rawValue
+        }
     }
     
     /// The available message digest algorithms.
-    public enum Digest: String, Codable {
+    public enum Digest: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
         
         /// SHA1 message digest.
         case sha1 = "SHA1"
         
+        /// SHA224 message digest.
+        case sha224 = "SHA224"
+
         /// SHA256 message digest.
         case sha256 = "SHA256"
+
+        /// SHA256 message digest.
+        case sha384 = "SHA384"
+
+        /// SHA256 message digest.
+        case sha512 = "SHA512"
+        
+        /// Returns a generic name for this digest.
+        public var genericName: String {
+            return "HMAC"
+        }
+        
+        /// :nodoc:
+        public var description: String {
+            return "\(genericName)-\(rawValue)"
+        }
     }
     
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
