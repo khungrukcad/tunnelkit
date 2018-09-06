@@ -68,7 +68,7 @@ extension SessionProxy {
         }
         
         public var genericName: String {
-            return "AES"
+            return rawValue.hasSuffix("-GCM") ? "AES-GCM" : "AES-CBC"
         }
         
         /// :nodoc:
