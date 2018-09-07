@@ -147,6 +147,9 @@ public protocol SessionReply {
     /// The DNS servers set up for this session.
     var dnsServers: [String] { get }
     
+    /// The optional compression framing.
+    var compressionFraming: SessionProxy.CompressionFraming? { get }
+    
     /// The optional authentication token.
     var authToken: String? { get }
     
@@ -186,12 +189,14 @@ extension SessionProxy {
 
         private static let dnsRegexp = try! NSRegularExpression(pattern: "dhcp-option DNS6? [\\d\\.a-fA-F:]+", options: [])
 
+        private static let compRegexp = try! NSRegularExpression(pattern: "comp(ress|-lzo)", options: [])
+        
         private static let authTokenRegexp = try! NSRegularExpression(pattern: "auth-token [a-zA-Z0-9/=+]+", options: [])
 
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
 
         private static let cipherRegexp = try! NSRegularExpression(pattern: "cipher [^,\\s]+", options: [])
-        
+
         private let original: String
 
         let ipv4: IPv4Settings?
@@ -199,6 +204,8 @@ extension SessionProxy {
         let ipv6: IPv6Settings?
         
         let dnsServers: [String]
+        
+        let compressionFraming: SessionProxy.CompressionFraming?
         
         let authToken: String?
         
@@ -224,6 +231,7 @@ extension SessionProxy {
             var optIfconfig6Arguments: [String]?
 
             var dnsServers: [String] = []
+            var compressionFraming: SessionProxy.CompressionFraming?
             var authToken: String?
             var peerId: UInt32?
             var cipher: SessionProxy.Cipher?
@@ -365,6 +373,21 @@ extension SessionProxy {
                 dnsServers.append($0[1])
             }
             
+            // MARK: Compression
+            
+            PushReply.compRegexp.enumerateComponents(in: message) {
+                switch $0[0] {
+                case "comp-lzo":
+                    compressionFraming = .compLZO
+                    
+                case "compress":
+                    compressionFraming = .compress
+                    
+                default:
+                    break
+                }
+            }
+            
             // MARK: Authentication
 
             PushReply.authTokenRegexp.enumerateArguments(in: message) {
@@ -382,6 +405,7 @@ extension SessionProxy {
             }
 
             self.dnsServers = dnsServers
+            self.compressionFraming = compressionFraming
             self.authToken = authToken
             self.peerId = peerId
             self.cipher = cipher
@@ -404,13 +428,20 @@ extension SessionProxy {
 
 private extension NSRegularExpression {
     func enumerateArguments(in string: String, using block: ([String]) -> Void) {
+        enumerateComponents(in: string) { (tokens) in
+            var args = tokens
+            args.removeFirst()
+            block(args)
+        }
+    }
+
+    func enumerateComponents(in string: String, using block: ([String]) -> Void) {
         enumerateMatches(in: string, options: [], range: NSMakeRange(0, string.count)) { (result, flags, stop) in
             guard let range = result?.range else {
                 return
             }
             let match = (string as NSString).substring(with: range)
-            var tokens = match.components(separatedBy: " ")
-            tokens.removeFirst()
+            let tokens = match.components(separatedBy: " ")
             block(tokens)
         }
     }

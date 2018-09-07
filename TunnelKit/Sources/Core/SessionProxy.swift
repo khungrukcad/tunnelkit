@@ -1031,6 +1031,10 @@ public class SessionProxy {
             log.debug("Set up encryption")
         }
         
+        let pushedFraming = pushReply.compressionFraming
+        if let negFraming = pushedFraming {
+            log.debug("Negotiated compression framing: \(negFraming.rawValue)")
+        }
         let pushedCipher = pushReply.cipher
         if let negCipher = pushedCipher {
             log.debug("Negotiated cipher: \(negCipher.rawValue)")
@@ -1054,7 +1058,7 @@ public class SessionProxy {
             encrypter: bridge.encrypter(),
             decrypter: bridge.decrypter(),
             peerId: pushReply.peerId ?? PacketPeerIdDisabled,
-            compressionFraming: configuration.compressionFraming.native,
+            compressionFraming: (pushedFraming ?? configuration.compressionFraming).native,
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )
