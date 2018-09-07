@@ -578,7 +578,7 @@ public class SessionProxy {
             return
         }
 
-        if let interval = configuration.keepAliveInterval {
+        if let interval = configuration.keepAliveInterval, interval > 0 {
             let elapsed = now.timeIntervalSince(lastPingOut)
             guard (elapsed >= interval) else {
                 let remaining = min(interval, interval - elapsed)
@@ -593,7 +593,7 @@ public class SessionProxy {
         sendDataPackets([DataPacket.pingString])
         lastPingOut = Date()
 
-        if let interval = configuration.keepAliveInterval {
+        if let interval = configuration.keepAliveInterval, interval > 0 {
             queue.asyncAfter(deadline: .now() + interval) { [weak self] in
                 self?.ping()
             }
@@ -899,7 +899,7 @@ public class SessionProxy {
         }
         delegate?.sessionDidStart(self, remoteAddress: remoteAddress, reply: reply)
 
-        if let interval = configuration.keepAliveInterval {
+        if let interval = configuration.keepAliveInterval, interval > 0 {
             queue.asyncAfter(deadline: .now() + interval) { [weak self] in
                 self?.ping()
             }
