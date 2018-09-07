@@ -221,10 +221,12 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         sessionConfiguration.clientCertificatePath = clientCertificatePath
         sessionConfiguration.clientKeyPath = clientKeyPath
         sessionConfiguration.compressionFraming = cfg.compressionFraming
-        if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
-            sessionConfiguration.renegotiatesAfter = Double(renegotiatesAfterSeconds)
+        if let keepAliveSeconds = cfg.keepAliveSeconds {
+            sessionConfiguration.keepAliveInterval = TimeInterval(keepAliveSeconds)
         }
-        sessionConfiguration.keepAliveInterval = CoreConfiguration.pingInterval
+        if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
+            sessionConfiguration.renegotiatesAfter = TimeInterval(renegotiatesAfterSeconds)
+        }
 
         let proxy: SessionProxy
         do {

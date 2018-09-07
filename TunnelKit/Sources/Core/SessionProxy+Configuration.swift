@@ -152,7 +152,7 @@ extension SessionProxy {
             clientCertificatePath = nil
             clientKeyPath = nil
             compressionFraming = .disabled
-            keepAliveInterval = nil
+            keepAliveInterval = CoreConfiguration.pingInterval
             renegotiatesAfter = nil
         }
 

@@ -179,6 +179,9 @@ extension TunnelKitProvider {
         /// Sets compression framing, disabled by default.
         public var compressionFraming: SessionProxy.CompressionFraming
 
+        /// Sends periodical keep-alive packets (ping) if set. Useful with stateful firewalls.
+        public var keepAliveSeconds: Int?
+
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
         
@@ -209,6 +212,7 @@ extension TunnelKitProvider {
             clientKey = nil
             mtu = 1500
             compressionFraming = .disabled
+            keepAliveSeconds = nil
             renegotiatesAfterSeconds = nil
             shouldDebug = false
             debugLogKey = nil
@@ -264,6 +268,7 @@ extension TunnelKitProvider {
             } else {
                 compressionFraming = .disabled
             }
+            keepAliveSeconds = providerConfiguration[S.keepAlive] as? Int
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
@@ -299,6 +304,7 @@ extension TunnelKitProvider {
                 clientKey: clientKey,
                 mtu: mtu,
                 compressionFraming: compressionFraming,
+                keepAliveSeconds: keepAliveSeconds,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
@@ -331,6 +337,8 @@ extension TunnelKitProvider {
             static let mtu = "MTU"
             
             static let compressionFraming = "CompressionFraming"
+            
+            static let keepAlive = "KeepAlive"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
             
@@ -371,6 +379,9 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: SessionProxy.CompressionFraming
         
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.keepAliveSeconds`
+        public let keepAliveSeconds: Int?
+
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?
         
@@ -451,6 +462,9 @@ extension TunnelKitProvider {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
             dict[S.compressionFraming] = compressionFraming.rawValue
+            if let keepAliveSeconds = keepAliveSeconds {
+                dict[S.keepAlive] = keepAliveSeconds
+            }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
             }
@@ -512,6 +526,11 @@ extension TunnelKitProvider {
             }
             log.info("MTU: \(mtu)")
             log.info("Compression framing: \(compressionFraming)")
+            if let keepAliveSeconds = keepAliveSeconds {
+                log.info("Keep-alive: \(keepAliveSeconds) seconds")
+            } else {
+                log.info("Keep-alive: default")
+            }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
@@ -541,6 +560,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.clientKey = clientKey
         builder.mtu = mtu
         builder.compressionFraming = compressionFraming
+        builder.keepAliveSeconds = keepAliveSeconds
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
@@ -559,6 +579,7 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.clientKey == rhs.clientKey) &&
             (lhs.mtu == rhs.mtu) &&
             (lhs.compressionFraming == rhs.compressionFraming) &&
+            (lhs.keepAliveSeconds == rhs.keepAliveSeconds) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
         )
     }
