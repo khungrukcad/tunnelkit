@@ -63,7 +63,7 @@ class AppExtensionTests: XCTestCase {
             password: "bar"
         )
 
-        builder = TunnelKitProvider.ConfigurationBuilder(appGroup: appGroup)
+        builder = TunnelKitProvider.ConfigurationBuilder()
         XCTAssertNotNil(builder)
 
         builder.cipher = .aes128cbc
@@ -71,7 +71,7 @@ class AppExtensionTests: XCTestCase {
         builder.ca = CryptoContainer(pem: "abcdef")
         cfg = builder.build()
 
-        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, endpoint: endpoint)
+        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, endpoint: endpoint)
         XCTAssertNotNil(proto)
         
         XCTAssertEqual(proto?.providerBundleIdentifier, identifier)
@@ -84,7 +84,7 @@ class AppExtensionTests: XCTestCase {
         }
         
         let K = TunnelKitProvider.Configuration.Keys.self
-        XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, cfg.appGroup)
+        XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca?.pem)

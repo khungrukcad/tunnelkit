@@ -147,13 +147,6 @@ extension TunnelKitProvider {
     /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
         
-        // MARK: App group
-        
-        /// The name of a shared app group.
-        public let appGroup: String
-        
-        // MARK: Tunnel parameters
-        
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
         ///
         /// - Seealso: `fallbackServerAddresses`
@@ -204,17 +197,16 @@ extension TunnelKitProvider {
         
         /**
          Default initializer.
-         
-         - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
          */
-        public init(appGroup: String) {
-            self.appGroup = appGroup
+        public init() {
             prefersResolvedAddresses = false
             resolvedAddresses = nil
             endpointProtocols = [EndpointProtocol(.udp, 1194)]
             cipher = .aes128cbc
             digest = .sha1
             ca = nil
+            clientCertificate = nil
+            clientKey = nil
             mtu = 1500
             compressionFraming = .disabled
             renegotiatesAfterSeconds = nil
@@ -226,9 +218,6 @@ extension TunnelKitProvider {
         fileprivate init(providerConfiguration: [String: Any]) throws {
             let S = Configuration.Keys.self
 
-            guard let appGroup = providerConfiguration[S.appGroup] as? String else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.appGroup)]")
-            }
             guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm) else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
             }
@@ -264,7 +253,6 @@ extension TunnelKitProvider {
             }
             endpointProtocols = try endpointProtocolsStrings.map { try EndpointProtocol.deserialized($0) }
             
-            self.appGroup = appGroup
             self.cipher = cipher
             self.digest = digest
             self.ca = ca
@@ -301,7 +289,6 @@ extension TunnelKitProvider {
          */
         public func build() -> Configuration {
             return Configuration(
-                appGroup: appGroup,
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
                 endpointProtocols: endpointProtocols,
@@ -354,9 +341,6 @@ extension TunnelKitProvider {
             static let debugLogFormat = "DebugLogFormat"
         }
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.appGroup`
-        public let appGroup: String
-        
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
         public let prefersResolvedAddresses: Bool
         
@@ -401,18 +385,28 @@ extension TunnelKitProvider {
         
         // MARK: Shortcuts
 
-        var defaults: UserDefaults? {
-            return UserDefaults(suiteName: appGroup)
-        }
-        
-        var existingLog: [String]? {
+        func existingLog(in defaults: UserDefaults) -> [String]? {
             guard shouldDebug, let key = debugLogKey else {
                 return nil
             }
-            return defaults?.array(forKey: key) as? [String]
+            return defaults.array(forKey: key) as? [String]
         }
         
         // MARK: API
+        
+        /**
+         Parses the app group from a provider configuration map.
+         
+         - Parameter from: The map to parse.
+         - Returns: The parsed app group.
+         - Throws: `ProviderError.configuration` if `providerConfiguration` does not contain an app group.
+         */
+        public static func appGroup(from providerConfiguration: [String: Any]) throws -> String {
+            guard let appGroup = providerConfiguration[Keys.appGroup] as? String else {
+                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(Keys.appGroup)]")
+            }
+            return appGroup
+        }
         
         /**
          Parses a new `TunnelKitProvider.Configuration` object from a provider configuration map.
@@ -429,9 +423,10 @@ extension TunnelKitProvider {
         /**
          Returns a dictionary representation of this configuration for use with `NETunnelProviderProtocol.providerConfiguration`.
 
+         - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
          - Returns: The dictionary representation of `self`.
          */
-        public func generatedProviderConfiguration() -> [String: Any] {
+        public func generatedProviderConfiguration(appGroup: String) -> [String: Any] {
             let S = Keys.self
             
             var dict: [String: Any] = [
@@ -472,11 +467,12 @@ extension TunnelKitProvider {
          Generates a `NETunnelProviderProtocol` from this configuration.
          
          - Parameter bundleIdentifier: The provider bundle identifier required to locate the tunnel extension.
+         - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
          - Parameter endpoint: The `TunnelKitProvider.AuthenticatedEndpoint` the tunnel will connect to.
          - Returns: The generated `NETunnelProviderProtocol` object.
          - Throws: `ProviderError.configuration` if unable to store the `endpoint.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, endpoint: AuthenticatedEndpoint) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, endpoint: AuthenticatedEndpoint) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
             let keychain = Keychain(group: appGroup)
@@ -490,7 +486,7 @@ extension TunnelKitProvider {
             protocolConfiguration.serverAddress = endpoint.hostname
             protocolConfiguration.username = endpoint.username
             protocolConfiguration.passwordReference = try? keychain.passwordReference(for: endpoint.username)
-            protocolConfiguration.providerConfiguration = generatedProviderConfiguration()
+            protocolConfiguration.providerConfiguration = generatedProviderConfiguration(appGroup: appGroup)
             
             return protocolConfiguration
         }
@@ -536,7 +532,7 @@ extension TunnelKitProvider.Configuration: Equatable {
      - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
      */
     public func builder() -> TunnelKitProvider.ConfigurationBuilder {
-        var builder = TunnelKitProvider.ConfigurationBuilder(appGroup: appGroup)
+        var builder = TunnelKitProvider.ConfigurationBuilder()
         builder.endpointProtocols = endpointProtocols
         builder.cipher = cipher
         builder.digest = digest
