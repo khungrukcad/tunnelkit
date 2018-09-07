@@ -704,7 +704,7 @@ public class SessionProxy {
     }
     
     private func maybeRenegotiate() {
-        guard let renegotiatesAfter = configuration.renegotiatesAfter else {
+        guard let renegotiatesAfter = configuration.renegotiatesAfter, renegotiatesAfter > 0 else {
             return
         }
         guard (negotiationKeyIdx == currentKeyIdx) else {
