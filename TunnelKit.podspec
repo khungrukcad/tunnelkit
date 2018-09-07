@@ -3,10 +3,10 @@ Pod::Spec.new do |s|
     s.version           = "1.1.0"
     s.summary           = "VPN framework for Apple platforms."
 
-    s.homepage          = "https://github.com/keeshux/TunnelKit"
+    s.homepage          = "https://github.com/keeshux/tunnelkit"
     s.license           = { :type => "GPLv3", :file => "LICENSE" }
     s.author            = { "Davide De Rosa" => "keeshux@gmail.com" }
-    s.source            = { :git => "https://github.com/keeshux/TunnelKit.git", :tag => "v#{s.version}" }
+    s.source            = { :git => "https://github.com/keeshux/tunnelkit.git", :tag => "v#{s.version}" }
 
     s.ios.deployment_target = "9.0"
     s.osx.deployment_target = "10.11"
