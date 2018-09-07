@@ -384,7 +384,7 @@ extension SessionProxy {
                     compressionFraming = .compress
                     
                 default:
-                    compressionFraming = .disabled
+                    break
                 }
             }
             
