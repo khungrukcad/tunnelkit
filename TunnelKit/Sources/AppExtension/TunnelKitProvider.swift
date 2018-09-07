@@ -227,7 +227,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
             sessionConfiguration.renegotiatesAfter = TimeInterval(renegotiatesAfterSeconds)
         }
-        sessionConfiguration.keepAliveInterval = CoreConfiguration.pingInterval
 
         let proxy: SessionProxy
         do {

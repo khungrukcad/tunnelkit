@@ -529,7 +529,7 @@ extension TunnelKitProvider {
             if let keepAliveSeconds = keepAliveSeconds {
                 log.info("Keep-alive: \(keepAliveSeconds) seconds")
             } else {
-                log.info("Keep-alive: disabled")
+                log.info("Keep-alive: default")
             }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
