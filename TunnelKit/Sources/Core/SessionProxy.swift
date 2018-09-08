@@ -85,6 +85,18 @@ public class SessionProxy {
     
     private let configuration: Configuration
     
+    private var keepAliveInterval: TimeInterval? {
+        let interval: TimeInterval?
+        if let negInterval = pushReply?.ping, negInterval > 0 {
+            interval = TimeInterval(negInterval)
+        } else if let cfgInterval = configuration.keepAliveInterval, cfgInterval > 0.0 {
+            interval = cfgInterval
+        } else {
+            return nil
+        }
+        return interval
+    }
+    
     /// An optional `SessionProxyDelegate` for receiving session events.
     public weak var delegate: SessionProxyDelegate?
     
@@ -583,13 +595,11 @@ public class SessionProxy {
             return
         }
 
-        if let interval = configuration.keepAliveInterval, interval > 0 {
+        // postpone ping if elapsed less than keep-alive
+        if let interval = keepAliveInterval {
             let elapsed = now.timeIntervalSince(lastPingOut)
             guard (elapsed >= interval) else {
-                let remaining = min(interval, interval - elapsed)
-                queue.asyncAfter(deadline: .now() + remaining) { [weak self] in
-                    self?.ping()
-                }
+                scheduleNextPing(elapsed: elapsed)
                 return
             }
         }
@@ -598,10 +608,16 @@ public class SessionProxy {
         sendDataPackets([DataPacket.pingString])
         lastPingOut = Date()
 
-        if let interval = configuration.keepAliveInterval, interval > 0 {
-            queue.asyncAfter(deadline: .now() + interval) { [weak self] in
-                self?.ping()
-            }
+        scheduleNextPing()
+    }
+    
+    private func scheduleNextPing(elapsed: TimeInterval = 0.0) {
+        guard let interval = keepAliveInterval else {
+            return
+        }
+        let remaining = min(interval, interval - elapsed)
+        queue.asyncAfter(deadline: .now() + remaining) { [weak self] in
+            self?.ping()
         }
     }
     
@@ -904,11 +920,7 @@ public class SessionProxy {
         }
         delegate?.sessionDidStart(self, remoteAddress: remoteAddress, reply: reply)
 
-        if let interval = configuration.keepAliveInterval, interval > 0 {
-            queue.asyncAfter(deadline: .now() + interval) { [weak self] in
-                self?.ping()
-            }
-        }
+        scheduleNextPing()
     }
     
     // Ruby: transition_keys
@@ -1039,6 +1051,9 @@ public class SessionProxy {
         let pushedFraming = pushReply.compressionFraming
         if let negFraming = pushedFraming {
             log.debug("Negotiated compression framing: \(negFraming.rawValue)")
+        }
+        if let negPing = pushReply.ping {
+            log.debug("Negotiated keep-alive: \(negPing) seconds")
         }
         let pushedCipher = pushReply.cipher
         if let negCipher = pushedCipher {
