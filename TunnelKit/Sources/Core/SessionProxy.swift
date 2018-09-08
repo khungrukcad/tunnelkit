@@ -85,6 +85,18 @@ public class SessionProxy {
     
     private let configuration: Configuration
     
+    private var keepAliveInterval: TimeInterval? {
+        let interval: TimeInterval?
+        if let negInterval = pushReply?.ping, negInterval > 0 {
+            interval = TimeInterval(negInterval)
+        } else if let cfgInterval = configuration.keepAliveInterval, cfgInterval > 0.0 {
+            interval = cfgInterval
+        } else {
+            return nil
+        }
+        return interval
+    }
+    
     /// An optional `SessionProxyDelegate` for receiving session events.
     public weak var delegate: SessionProxyDelegate?
     
@@ -1039,6 +1051,9 @@ public class SessionProxy {
         let pushedFraming = pushReply.compressionFraming
         if let negFraming = pushedFraming {
             log.debug("Negotiated compression framing: \(negFraming.rawValue)")
+        }
+        if let negPing = pushReply.ping {
+            log.debug("Negotiated keep-alive: \(negPing) seconds")
         }
         let pushedCipher = pushReply.cipher
         if let negCipher = pushedCipher {
