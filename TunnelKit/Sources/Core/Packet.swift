@@ -98,7 +98,7 @@ public class PacketStream {
     }
 }
 
-class CommonPacket {
+class ControlPacket {
     let packetId: UInt32
     
     let code: PacketCode
@@ -123,7 +123,8 @@ class CommonPacket {
     // Ruby: send_ctrl
     func toBuffer() -> Data {
         var raw = PacketWithHeader(code, key, sessionId)
-        raw.append(UInt8(0))
+        // TODO: put HMAC here when tls-auth
+        raw.append(UInt8(0)) // ackSize
         raw.append(UInt32(packetId).bigEndian)
         if let payload = payload {
             raw.append(payload)
