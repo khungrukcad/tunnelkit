@@ -38,20 +38,18 @@
 import Foundation
 import __TunnelKitNative
 
-class CommonPacket {
-    let packetId: UInt32
+/// Reads and writes packets as a stream. Useful for stream-oriented links (e.g TCP/IP).
+public class PacketStream {
     
-    let code: PacketCode
-    
-    let key: UInt8
-    
-    let sessionId: Data?
-    
-    let payload: Data?
-    
-    var sentDate: Date?
-
-    static func parsed(_ stream: Data) -> (Int, [Data]) {
+    /**
+     Parses packets from a stream.
+     
+     - Parameter stream: The data stream.
+     - Returns: A pair where the first value is the `Int` offset up to which
+     the stream could be parsed, and the second value is an array containing
+     the parsed packets up to such offset.
+     */
+    public static func packets(from stream: Data) -> (Int, [Data]) {
         var ni = 0
         var parsed: [Data] = []
         while (ni + 2 <= stream.count) {
@@ -68,14 +66,26 @@ class CommonPacket {
         return (ni, parsed)
     }
     
-    static func stream(_ packet: Data) -> Data {
-        var stream = Data(capacity: 2 + packet.count)
-        stream.append(UInt16(packet.count).bigEndian)
-        stream.append(contentsOf: packet)
-        return stream
+    /**
+     Creates a contiguous stream of packets.
+     
+     - Parameter packet: The packet.
+     - Returns: A stream made of the packet.
+     */
+    public static func stream(from packet: Data) -> Data {
+        var raw = Data(capacity: 2 + packet.count)
+        raw.append(UInt16(packet.count).bigEndian)
+        raw.append(contentsOf: packet)
+        return raw
     }
     
-    static func stream(_ packets: [Data]) -> Data {
+    /**
+     Creates a contiguous stream of packets.
+     
+     - Parameter packets: The array of packets.
+     - Returns: A stream made of the array of packets.
+     */
+    public static func stream(from packets: [Data]) -> Data {
         var raw = Data()
         for payload in packets {
             raw.append(UInt16(payload.count).bigEndian)
@@ -84,6 +94,23 @@ class CommonPacket {
         return raw
     }
     
+    private init() {
+    }
+}
+
+class CommonPacket {
+    let packetId: UInt32
+    
+    let code: PacketCode
+    
+    let key: UInt8
+    
+    let sessionId: Data?
+    
+    let payload: Data?
+    
+    var sentDate: Date?
+
     init(_ packetId: UInt32, _ code: PacketCode, _ key: UInt8, _ sessionId: Data?, _ payload: Data?) {
         self.packetId = packetId
         self.code = code
