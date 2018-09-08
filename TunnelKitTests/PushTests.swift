@@ -115,4 +115,12 @@ class PushTests: XCTestCase {
         
         XCTAssertEqual(reply.cipher, .aes256gcm)
     }
+    
+    func testPing() {
+        let msg = "PUSH_REPLY,route 192.168.1.0 255.255.255.0,route 10.0.2.0 255.255.255.0,dhcp-option DNS 192.168.1.99,dhcp-option DNS 176.103.130.130,route 10.0.2.1,topology net30,ping 10,ping-restart 60,ifconfig 10.0.2.14 10.0.2.13"
+        let reply = try! SessionProxy.PushReply(message: msg)!
+        reply.debug()
+        
+        XCTAssertEqual(reply.ping, 10)
+    }
 }

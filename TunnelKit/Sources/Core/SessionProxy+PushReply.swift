@@ -150,6 +150,9 @@ public protocol SessionReply {
     /// The optional compression framing.
     var compressionFraming: SessionProxy.CompressionFraming? { get }
     
+    /// The optional keep-alive interval.
+    var ping: Int? { get }
+
     /// The optional authentication token.
     var authToken: String? { get }
     
@@ -191,6 +194,8 @@ extension SessionProxy {
 
         private static let compRegexp = try! NSRegularExpression(pattern: "comp(ress|-lzo)", options: [])
         
+        private static let pingRegexp = try! NSRegularExpression(pattern: "ping \\d+", options: [])
+
         private static let authTokenRegexp = try! NSRegularExpression(pattern: "auth-token [a-zA-Z0-9/=+]+", options: [])
 
         private static let peerIdRegexp = try! NSRegularExpression(pattern: "peer-id [0-9]+", options: [])
@@ -206,6 +211,8 @@ extension SessionProxy {
         let dnsServers: [String]
         
         let compressionFraming: SessionProxy.CompressionFraming?
+        
+        let ping: Int?
         
         let authToken: String?
         
@@ -232,6 +239,7 @@ extension SessionProxy {
 
             var dnsServers: [String] = []
             var compressionFraming: SessionProxy.CompressionFraming?
+            var ping: Int?
             var authToken: String?
             var peerId: UInt32?
             var cipher: SessionProxy.Cipher?
@@ -388,6 +396,12 @@ extension SessionProxy {
                 }
             }
             
+            // MARK: Keep-alive
+            
+            PushReply.pingRegexp.enumerateArguments(in: message) {
+                ping = Int($0[0])
+            }
+            
             // MARK: Authentication
 
             PushReply.authTokenRegexp.enumerateArguments(in: message) {
@@ -406,6 +420,7 @@ extension SessionProxy {
 
             self.dnsServers = dnsServers
             self.compressionFraming = compressionFraming
+            self.ping = ping
             self.authToken = authToken
             self.peerId = peerId
             self.cipher = cipher
