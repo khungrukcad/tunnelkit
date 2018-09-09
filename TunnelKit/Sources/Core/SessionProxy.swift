@@ -426,7 +426,6 @@ public class SessionProxy {
                 log.warning("Dropped malformed packet (unknown code: \(codeValue))")
                 continue
             }
-            
 //            log.verbose("Parsed packet with code \(code)")
 
             var offset = 1
@@ -454,7 +453,6 @@ public class SessionProxy {
                 continue
             }
 
-            log.debug("Packet has code \(code.rawValue)")
             let controlPacket: ControlPacket
             do {
                 let parsedPacket = try controlChannel.readInboundPacket(withData: packet, offset: 0)
@@ -470,7 +468,6 @@ public class SessionProxy {
 //                return
             }
 
-            log.debug("Packet has sessionId \(controlPacket.sessionId.toHex()) and \(controlPacket.ackIds?.count ?? 0) acks entries")
             sendAck(for: controlPacket)
 
             let pendingInboundQueue = controlChannel.enqueueInboundPacket(packet: controlPacket)
@@ -663,8 +660,6 @@ public class SessionProxy {
             return
         }
         
-        log.debug("Handle control packet with code \(packet.code.rawValue) and id \(packet.packetId)")
-
         if (((packet.code == .hardResetServerV2) && (negotiationKey.state == .hardReset)) ||
             ((packet.code == .softResetV1) && (negotiationKey.state == .softReset))) {
             
@@ -672,7 +667,7 @@ public class SessionProxy {
                 controlChannel.remoteSessionId = packet.sessionId
             }
             guard let remoteSessionId = controlChannel.remoteSessionId else {
-                log.error("No remote session id (never set)")
+                log.error("No remote sessionId (never set)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
@@ -684,7 +679,6 @@ public class SessionProxy {
 
             negotiationKey.state = .tls
 
-            log.debug("Remote sessionId is \(remoteSessionId.toHex())")
             log.debug("Start TLS handshake")
 
             negotiationKey.tlsOptional = TLSBox(
@@ -709,7 +703,7 @@ public class SessionProxy {
         }
         else if ((packet.code == .controlV1) && (negotiationKey.state == .tls)) {
             guard let remoteSessionId = controlChannel.remoteSessionId else {
-                log.error("No remote session id found in packet (control packets before server HARD_RESET)")
+                log.error("No remote sessionId found in packet (control packets before server HARD_RESET)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }

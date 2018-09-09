@@ -93,8 +93,6 @@ extension ControlChannel {
                 let remoteSessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
                 offset += PacketSessionIdLength
 
-                log.debug("Server acked packetIds \(ids) with remoteSessionId \(remoteSessionId.toHex())")
-                
                 ackIds = ids
                 ackRemoteSessionId = remoteSessionId
             }
@@ -113,20 +111,11 @@ extension ControlChannel {
                 throw ControlChannelError("Missing packetId")
             }
             let packetId = packet.networkUInt32Value(from: offset)
-            log.debug("Control packet has packetId \(packetId)")
             offset += PacketIdLength
 
             var payload: Data?
             if offset < end {
                 payload = packet.subdata(in: offset..<end)
-
-                if let payload = payload {
-                    if CoreConfiguration.logsSensitiveData {
-                        log.debug("Control packet payload (\(payload.count) bytes): \(payload.toHex())")
-                    } else {
-                        log.debug("Control packet payload (\(payload.count) bytes)")
-                    }
-                }
             }
 
             let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)

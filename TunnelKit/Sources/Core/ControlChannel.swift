@@ -42,7 +42,13 @@ class ControlChannel {
     
     private(set) var sessionId: Data?
     
-    var remoteSessionId: Data?
+    var remoteSessionId: Data? {
+        didSet {
+            if let id = remoteSessionId {
+                log.debug("Control: Remote sessionId is \(id.toHex())")
+            }
+        }
+    }
 
     private var queue: BidirectionalState<[ControlPacket]>
 
@@ -138,9 +144,9 @@ class ControlChannel {
         // packet count
         let packetCount = currentPacketId.outbound - oldIdOut
         if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(currentPacketId.outbound - 1)]")
+            log.debug("Control: Enqueued \(packetCount) packets [\(oldIdOut)-\(currentPacketId.outbound - 1)]")
         } else {
-            log.debug("Enqueued 1 control packet [\(oldIdOut)]")
+            log.debug("Control: Enqueued 1 packet [\(oldIdOut)]")
         }
     }
     
@@ -150,7 +156,7 @@ class ControlChannel {
             if let sentDate = packet.sentDate {
                 let timeAgo = -sentDate.timeIntervalSinceNow
                 guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
-                    log.debug("Skip control packet with id \(packet.packetId) (sent on \(sentDate), \(timeAgo) seconds ago)")
+                    log.debug("Control: Skip writing packet with packetId \(packet.packetId) (sent on \(sentDate), \(timeAgo) seconds ago)")
                     continue
                 }
             }
@@ -178,7 +184,7 @@ class ControlChannel {
             throw SessionError.missingSessionId
         }
         guard acksRemoteSessionId == sessionId else {
-            log.error("Ack session mismatch (\(acksRemoteSessionId.toHex()) != \(sessionId.toHex()))")
+            log.error("Control: Ack session mismatch (\(acksRemoteSessionId.toHex()) != \(sessionId.toHex()))")
             throw SessionError.sessionMismatch
         }
         
