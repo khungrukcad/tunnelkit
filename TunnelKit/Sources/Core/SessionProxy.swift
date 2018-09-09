@@ -155,19 +155,9 @@ public class SessionProxy {
     
     // MARK: Control
     
-    private let controlPlainBuffer: ZeroingData
-
-    private var controlQueue: BidirectionalState<[ControlPacket]>
-
-    private var controlPendingAcks: Set<UInt32>
-    
-    private var controlPacketId: BidirectionalState<UInt32>
+    private var controlChannel: ControlChannel
     
     private var authenticator: Authenticator?
-    
-    // MARK: Data
-    
-    private(set) var bytesCount: BidirectionalState<Int>
     
     // MARK: Init
 
@@ -187,11 +177,7 @@ public class SessionProxy {
         lastPing = BidirectionalState(withResetValue: Date.distantPast)
         isStopping = false
         
-        controlPlainBuffer = Z(count: TLSBoxMaxBufferLength)
-        controlQueue = BidirectionalState(withResetValue: [])
-        controlPendingAcks = []
-        controlPacketId = BidirectionalState(withResetValue: 0)
-        bytesCount = BidirectionalState(withResetValue: 0)
+        controlChannel = ControlChannel()
     }
     
     deinit {
@@ -273,6 +259,15 @@ public class SessionProxy {
         loopTunnel()
     }
 
+    /**
+     Returns the current data bytes count.
+ 
+     - Returns: The current data bytes count as a pair, inbound first.
+     */
+    public func dataCount() -> (Int, Int) {
+        return controlChannel.currentDataCount()
+    }
+    
     /**
      Shuts down the session with an optional `Error` reason. Does nothing if the session is already stopped or about to stop.
      
@@ -533,22 +528,22 @@ public class SessionProxy {
             }
 
             let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
-            controlQueue.inbound.append(controlPacket)
-            controlQueue.inbound.sort { $0.packetId < $1.packetId }
+            controlChannel.queue.inbound.append(controlPacket)
+            controlChannel.queue.inbound.sort { $0.packetId < $1.packetId }
             
-            for queuedControlPacket in controlQueue.inbound {
-                if (queuedControlPacket.packetId < controlPacketId.inbound) {
-                    controlQueue.inbound.removeFirst()
+            for queuedControlPacket in controlChannel.queue.inbound {
+                if (queuedControlPacket.packetId < controlChannel.packetId.inbound) {
+                    controlChannel.queue.inbound.removeFirst()
                     continue
                 }
-                if (queuedControlPacket.packetId != controlPacketId.inbound) {
+                if (queuedControlPacket.packetId != controlChannel.packetId.inbound) {
                     continue
                 }
 
                 handleControlPacket(queuedControlPacket)
 
-                controlPacketId.inbound += 1
-                controlQueue.inbound.removeFirst()
+                controlChannel.packetId.inbound += 1
+                controlChannel.queue.inbound.removeFirst()
             }
         }
 
@@ -613,12 +608,8 @@ public class SessionProxy {
     
     // Ruby: reset_ctrl
     private func resetControlChannel() {
-        controlPlainBuffer.zero()
-        controlQueue.reset()
-        controlPendingAcks.removeAll()
-        controlPacketId.reset()
+        controlChannel.reset()
         authenticator = nil
-        bytesCount.reset()
     }
     
     // Ruby: hard_reset
@@ -816,9 +807,9 @@ public class SessionProxy {
 
             do {
                 var length = 0
-                try negotiationKey.tls.pullRawPlainText(controlPlainBuffer.mutableBytes, length: &length)
+                try negotiationKey.tls.pullRawPlainText(controlChannel.plainBuffer.mutableBytes, length: &length)
 
-                let controlData = controlPlainBuffer.withOffset(0, count: length)
+                let controlData = controlChannel.plainBuffer.withOffset(0, count: length)
                 handleControlData(controlData)
             } catch _ {
             }
@@ -827,7 +818,9 @@ public class SessionProxy {
 
     // Ruby: handle_ctrl_data
     private func handleControlData(_ data: ZeroingData) {
-        guard let auth = authenticator else { return }
+        guard let auth = authenticator else {
+            return
+        }
 
         if CoreConfiguration.logsSensitiveData {
             log.debug("Pulled plain control data (\(data.count) bytes): \(data.toHex())")
@@ -927,7 +920,7 @@ public class SessionProxy {
             fatalError("Missing sessionId, do hardReset() first")
         }
         
-        let oldIdOut = controlPacketId.outbound
+        let oldIdOut = controlChannel.packetId.outbound
         let maxCount = link.mtu
         var queuedCount = 0
         var offset = 0
@@ -935,19 +928,19 @@ public class SessionProxy {
         repeat {
             let subPayloadLength = min(maxCount, payload.count - offset)
             let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlPacketId.outbound, payload: subPayloadData)
+            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlChannel.packetId.outbound, payload: subPayloadData)
             
-            controlQueue.outbound.append(packet)
-            controlPacketId.outbound += 1
+            controlChannel.queue.outbound.append(packet)
+            controlChannel.packetId.outbound += 1
             offset += maxCount
             queuedCount += subPayloadLength
         } while (offset < payload.count)
         
         assert(queuedCount == payload.count)
         
-        let packetCount = controlPacketId.outbound - oldIdOut
+        let packetCount = controlChannel.packetId.outbound - oldIdOut
         if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlPacketId.outbound - 1)]")
+            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlChannel.packetId.outbound - 1)]")
         } else {
             log.debug("Enqueued 1 control packet [\(oldIdOut)]")
         }
@@ -957,7 +950,7 @@ public class SessionProxy {
     
     // Ruby: flush_ctrl_q_out
     private func flushControlQueue() {
-        for controlPacket in controlQueue.outbound {
+        for controlPacket in controlChannel.queue.outbound {
             if let sentDate = controlPacket.sentDate {
                 let timeAgo = -sentDate.timeIntervalSinceNow
                 guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
@@ -980,7 +973,7 @@ public class SessionProxy {
             log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
             
             // track pending acks for sent packets
-            controlPendingAcks.insert(controlPacket.packetId)
+            controlChannel.addPendingAck(controlPacket.packetId)
 
             // WARNING: runs in Network.framework queue
             link?.writePacket(raw) { [weak self] (error) in
@@ -1068,7 +1061,7 @@ public class SessionProxy {
 
     // Ruby: handle_data_pkt
     private func handleDataPackets(_ packets: [Data], key: SessionKey) {
-        bytesCount.inbound += packets.flatCount
+        controlChannel.addReceivedDataCount(packets.flatCount)
         do {
             guard let decryptedPackets = try key.decrypt(packets: packets) else {
                 log.warning("Could not decrypt packets, is SessionKey properly configured (dataPath, peerId)?")
@@ -1103,7 +1096,7 @@ public class SessionProxy {
             }
             
             // WARNING: runs in Network.framework queue
-            bytesCount.outbound += encryptedPackets.flatCount
+            controlChannel.addSentDataCount(encryptedPackets.flatCount)
             link?.writePackets(encryptedPackets) { [weak self] (error) in
                 if let error = error {
                     self?.queue.sync {
@@ -1136,18 +1129,18 @@ public class SessionProxy {
         }
         
         // drop queued out packets if ack-ed
-        for (i, controlPacket) in controlQueue.outbound.enumerated() {
+        for (i, controlPacket) in controlChannel.queue.outbound.enumerated() {
             if packetIds.contains(controlPacket.packetId) {
-                controlQueue.outbound.remove(at: i)
+                controlChannel.queue.outbound.remove(at: i)
             }
         }
 
         // remove ack-ed packets from pending
-        controlPendingAcks.subtract(packetIds)
+        controlChannel.removePendingAcks(packetIds)
 //        log.verbose("Packets still pending ack: \(controlPendingAcks)")
 
         // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
-        if (isReliableLink && controlPendingAcks.isEmpty) {
+        if isReliableLink && !controlChannel.hasPendingAcks() {
             pushRequest()
         }
     }
