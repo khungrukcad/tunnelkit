@@ -527,23 +527,9 @@ public class SessionProxy {
                 }
             }
 
-            let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
-            controlChannel.queue.inbound.append(controlPacket)
-            controlChannel.queue.inbound.sort { $0.packetId < $1.packetId }
-            
-            for queuedControlPacket in controlChannel.queue.inbound {
-                if (queuedControlPacket.packetId < controlChannel.packetId.inbound) {
-                    controlChannel.queue.inbound.removeFirst()
-                    continue
-                }
-                if (queuedControlPacket.packetId != controlChannel.packetId.inbound) {
-                    continue
-                }
-
-                handleControlPacket(queuedControlPacket)
-
-                controlChannel.packetId.inbound += 1
-                controlChannel.queue.inbound.removeFirst()
+            let pendingInboundQueue = controlChannel.readInboundPacket(withCode: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
+            for inboundPacket in pendingInboundQueue {
+                handleControlPacket(inboundPacket)
             }
         }
 
@@ -916,75 +902,29 @@ public class SessionProxy {
         guard let sessionId = sessionId else {
             fatalError("Missing sessionId, do hardReset() first")
         }
-        
-        let oldIdOut = controlChannel.packetId.outbound
-        let maxCount = link.mtu
-        var queuedCount = 0
-        var offset = 0
-        
-        repeat {
-            let subPayloadLength = min(maxCount, payload.count - offset)
-            let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlChannel.packetId.outbound, payload: subPayloadData)
-            
-            controlChannel.queue.outbound.append(packet)
-            controlChannel.packetId.outbound += 1
-            offset += maxCount
-            queuedCount += subPayloadLength
-        } while (offset < payload.count)
-        
-        assert(queuedCount == payload.count)
-        
-        let packetCount = controlChannel.packetId.outbound - oldIdOut
-        if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlChannel.packetId.outbound - 1)]")
-        } else {
-            log.debug("Enqueued 1 control packet [\(oldIdOut)]")
-        }
-        
+
+        // FIXME: init controlChannel with sessionId
+        controlChannel.enqueueOutboundPackets(withCode: code, key: key, sessionId: sessionId, payload: payload, maxPacketSize: link.mtu)
         flushControlQueue()
     }
     
     // Ruby: flush_ctrl_q_out
     private func flushControlQueue() {
-        for controlPacket in controlChannel.queue.outbound {
-            if let sentDate = controlPacket.sentDate {
-                let timeAgo = -sentDate.timeIntervalSinceNow
-                guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
-                    log.debug("Skip control packet with id \(controlPacket.packetId) (sent on \(sentDate), \(timeAgo) seconds ago)")
-                    continue
-                }
-            }
-
-            log.debug("Send control packet with code \(controlPacket.code.rawValue)")
-
-            if let payload = controlPacket.payload {
-                if CoreConfiguration.logsSensitiveData {
-                    log.debug("Control packet has payload (\(payload.count) bytes): \(payload.toHex())")
-                } else {
-                    log.debug("Control packet has payload (\(payload.count) bytes)")
-                }
-            }
-
-            let raw = controlPacket.serialized()
+        let rawList = controlChannel.writeOutboundPackets()
+        for raw in rawList {
             log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
-            
-            // track pending acks for sent packets
-            controlChannel.addPendingAck(controlPacket.packetId)
-
-            // WARNING: runs in Network.framework queue
-            link?.writePacket(raw) { [weak self] (error) in
-                if let error = error {
-                    self?.queue.sync {
-                        log.error("Failed LINK write during control flush: \(error)")
-                        self?.deferStop(.reconnect, SessionError.failedLinkWrite)
-                        return
-                    }
+        }
+        
+        // WARNING: runs in Network.framework queue
+        link?.writePackets(rawList) { [weak self] (error) in
+            if let error = error {
+                self?.queue.sync {
+                    log.error("Failed LINK write during control flush: \(error)")
+                    self?.deferStop(.reconnect, SessionError.failedLinkWrite)
+                    return
                 }
             }
-            controlPacket.sentDate = Date()
         }
-//        log.verbose("Packets now pending ack: \(controlPendingAcks)")
     }
     
     // Ruby: setup_keys
@@ -1124,17 +1064,8 @@ public class SessionProxy {
             deferStop(.shutdown, SessionError.sessionMismatch)
             return
         }
-        
-        // drop queued out packets if ack-ed
-        for (i, controlPacket) in controlChannel.queue.outbound.enumerated() {
-            if packetIds.contains(controlPacket.packetId) {
-                controlChannel.queue.outbound.remove(at: i)
-            }
-        }
 
-        // remove ack-ed packets from pending
-        controlChannel.removePendingAcks(packetIds)
-//        log.verbose("Packets still pending ack: \(controlPendingAcks)")
+        controlChannel.readAcks(packetIds)
 
         // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
         if isReliableLink && !controlChannel.hasPendingAcks() {
@@ -1152,8 +1083,7 @@ public class SessionProxy {
             return
         }
 
-        let ackPacket = ControlPacket(key: key, sessionId: sessionId, ackIds: [packetId as NSNumber], ackRemoteSessionId: remoteSessionId)
-        let raw = ackPacket.serialized()
+        let raw = controlChannel.writeAcks(withKey: key, sessionId: sessionId, ackPacketIds: [packetId], ackRemoteSessionId: remoteSessionId)
         
         // WARNING: runs in Network.framework queue
         link?.writePacket(raw) { [weak self] (error) in
