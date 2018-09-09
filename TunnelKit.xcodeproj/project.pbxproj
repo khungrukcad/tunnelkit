@@ -30,6 +30,8 @@
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
 		0E12B2A32145341B00B4BAE9 /* PacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A22145341B00B4BAE9 /* PacketTests.swift */; };
+		0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
+		0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
 		0E245D692135972800B012A2 /* PushTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E245D682135972800B012A2 /* PushTests.swift */; };
 		0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
 		0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
@@ -195,6 +197,7 @@
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E12B2A22145341B00B4BAE9 /* PacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketTests.swift; sourceTree = "<group>"; };
+		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E245D682135972800B012A2 /* PushTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTests.swift; sourceTree = "<group>"; };
 		0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFramingNative.h; sourceTree = "<group>"; };
@@ -424,6 +427,7 @@
 			children = (
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
+				0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */,
 				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
 				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
 				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
@@ -884,6 +888,7 @@
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
+				0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EBBF2E52084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
 				0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
@@ -936,6 +941,7 @@
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
+				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
 				0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,

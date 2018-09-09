@@ -146,9 +146,7 @@ public class SessionProxy {
     
     private var connectedDate: Date?
 
-    private var lastPingOut: Date
-    
-    private var lastPingIn: Date
+    private var lastPing: BidirectionalState<Date>
     
     private var isStopping: Bool
     
@@ -159,23 +157,17 @@ public class SessionProxy {
     
     private let controlPlainBuffer: ZeroingData
 
-    private var controlQueueOut: [ControlPacket]
-
-    private var controlQueueIn: [ControlPacket]
+    private var controlQueue: BidirectionalState<[ControlPacket]>
 
     private var controlPendingAcks: Set<UInt32>
     
-    private var controlPacketIdOut: UInt32
-
-    private var controlPacketIdIn: UInt32
+    private var controlPacketId: BidirectionalState<UInt32>
     
     private var authenticator: Authenticator?
     
     // MARK: Data
     
-    private(set) var bytesIn: Int
-    
-    private(set) var bytesOut: Int
+    private(set) var bytesCount: BidirectionalState<Int>
     
     // MARK: Init
 
@@ -192,18 +184,14 @@ public class SessionProxy {
         keys = [:]
         oldKeys = []
         negotiationKeyIdx = 0
-        lastPingOut = Date.distantPast
-        lastPingIn = Date.distantPast
+        lastPing = BidirectionalState(withResetValue: Date.distantPast)
         isStopping = false
         
         controlPlainBuffer = Z(count: TLSBoxMaxBufferLength)
-        controlQueueOut = []
-        controlQueueIn = []
+        controlQueue = BidirectionalState(withResetValue: [])
         controlPendingAcks = []
-        controlPacketIdOut = 0
-        controlPacketIdIn = 0
-        bytesIn = 0
-        bytesOut = 0
+        controlPacketId = BidirectionalState(withResetValue: 0)
+        bytesCount = BidirectionalState(withResetValue: 0)
     }
     
     deinit {
@@ -433,7 +421,7 @@ public class SessionProxy {
             return
         }
         
-        lastPingIn = Date()
+        lastPing.inbound = Date()
 
         var dataPacketsByKey = [UInt8: [Data]]()
         
@@ -545,22 +533,22 @@ public class SessionProxy {
             }
 
             let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
-            controlQueueIn.append(controlPacket)
-            controlQueueIn.sort { $0.packetId < $1.packetId }
+            controlQueue.inbound.append(controlPacket)
+            controlQueue.inbound.sort { $0.packetId < $1.packetId }
             
-            for queuedControlPacket in controlQueueIn {
-                if (queuedControlPacket.packetId < controlPacketIdIn) {
-                    controlQueueIn.removeFirst()
+            for queuedControlPacket in controlQueue.inbound {
+                if (queuedControlPacket.packetId < controlPacketId.inbound) {
+                    controlQueue.inbound.removeFirst()
                     continue
                 }
-                if (queuedControlPacket.packetId != controlPacketIdIn) {
+                if (queuedControlPacket.packetId != controlPacketId.inbound) {
                     continue
                 }
 
                 handleControlPacket(queuedControlPacket)
 
-                controlPacketIdIn += 1
-                controlQueueIn.removeFirst()
+                controlPacketId.inbound += 1
+                controlQueue.inbound.removeFirst()
             }
         }
 
@@ -580,7 +568,7 @@ public class SessionProxy {
             return
         }
         sendDataPackets(packets)
-        lastPingOut = Date()
+        lastPing.outbound = Date()
     }
     
     // Ruby: ping
@@ -590,14 +578,14 @@ public class SessionProxy {
         }
         
         let now = Date()
-        guard (now.timeIntervalSince(lastPingIn) <= CoreConfiguration.pingTimeout) else {
+        guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.pingTimeout) else {
             deferStop(.shutdown, SessionError.pingTimeout)
             return
         }
 
         // postpone ping if elapsed less than keep-alive
         if let interval = keepAliveInterval {
-            let elapsed = now.timeIntervalSince(lastPingOut)
+            let elapsed = now.timeIntervalSince(lastPing.outbound)
             guard (elapsed >= interval) else {
                 scheduleNextPing(elapsed: elapsed)
                 return
@@ -606,7 +594,7 @@ public class SessionProxy {
 
         log.debug("Send ping")
         sendDataPackets([DataPacket.pingString])
-        lastPingOut = Date()
+        lastPing.outbound = Date()
 
         scheduleNextPing()
     }
@@ -626,14 +614,11 @@ public class SessionProxy {
     // Ruby: reset_ctrl
     private func resetControlChannel() {
         controlPlainBuffer.zero()
-        controlQueueOut.removeAll()
-        controlQueueIn.removeAll()
+        controlQueue.reset()
         controlPendingAcks.removeAll()
-        controlPacketIdOut = 0
-        controlPacketIdIn = 0
+        controlPacketId.reset()
         authenticator = nil
-        bytesIn = 0
-        bytesOut = 0
+        bytesCount.reset()
     }
     
     // Ruby: hard_reset
@@ -942,7 +927,7 @@ public class SessionProxy {
             fatalError("Missing sessionId, do hardReset() first")
         }
         
-        let oldIdOut = controlPacketIdOut
+        let oldIdOut = controlPacketId.outbound
         let maxCount = link.mtu
         var queuedCount = 0
         var offset = 0
@@ -950,19 +935,19 @@ public class SessionProxy {
         repeat {
             let subPayloadLength = min(maxCount, payload.count - offset)
             let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlPacketIdOut, payload: subPayloadData)
+            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlPacketId.outbound, payload: subPayloadData)
             
-            controlQueueOut.append(packet)
-            controlPacketIdOut += 1
+            controlQueue.outbound.append(packet)
+            controlPacketId.outbound += 1
             offset += maxCount
             queuedCount += subPayloadLength
         } while (offset < payload.count)
         
         assert(queuedCount == payload.count)
         
-        let packetCount = controlPacketIdOut - oldIdOut
+        let packetCount = controlPacketId.outbound - oldIdOut
         if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlPacketIdOut - 1)]")
+            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlPacketId.outbound - 1)]")
         } else {
             log.debug("Enqueued 1 control packet [\(oldIdOut)]")
         }
@@ -972,7 +957,7 @@ public class SessionProxy {
     
     // Ruby: flush_ctrl_q_out
     private func flushControlQueue() {
-        for controlPacket in controlQueueOut {
+        for controlPacket in controlQueue.outbound {
             if let sentDate = controlPacket.sentDate {
                 let timeAgo = -sentDate.timeIntervalSinceNow
                 guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
@@ -1083,7 +1068,7 @@ public class SessionProxy {
 
     // Ruby: handle_data_pkt
     private func handleDataPackets(_ packets: [Data], key: SessionKey) {
-        bytesIn += packets.flatCount
+        bytesCount.inbound += packets.flatCount
         do {
             guard let decryptedPackets = try key.decrypt(packets: packets) else {
                 log.warning("Could not decrypt packets, is SessionKey properly configured (dataPath, peerId)?")
@@ -1118,7 +1103,7 @@ public class SessionProxy {
             }
             
             // WARNING: runs in Network.framework queue
-            bytesOut += encryptedPackets.flatCount
+            bytesCount.outbound += encryptedPackets.flatCount
             link?.writePackets(encryptedPackets) { [weak self] (error) in
                 if let error = error {
                     self?.queue.sync {
@@ -1151,9 +1136,9 @@ public class SessionProxy {
         }
         
         // drop queued out packets if ack-ed
-        for (i, controlPacket) in controlQueueOut.enumerated() {
+        for (i, controlPacket) in controlQueue.outbound.enumerated() {
             if packetIds.contains(controlPacket.packetId) {
-                controlQueueOut.remove(at: i)
+                controlQueue.outbound.remove(at: i)
             }
         }
 

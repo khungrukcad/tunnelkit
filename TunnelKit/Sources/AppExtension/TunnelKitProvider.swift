@@ -281,8 +281,8 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         case .dataCount:
             if let proxy = proxy {
                 response = Data()
-                response?.append(UInt64(proxy.bytesIn))
-                response?.append(UInt64(proxy.bytesOut))
+                response?.append(UInt64(proxy.bytesCount.inbound))
+                response?.append(UInt64(proxy.bytesCount.outbound))
             }
             
         default:
