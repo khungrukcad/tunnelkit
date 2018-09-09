@@ -127,15 +127,15 @@ extension SessionProxy {
         /// The path to the optional CA for TLS negotiation (PEM format).
         public var caPath: String?
         
-        /// Sets compression framing, disabled by default.
-        public var compressionFraming: CompressionFraming
-    
         /// The path to the optional client certificate for TLS negotiation (PEM format).
         public var clientCertificatePath: String?
         
         /// The path to the private key for the certificate at `clientCertificatePath` (PEM format).
         public var clientKeyPath: String?
         
+        /// Sets compression framing, disabled by default.
+        public var compressionFraming: CompressionFraming
+
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         

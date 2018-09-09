@@ -19,6 +19,9 @@ custom_categories:
         - TunnelInterface
         - SessionProxy
         - SessionProxyDelegate
+        - SessionReply
+        - IPv4Settings
+        - IPv6Settings
         - SessionError
     - name: AppExtension
       children:
