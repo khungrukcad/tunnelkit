@@ -42,6 +42,7 @@ module __TunnelKitNative {
     header "Encryption.h"
     header "MSS.h"
     header "PacketMacros.h"
+    header "ControlPacket.h"
     header "ReplayProtector.h"
     header "CompressionFramingNative.h"
     header "DataPath.h"

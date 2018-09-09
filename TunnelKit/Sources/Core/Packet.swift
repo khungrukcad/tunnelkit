@@ -38,6 +38,8 @@
 import Foundation
 import __TunnelKitNative
 
+// TODO: convert to C for efficiency
+
 /// Reads and writes packets as a stream. Useful for stream-oriented links (e.g TCP/IP).
 public class PacketStream {
     
@@ -95,41 +97,6 @@ public class PacketStream {
     }
     
     private init() {
-    }
-}
-
-class ControlPacket {
-    let packetId: UInt32
-    
-    let code: PacketCode
-    
-    let key: UInt8
-    
-    let sessionId: Data?
-    
-    let payload: Data?
-    
-    var sentDate: Date?
-
-    init(_ packetId: UInt32, _ code: PacketCode, _ key: UInt8, _ sessionId: Data?, _ payload: Data?) {
-        self.packetId = packetId
-        self.code = code
-        self.key = key
-        self.sessionId = sessionId
-        self.payload = payload
-        self.sentDate = nil
-    }
-
-    // Ruby: send_ctrl
-    func toBuffer() -> Data {
-        var raw = PacketWithHeader(code, key, sessionId)
-        // TODO: put HMAC here when tls-auth
-        raw.append(UInt8(0)) // ackSize
-        raw.append(UInt32(packetId).bigEndian)
-        if let payload = payload {
-            raw.append(payload)
-        }
-        return raw
     }
 }
 

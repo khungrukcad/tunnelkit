@@ -290,7 +290,7 @@ const NSInteger CryptoAEADTagLength     = 16;
         self.crypto.extraLength = PacketIdLength;
         self.crypto.extraPacketIdOffset = 0;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSet(to, PacketCodeDataV1, key);
+            PacketHeaderSet(to, PacketCodeDataV1, key, nil);
         };
         self.checkPeerId = NULL;
     }

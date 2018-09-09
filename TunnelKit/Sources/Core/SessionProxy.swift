@@ -455,11 +455,11 @@ public class SessionProxy {
             
             var offset = 1
             if (code == .dataV2) {
-                guard packet.count >= offset + ProtocolMacros.peerIdLength else {
+                guard packet.count >= offset + PacketPeerIdLength else {
                     log.warning("Dropped malformed packet (missing peerId)")
                     continue
                 }
-                offset += ProtocolMacros.peerIdLength
+                offset += PacketPeerIdLength
             }
 
             if (code == .dataV1) || (code == .dataV2) {
@@ -477,12 +477,12 @@ public class SessionProxy {
                 continue
             }
             
-            guard packet.count >= offset + ProtocolMacros.sessionIdLength else {
+            guard packet.count >= offset + PacketSessionIdLength else {
                 log.warning("Dropped malformed packet (missing sessionId)")
                 continue
             }
-            let sessionId = packet.subdata(offset: offset, count: ProtocolMacros.sessionIdLength)
-            offset += ProtocolMacros.sessionIdLength
+            let sessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
+            offset += PacketSessionIdLength
             
             guard packet.count >= offset + 1 else {
                 log.warning("Dropped malformed packet (missing ackSize)")
@@ -494,7 +494,7 @@ public class SessionProxy {
             log.debug("Packet has code \(code.rawValue), key \(key), sessionId \(sessionId.toHex()) and \(ackSize) acks entries")
 
             if (ackSize > 0) {
-                guard packet.count >= (offset + Int(ackSize) * ProtocolMacros.packetIdLength) else {
+                guard packet.count >= (offset + Int(ackSize) * PacketIdLength) else {
                     log.warning("Dropped malformed packet (missing acks)")
                     continue
                 }
@@ -502,15 +502,15 @@ public class SessionProxy {
                 for _ in 0..<ackSize {
                     let ackedPacketId = packet.networkUInt32Value(from: offset)
                     ackedPacketIds.append(ackedPacketId)
-                    offset += ProtocolMacros.packetIdLength
+                    offset += PacketIdLength
                 }
 
-                guard packet.count >= offset + ProtocolMacros.sessionIdLength else {
+                guard packet.count >= offset + PacketSessionIdLength else {
                     log.warning("Dropped malformed packet (missing remoteSessionId)")
                     continue
                 }
-                let remoteSessionId = packet.subdata(offset: offset, count: ProtocolMacros.sessionIdLength)
-                offset += ProtocolMacros.sessionIdLength
+                let remoteSessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
+                offset += PacketSessionIdLength
 
                 log.debug("Server acked packetIds \(ackedPacketIds) with remoteSessionId \(remoteSessionId.toHex())")
 
@@ -521,13 +521,13 @@ public class SessionProxy {
                 continue
             }
 
-            guard packet.count >= offset + ProtocolMacros.packetIdLength else {
+            guard packet.count >= offset + PacketIdLength else {
                 log.warning("Dropped malformed packet (missing packetId)")
                 continue
             }
             let packetId = packet.networkUInt32Value(from: offset)
             log.debug("Control packet has packetId \(packetId)")
-            offset += ProtocolMacros.packetIdLength
+            offset += PacketIdLength
 
             sendAck(key: key, packetId: packetId, remoteSessionId: sessionId)
 
@@ -544,7 +544,7 @@ public class SessionProxy {
                 }
             }
 
-            let controlPacket = ControlPacket(packetId, code, key, sessionId, payload)
+            let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
             controlQueueIn.append(controlPacket)
             controlQueueIn.sort { $0.packetId < $1.packetId }
             
@@ -643,7 +643,7 @@ public class SessionProxy {
         resetControlChannel()
         pushReply = nil
         do {
-            try sessionId = SecureRandom.data(length: ProtocolMacros.sessionIdLength)
+            try sessionId = SecureRandom.data(length: PacketSessionIdLength)
         } catch let e {
             deferStop(.shutdown, e)
             return
@@ -762,22 +762,16 @@ public class SessionProxy {
         if (((packet.code == .hardResetServerV2) && (negotiationKey.state == .hardReset)) ||
             ((packet.code == .softResetV1) && (negotiationKey.state == .softReset))) {
             
-            if (negotiationKey.state == .hardReset) {
-                guard let sessionId = packet.sessionId else {
-                    deferStop(.shutdown, SessionError.missingSessionId)
-                    return
-                }
-                remoteSessionId = sessionId
+            if negotiationKey.state == .hardReset {
+                remoteSessionId = packet.sessionId
             }
             guard let remoteSessionId = remoteSessionId else {
                 log.error("No remote session id")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
-            guard (packet.sessionId == remoteSessionId) else {
-                if let packetSessionId = packet.sessionId {
-                    log.error("Packet session mismatch (\(packetSessionId.toHex()) != \(remoteSessionId.toHex()))")
-                }
+            guard packet.sessionId == remoteSessionId else {
+                log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
                 deferStop(.shutdown, SessionError.sessionMismatch)
                 return
             }
@@ -812,10 +806,8 @@ public class SessionProxy {
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
-            guard (packet.sessionId == remoteSessionId) else {
-                if let packetSessionId = packet.sessionId {
-                    log.error("Packet session mismatch (\(packetSessionId.toHex()) != \(remoteSessionId.toHex()))")
-                }
+            guard packet.sessionId == remoteSessionId else {
+                log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
                 deferStop(.shutdown, SessionError.sessionMismatch)
                 return
             }
@@ -946,6 +938,9 @@ public class SessionProxy {
             log.warning("Not writing to LINK, interface is down")
             return
         }
+        guard let sessionId = sessionId else {
+            fatalError("Missing sessionId, do hardReset() first")
+        }
         
         let oldIdOut = controlPacketIdOut
         let maxCount = link.mtu
@@ -955,7 +950,7 @@ public class SessionProxy {
         repeat {
             let subPayloadLength = min(maxCount, payload.count - offset)
             let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = ControlPacket(controlPacketIdOut, code, key, sessionId, subPayloadData)
+            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: controlPacketIdOut, payload: subPayloadData)
             
             controlQueueOut.append(packet)
             controlPacketIdOut += 1
@@ -996,7 +991,7 @@ public class SessionProxy {
                 }
             }
 
-            let raw = controlPacket.toBuffer()
+            let raw = controlPacket.serialized()
             log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
             
             // track pending acks for sent packets
@@ -1176,10 +1171,14 @@ public class SessionProxy {
     private func sendAck(key: UInt8, packetId: UInt32, remoteSessionId: Data) {
         log.debug("Send ack for received packetId \(packetId)")
 
-        var raw = PacketWithHeader(.ackV1, key, sessionId)
-        raw.append(UInt8(1)) // ackSize
-        raw.append(UInt32(packetId).bigEndian)
-        raw.append(remoteSessionId)
+        guard let sessionId = sessionId else {
+            log.warning("Sending ack without a sessionId?")
+            deferStop(.shutdown, SessionError.missingSessionId)
+            return
+        }
+
+        let ackPacket = ControlPacket(key: key, sessionId: sessionId, ackIds: [packetId as NSNumber], ackRemoteSessionId: remoteSessionId)
+        let raw = ackPacket.serialized()
         
         // WARNING: runs in Network.framework queue
         link?.writePacket(raw) { [weak self] (error) in
