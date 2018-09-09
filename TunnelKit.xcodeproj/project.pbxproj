@@ -34,6 +34,8 @@
 		0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
 		0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
 		0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
+		0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
+		0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
 		0E245D692135972800B012A2 /* PushTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E245D682135972800B012A2 /* PushTests.swift */; };
 		0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
 		0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
@@ -201,6 +203,7 @@
 		0E12B2A22145341B00B4BAE9 /* PacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketTests.swift; sourceTree = "<group>"; };
 		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
 		0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannel.swift; sourceTree = "<group>"; };
+		0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannelSerializer.swift; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E245D682135972800B012A2 /* PushTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTests.swift; sourceTree = "<group>"; };
 		0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFramingNative.h; sourceTree = "<group>"; };
@@ -435,6 +438,7 @@
 				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
 				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
 				0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */,
+				0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -881,6 +885,7 @@
 				0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */,
 				0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
 				0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */,
 				0EBBF2F3208505D300E36B40 /* NEUDPInterface.swift in Sources */,
 				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
@@ -935,6 +940,7 @@
 				0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
 				0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */,
 				0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
 				0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */,
 				0EBBF2F4208505D400E36B40 /* NEUDPInterface.swift in Sources */,

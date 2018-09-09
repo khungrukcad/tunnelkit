@@ -30,6 +30,8 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 class ControlChannel {
+    private let serializer: ControlChannelSerializer
+    
     private(set) var sessionId: Data?
     
     var remoteSessionId: Data?
@@ -43,8 +45,13 @@ class ControlChannel {
     private var plainBuffer: ZeroingData
 
     private var dataCount: BidirectionalState<Int>
-
-    init() {
+    
+    convenience init() {
+        self.init(serializer: PlainSerializer())
+    }
+    
+    private init(serializer: ControlChannelSerializer) {
+        self.serializer = serializer
         sessionId = nil
         remoteSessionId = nil
         queue = BidirectionalState(withResetValue: [])
