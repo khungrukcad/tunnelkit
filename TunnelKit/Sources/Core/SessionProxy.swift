@@ -136,10 +136,6 @@ public class SessionProxy {
         return link?.isReliable ?? false
     }
 
-    private var sessionId: Data?
-    
-    private var remoteSessionId: Data?
-
     private var pushReply: SessionReply?
     
     private var nextPushRequestDate: Date?
@@ -312,8 +308,6 @@ public class SessionProxy {
         negotiationKeyIdx = 0
         currentKeyIdx = nil
         
-        sessionId = nil
-        remoteSessionId = nil
         nextPushRequestDate = nil
         connectedDate = nil
         authenticator = nil
@@ -593,23 +587,21 @@ public class SessionProxy {
     // MARK: Handshake
     
     // Ruby: reset_ctrl
-    private func resetControlChannel() {
-        controlChannel.reset()
+    private func resetControlChannel(forNewSession: Bool) {
         authenticator = nil
+        do {
+            try controlChannel.reset(forNewSession: forNewSession)
+        } catch let e {
+            deferStop(.shutdown, e)
+        }
     }
     
     // Ruby: hard_reset
     private func hardReset() {
         log.debug("Send hard reset")
 
-        resetControlChannel()
+        resetControlChannel(forNewSession: true)
         pushReply = nil
-        do {
-            try sessionId = SecureRandom.data(length: PacketSessionIdLength)
-        } catch let e {
-            deferStop(.shutdown, e)
-            return
-        }
         negotiationKeyIdx = 0
         let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
@@ -623,7 +615,7 @@ public class SessionProxy {
     private func softReset() {
         log.debug("Send soft reset")
         
-        resetControlChannel()
+        resetControlChannel(forNewSession: false)
         negotiationKeyIdx = max(1, (negotiationKeyIdx + 1) % ProtocolMacros.numberOfKeys)
         let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
@@ -725,10 +717,10 @@ public class SessionProxy {
             ((packet.code == .softResetV1) && (negotiationKey.state == .softReset))) {
             
             if negotiationKey.state == .hardReset {
-                remoteSessionId = packet.sessionId
+                controlChannel.remoteSessionId = packet.sessionId
             }
-            guard let remoteSessionId = remoteSessionId else {
-                log.error("No remote session id")
+            guard let remoteSessionId = controlChannel.remoteSessionId else {
+                log.error("No remote session id (never set)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
@@ -764,7 +756,8 @@ public class SessionProxy {
             enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
         }
         else if ((packet.code == .controlV1) && (negotiationKey.state == .tls)) {
-            guard let remoteSessionId = remoteSessionId else {
+            guard let remoteSessionId = controlChannel.remoteSessionId else {
+                log.error("No remote session id found in packet (control packets before server HARD_RESET)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
@@ -899,12 +892,8 @@ public class SessionProxy {
             log.warning("Not writing to LINK, interface is down")
             return
         }
-        guard let sessionId = sessionId else {
-            fatalError("Missing sessionId, do hardReset() first")
-        }
 
-        // FIXME: init controlChannel with sessionId
-        controlChannel.enqueueOutboundPackets(withCode: code, key: key, sessionId: sessionId, payload: payload, maxPacketSize: link.mtu)
+        controlChannel.enqueueOutboundPackets(withCode: code, key: key, payload: payload, maxPacketSize: link.mtu)
         flushControlQueue()
     }
     
@@ -932,10 +921,10 @@ public class SessionProxy {
         guard let auth = authenticator else {
             fatalError("Setting up encryption without having authenticated")
         }
-        guard let sessionId = sessionId else {
+        guard let sessionId = controlChannel.sessionId else {
             fatalError("Setting up encryption without a local sessionId")
         }
-        guard let remoteSessionId = remoteSessionId else {
+        guard let remoteSessionId = controlChannel.remoteSessionId else {
             fatalError("Setting up encryption without a remote sessionId")
         }
         guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
@@ -1057,15 +1046,12 @@ public class SessionProxy {
     
     // Ruby: handle_acks
     private func handleAcks(_ packetIds: [UInt32], remoteSessionId: Data) {
-        guard (remoteSessionId == sessionId) else {
-            if let sessionId = sessionId {
-                log.error("Ack session mismatch (\(remoteSessionId.toHex()) != \(sessionId.toHex()))")
-            }
-            deferStop(.shutdown, SessionError.sessionMismatch)
+        do {
+            try controlChannel.readAcks(packetIds, acksRemoteSessionId: remoteSessionId)
+        } catch let e {
+            deferStop(.shutdown, e)
             return
         }
-
-        controlChannel.readAcks(packetIds)
 
         // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
         if isReliableLink && !controlChannel.hasPendingAcks() {
@@ -1077,13 +1063,13 @@ public class SessionProxy {
     private func sendAck(key: UInt8, packetId: UInt32, remoteSessionId: Data) {
         log.debug("Send ack for received packetId \(packetId)")
 
-        guard let sessionId = sessionId else {
-            log.warning("Sending ack without a sessionId?")
-            deferStop(.shutdown, SessionError.missingSessionId)
+        let raw: Data
+        do {
+            raw = try controlChannel.writeAcks(withKey: key, ackPacketIds: [packetId], ackRemoteSessionId: remoteSessionId)
+        } catch let e {
+            deferStop(.shutdown, e)
             return
         }
-
-        let raw = controlChannel.writeAcks(withKey: key, sessionId: sessionId, ackPacketIds: [packetId], ackRemoteSessionId: remoteSessionId)
         
         // WARNING: runs in Network.framework queue
         link?.writePacket(raw) { [weak self] (error) in

@@ -30,9 +30,13 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 class ControlChannel {
+    private(set) var sessionId: Data?
+    
+    var remoteSessionId: Data?
+
     private var queue: BidirectionalState<[ControlPacket]>
 
-    private var packetId: BidirectionalState<UInt32>
+    private var currentPacketId: BidirectionalState<UInt32>
 
     private var pendingAcks: Set<UInt32>
 
@@ -41,48 +45,66 @@ class ControlChannel {
     private var dataCount: BidirectionalState<Int>
 
     init() {
+        sessionId = nil
+        remoteSessionId = nil
         queue = BidirectionalState(withResetValue: [])
-        packetId = BidirectionalState(withResetValue: 0)
+        currentPacketId = BidirectionalState(withResetValue: 0)
         pendingAcks = []
         plainBuffer = Z(count: TLSBoxMaxBufferLength)
         dataCount = BidirectionalState(withResetValue: 0)
     }
     
-    func readInboundPacket(withCode code: PacketCode, key: UInt8, sessionId inboundSessionId: Data, packetId inboundPacketId: UInt32, payload: Data?) -> [ControlPacket] {
-        let packet = ControlPacket(code: code, key: key, sessionId: inboundSessionId, packetId: inboundPacketId, payload: payload)
+    func reset(forNewSession: Bool) throws {
+        if forNewSession {
+            try sessionId = SecureRandom.data(length: PacketSessionIdLength)
+            remoteSessionId = nil
+        }
+        queue.reset()
+        currentPacketId.reset()
+        pendingAcks.removeAll()
+        plainBuffer.zero()
+        dataCount.reset()
+    }
+    
+    func readInboundPacket(withCode code: PacketCode, key: UInt8, sessionId inboundSessionId: Data, packetId: UInt32, payload: Data?) -> [ControlPacket] {
+        let packet = ControlPacket(code: code, key: key, sessionId: inboundSessionId, packetId: packetId, payload: payload)
         queue.inbound.append(packet)
         queue.inbound.sort { $0.packetId < $1.packetId }
         
         var toHandle: [ControlPacket] = []
         for queuedPacket in queue.inbound {
-            if queuedPacket.packetId < packetId.inbound {
+            if queuedPacket.packetId < currentPacketId.inbound {
                 queue.inbound.removeFirst()
                 continue
             }
-            if queuedPacket.packetId != packetId.inbound {
+            if queuedPacket.packetId != currentPacketId.inbound {
                 continue
             }
             
             toHandle.append(queuedPacket)
             
-            packetId.inbound += 1
+            currentPacketId.inbound += 1
             queue.inbound.removeFirst()
         }
         return toHandle
     }
     
-    func enqueueOutboundPackets(withCode code: PacketCode, key: UInt8, sessionId: Data, payload: Data, maxPacketSize: Int) {
-        let oldIdOut = packetId.outbound
+    func enqueueOutboundPackets(withCode code: PacketCode, key: UInt8, payload: Data, maxPacketSize: Int) {
+        guard let sessionId = sessionId else {
+            fatalError("Missing sessionId, do reset(forNewSession: true) first")
+        }
+
+        let oldIdOut = currentPacketId.outbound
         var queuedCount = 0
         var offset = 0
         
         repeat {
             let subPayloadLength = min(maxPacketSize, payload.count - offset)
             let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId.outbound, payload: subPayloadData)
+            let packet = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: currentPacketId.outbound, payload: subPayloadData)
             
             queue.outbound.append(packet)
-            packetId.outbound += 1
+            currentPacketId.outbound += 1
             offset += maxPacketSize
             queuedCount += subPayloadLength
         } while (offset < payload.count)
@@ -90,9 +112,9 @@ class ControlChannel {
         assert(queuedCount == payload.count)
         
         // packet count
-        let packetCount = packetId.outbound - oldIdOut
+        let packetCount = currentPacketId.outbound - oldIdOut
         if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(packetId.outbound - 1)]")
+            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(currentPacketId.outbound - 1)]")
         } else {
             log.debug("Enqueued 1 control packet [\(oldIdOut)]")
         }
@@ -122,7 +144,7 @@ class ControlChannel {
             let raw = packet.serialized()
             rawList.append(raw)
             packet.sentDate = Date()
-            
+
             // track pending acks for sent packets
             pendingAcks.insert(packet.packetId)
         }
@@ -134,7 +156,14 @@ class ControlChannel {
         return !pendingAcks.isEmpty
     }
     
-    func readAcks(_ packetIds: [UInt32]) {
+    func readAcks(_ packetIds: [UInt32], acksRemoteSessionId: Data) throws {
+        guard let sessionId = sessionId else {
+            throw SessionError.missingSessionId
+        }
+        guard acksRemoteSessionId == sessionId else {
+            log.error("Ack session mismatch (\(acksRemoteSessionId.toHex()) != \(sessionId.toHex()))")
+            throw SessionError.sessionMismatch
+        }
         
         // drop queued out packets if ack-ed
         for (i, packet) in queue.outbound.enumerated() {
@@ -149,7 +178,10 @@ class ControlChannel {
 //        log.verbose("Packets still pending ack: \(pendingAcks)")
     }
     
-    func writeAcks(withKey key: UInt8, sessionId: Data, ackPacketIds: [UInt32], ackRemoteSessionId: Data) -> Data {
+    func writeAcks(withKey key: UInt8, ackPacketIds: [UInt32], ackRemoteSessionId: Data) throws -> Data {
+        guard let sessionId = sessionId else {
+            throw SessionError.missingSessionId
+        }
         let ackPacket = ControlPacket(key: key, sessionId: sessionId, ackIds: ackPacketIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
         return ackPacket.serialized()
     }
@@ -170,13 +202,5 @@ class ControlChannel {
     
     func currentDataCount() -> (Int, Int) {
         return dataCount.pair
-    }
-    
-    func reset() {
-        plainBuffer.zero()
-        queue.reset()
-        pendingAcks.removeAll()
-        packetId.reset()
-        dataCount.reset()
     }
 }
