@@ -35,7 +35,7 @@ class ControlChannel {
 
     private var pendingAcks: Set<UInt32>
 
-    private(set) var plainBuffer: ZeroingData
+    private var plainBuffer: ZeroingData
 
     private var dataCount: BidirectionalState<Int>
 
@@ -57,6 +57,12 @@ class ControlChannel {
     
     func hasPendingAcks() -> Bool {
         return !pendingAcks.isEmpty
+    }
+    
+    func currentControlData(withTLS tls: TLSBox) throws -> ZeroingData {
+        var length = 0
+        try tls.pullRawPlainText(plainBuffer.mutableBytes, length: &length)
+        return plainBuffer.withOffset(0, count: length)
     }
     
     func addReceivedDataCount(_ count: Int) {

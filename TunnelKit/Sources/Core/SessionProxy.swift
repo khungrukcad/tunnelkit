@@ -806,10 +806,7 @@ public class SessionProxy {
             }
 
             do {
-                var length = 0
-                try negotiationKey.tls.pullRawPlainText(controlChannel.plainBuffer.mutableBytes, length: &length)
-
-                let controlData = controlChannel.plainBuffer.withOffset(0, count: length)
+                let controlData = try controlChannel.currentControlData(withTLS: negotiationKey.tls)
                 handleControlData(controlData)
             } catch _ {
             }
