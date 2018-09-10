@@ -52,6 +52,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 @property (nonatomic, unsafe_unretained) const EVP_MD *digest;
 @property (nonatomic, assign) int cipherKeyLength;
 @property (nonatomic, assign) int cipherIVLength;
+@property (nonatomic, assign) int hmacKeyLength;
 @property (nonatomic, assign) int digestLength;
 @property (nonatomic, assign) int overheadLength;
 
@@ -83,6 +84,8 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
             self.cipherKeyLength = EVP_CIPHER_key_length(self.cipher);
             self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
         }
+        // as seen in OpenVPN's crypto_openssl.c:md_kt_size()
+        self.hmacKeyLength = EVP_MD_size(self.digest);
         self.digestLength = EVP_MD_size(self.digest);
         self.overheadLength = self.cipherIVLength + self.digestLength;
 
@@ -122,6 +125,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
     NSParameterAssert(hmacKey);
+    NSParameterAssert(hmacKey.count >= self.hmacKeyLength);
 
     if (self.cipher) {
         NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
@@ -131,7 +135,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     }
 
     HMAC_CTX_reset(self.hmacCtxEnc);
-    HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.digestLength, self.digest, NULL);
+    HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
 - (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(nonnull const uint8_t *)extra error:(NSError *__autoreleasing *)error
@@ -197,6 +201,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 - (void)configureDecryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
     NSParameterAssert(hmacKey);
+    NSParameterAssert(hmacKey.count >= self.hmacKeyLength);
 
     if (self.cipher) {
         NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
@@ -206,7 +211,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     }
     
     HMAC_CTX_reset(self.hmacCtxDec);
-    HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.digestLength, self.digest, NULL);
+    HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
 - (NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
