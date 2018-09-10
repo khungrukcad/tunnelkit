@@ -453,75 +453,27 @@ public class SessionProxy {
 
                 continue
             }
-            
-            guard packet.count >= offset + PacketSessionIdLength else {
-                log.warning("Dropped malformed packet (missing sessionId)")
-                continue
-            }
-            let sessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
-            offset += PacketSessionIdLength
-            
-            guard packet.count >= offset + 1 else {
-                log.warning("Dropped malformed packet (missing ackSize)")
-                continue
-            }
-            let ackSize = packet[offset]
-            offset += 1
 
-            log.debug("Packet has code \(code.rawValue), key \(key), sessionId \(sessionId.toHex()) and \(ackSize) acks entries")
-
-            if (ackSize > 0) {
-                guard packet.count >= (offset + Int(ackSize) * PacketIdLength) else {
-                    log.warning("Dropped malformed packet (missing acks)")
+            log.debug("Packet has code \(code.rawValue), key \(key)")
+            let controlPacket: ControlPacket
+            do {
+                let parsedPacket = try controlChannel.readInboundPacket(withCode: code, key: key, data: packet, offset: offset)
+                handleAcks()
+                if parsedPacket.code == .ackV1 {
                     continue
                 }
-                var ackedPacketIds = [UInt32]()
-                for _ in 0..<ackSize {
-                    let ackedPacketId = packet.networkUInt32Value(from: offset)
-                    ackedPacketIds.append(ackedPacketId)
-                    offset += PacketIdLength
-                }
-
-                guard packet.count >= offset + PacketSessionIdLength else {
-                    log.warning("Dropped malformed packet (missing remoteSessionId)")
-                    continue
-                }
-                let remoteSessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
-                offset += PacketSessionIdLength
-
-                log.debug("Server acked packetIds \(ackedPacketIds) with remoteSessionId \(remoteSessionId.toHex())")
-
-                handleAcks(ackedPacketIds, remoteSessionId: remoteSessionId)
-            }
-
-            if (code == .ackV1) {
+                controlPacket = parsedPacket
+            } catch let e {
+                log.warning("Dropped malformed packet: \(e)")
                 continue
+//                deferStop(.shutdown, e)
+//                return
             }
 
-            guard packet.count >= offset + PacketIdLength else {
-                log.warning("Dropped malformed packet (missing packetId)")
-                continue
-            }
-            let packetId = packet.networkUInt32Value(from: offset)
-            log.debug("Control packet has packetId \(packetId)")
-            offset += PacketIdLength
+            log.debug("Packet has sessionId \(controlPacket.sessionId.toHex()) and \(controlPacket.ackIds?.count ?? 0) acks entries")
+            sendAck(for: controlPacket)
 
-            sendAck(key: key, packetId: packetId, remoteSessionId: sessionId)
-
-            var payload: Data?
-            if (offset < packet.count) {
-                payload = packet.subdata(in: offset..<packet.count)
-
-                if let payload = payload {
-                    if CoreConfiguration.logsSensitiveData {
-                        log.debug("Control packet payload (\(payload.count) bytes): \(payload.toHex())")
-                    } else {
-                        log.debug("Control packet payload (\(payload.count) bytes)")
-                    }
-                }
-            }
-
-            let pendingInboundQueue = controlChannel.readInboundPacket(withCode: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
+            let pendingInboundQueue = controlChannel.enqueueInboundPacket(packet: controlPacket)
             for inboundPacket in pendingInboundQueue {
                 handleControlPacket(inboundPacket)
             }
@@ -899,7 +851,14 @@ public class SessionProxy {
     
     // Ruby: flush_ctrl_q_out
     private func flushControlQueue() {
-        let rawList = controlChannel.writeOutboundPackets()
+        let rawList: [Data]
+        do {
+            rawList = try controlChannel.writeOutboundPackets()
+        } catch let e {
+            log.warning("Failed control packet serialization: \(e)")
+            deferStop(.shutdown, e)
+            return
+        }
         for raw in rawList {
             log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
         }
@@ -1044,14 +1003,7 @@ public class SessionProxy {
     
     // MARK: Acks
     
-    // Ruby: handle_acks
-    private func handleAcks(_ packetIds: [UInt32], remoteSessionId: Data) {
-        do {
-            try controlChannel.readAcks(packetIds, acksRemoteSessionId: remoteSessionId)
-        } catch let e {
-            deferStop(.shutdown, e)
-            return
-        }
+    private func handleAcks() {
 
         // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
         if isReliableLink && !controlChannel.hasPendingAcks() {
@@ -1060,12 +1012,16 @@ public class SessionProxy {
     }
     
     // Ruby: send_ack
-    private func sendAck(key: UInt8, packetId: UInt32, remoteSessionId: Data) {
-        log.debug("Send ack for received packetId \(packetId)")
+    private func sendAck(for controlPacket: ControlPacket) {
+        log.debug("Send ack for received packetId \(controlPacket.packetId)")
 
         let raw: Data
         do {
-            raw = try controlChannel.writeAcks(withKey: key, ackPacketIds: [packetId], ackRemoteSessionId: remoteSessionId)
+            raw = try controlChannel.writeAcks(
+                withKey: controlPacket.key,
+                ackPacketIds: [controlPacket.packetId],
+                ackRemoteSessionId: controlPacket.sessionId
+            )
         } catch let e {
             deferStop(.shutdown, e)
             return
@@ -1075,12 +1031,12 @@ public class SessionProxy {
         link?.writePacket(raw) { [weak self] (error) in
             if let error = error {
                 self?.queue.sync {
-                    log.error("Failed LINK write during send ack for packetId \(packetId): \(error)")
+                    log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
                     self?.deferStop(.reconnect, SessionError.failedLinkWrite)
                     return
                 }
             }
-            log.debug("Ack successfully written to LINK for packetId \(packetId)")
+            log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
         }
     }
     

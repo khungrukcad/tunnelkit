@@ -29,6 +29,14 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+class ControlChannelError: Error, CustomStringConvertible {
+    let description: String
+    
+    init(_ message: String) {
+        description = "\(String(describing: ControlChannelError.self))(\(message))"
+    }
+}
+
 class ControlChannel {
     private let serializer: ControlChannelSerializer
     
@@ -71,10 +79,20 @@ class ControlChannel {
         pendingAcks.removeAll()
         plainBuffer.zero()
         dataCount.reset()
+        serializer.reset()
     }
-    
-    func readInboundPacket(withCode code: PacketCode, key: UInt8, sessionId inboundSessionId: Data, packetId: UInt32, payload: Data?) -> [ControlPacket] {
-        let packet = ControlPacket(code: code, key: key, sessionId: inboundSessionId, packetId: packetId, payload: payload)
+
+    func readInboundPacket(withCode code: PacketCode, key: UInt8, data: Data, offset: Int) throws -> ControlPacket {
+        log.debug("Control: Try read packet with code \(code) and key \(key)")
+        let packet = try serializer.deserialize(code: code, key: key, data: data, start: offset, end: nil)
+        log.debug("Control: Read packet \(packet)")
+        if let ackIds = packet.ackIds as? [UInt32], let ackRemoteSessionId = packet.ackRemoteSessionId {
+            try readAcks(ackIds, acksRemoteSessionId: ackRemoteSessionId)
+        }
+        return packet
+    }
+
+    func enqueueInboundPacket(packet: ControlPacket) -> [ControlPacket] {
         queue.inbound.append(packet)
         queue.inbound.sort { $0.packetId < $1.packetId }
         
@@ -127,7 +145,7 @@ class ControlChannel {
         }
     }
     
-    func writeOutboundPackets() -> [Data] {
+    func writeOutboundPackets() throws -> [Data] {
         var rawList: [Data] = []
         for packet in queue.outbound {
             if let sentDate = packet.sentDate {
@@ -138,17 +156,9 @@ class ControlChannel {
                 }
             }
             
-            log.debug("Send control packet with code \(packet.code.rawValue)")
-            
-            if let payload = packet.payload {
-                if CoreConfiguration.logsSensitiveData {
-                    log.debug("Control packet has payload (\(payload.count) bytes): \(payload.toHex())")
-                } else {
-                    log.debug("Control packet has payload (\(payload.count) bytes)")
-                }
-            }
-            
-            let raw = packet.serialized()
+            log.debug("Control: Write control packet \(packet)")
+
+            let raw = try serializer.serialize(packet: packet)
             rawList.append(raw)
             packet.sentDate = Date()
 
@@ -163,7 +173,8 @@ class ControlChannel {
         return !pendingAcks.isEmpty
     }
     
-    func readAcks(_ packetIds: [UInt32], acksRemoteSessionId: Data) throws {
+    // Ruby: handle_acks
+    private func readAcks(_ packetIds: [UInt32], acksRemoteSessionId: Data) throws {
         guard let sessionId = sessionId else {
             throw SessionError.missingSessionId
         }
@@ -189,8 +200,9 @@ class ControlChannel {
         guard let sessionId = sessionId else {
             throw SessionError.missingSessionId
         }
-        let ackPacket = ControlPacket(key: key, sessionId: sessionId, ackIds: ackPacketIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
-        return ackPacket.serialized()
+        let packet = ControlPacket(key: key, sessionId: sessionId, ackIds: ackPacketIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
+        log.debug("Control: Write ack packet \(packet)")
+        return try serializer.serialize(packet: packet)
     }
     
     func currentControlData(withTLS tls: TLSBox) throws -> ZeroingData {

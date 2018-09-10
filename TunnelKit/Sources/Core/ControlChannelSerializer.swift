@@ -24,6 +24,7 @@
 //
 
 import Foundation
+import __TunnelKitNative
 import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
@@ -33,23 +34,95 @@ protocol ControlChannelSerializer {
     
     func serialize(packet: ControlPacket) throws -> Data
 
-    func deserialize(data: Data, from: Int) throws -> ControlPacket
+    func deserialize(code: PacketCode, key: UInt8, data: Data, start: Int, end: Int?) throws -> ControlPacket
 }
 
 extension ControlChannel {
     class PlainSerializer: ControlChannelSerializer {
         func reset() {
-            // TODO
         }
         
         func serialize(packet: ControlPacket) throws -> Data {
-            // TODO
-            throw SessionError.pingTimeout
+            return packet.serialized()
         }
         
-        func deserialize(data: Data, from: Int) throws -> ControlPacket {
-            // TODO
-            throw SessionError.pingTimeout
+        func deserialize(code: PacketCode, key: UInt8, data packet: Data, start: Int, end: Int?) throws -> ControlPacket {
+            var offset = start
+            let end = end ?? packet.count
+
+            guard end >= offset + PacketSessionIdLength else {
+                throw ControlChannelError("Missing sessionId")
+            }
+            let sessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
+            offset += PacketSessionIdLength
+
+            guard end >= offset + 1 else {
+                throw ControlChannelError("Missing ackSize")
+            }
+            let ackSize = packet[offset]
+            offset += 1
+
+            var ackIds: [UInt32]?
+            var ackRemoteSessionId: Data?
+            if ackSize > 0 {
+                guard end >= (offset + Int(ackSize) * PacketIdLength) else {
+                    throw ControlChannelError("Missing acks")
+                }
+                var ids: [UInt32] = []
+                for _ in 0..<ackSize {
+                    let id = packet.networkUInt32Value(from: offset)
+                    ids.append(id)
+                    offset += PacketIdLength
+                }
+
+                guard end >= offset + PacketSessionIdLength else {
+                    throw ControlChannelError("Missing remoteSessionId")
+                }
+                let remoteSessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
+                offset += PacketSessionIdLength
+
+                log.debug("Server acked packetIds \(ids) with remoteSessionId \(remoteSessionId.toHex())")
+                
+                ackIds = ids
+                ackRemoteSessionId = remoteSessionId
+            }
+
+            if code == .ackV1 {
+                guard let ackIds = ackIds else {
+                    throw ControlChannelError("Ack packet without ids")
+                }
+                guard let ackRemoteSessionId = ackRemoteSessionId else {
+                    throw ControlChannelError("Ack packet without remoteSessionId")
+                }
+                return ControlPacket(key: key, sessionId: sessionId, ackIds: ackIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
+            }
+
+            guard end >= offset + PacketIdLength else {
+                throw ControlChannelError("Missing packetId")
+            }
+            let packetId = packet.networkUInt32Value(from: offset)
+            log.debug("Control packet has packetId \(packetId)")
+            offset += PacketIdLength
+
+            var payload: Data?
+            if offset < end {
+                payload = packet.subdata(in: offset..<end)
+
+                if let payload = payload {
+                    if CoreConfiguration.logsSensitiveData {
+                        log.debug("Control packet payload (\(payload.count) bytes): \(payload.toHex())")
+                    } else {
+                        log.debug("Control packet payload (\(payload.count) bytes)")
+                    }
+                }
+            }
+
+            let controlPacket = ControlPacket(code: code, key: key, sessionId: sessionId, packetId: packetId, payload: payload)
+            if let ackIds = ackIds {
+                controlPacket.ackIds = ackIds as [NSNumber]
+                controlPacket.ackRemoteSessionId = ackRemoteSessionId
+            }
+            return controlPacket
         }
     }
 }
