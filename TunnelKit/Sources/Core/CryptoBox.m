@@ -50,6 +50,7 @@
 
 @property (nonatomic, strong) NSString *cipherAlgorithm;
 @property (nonatomic, strong) NSString *digestAlgorithm;
+@property (nonatomic, assign) NSInteger digestLength;
 
 @property (nonatomic, strong) id<Encrypter> encrypter;
 @property (nonatomic, strong) id<Decrypter> decrypter;
@@ -130,6 +131,9 @@
     
     [self.encrypter configureEncryptionWithCipherKey:cipherEncKey hmacKey:hmacEncKey];
     [self.decrypter configureDecryptionWithCipherKey:cipherDecKey hmacKey:hmacDecKey];
+
+    NSAssert(self.encrypter.digestLength == self.decrypter.digestLength, @"Digest length mismatch in encrypter/decrypter");
+    self.digestLength = self.encrypter.digestLength;
 
     return YES;
 }

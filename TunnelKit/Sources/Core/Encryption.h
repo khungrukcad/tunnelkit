@@ -45,6 +45,7 @@
 @protocol Encrypter
 
 - (void)configureEncryptionWithCipherKey:(nonnull ZeroingData *)cipherKey hmacKey:(nonnull ZeroingData *)hmacKey;
+- (int)digestLength;
 - (int)overheadLength;
 - (int)extraLength;
 
@@ -59,6 +60,7 @@
 @protocol Decrypter
 
 - (void)configureDecryptionWithCipherKey:(nonnull ZeroingData *)cipherKey hmacKey:(nonnull ZeroingData *)hmacKey;
+- (int)digestLength;
 - (int)overheadLength;
 - (int)extraLength;
 

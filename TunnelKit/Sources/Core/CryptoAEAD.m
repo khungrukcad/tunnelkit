@@ -97,6 +97,11 @@ const NSInteger CryptoAEADTagLength     = 16;
     self.cipher = NULL;
 }
 
+- (int)digestLength
+{
+    return 0;
+}
+
 #pragma mark Encrypter
 
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey

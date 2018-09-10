@@ -68,4 +68,6 @@
 - (nonnull id<Encrypter>)encrypter;
 - (nonnull id<Decrypter>)decrypter;
 
+- (NSInteger)digestLength;
+
 @end
