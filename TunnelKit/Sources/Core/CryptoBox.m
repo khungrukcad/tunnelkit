@@ -76,8 +76,7 @@
 
 - (instancetype)initWithCipherAlgorithm:(NSString *)cipherAlgorithm digestAlgorithm:(NSString *)digestAlgorithm
 {
-    NSParameterAssert(cipherAlgorithm);
-//    NSParameterAssert(digestAlgorithm);
+    NSParameterAssert(cipherAlgorithm || digestAlgorithm);
     
     if ((self = [super init])) {
         self.cipherAlgorithm = [cipherAlgorithm lowercaseString];
@@ -99,34 +98,37 @@
                        hmacDecKey:(ZeroingData *)hmacDecKey
                             error:(NSError *__autoreleasing *)error
 {
-    NSParameterAssert(cipherEncKey);
-    NSParameterAssert(cipherDecKey);
-    NSParameterAssert(hmacEncKey);
-    NSParameterAssert(hmacDecKey);
+    NSParameterAssert((cipherEncKey && cipherDecKey) || (hmacEncKey && hmacDecKey));
 
-    if ([self.cipherAlgorithm hasSuffix:@"-cbc"]) {
-        if (!self.digestAlgorithm) {
+    if (self.cipherAlgorithm) {
+        if ([self.cipherAlgorithm hasSuffix:@"-cbc"]) {
+            if (!self.digestAlgorithm) {
+                if (error) {
+                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxAlgorithm);
+                }
+                return NO;
+            }
+            CryptoCBC *cbc = [[CryptoCBC alloc] initWithCipherName:self.cipherAlgorithm digestName:self.digestAlgorithm];
+            self.encrypter = cbc;
+            self.decrypter = cbc;
+        }
+        else if ([self.cipherAlgorithm hasSuffix:@"-gcm"]) {
+            CryptoAEAD *gcm = [[CryptoAEAD alloc] initWithCipherName:self.cipherAlgorithm];
+            self.encrypter = gcm;
+            self.decrypter = gcm;
+        }
+        // not supported
+        else {
             if (error) {
                 *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxAlgorithm);
             }
             return NO;
         }
-        CryptoCBC *cbc = [[CryptoCBC alloc] initWithCipherName:self.cipherAlgorithm
-                                                    digestName:self.digestAlgorithm];
+    }
+    else {
+        CryptoCBC *cbc = [[CryptoCBC alloc] initWithCipherName:nil digestName:self.digestAlgorithm];
         self.encrypter = cbc;
         self.decrypter = cbc;
-    }
-    else if ([self.cipherAlgorithm hasSuffix:@"-gcm"]) {
-        CryptoAEAD *gcm = [[CryptoAEAD alloc] initWithCipherName:self.cipherAlgorithm];
-        self.encrypter = gcm;
-        self.decrypter = gcm;
-    }
-    // not supported
-    else {
-        if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxAlgorithm);
-        }
-        return NO;
     }
     
     [self.encrypter configureEncryptionWithCipherKey:cipherEncKey hmacKey:hmacEncKey];

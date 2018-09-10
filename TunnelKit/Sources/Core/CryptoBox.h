@@ -45,13 +45,13 @@
 
 + (BOOL)preparePRNGWithSeed:(nonnull const uint8_t *)seed length:(NSInteger)length;
 
-- (nonnull instancetype)initWithCipherAlgorithm:(nonnull NSString *)cipherAlgorithm
+- (nonnull instancetype)initWithCipherAlgorithm:(nullable NSString *)cipherAlgorithm
                                 digestAlgorithm:(nullable NSString *)digestAlgorithm;
 
-- (BOOL)configureWithCipherEncKey:(nonnull ZeroingData *)cipherEncKey
-                     cipherDecKey:(nonnull ZeroingData *)cipherDecKey
-                       hmacEncKey:(nonnull ZeroingData *)hmacEncKey
-                       hmacDecKey:(nonnull ZeroingData *)hmacDecKey
+- (BOOL)configureWithCipherEncKey:(nullable ZeroingData *)cipherEncKey
+                     cipherDecKey:(nullable ZeroingData *)cipherDecKey
+                       hmacEncKey:(nullable ZeroingData *)hmacEncKey
+                       hmacDecKey:(nullable ZeroingData *)hmacDecKey
                             error:(NSError **)error;
 
 // WARNING: hmac must be able to hold HMAC result

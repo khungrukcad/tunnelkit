@@ -44,7 +44,7 @@
 // WARNING: dest must be able to hold ciphertext
 @protocol Encrypter
 
-- (void)configureEncryptionWithCipherKey:(nonnull ZeroingData *)cipherKey hmacKey:(nonnull ZeroingData *)hmacKey;
+- (void)configureEncryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
 - (int)overheadLength;
 - (int)extraLength;
@@ -59,13 +59,15 @@
 // WARNING: dest must be able to hold plaintext
 @protocol Decrypter
 
-- (void)configureDecryptionWithCipherKey:(nonnull ZeroingData *)cipherKey hmacKey:(nonnull ZeroingData *)hmacKey;
+- (void)configureDecryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
 - (int)overheadLength;
 - (int)extraLength;
 
 - (NSData *)decryptData:(nonnull NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError **)error;
 - (BOOL)decryptBytes:(nonnull const uint8_t *)bytes length:(NSInteger)length dest:(nonnull uint8_t *)dest destLength:(nonnull NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError **)error;
+- (BOOL)verifyData:(nonnull NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError **)error;
+- (BOOL)verifyBytes:(nonnull const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError **)error;
 
 - (nonnull id<DataPathDecrypter>)dataPathDecrypter;
 

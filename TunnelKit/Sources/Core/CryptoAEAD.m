@@ -107,6 +107,7 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
     NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
+    NSParameterAssert(hmacKey);
     
     EVP_CIPHER_CTX_reset(self.cipherCtxEnc);
     EVP_CipherInit(self.cipherCtxEnc, self.cipher, cipherKey.bytes, NULL, 1);
@@ -170,7 +171,8 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (void)configureDecryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
     NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
-    
+    NSParameterAssert(hmacKey);
+
     EVP_CIPHER_CTX_reset(self.cipherCtxDec);
     EVP_CipherInit(self.cipherCtxDec, self.cipher, cipherKey.bytes, NULL, 0);
     
@@ -221,6 +223,18 @@ const NSInteger CryptoAEADTagLength     = 16;
 //    NSLog(@">>> DEC dest: %@", [NSData dataWithBytes:dest length:*destLength]);
 
     TUNNEL_CRYPTO_RETURN_STATUS(code)
+}
+
+- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+{
+    NSAssert(NO, @"Verification not supported");
+    return NO;
+}
+
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+{
+    NSAssert(NO, @"Verification not supported");
+    return NO;
 }
 
 - (id<DataPathDecrypter>)dataPathDecrypter
