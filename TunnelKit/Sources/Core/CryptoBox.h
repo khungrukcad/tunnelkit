@@ -45,6 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CryptoBox : NSObject
 
++ (NSString *)version;
 + (BOOL)preparePRNGWithSeed:(const uint8_t *)seed length:(NSInteger)length;
 
 - (instancetype)initWithCipherAlgorithm:(nullable NSString *)cipherAlgorithm
@@ -65,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
                       hmac:(uint8_t *)hmac
                 hmacLength:(NSInteger *)hmacLength
                      error:(NSError **)error;
+
 
 // encrypt/decrypt are mutually thread-safe
 - (id<Encrypter>)encrypter;

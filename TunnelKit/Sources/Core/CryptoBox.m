@@ -63,6 +63,11 @@
 {
 }
 
++ (NSString *)version
+{
+    return [NSString stringWithCString:OpenSSL_version(OPENSSL_VERSION) encoding:NSASCIIStringEncoding];
+}
+
 + (BOOL)preparePRNGWithSeed:(const uint8_t *)seed length:(NSInteger)length
 {
     unsigned char x[1];
