@@ -510,33 +510,33 @@ extension TunnelKitProvider {
                 log.info("App version: \(appVersion)")
             }
             
-//            log.info("Address: \(endpoint.hostname):\(endpoint.port)")
-            log.info("Protocols: \(endpointProtocols)")
-            log.info("Cipher: \(cipher.rawValue)")
-            log.info("Digest: \(digest.rawValue)")
+//            log.info("\tAddress: \(endpoint.hostname):\(endpoint.port)")
+            log.info("\tProtocols: \(endpointProtocols)")
+            log.info("\tCipher: \(cipher)")
+            log.info("\tDigest: \(digest)")
             if let _ = ca {
-                log.info("CA verification: enabled")
+                log.info("\tCA verification: enabled")
             } else {
-                log.info("CA verification: disabled")
+                log.info("\tCA verification: disabled")
             }
             if let _ = clientCertificate {
-                log.info("Client verification: enabled")
+                log.info("\tClient verification: enabled")
             } else {
-                log.info("Client verification: disabled")
+                log.info("\tClient verification: disabled")
             }
-            log.info("MTU: \(mtu)")
-            log.info("Compression framing: \(compressionFraming)")
+            log.info("\tMTU: \(mtu)")
+            log.info("\tCompression framing: \(compressionFraming)")
             if let keepAliveSeconds = keepAliveSeconds {
-                log.info("Keep-alive: \(keepAliveSeconds) seconds")
+                log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
             } else {
-                log.info("Keep-alive: default")
+                log.info("\tKeep-alive: default")
             }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
-                log.info("Renegotiation: \(renegotiatesAfterSeconds) seconds")
+                log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
-                log.info("Renegotiation: never")
+                log.info("\tRenegotiation: never")
             }
-            log.info("Debug: \(shouldDebug)")
+            log.info("\tDebug: \(shouldDebug)")
         }
     }
 }
