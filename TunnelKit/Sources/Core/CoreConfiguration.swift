@@ -35,8 +35,12 @@
 //
 
 import Foundation
+import __TunnelKitNative
 
 struct CoreConfiguration {
+    static let identifier = "com.algoritmico.TunnelKit"
+    
+    static let version = "1.1.0-dev"
     
     // MARK: Session
     
@@ -58,8 +62,11 @@ struct CoreConfiguration {
     
     static let peerInfo = [
         "IV_VER=2.4",
+        "IV_PLAT=mac",
+        "IV_UI_VER=\(identifier) \(version)",
         "IV_PROTO=2",
         "IV_NCP=2",
+        "IV_SSL=\(CryptoBox.version())",
         ""
     ].joined(separator: "\n")
     
