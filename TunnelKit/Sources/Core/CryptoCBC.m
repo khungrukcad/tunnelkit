@@ -138,7 +138,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
-- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(nonnull const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(data);
 
@@ -155,7 +155,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return dest;
 }
 
-- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nonnull const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     uint8_t *outIV = dest + self.digestLength;
     uint8_t *outEncrypted = dest + self.digestLength + self.cipherIVLength;

@@ -43,13 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CryptoCBC : NSObject <Encrypter, Decrypter>
 
-- (instancetype)initWithCipherName:(nullable NSString *)cipherName digestName:(nonnull NSString *)digestName;
+- (instancetype)initWithCipherName:(nullable NSString *)cipherName digestName:(NSString *)digestName;
 
 @end
 
 @interface DataPathCryptoCBC : NSObject <DataPathEncrypter, DataPathDecrypter>
 
-- (instancetype)initWithCrypto:(nonnull CryptoCBC *)crypto;
+- (instancetype)initWithCrypto:(CryptoCBC *)crypto;
 
 @end
 

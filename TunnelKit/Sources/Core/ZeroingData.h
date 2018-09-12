@@ -37,6 +37,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface ZeroingData : NSObject
 
 @property (nonatomic, readonly) const uint8_t *bytes;
@@ -44,7 +46,7 @@
 @property (nonatomic, readonly) NSInteger count;
 
 - (instancetype)initWithCount:(NSInteger)count;
-- (instancetype)initWithBytes:(const uint8_t *)bytes count:(NSInteger)count;
+- (instancetype)initWithBytes:(nullable const uint8_t *)bytes count:(NSInteger)count;
 - (instancetype)initWithUInt8:(uint8_t)uint8;
 - (instancetype)initWithUInt16:(uint16_t)uint16;
 
@@ -57,13 +59,15 @@
 - (void)removeUntilOffset:(NSInteger)until;
 - (void)zero;
 
-- (nonnull ZeroingData *)appendingData:(ZeroingData *)other;
-- (nonnull ZeroingData *)withOffset:(NSInteger)offset count:(NSInteger)count;
+- (ZeroingData *)appendingData:(ZeroingData *)other;
+- (ZeroingData *)withOffset:(NSInteger)offset count:(NSInteger)count;
 - (uint16_t)UInt16ValueFromOffset:(NSInteger)from;
 - (uint16_t)networkUInt16ValueFromOffset:(NSInteger)from;
-- (NSString *)nullTerminatedStringFromOffset:(NSInteger)from;
+- (nullable NSString *)nullTerminatedStringFromOffset:(NSInteger)from;
 
 - (BOOL)isEqualToData:(NSData *)data;
-- (nonnull NSString *)toHex;
+- (NSString *)toHex;
 
 @end
+
+NS_ASSUME_NONNULL_END

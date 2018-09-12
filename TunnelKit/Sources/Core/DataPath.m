@@ -156,24 +156,24 @@
 {
     switch (compressionFraming) {
         case CompressionFramingNativeDisabled: {
-            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+            self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
                 memcpy(packetDest, payload.bytes, payload.length);
                 *packetLengthOffset = 0;
             };
-            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+            self.parsePayloadBlock = ^(uint8_t * payload, NSInteger *payloadOffset, NSInteger * headerLength, const uint8_t * packet, NSInteger packetLength) {
                 *payloadOffset = 0;
                 *headerLength = 0;
             };
             break;
         }
         case CompressionFramingNativeCompress: {
-            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+            self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
                 memcpy(packetDest, payload.bytes, payload.length);
                 packetDest[payload.length] = packetDest[0];
                 packetDest[0] = DataPacketNoCompressSwap;
                 *packetLengthOffset = 1;
             };
-            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+            self.parsePayloadBlock = ^(uint8_t * payload, NSInteger *payloadOffset, NSInteger * headerLength, const uint8_t * packet, NSInteger packetLength) {
                 NSCAssert(payload[0] == DataPacketNoCompressSwap, @"Expected NO_COMPRESS_SWAP (found %X != %X)", payload[0], DataPacketNoCompressSwap);
                 payload[0] = packet[packetLength - 1];
                 *payloadOffset = 0;
@@ -182,12 +182,12 @@
             break;
         }
         case CompressionFramingNativeCompLZO: {
-            self.assemblePayloadBlock = ^(uint8_t * _Nonnull packetDest, NSInteger * _Nonnull packetLengthOffset, NSData * _Nonnull payload) {
+            self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
                 memcpy(packetDest + 1, payload.bytes, payload.length);
                 packetDest[0] = DataPacketNoCompress;
                 *packetLengthOffset = 1;
             };
-            self.parsePayloadBlock = ^(uint8_t * _Nonnull payload, NSInteger *payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength) {
+            self.parsePayloadBlock = ^(uint8_t * payload, NSInteger *payloadOffset, NSInteger * headerLength, const uint8_t * packet, NSInteger packetLength) {
                 NSCAssert(payload[0] == DataPacketNoCompress, @"Expected NO_COMPRESS (found %X != %X)", payload[0], DataPacketNoCompress);
                 *payloadOffset = 1;
                 *headerLength = 1;
