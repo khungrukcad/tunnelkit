@@ -52,6 +52,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 @property (nonatomic, unsafe_unretained) const EVP_MD *digest;
 @property (nonatomic, assign) int cipherKeyLength;
 @property (nonatomic, assign) int cipherIVLength;
+@property (nonatomic, assign) int hmacKeyLength;
 @property (nonatomic, assign) int digestLength;
 @property (nonatomic, assign) int overheadLength;
 
@@ -67,22 +68,31 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (instancetype)initWithCipherName:(NSString *)cipherName digestName:(NSString *)digestName
 {
-    NSParameterAssert([[cipherName uppercaseString] hasSuffix:@"CBC"]);
-    
+    NSParameterAssert(!cipherName || [[cipherName uppercaseString] hasSuffix:@"CBC"]);
+    NSParameterAssert(digestName);
+
     self = [super init];
     if (self) {
-        self.cipher = EVP_get_cipherbyname([cipherName cStringUsingEncoding:NSASCIIStringEncoding]);
-        NSAssert(self.cipher, @"Unknown cipher '%@'", cipherName);
+        if (cipherName) {
+            self.cipher = EVP_get_cipherbyname([cipherName cStringUsingEncoding:NSASCIIStringEncoding]);
+            NSAssert(self.cipher, @"Unknown cipher '%@'", cipherName);
+        }
         self.digest = EVP_get_digestbyname([digestName cStringUsingEncoding:NSASCIIStringEncoding]);
         NSAssert(self.digest, @"Unknown digest '%@'", digestName);
 
-        self.cipherKeyLength = EVP_CIPHER_key_length(self.cipher);
-        self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
+        if (cipherName) {
+            self.cipherKeyLength = EVP_CIPHER_key_length(self.cipher);
+            self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
+        }
+        // as seen in OpenVPN's crypto_openssl.c:md_kt_size()
+        self.hmacKeyLength = EVP_MD_size(self.digest);
         self.digestLength = EVP_MD_size(self.digest);
         self.overheadLength = self.cipherIVLength + self.digestLength;
 
-        self.cipherCtxEnc = EVP_CIPHER_CTX_new();
-        self.cipherCtxDec = EVP_CIPHER_CTX_new();
+        if (cipherName) {
+            self.cipherCtxEnc = EVP_CIPHER_CTX_new();
+            self.cipherCtxDec = EVP_CIPHER_CTX_new();
+        }
         self.hmacCtxEnc = HMAC_CTX_new();
         self.hmacCtxDec = HMAC_CTX_new();
         self.bufferDecHMAC = allocate_safely(CryptoCBCMaxHMACLength);
@@ -92,8 +102,10 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (void)dealloc
 {
-    EVP_CIPHER_CTX_free(self.cipherCtxEnc);
-    EVP_CIPHER_CTX_free(self.cipherCtxDec);
+    if (self.cipher) {
+        EVP_CIPHER_CTX_free(self.cipherCtxEnc);
+        EVP_CIPHER_CTX_free(self.cipherCtxDec);
+    }
     HMAC_CTX_free(self.hmacCtxEnc);
     HMAC_CTX_free(self.hmacCtxDec);
     bzero(self.bufferDecHMAC, CryptoCBCMaxHMACLength);
@@ -112,16 +124,21 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
-    NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
+    NSParameterAssert(hmacKey);
+    NSParameterAssert(hmacKey.count >= self.hmacKeyLength);
 
-    EVP_CIPHER_CTX_reset(self.cipherCtxEnc);
-    EVP_CipherInit(self.cipherCtxEnc, self.cipher, cipherKey.bytes, NULL, 1);
+    if (self.cipher) {
+        NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
+
+        EVP_CIPHER_CTX_reset(self.cipherCtxEnc);
+        EVP_CipherInit(self.cipherCtxEnc, self.cipher, cipherKey.bytes, NULL, 1);
+    }
 
     HMAC_CTX_reset(self.hmacCtxEnc);
-    HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.digestLength, self.digest, NULL);
+    HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
-- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(nonnull const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(data);
 
@@ -138,24 +155,32 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return dest;
 }
 
-- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nonnull const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     uint8_t *outIV = dest + self.digestLength;
     uint8_t *outEncrypted = dest + self.digestLength + self.cipherIVLength;
     int l1 = 0, l2 = 0;
     unsigned int l3 = 0;
     int code = 1;
-    
-    if (RAND_bytes(outIV, self.cipherIVLength) != 1) {
-        if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxRandomGenerator);
+
+    if (self.cipher) {
+        if (RAND_bytes(outIV, self.cipherIVLength) != 1) {
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxRandomGenerator);
+            }
+            return NO;
         }
-        return NO;
+        
+        TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, outIV, -1);
+        TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, outEncrypted, &l1, bytes, (int)length);
+        TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxEnc, outEncrypted + l1, &l2);
     }
-    
-    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, outIV, -1);
-    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, outEncrypted, &l1, bytes, (int)length);
-    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxEnc, outEncrypted + l1, &l2);
+    else {
+        NSAssert(outEncrypted == outIV, @"cipherIVLength is non-zero");
+
+        memcpy(outEncrypted, bytes, length);
+        l1 = (int)length;
+    }
     
     TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxEnc, NULL, 0, NULL, NULL);
     TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxEnc, outIV, l1 + l2 + self.cipherIVLength);
@@ -175,17 +200,23 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (void)configureDecryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
 {
-    NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
+    NSParameterAssert(hmacKey);
+    NSParameterAssert(hmacKey.count >= self.hmacKeyLength);
 
-    EVP_CIPHER_CTX_reset(self.cipherCtxDec);
-    EVP_CipherInit(self.cipherCtxDec, self.cipher, cipherKey.bytes, NULL, 0);
+    if (self.cipher) {
+        NSParameterAssert(cipherKey.count >= self.cipherKeyLength);
+
+        EVP_CIPHER_CTX_reset(self.cipherCtxDec);
+        EVP_CipherInit(self.cipherCtxDec, self.cipher, cipherKey.bytes, NULL, 0);
+    }
     
     HMAC_CTX_reset(self.hmacCtxDec);
-    HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.digestLength, self.digest, NULL);
+    HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
 - (NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
+    NSAssert(self.cipher, @"No cipher provided");
     NSParameterAssert(data);
 
     const uint8_t *bytes = data.bytes + offset;
@@ -203,6 +234,8 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
+    NSAssert(self.cipher, @"No cipher provided");
+
     const uint8_t *iv = bytes + self.digestLength;
     const uint8_t *encrypted = bytes + self.digestLength + self.cipherIVLength;
     int l1 = 0, l2 = 0;
@@ -222,10 +255,33 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxDec, NULL, NULL, iv, -1);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, dest, &l1, encrypted, (int)length - self.digestLength - self.cipherIVLength);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxDec, dest + l1, &l2);
-    
+
     *destLength = l1 + l2;
-    
+
     TUNNEL_CRYPTO_RETURN_STATUS(code)
+}
+
+- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+{
+    return [self verifyBytes:data.bytes length:data.length extra:extra error:error];
+}
+
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+{
+    int l1 = 0;
+    int code = 1;
+    
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Init_ex(self.hmacCtxDec, NULL, 0, NULL, NULL);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Update(self.hmacCtxDec, bytes + self.digestLength, length - self.digestLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) HMAC_Final(self.hmacCtxDec, self.bufferDecHMAC, (unsigned *)&l1);
+    
+    if (TUNNEL_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, self.digestLength) != 0) {
+        if (error) {
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxHMAC);
+        }
+        return NO;
+    }
+    return YES;
 }
 
 - (id<DataPathDecrypter>)dataPathDecrypter

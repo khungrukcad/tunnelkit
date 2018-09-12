@@ -65,6 +65,22 @@ class EncryptionTests: XCTestCase {
         XCTAssertEqual(plain, decrypted)
     }
 
+    func testHMAC() {
+        let cbc = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: "sha256")
+        try! cbc.configure(withCipherEncKey: nil, cipherDecKey: nil, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
+        let enc = cbc.encrypter()
+        let dec = cbc.decrypter()
+        
+        let plain = Data(hex: "00112233445566778899")
+        let encrypted = try! enc.encryptData(plain, offset: 0, extra: nil)
+        do {
+            try dec.verifyData(encrypted, offset: 0, extra: nil)
+            XCTAssert(true)
+        } catch {
+            XCTAssert(false)
+        }
+    }
+    
     func testGCM() {
         let gcm = CryptoBox(cipherAlgorithm: "aes-256-gcm", digestAlgorithm: nil)
         try! gcm.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)

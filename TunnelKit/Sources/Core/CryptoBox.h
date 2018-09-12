@@ -38,34 +38,40 @@
 
 #import "ZeroingData.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol Encrypter;
 @protocol Decrypter;
 
 @interface CryptoBox : NSObject
 
-+ (BOOL)preparePRNGWithSeed:(nonnull const uint8_t *)seed length:(NSInteger)length;
++ (BOOL)preparePRNGWithSeed:(const uint8_t *)seed length:(NSInteger)length;
 
-- (nonnull instancetype)initWithCipherAlgorithm:(nonnull NSString *)cipherAlgorithm
+- (instancetype)initWithCipherAlgorithm:(nullable NSString *)cipherAlgorithm
                                 digestAlgorithm:(nullable NSString *)digestAlgorithm;
 
-- (BOOL)configureWithCipherEncKey:(nonnull ZeroingData *)cipherEncKey
-                     cipherDecKey:(nonnull ZeroingData *)cipherDecKey
-                       hmacEncKey:(nonnull ZeroingData *)hmacEncKey
-                       hmacDecKey:(nonnull ZeroingData *)hmacDecKey
+- (BOOL)configureWithCipherEncKey:(nullable ZeroingData *)cipherEncKey
+                     cipherDecKey:(nullable ZeroingData *)cipherDecKey
+                       hmacEncKey:(nullable ZeroingData *)hmacEncKey
+                       hmacDecKey:(nullable ZeroingData *)hmacDecKey
                             error:(NSError **)error;
 
 // WARNING: hmac must be able to hold HMAC result
-+ (BOOL)hmacWithDigestName:(nonnull NSString *)digestName
-                    secret:(nonnull const uint8_t *)secret
++ (BOOL)hmacWithDigestName:(NSString *)digestName
+                    secret:(const uint8_t *)secret
               secretLength:(NSInteger)secretLength
-                      data:(nonnull const uint8_t *)data
+                      data:(const uint8_t *)data
                 dataLength:(NSInteger)dataLength
-                      hmac:(nonnull uint8_t *)hmac
-                hmacLength:(nonnull NSInteger *)hmacLength
+                      hmac:(uint8_t *)hmac
+                hmacLength:(NSInteger *)hmacLength
                      error:(NSError **)error;
 
 // encrypt/decrypt are mutually thread-safe
-- (nonnull id<Encrypter>)encrypter;
-- (nonnull id<Decrypter>)decrypter;
+- (id<Encrypter>)encrypter;
+- (id<Decrypter>)decrypter;
+
+- (NSInteger)digestLength;
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -49,7 +49,7 @@ extern NSString *const TLSBoxPeerVerificationErrorNotification;
 //
 @interface TLSBox : NSObject
 
-- (nonnull instancetype)initWithCAPath:(NSString *)caPath
+- (instancetype)initWithCAPath:(NSString *)caPath
                  clientCertificatePath:(NSString *)clientCertificatePath
                          clientKeyPath:(NSString *)clientKeyPath;
 

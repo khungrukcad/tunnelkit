@@ -45,13 +45,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) int extraLength;
 
-- (instancetype)initWithCipherName:(nonnull NSString *)cipherName;
+- (instancetype)initWithCipherName:(NSString *)cipherName;
 
 @end
 
 @interface DataPathCryptoAEAD : NSObject <DataPathEncrypter, DataPathDecrypter>
 
-- (instancetype)initWithCrypto:(nonnull CryptoAEAD *)crypto;
+- (instancetype)initWithCrypto:(CryptoAEAD *)crypto;
 
 @end
 

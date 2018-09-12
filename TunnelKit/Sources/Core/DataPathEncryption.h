@@ -36,8 +36,10 @@
 
 #import <Foundation/Foundation.h>
 
-typedef void (^DataPathAssembleBlock)(uint8_t *_Nonnull packetDest, NSInteger *_Nonnull packetLengthOffset, NSData *_Nonnull payload);
-typedef void (^DataPathParseBlock)(uint8_t *_Nonnull payload, NSInteger *_Nonnull payloadOffset, NSInteger *_Nonnull headerLength, const uint8_t *_Nonnull packet, NSInteger packetLength);
+NS_ASSUME_NONNULL_BEGIN
+
+typedef void (^DataPathAssembleBlock)(uint8_t *packetDest, NSInteger *packetLengthOffset, NSData *payload);
+typedef void (^DataPathParseBlock)(uint8_t *payload, NSInteger *payloadOffset, NSInteger *headerLength, const uint8_t *packet, NSInteger packetLength);
 
 @protocol DataPathChannel
 
@@ -48,14 +50,16 @@ typedef void (^DataPathParseBlock)(uint8_t *_Nonnull payload, NSInteger *_Nonnul
 
 @protocol DataPathEncrypter <DataPathChannel>
 
-- (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(nonnull uint8_t *)packetBytes length:(nonnull NSInteger *)packetLength;
-- (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError **)error;
+- (void)assembleDataPacketWithBlock:(nullable DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)packetBytes length:(NSInteger *)packetLength;
+- (nullable NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError **)error;
 
 @end
 
 @protocol DataPathDecrypter <DataPathChannel>
 
-- (BOOL)decryptDataPacket:(nonnull NSData *)packet into:(nonnull uint8_t *)packetBytes length:(nonnull NSInteger *)packetLength packetId:(nonnull uint32_t *)packetId error:(NSError **)error;
-- (nonnull const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block length:(nonnull NSInteger *)length packetBytes:(nonnull uint8_t *)packetBytes packetLength:(NSInteger)packetLength;
+- (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError **)error;
+- (const uint8_t *)parsePayloadWithBlock:(nullable DataPathParseBlock)block length:(NSInteger *)length packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength;
 
 @end
+
+NS_ASSUME_NONNULL_END
