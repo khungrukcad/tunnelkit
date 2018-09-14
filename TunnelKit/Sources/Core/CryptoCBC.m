@@ -281,7 +281,8 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
         }
         return NO;
     }
-    return YES;
+
+    TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
 - (id<DataPathDecrypter>)dataPathDecrypter
