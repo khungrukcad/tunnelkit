@@ -542,7 +542,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
                 ipv6Route.gatewayAddress = r.gateway ?? ipv6.defaultGateway
                 routes.append(ipv6Route)
             }
-            
+
             ipv6Settings = NEIPv6Settings(addresses: [ipv6.address], networkPrefixLengths: [ipv6.addressPrefixLength as NSNumber])
             ipv6Settings?.includedRoutes = [defaultRoute]
             ipv6Settings?.excludedRoutes = []
@@ -551,11 +551,8 @@ extension TunnelKitProvider: SessionProxyDelegate {
         let dnsSettings = NEDNSSettings(servers: reply.dnsServers)
         
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
-        if let _ = ipv6Settings {
-            newSettings.ipv6Settings = ipv6Settings
-        } else {
-            newSettings.ipv4Settings = ipv4Settings
-        }
+        newSettings.ipv4Settings = ipv4Settings
+        newSettings.ipv6Settings = ipv6Settings
         newSettings.dnsSettings = dnsSettings
         
         setTunnelNetworkSettings(newSettings, completionHandler: completionHandler)
