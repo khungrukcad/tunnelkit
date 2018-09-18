@@ -37,10 +37,10 @@ public class StaticKey: Codable {
     /// The key-direction field, usually 0 on servers and 1 on clients.
     public enum Direction: Int, Codable {
 
-        /// Conventional server direction.
+        /// Conventional server direction (implicit for tls-crypt).
         case server = 0
         
-        /// Conventional client direction.
+        /// Conventional client direction (implicit for tls-crypt).
         case client = 1
     }
     
@@ -54,11 +54,77 @@ public class StaticKey: Codable {
 
     private let direction: Direction?
     
+    /// Returns the encryption key.
+    ///
+    /// - Precondition: `direction` must be non-nil.
+    /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+    public var cipherEncryptKey: ZeroingData {
+        guard let direction = direction else {
+            preconditionFailure()
+        }
+        switch direction {
+        case .server:
+            return key(at: 0)
+            
+        case .client:
+            return key(at: 2)
+        }
+    }
+
+    /// Returns the decryption key.
+    ///
+    /// - Precondition: `direction` must be non-nil.
+    /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+    public var cipherDecryptKey: ZeroingData {
+        guard let direction = direction else {
+            preconditionFailure()
+        }
+        switch direction {
+        case .server:
+            return key(at: 2)
+            
+        case .client:
+            return key(at: 0)
+        }
+    }
+    
+    /// Returns the HMAC sending key.
+    ///
+    /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+    public var hmacSendKey: ZeroingData {
+        guard let direction = direction else {
+            return key(at: 1)
+        }
+        switch direction {
+        case .server:
+            return key(at: 1)
+            
+        case .client:
+            return key(at: 3)
+        }
+    }
+    
+    /// Returns the HMAC receiving key.
+    ///
+    /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+    public var hmacReceiveKey: ZeroingData {
+        guard let direction = direction else {
+            return key(at: 1)
+        }
+        switch direction {
+        case .server:
+            return key(at: 3)
+            
+        case .client:
+            return key(at: 1)
+        }
+    }
+    
     /**
      Initializes with data and direction.
      
      - Parameter data: The key data.
-     - Parameter direction: The key direction, or bidirectional if nil.
+     - Parameter direction: The key direction, or bidirectional if nil. For tls-crypt behavior, must not be nil.
      */
     public init(data: Data, direction: Direction?) {
         precondition(data.count == StaticKey.contentLength)
