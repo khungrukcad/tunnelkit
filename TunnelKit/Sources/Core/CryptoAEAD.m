@@ -244,7 +244,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     peerId &= 0xffffff;
     
     if (peerId == PacketPeerIdDisabled) {
-        self.headerLength = 1;
+        self.headerLength = PacketOpcodeLength;
         self.crypto.extraLength = PacketIdLength;
         self.crypto.extraPacketIdOffset = 0;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
@@ -253,7 +253,7 @@ const NSInteger CryptoAEADTagLength     = 16;
         self.checkPeerId = NULL;
     }
     else {
-        self.headerLength = 4;
+        self.headerLength = PacketOpcodeLength + PacketPeerIdLength;
         self.crypto.extraLength = self.headerLength + PacketIdLength;
         self.crypto.extraPacketIdOffset = self.headerLength;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
