@@ -80,7 +80,7 @@
     const BOOL isAck = self.isAck;
     const NSUInteger ackLength = self.ackIds.count;
     NSCAssert(!isAck || ackLength > 0, @"Ack packet must provide positive ackLength");
-    NSInteger n = PacketHeaderLength + PacketSessionIdLength;
+    NSInteger n = PacketOpcodeLength + PacketSessionIdLength;
     n += PacketAckLengthLength;
     if (ackLength > 0) {
         n += ackLength * PacketIdLength + PacketSessionIdLength;
