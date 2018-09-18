@@ -115,24 +115,6 @@ const NSInteger CryptoAEADTagLength     = 16;
     [self prepareIV:self.cipherIVEnc withHMACKey:hmacKey];
 }
 
-- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    NSParameterAssert(data);
-    NSParameterAssert(extra);
-
-    const uint8_t *bytes = data.bytes + offset;
-    const int length = (int)(data.length - offset);
-    const int maxOutputSize = (int)safe_crypto_capacity(data.length, self.overheadLength);
-
-    NSMutableData *dest = [[NSMutableData alloc] initWithLength:maxOutputSize];
-    NSInteger encryptedLength = INT_MAX;
-    if (![self encryptBytes:bytes length:length dest:dest.mutableBytes destLength:&encryptedLength extra:extra error:error]) {
-        return nil;
-    }
-    dest.length = encryptedLength;
-    return dest;
-}
-
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(extra);
@@ -179,24 +161,6 @@ const NSInteger CryptoAEADTagLength     = 16;
     [self prepareIV:self.cipherIVDec withHMACKey:hmacKey];
 }
 
-- (NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    NSParameterAssert(data);
-    NSParameterAssert(extra);
-
-    const uint8_t *bytes = data.bytes + offset;
-    const int length = (int)(data.length - offset);
-    const int maxOutputSize = (int)safe_crypto_capacity(data.length, self.overheadLength);
-
-    NSMutableData *dest = [[NSMutableData alloc] initWithLength:maxOutputSize];
-    NSInteger decryptedLength;
-    if (![self decryptBytes:bytes length:length dest:dest.mutableBytes destLength:&decryptedLength extra:extra error:error]) {
-        return nil;
-    }
-    dest.length = decryptedLength;
-    return dest;
-}
-
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     NSParameterAssert(extra);
@@ -225,15 +189,9 @@ const NSInteger CryptoAEADTagLength     = 16;
     TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
-- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    NSAssert(NO, @"Verification not supported");
-    return NO;
-}
-
 - (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
-    NSAssert(NO, @"Verification not supported");
+    [NSException raise:NSInvalidArgumentException format:@"Verification not supported"];
     return NO;
 }
 

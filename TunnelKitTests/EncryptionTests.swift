@@ -55,43 +55,38 @@ class EncryptionTests: XCTestCase {
 
     func testCBC() {
         let cbc = CryptoBox(cipherAlgorithm: "aes-128-cbc", digestAlgorithm: "sha256")
-        try! cbc.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
+        XCTAssertNoThrow(try cbc.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey))
         let enc = cbc.encrypter()
         let dec = cbc.decrypter()
         
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: nil)
-        let decrypted = try! dec.decryptData(encrypted, offset: 0, extra: nil)
+        let encrypted = try! enc.encryptData(plain, extra: nil)
+        let decrypted = try! dec.decryptData(encrypted, extra: nil)
         XCTAssertEqual(plain, decrypted)
     }
 
     func testHMAC() {
         let cbc = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: "sha256")
-        try! cbc.configure(withCipherEncKey: nil, cipherDecKey: nil, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
+        XCTAssertNoThrow(try cbc.configure(withCipherEncKey: nil, cipherDecKey: nil, hmacEncKey: hmacKey, hmacDecKey: hmacKey))
         let enc = cbc.encrypter()
         let dec = cbc.decrypter()
         
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: nil)
-        do {
-            try dec.verifyData(encrypted, offset: 0, extra: nil)
-            XCTAssert(true)
-        } catch {
-            XCTAssert(false)
-        }
+        let encrypted = try! enc.encryptData(plain, extra: nil)
+        XCTAssertNoThrow(try dec.verifyData(encrypted, extra: nil))
     }
     
     func testGCM() {
         let gcm = CryptoBox(cipherAlgorithm: "aes-256-gcm", digestAlgorithm: nil)
-        try! gcm.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
+        XCTAssertNoThrow(try gcm.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey))
         let enc = gcm.encrypter()
         let dec = gcm.decrypter()
         
 //        let packetId: UInt32 = 0x56341200
         let extra: [UInt8] = [0x00, 0x12, 0x34, 0x56]
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: extra)
-        let decrypted = try! dec.decryptData(encrypted, offset: 0, extra: extra)
+        let encrypted = try! enc.encryptData(plain, extra: extra)
+        let decrypted = try! dec.decryptData(encrypted, extra: extra)
         XCTAssertEqual(plain, decrypted)
     }
 

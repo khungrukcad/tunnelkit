@@ -72,7 +72,7 @@ class EncryptionPerformanceTests: XCTestCase {
         let suite = TestUtils.generateDataSuite(1000, 100000)
         measure {
             for data in suite {
-                let _ = try! self.cbcEncrypter.encryptData(data, offset: 0, extra: nil)
+                let _ = try! self.cbcEncrypter.encryptData(data, extra: nil)
             }
         }
     }
@@ -83,7 +83,7 @@ class EncryptionPerformanceTests: XCTestCase {
         let extra: [UInt8] = [0x11, 0x22, 0x33, 0x44]
         measure {
             for data in suite {
-                let _ = try! self.gcmEncrypter.encryptData(data, offset: 0, extra: extra)
+                let _ = try! self.gcmEncrypter.encryptData(data, extra: extra)
             }
         }
     }

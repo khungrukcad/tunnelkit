@@ -66,6 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable NSString *)nullTerminatedStringFromOffset:(NSInteger)from;
 
 - (BOOL)isEqualToData:(NSData *)data;
+- (NSData *)toData; // XXX: unsafe
 - (NSString *)toHex;
 
 @end

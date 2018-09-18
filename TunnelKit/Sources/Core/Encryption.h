@@ -51,7 +51,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (int)overheadLength;
 - (int)extraLength;
 
-- (nullable NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
 
 - (id<DataPathEncrypter>)dataPathEncrypter;
@@ -66,10 +65,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (int)overheadLength;
 - (int)extraLength;
 
-- (nullable NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
-- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
-- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError **)error;
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(nullable const uint8_t *)extra error:(NSError **)error;
 
 - (id<DataPathDecrypter>)dataPathDecrypter;
 
