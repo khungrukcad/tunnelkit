@@ -82,9 +82,8 @@ class ControlChannel {
         serializer.reset()
     }
 
-    func readInboundPacket(withCode code: PacketCode, key: UInt8, data: Data, offset: Int) throws -> ControlPacket {
-        log.debug("Control: Try read packet with code \(code) and key \(key)")
-        let packet = try serializer.deserialize(code: code, key: key, data: data, start: offset, end: nil)
+    func readInboundPacket(withData data: Data, offset: Int) throws -> ControlPacket {
+        let packet = try serializer.deserialize(data: data, start: offset, end: nil)
         log.debug("Control: Read packet \(packet)")
         if let ackIds = packet.ackIds as? [UInt32], let ackRemoteSessionId = packet.ackRemoteSessionId {
             try readAcks(ackIds, acksRemoteSessionId: ackRemoteSessionId)

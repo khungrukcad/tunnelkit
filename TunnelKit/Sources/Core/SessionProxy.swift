@@ -418,7 +418,7 @@ public class SessionProxy {
 //            log.verbose("Received data from LINK (\(packet.count) bytes): \(packet.toHex())")
 
             guard let firstByte = packet.first else {
-                log.warning("Dropped malformed packet (missing header)")
+                log.warning("Dropped malformed packet (missing opcode)")
                 continue
             }
             let codeValue = firstByte >> 3
@@ -426,10 +426,9 @@ public class SessionProxy {
                 log.warning("Dropped malformed packet (unknown code: \(codeValue))")
                 continue
             }
-            let key = firstByte & 0b111
-
-//            log.verbose("Parsed packet with (code, key) = (\(code.rawValue), \(key))")
             
+//            log.verbose("Parsed packet with code \(code)")
+
             var offset = 1
             if (code == .dataV2) {
                 guard packet.count >= offset + PacketPeerIdLength else {
@@ -440,6 +439,7 @@ public class SessionProxy {
             }
 
             if (code == .dataV1) || (code == .dataV2) {
+                let key = firstByte & 0b111
                 guard let _ = keys[key] else {
                     log.error("Key with id \(key) not found")
                     deferStop(.shutdown, SessionError.badKey)
@@ -454,10 +454,10 @@ public class SessionProxy {
                 continue
             }
 
-            log.debug("Packet has code \(code.rawValue), key \(key)")
+            log.debug("Packet has code \(code.rawValue)")
             let controlPacket: ControlPacket
             do {
-                let parsedPacket = try controlChannel.readInboundPacket(withCode: code, key: key, data: packet, offset: offset)
+                let parsedPacket = try controlChannel.readInboundPacket(withData: packet, offset: 0)
                 handleAcks()
                 if parsedPacket.code == .ackV1 {
                     continue

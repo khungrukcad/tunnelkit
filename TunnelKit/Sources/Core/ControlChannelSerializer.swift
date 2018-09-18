@@ -34,7 +34,7 @@ protocol ControlChannelSerializer {
     
     func serialize(packet: ControlPacket) throws -> Data
 
-    func deserialize(code: PacketCode, key: UInt8, data: Data, start: Int, end: Int?) throws -> ControlPacket
+    func deserialize(data: Data, start: Int, end: Int?) throws -> ControlPacket
 }
 
 extension ControlChannel {
@@ -46,10 +46,22 @@ extension ControlChannel {
             return packet.serialized()
         }
         
-        func deserialize(code: PacketCode, key: UInt8, data packet: Data, start: Int, end: Int?) throws -> ControlPacket {
+        func deserialize(data packet: Data, start: Int, end: Int?) throws -> ControlPacket {
             var offset = start
             let end = end ?? packet.count
+            
+            guard end >= offset + PacketHeaderLength else {
+                throw ControlChannelError("Missing header")
+            }
+            let codeValue = packet[offset] >> 3
+            guard let code = PacketCode(rawValue: codeValue) else {
+                throw ControlChannelError("Unknown code: \(codeValue))")
+            }
+            let key = packet[offset] & 0b111
+            offset += PacketHeaderLength
 
+            log.debug("Control: Try read packet with code \(code) and key \(key)")
+            
             guard end >= offset + PacketSessionIdLength else {
                 throw ControlChannelError("Missing sessionId")
             }
