@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
+		0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
 		0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
 		0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
@@ -188,6 +190,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+TLSWrap.swift"; sourceTree = "<group>"; };
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
 		0E07596120EF733F00F38FD8 /* CryptoMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoMacros.h; sourceTree = "<group>"; };
 		0E07596A20EF79AB00F38FD8 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
@@ -484,6 +487,7 @@
 				0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */,
 				0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */,
 				0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */,
+				0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */,
 				0EE3B3E321471C3A0027AB17 /* StaticKey.swift */,
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
 				0EFEB4302006D3C800F81029 /* TLSBox.m */,
@@ -909,6 +913,7 @@
 				0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */,
 				0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
+				0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */,
 				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
 				0ED9C8642138139000621BA3 /* SessionProxy+CompressionFraming.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
@@ -966,6 +971,7 @@
 				0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */,
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
 				0EFEB4B02007627700F81029 /* Keychain.swift in Sources */,
+				0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */,
 				0EFEB48E2006D7F300F81029 /* SessionProxy+SessionKey.swift in Sources */,
 				0ED9C8652138139000621BA3 /* SessionProxy+CompressionFraming.swift in Sources */,
 				0EFEB4AF2007627700F81029 /* InterfaceObserver.swift in Sources */,

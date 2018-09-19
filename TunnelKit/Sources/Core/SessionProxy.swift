@@ -173,7 +173,16 @@ public class SessionProxy {
         lastPing = BidirectionalState(withResetValue: Date.distantPast)
         isStopping = false
         
-        controlChannel = ControlChannel()
+        if let tlsWrap = configuration.tlsWrap {
+
+            // TODO: select strategy
+            switch tlsWrap.strategy {
+            default:
+                controlChannel = ControlChannel()
+            }
+        } else {
+            controlChannel = ControlChannel()
+        }
     }
     
     deinit {

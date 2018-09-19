@@ -140,6 +140,9 @@ extension TunnelKitProvider {
         /// Sets compression framing, disabled by default.
         public var compressionFraming: SessionProxy.CompressionFraming
 
+        /// The optional TLS wrapping.
+        public var tlsWrap: SessionProxy.TLSWrap?
+        
         /// Sends periodical keep-alive packets (ping) if set. Useful with stateful firewalls.
         public var keepAliveSeconds: Int?
 
@@ -178,6 +181,7 @@ extension TunnelKitProvider {
             clientKey = nil
             mtu = 1500
             compressionFraming = .disabled
+            tlsWrap = nil
             keepAliveSeconds = nil
             renegotiatesAfterSeconds = nil
             usesPIAPatches = false
@@ -234,6 +238,13 @@ extension TunnelKitProvider {
             } else {
                 compressionFraming = .disabled
             }
+            if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
+                do {
+                    tlsWrap = try SessionProxy.TLSWrap.deserialized(tlsWrapData)
+                } catch {
+                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
+                }
+            }
             keepAliveSeconds = providerConfiguration[S.keepAlive] as? Int
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
             usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
@@ -271,6 +282,7 @@ extension TunnelKitProvider {
                 clientKey: clientKey,
                 mtu: mtu,
                 compressionFraming: compressionFraming,
+                tlsWrap: tlsWrap,
                 keepAliveSeconds: keepAliveSeconds,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
                 usesPIAPatches: usesPIAPatches,
@@ -306,6 +318,8 @@ extension TunnelKitProvider {
             
             static let compressionFraming = "CompressionFraming"
             
+            static let tlsWrap = "TLSWrap"
+
             static let keepAlive = "KeepAlive"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
@@ -349,6 +363,9 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: SessionProxy.CompressionFraming
         
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.tlsWrap`
+        public let tlsWrap: SessionProxy.TLSWrap?
+
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.keepAliveSeconds`
         public let keepAliveSeconds: Int?
 
@@ -433,6 +450,9 @@ extension TunnelKitProvider {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
             dict[S.compressionFraming] = compressionFraming.rawValue
+            if let tlsWrapData = tlsWrap?.serialized() {
+                dict[S.tlsWrap] = tlsWrapData
+            }
             if let keepAliveSeconds = keepAliveSeconds {
                 dict[S.keepAlive] = keepAliveSeconds
             }
@@ -507,6 +527,11 @@ extension TunnelKitProvider {
             } else {
                 log.info("\tRenegotiation: never")
             }
+            if let tlsWrap = tlsWrap {
+                log.info("\tTLS wrapping: \(tlsWrap.strategy)")
+            } else {
+                log.info("\tTLS wrapping: disabled")
+            }
             log.info("\tDebug: \(shouldDebug)")
         }
     }
@@ -530,6 +555,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.clientKey = clientKey
         builder.mtu = mtu
         builder.compressionFraming = compressionFraming
+        builder.tlsWrap = tlsWrap
         builder.keepAliveSeconds = keepAliveSeconds
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
         builder.usesPIAPatches = usesPIAPatches
@@ -552,6 +578,7 @@ extension TunnelKitProvider.Configuration: Equatable {
             (lhs.compressionFraming == rhs.compressionFraming) &&
             (lhs.keepAliveSeconds == rhs.keepAliveSeconds) &&
             (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
+            // XXX: tlsWrap not copied
         )
     }
 }
