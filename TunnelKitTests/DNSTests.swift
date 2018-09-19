@@ -43,7 +43,7 @@ class DNSTests: XCTestCase {
         XCTAssertEqual(DNSResolver.ipv4(fromString: addr), ip)
         XCTAssertEqual(DNSResolver.string(fromIPv4: ip), addr)
 
-        XCTAssertEqual(DNSResolver.string(fromIPv4: DNSResolver.ipv4(fromString: addr)), addr)
+        XCTAssertEqual(DNSResolver.string(fromIPv4: DNSResolver.ipv4(fromString: addr)!), addr)
         XCTAssertEqual(DNSResolver.ipv4(fromString: DNSResolver.string(fromIPv4: ip)), ip)
     }
 }
