@@ -54,7 +54,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 @property (nonatomic, assign) int cipherIVLength;
 @property (nonatomic, assign) int hmacKeyLength;
 @property (nonatomic, assign) int digestLength;
-@property (nonatomic, assign) int overheadLength;
 
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxEnc;
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxDec;
@@ -87,7 +86,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
         // as seen in OpenVPN's crypto_openssl.c:md_kt_size()
         self.hmacKeyLength = EVP_MD_size(self.digest);
         self.digestLength = EVP_MD_size(self.digest);
-        self.overheadLength = self.cipherIVLength + self.digestLength;
 
         if (cipherName) {
             self.cipherCtxEnc = EVP_CIPHER_CTX_new();
@@ -122,7 +120,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
 {
-    return safe_crypto_capacity(length, self.overheadLength);
+    return safe_crypto_capacity(length, self.digestLength + self.cipherIVLength);
 }
 
 #pragma mark Encrypter

@@ -50,7 +50,6 @@ const NSInteger CryptoAEADTagLength     = 16;
 @property (nonatomic, unsafe_unretained) const EVP_CIPHER *cipher;
 @property (nonatomic, assign) int cipherKeyLength;
 @property (nonatomic, assign) int cipherIVLength; // 12 (AD packetId + HMAC key)
-@property (nonatomic, assign) int overheadLength;
 @property (nonatomic, assign) int extraPacketIdOffset;
 
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxEnc;
@@ -73,7 +72,6 @@ const NSInteger CryptoAEADTagLength     = 16;
         
         self.cipherKeyLength = EVP_CIPHER_key_length(self.cipher);
         self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
-        self.overheadLength = CryptoAEADTagLength;
         self.extraLength = PacketIdLength;
         self.extraPacketIdOffset = 0;
         
@@ -104,7 +102,7 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
 {
-    return safe_crypto_capacity(length, self.overheadLength);
+    return safe_crypto_capacity(length, CryptoAEADTagLength);
 }
 
 #pragma mark Encrypter
