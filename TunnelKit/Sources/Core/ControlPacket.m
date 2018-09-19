@@ -137,3 +137,42 @@
 }
 
 @end
+
+@implementation ControlPacket (Authentication)
+
+- (NSInteger)capacityWithAuthenticator:(id<Encrypter>)auth
+{
+    return auth.digestLength + PacketReplayIdLength + PacketReplayTimestampLength + self.capacity;
+}
+
+- (BOOL)serializeTo:(uint8_t *)to authenticatingWith:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError *__autoreleasing  _Nullable *)error
+{
+    uint8_t *ptr = to + auth.digestLength;
+    const uint8_t *subject = ptr;
+    *(uint32_t *)ptr = CFSwapInt32HostToBig(replayId);
+    ptr += PacketReplayIdLength;
+    *(uint32_t *)ptr = CFSwapInt32HostToBig(timestamp);
+    ptr += PacketReplayTimestampLength;
+    ptr += PacketHeaderSet(ptr, self.code, self.key, self.sessionId.bytes);
+    ptr += [self rawSerializeTo:ptr];
+    
+    const NSInteger subjectLength = ptr - subject;
+    NSInteger totalLength;
+    if (![auth encryptBytes:subject length:subjectLength dest:to destLength:&totalLength flags:NULL error:error]) {
+        return NO;
+    }
+    NSCAssert(totalLength == auth.digestLength + subjectLength, @"Encrypted packet size != (Digest + Subject)");
+    PacketSwap(to, auth.digestLength + PacketReplayIdLength + PacketReplayTimestampLength, PacketOpcodeLength + PacketSessionIdLength);
+    return YES;
+}
+
+- (NSData *)serializedWithAuthenticator:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError *__autoreleasing  _Nullable *)error
+{
+    NSMutableData *data = [[NSMutableData alloc] initWithLength:[self capacityWithAuthenticator:auth]];
+    if (![self serializeTo:data.mutableBytes authenticatingWith:auth replayId:replayId timestamp:timestamp error:error]) {
+        return nil;
+    }
+    return data;
+}
+
+@end

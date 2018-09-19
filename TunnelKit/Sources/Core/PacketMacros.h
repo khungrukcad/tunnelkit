@@ -97,4 +97,26 @@ static inline int PacketHeaderGetDataV2PeerId(const uint8_t *from)
     return ntohl(*(const uint32_t *)from & 0xffffff00);
 }
 
+#pragma mark - Utils
+
+static inline void PacketSwap(uint8_t *ptr, NSInteger len1, NSInteger len2)
+{
+    // two buffers due to overlapping
+    uint8_t buf1[len1];
+    uint8_t buf2[len2];
+    memcpy(buf1, ptr, len1);
+    memcpy(buf2, ptr + len1, len2);
+    memcpy(ptr, buf2, len2);
+    memcpy(ptr + len2, buf1, len1);
+}
+
+static inline void PacketSwapCopy(uint8_t *dst, NSData *src, NSInteger len1, NSInteger len2)
+{
+    NSCAssert(src.length >= len1 + len2, @"src is smaller than expected");
+    memcpy(dst, src.bytes + len1, len2);
+    memcpy(dst + len2, src.bytes, len1);
+    const NSInteger preambleLength = len1 + len2;
+    memcpy(dst + preambleLength, src.bytes + preambleLength, src.length - preambleLength);
+}
+
 NS_ASSUME_NONNULL_END

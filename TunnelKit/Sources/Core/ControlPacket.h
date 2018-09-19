@@ -29,6 +29,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol Encrypter;
+
 @interface ControlPacket : NSObject
 
 - (instancetype)initWithCode:(PacketCode)code
@@ -55,6 +57,14 @@ NS_ASSUME_NONNULL_BEGIN
 //- (NSInteger)capacity;
 //- (NSInteger)serializeTo:(uint8_t *)to;
 - (NSData *)serialized;
+
+@end
+
+@interface ControlPacket (Authentication)
+
+//- (NSInteger)capacityWithAuthenticator:(id<Encrypter>)auth;
+//- (BOOL)serializeTo:(uint8_t *)to authenticatingWith:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError * _Nullable __autoreleasing *)error;
+- (nullable NSData *)serializedWithAuthenticator:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError * _Nullable __autoreleasing *)error;
 
 @end
 
