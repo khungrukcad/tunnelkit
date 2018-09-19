@@ -1,5 +1,5 @@
 //
-//  DataPathEncryption.h
+//  DataPathCrypto.h
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 7/11/18.

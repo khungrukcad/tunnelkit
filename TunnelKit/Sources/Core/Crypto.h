@@ -1,5 +1,5 @@
 //
-//  Encryption.h
+//  Crypto.h
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 3/3/17.

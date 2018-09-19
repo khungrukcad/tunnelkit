@@ -37,7 +37,7 @@
 #import <arpa/inet.h>
 
 #import "DataPath.h"
-#import "DataPathEncryption.h"
+#import "DataPathCrypto.h"
 #import "MSS.h"
 #import "ReplayProtector.h"
 #import "Allocation.h"
