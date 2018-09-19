@@ -48,9 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureEncryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
-- (int)overheadLength;
-- (int)extraLength;
 
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
 
 - (id<DataPathEncrypter>)dataPathEncrypter;
@@ -62,9 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureDecryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
-- (int)overheadLength;
-- (int)extraLength;
 
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
 - (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(nullable const uint8_t *)extra error:(NSError **)error;
 

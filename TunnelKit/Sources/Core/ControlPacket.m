@@ -95,9 +95,6 @@
 // Ruby: send_ctrl
 - (NSInteger)serializeTo:(uint8_t *)to
 {
-    if (!to) {
-        return [self capacity];
-    }
     uint8_t *ptr = to;
     ptr += PacketHeaderSet(ptr, self.code, self.key, self.sessionId.bytes);
     if (self.ackIds.count > 0) {
@@ -124,7 +121,7 @@
             ptr += self.payload.length;
         }
     }
-    return (int)(ptr - to);
+    return ptr - to;
 }
 
 - (NSData *)serialized

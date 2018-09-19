@@ -120,6 +120,11 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return 0;
 }
 
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length
+{
+    return safe_crypto_capacity(length, self.overheadLength);
+}
+
 #pragma mark Encrypter
 
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
@@ -276,11 +281,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 #pragma mark DataPathChannel
 
-- (int)overheadLength
-{
-    return self.crypto.overheadLength;
-}
-
 - (void)setPeerId:(uint32_t)peerId
 {
     peerId &= 0xffffff;
@@ -303,6 +303,11 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     }
 }
 
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length
+{
+    return [self.crypto encryptionCapacityWithLength:length];
+}
+
 #pragma mark DataPathEncrypter
 
 - (void)assembleDataPacketWithBlock:(DataPathAssembleBlock)block packetId:(uint32_t)packetId payload:(NSData *)payload into:(uint8_t *)packetBytes length:(NSInteger *)packetLength
@@ -323,7 +328,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + (int)safe_crypto_capacity(packetLength, self.crypto.overheadLength);
+    const int capacity = self.headerLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
     NSInteger encryptedPacketLength = INT_MAX;

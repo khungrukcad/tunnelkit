@@ -43,8 +43,8 @@ typedef void (^DataPathParseBlock)(uint8_t *payload, NSInteger *payloadOffset, N
 
 @protocol DataPathChannel
 
-- (int)overheadLength;
 - (void)setPeerId:(uint32_t)peerId;
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 
 @end
 
