@@ -52,8 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly) NSData *_Nullable payload;
 @property (nonatomic, strong) NSDate *_Nullable sentDate;
 
-- (NSInteger)capacity;
-- (NSInteger)serializeTo:(uint8_t *)to;
+//- (NSInteger)capacity;
+//- (NSInteger)serializeTo:(uint8_t *)to;
 - (NSData *)serialized;
 
 @end
