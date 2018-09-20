@@ -11,8 +11,8 @@
 		0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
 		0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
 		0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
-		0E07596B20EF79AB00F38FD8 /* Encryption.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Encryption.h */; };
-		0E07596C20EF79AB00F38FD8 /* Encryption.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Encryption.h */; };
+		0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Crypto.h */; };
+		0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Crypto.h */; };
 		0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596D20EF79B400F38FD8 /* CryptoCBC.h */; };
 		0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596D20EF79B400F38FD8 /* CryptoCBC.h */; };
 		0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */; };
@@ -185,7 +185,7 @@
 /* Begin PBXFileReference section */
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
 		0E07596120EF733F00F38FD8 /* CryptoMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoMacros.h; sourceTree = "<group>"; };
-		0E07596A20EF79AB00F38FD8 /* Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Encryption.h; sourceTree = "<group>"; };
+		0E07596A20EF79AB00F38FD8 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
 		0E07596D20EF79B400F38FD8 /* CryptoCBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCBC.h; sourceTree = "<group>"; };
 		0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoAEAD.h; sourceTree = "<group>"; };
 		0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
@@ -236,7 +236,7 @@
 		0ED9C8632138139000621BA3 /* SessionProxy+CompressionFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+CompressionFraming.swift"; sourceTree = "<group>"; };
 		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
 		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
-		0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathEncryption.h; sourceTree = "<group>"; };
+		0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathCrypto.h; sourceTree = "<group>"; };
 		0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPathEncryptionTests.swift; sourceTree = "<group>"; };
 		0EEC49DB20B5E732008FEB91 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+EncryptionBridge.swift"; sourceTree = "<group>"; };
@@ -440,6 +440,7 @@
 				0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */,
 				0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
+				0E07596A20EF79AB00F38FD8 /* Crypto.h */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
 				0EFEB4402006D3C800F81029 /* CryptoBox.h */,
@@ -450,8 +451,7 @@
 				0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */,
 				0EFEB4352006D3C800F81029 /* DataPath.h */,
 				0EFEB44C2006D3C800F81029 /* DataPath.m */,
-				0EE7A79D20F6488400B42E6A /* DataPathEncryption.h */,
-				0E07596A20EF79AB00F38FD8 /* Encryption.h */,
+				0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
 				0EFEB4452006D3C800F81029 /* IOInterface.swift */,
@@ -539,7 +539,7 @@
 				0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */,
-				0E07596B20EF79AB00F38FD8 /* Encryption.h in Headers */,
+				0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
 				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
@@ -561,7 +561,7 @@
 				0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */,
-				0E07596C20EF79AB00F38FD8 /* Encryption.h in Headers */,
+				0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EEC49E120B5F7EA008FEB91 /* Allocation.h in Headers */,
 				0EEC49E320B5F7F6008FEB91 /* DataPath.h in Headers */,
 				0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */,

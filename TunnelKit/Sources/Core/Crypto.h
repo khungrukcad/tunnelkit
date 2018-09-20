@@ -1,5 +1,5 @@
 //
-//  Encryption.h
+//  Crypto.h
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 3/3/17.
@@ -48,10 +48,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureEncryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
-- (int)overheadLength;
-- (int)extraLength;
 
-- (nullable NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
 
 - (id<DataPathEncrypter>)dataPathEncrypter;
@@ -63,13 +61,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)configureDecryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
-- (int)overheadLength;
-- (int)extraLength;
 
-- (nullable NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
-- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(nullable const uint8_t *)extra error:(NSError **)error;
-- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError **)error;
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(nullable const uint8_t *)extra error:(NSError **)error;
 
 - (id<DataPathDecrypter>)dataPathDecrypter;
 

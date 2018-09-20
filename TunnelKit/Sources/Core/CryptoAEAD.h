@@ -36,8 +36,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Encryption.h"
-#import "DataPathEncryption.h"
+#import "Crypto.h"
+#import "DataPathCrypto.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

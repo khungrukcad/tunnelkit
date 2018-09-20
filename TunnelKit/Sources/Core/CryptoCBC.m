@@ -54,7 +54,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 @property (nonatomic, assign) int cipherIVLength;
 @property (nonatomic, assign) int hmacKeyLength;
 @property (nonatomic, assign) int digestLength;
-@property (nonatomic, assign) int overheadLength;
 
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxEnc;
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxDec;
@@ -87,7 +86,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
         // as seen in OpenVPN's crypto_openssl.c:md_kt_size()
         self.hmacKeyLength = EVP_MD_size(self.digest);
         self.digestLength = EVP_MD_size(self.digest);
-        self.overheadLength = self.cipherIVLength + self.digestLength;
 
         if (cipherName) {
             self.cipherCtxEnc = EVP_CIPHER_CTX_new();
@@ -120,6 +118,11 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     return 0;
 }
 
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length
+{
+    return safe_crypto_capacity(length, self.digestLength + self.cipherIVLength);
+}
+
 #pragma mark Encrypter
 
 - (void)configureEncryptionWithCipherKey:(ZeroingData *)cipherKey hmacKey:(ZeroingData *)hmacKey
@@ -136,23 +139,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
     HMAC_CTX_reset(self.hmacCtxEnc);
     HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
-}
-
-- (NSData *)encryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    NSParameterAssert(data);
-
-    const uint8_t *bytes = data.bytes + offset;
-    const int length = (int)(data.length - offset);
-    const int maxOutputSize = (int)safe_crypto_capacity(data.length, self.overheadLength);
-    
-    NSMutableData *dest = [[NSMutableData alloc] initWithLength:maxOutputSize];
-    NSInteger encryptedLength = INT_MAX;
-    if (![self encryptBytes:bytes length:length dest:dest.mutableBytes destLength:&encryptedLength extra:extra error:error]) {
-        return nil;
-    }
-    dest.length = encryptedLength;
-    return dest;
 }
 
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
@@ -214,24 +200,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
-- (NSData *)decryptData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    NSAssert(self.cipher, @"No cipher provided");
-    NSParameterAssert(data);
-
-    const uint8_t *bytes = data.bytes + offset;
-    const int length = (int)(data.length - offset);
-    const int maxOutputSize = (int)safe_crypto_capacity(data.length, self.overheadLength);
-    
-    NSMutableData *dest = [[NSMutableData alloc] initWithLength:maxOutputSize];
-    NSInteger decryptedLength;
-    if (![self decryptBytes:bytes length:length dest:dest.mutableBytes destLength:&decryptedLength extra:extra error:error]) {
-        return nil;
-    }
-    dest.length = decryptedLength;
-    return dest;
-}
-
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
 {
     NSAssert(self.cipher, @"No cipher provided");
@@ -259,11 +227,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     *destLength = l1 + l2;
 
     TUNNEL_CRYPTO_RETURN_STATUS(code)
-}
-
-- (BOOL)verifyData:(NSData *)data offset:(NSInteger)offset extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
-{
-    return [self verifyBytes:data.bytes length:data.length extra:extra error:error];
 }
 
 - (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
@@ -316,24 +279,19 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 #pragma mark DataPathChannel
 
-- (int)overheadLength
-{
-    return self.crypto.overheadLength;
-}
-
 - (void)setPeerId:(uint32_t)peerId
 {
     peerId &= 0xffffff;
 
     if (peerId == PacketPeerIdDisabled) {
-        self.headerLength = 1;
+        self.headerLength = PacketOpcodeLength;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
             PacketHeaderSet(to, PacketCodeDataV1, key, nil);
         };
         self.checkPeerId = NULL;
     }
     else {
-        self.headerLength = 4;
+        self.headerLength = PacketOpcodeLength + PacketPeerIdLength;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
             PacketHeaderSetDataV2(to, key, peerId);
         };
@@ -341,6 +299,11 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
             return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
         };
     }
+}
+
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length
+{
+    return [self.crypto encryptionCapacityWithLength:length];
 }
 
 #pragma mark DataPathEncrypter
@@ -363,7 +326,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + (int)safe_crypto_capacity(packetLength, self.crypto.overheadLength);
+    const int capacity = self.headerLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
     NSInteger encryptedPacketLength = INT_MAX;

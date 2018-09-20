@@ -1,5 +1,5 @@
 //
-//  DataPathEncryption.h
+//  DataPathCrypto.h
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 7/11/18.
@@ -43,8 +43,8 @@ typedef void (^DataPathParseBlock)(uint8_t *payload, NSInteger *payloadOffset, N
 
 @protocol DataPathChannel
 
-- (int)overheadLength;
 - (void)setPeerId:(uint32_t)peerId;
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 
 @end
 

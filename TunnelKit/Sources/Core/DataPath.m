@@ -37,7 +37,7 @@
 #import <arpa/inet.h>
 
 #import "DataPath.h"
-#import "DataPathEncryption.h"
+#import "DataPathCrypto.h"
 #import "MSS.h"
 #import "ReplayProtector.h"
 #import "Allocation.h"
@@ -120,7 +120,7 @@
 
 - (void)adjustEncBufferToPacketSize:(int)size
 {
-    const int neededCapacity = DataPathByteAlignment + (int)safe_crypto_capacity(size, self.encrypter.overheadLength);
+    const int neededCapacity = DataPathByteAlignment + (int)[self.encrypter encryptionCapacityWithLength:size];
     if (self.encBufferCapacity >= neededCapacity) {
         return;
     }
@@ -132,7 +132,7 @@
 
 - (void)adjustDecBufferToPacketSize:(int)size
 {
-    const int neededCapacity = DataPathByteAlignment + (int)safe_crypto_capacity(size, self.decrypter.overheadLength);
+    const int neededCapacity = DataPathByteAlignment + (int)[self.decrypter encryptionCapacityWithLength:size];
     if (self.decBufferCapacity >= neededCapacity) {
         return;
     }

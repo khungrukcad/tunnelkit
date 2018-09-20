@@ -276,6 +276,11 @@
     return !memcmp(_bytes, data.bytes, _count);
 }
 
+- (NSData *)toData
+{
+    return [NSData dataWithBytes:_bytes length:_count];
+}
+
 - (NSString *)toHex
 {
     const NSUInteger capacity = _count * 2;

@@ -39,7 +39,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define PacketHeaderLength          ((NSInteger)1)
+#define PacketOpcodeLength          ((NSInteger)1)
 #define PacketIdLength              ((NSInteger)4)
 #define PacketSessionIdLength       ((NSInteger)8)
 #define PacketAckLengthLength       ((NSInteger)1)
@@ -66,7 +66,7 @@ extern const uint8_t DataPacketPingData[16];
 static inline int PacketHeaderSet(uint8_t *to, PacketCode code, uint8_t key, const uint8_t *_Nullable sessionId)
 {
     *(uint8_t *)to = (code << 3) | (key & 0b111);
-    int offset = PacketHeaderLength;
+    int offset = PacketOpcodeLength;
     if (sessionId) {
         memcpy(to + offset, sessionId, PacketSessionIdLength);
         offset += PacketSessionIdLength;
@@ -77,7 +77,7 @@ static inline int PacketHeaderSet(uint8_t *to, PacketCode code, uint8_t key, con
 static inline int PacketHeaderSetDataV2(uint8_t *to, uint8_t key, uint32_t peerId)
 {
     *(uint32_t *)to = ((PacketCodeDataV2 << 3) | (key & 0b111)) | htonl(peerId & 0xffffff);
-    return PacketHeaderLength + PacketPeerIdLength;
+    return PacketOpcodeLength + PacketPeerIdLength;
 }
 
 static inline int PacketHeaderGetDataV2PeerId(const uint8_t *from)

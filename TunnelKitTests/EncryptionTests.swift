@@ -40,13 +40,19 @@ import XCTest
 @testable import __TunnelKitNative
 
 class EncryptionTests: XCTestCase {
-    private var cipherKey: ZeroingData!
+    private var cipherEncKey: ZeroingData!
 
-    private var hmacKey: ZeroingData!
+    private var cipherDecKey: ZeroingData!
+    
+    private var hmacEncKey: ZeroingData!
+    
+    private var hmacDecKey: ZeroingData!
     
     override func setUp() {
-        cipherKey = try! SecureRandom.safeData(length: 32)
-        hmacKey = try! SecureRandom.safeData(length: 32)
+        cipherEncKey = try! SecureRandom.safeData(length: 32)
+        cipherDecKey = try! SecureRandom.safeData(length: 32)
+        hmacEncKey = try! SecureRandom.safeData(length: 32)
+        hmacDecKey = try! SecureRandom.safeData(length: 32)
     }
 
     override func tearDown() {
@@ -54,67 +60,38 @@ class EncryptionTests: XCTestCase {
     }
 
     func testCBC() {
-        let cbc = CryptoBox(cipherAlgorithm: "aes-128-cbc", digestAlgorithm: "sha256")
-        try! cbc.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        let enc = cbc.encrypter()
-        let dec = cbc.decrypter()
-        
+        let (client, server) = clientServer("aes-128-cbc", "sha256")
+
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: nil)
-        let decrypted = try! dec.decryptData(encrypted, offset: 0, extra: nil)
+        let encrypted = try! client.encrypter().encryptData(plain, extra: nil)
+        let decrypted = try! server.decrypter().decryptData(encrypted, extra: nil)
         XCTAssertEqual(plain, decrypted)
     }
 
     func testHMAC() {
-        let cbc = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: "sha256")
-        try! cbc.configure(withCipherEncKey: nil, cipherDecKey: nil, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        let enc = cbc.encrypter()
-        let dec = cbc.decrypter()
-        
+        let (client, server) = clientServer(nil, "sha256")
+
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: nil)
-        do {
-            try dec.verifyData(encrypted, offset: 0, extra: nil)
-            XCTAssert(true)
-        } catch {
-            XCTAssert(false)
-        }
+        let encrypted = try! client.encrypter().encryptData(plain, extra: nil)
+        XCTAssertNoThrow(try server.decrypter().verifyData(encrypted, extra: nil))
     }
     
     func testGCM() {
-        let gcm = CryptoBox(cipherAlgorithm: "aes-256-gcm", digestAlgorithm: nil)
-        try! gcm.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        let enc = gcm.encrypter()
-        let dec = gcm.decrypter()
+        let (client, server) = clientServer("aes-256-gcm", nil)
         
 //        let packetId: UInt32 = 0x56341200
         let extra: [UInt8] = [0x00, 0x12, 0x34, 0x56]
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! enc.encryptData(plain, offset: 0, extra: extra)
-        let decrypted = try! dec.decryptData(encrypted, offset: 0, extra: extra)
+        let encrypted = try! client.encrypter().encryptData(plain, extra: extra)
+        let decrypted = try! server.decrypter().decryptData(encrypted, extra: extra)
         XCTAssertEqual(plain, decrypted)
     }
 
-//    func testCryptoOperation() {
-//        let data = Data(hex: "aabbccddeeff")
-//
-//        print("Original : \(data.toHex())")
-//        var enc: Data
-//        var dec: Data
-//
-//        enc = Data()
-//        enc.append(try! encrypter.encryptData(data, offset: 0, packetId: 0))
-//        print("Encrypted: \(enc.toHex())")
-//        dec = try! decrypter.decryptData(enc, offset: 0, packetId: 0)
-//        print("Decrypted: \(dec.toHex())")
-//        XCTAssert(dec == data)
-//
-//        let prefix = "abcdef"
-//        enc = Data(hex: prefix)
-//        enc.append(try! encrypter.encryptData(data, offset: 0, packetId: 0))
-//        print("Encrypted: \(enc.toHex())")
-//        dec = try! decrypter.decryptData(enc, offset: (prefix.count / 2), packetId: 0)
-//        print("Decrypted: \(dec.toHex())")
-//        XCTAssert(dec == data)
-//    }
+    private func clientServer(_ c: String?, _ d: String?) -> (CryptoBox, CryptoBox) {
+        let client = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)
+        let server = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)
+        XCTAssertNoThrow(try client.configure(withCipherEncKey: cipherEncKey, cipherDecKey: cipherDecKey, hmacEncKey: hmacEncKey, hmacDecKey: hmacDecKey))
+        XCTAssertNoThrow(try server.configure(withCipherEncKey: cipherDecKey, cipherDecKey: cipherEncKey, hmacEncKey: hmacDecKey, hmacDecKey: hmacEncKey))
+        return (client, server)
+    }
 }

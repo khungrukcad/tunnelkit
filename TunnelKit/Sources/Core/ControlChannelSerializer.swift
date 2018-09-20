@@ -50,15 +50,15 @@ extension ControlChannel {
             var offset = start
             let end = end ?? packet.count
             
-            guard end >= offset + PacketHeaderLength else {
-                throw ControlChannelError("Missing header")
+            guard end >= offset + PacketOpcodeLength else {
+                throw ControlChannelError("Missing opcode")
             }
             let codeValue = packet[offset] >> 3
             guard let code = PacketCode(rawValue: codeValue) else {
                 throw ControlChannelError("Unknown code: \(codeValue))")
             }
             let key = packet[offset] & 0b111
-            offset += PacketHeaderLength
+            offset += PacketOpcodeLength
 
             log.debug("Control: Try read packet with code \(code) and key \(key)")
             

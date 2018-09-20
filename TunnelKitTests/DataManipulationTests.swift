@@ -69,8 +69,8 @@ class DataManipulationTests: XCTestCase {
         let z2 = z1.withOffset(2, count: 3) // 5678ab
         let z3 = z2.appending(Z(Data(hex: "aaddcc"))) // 5678abaaddcc
         
-        XCTAssertEqual(z1.data, Data(hex: "12345678abcdef"))
-        XCTAssertEqual(z2.data, Data(hex: "5678ab"))
-        XCTAssertEqual(z3.data, Data(hex: "5678abaaddcc"))
+        XCTAssertEqual(z1.toData(), Data(hex: "12345678abcdef"))
+        XCTAssertEqual(z2.toData(), Data(hex: "5678ab"))
+        XCTAssertEqual(z3.toData(), Data(hex: "5678abaaddcc"))
     }
 }
