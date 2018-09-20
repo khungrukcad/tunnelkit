@@ -136,19 +136,13 @@ public class SessionProxy {
         return link?.isReliable ?? false
     }
 
-    private var sessionId: Data?
-    
-    private var remoteSessionId: Data?
-
     private var pushReply: SessionReply?
     
     private var nextPushRequestDate: Date?
     
     private var connectedDate: Date?
 
-    private var lastPingOut: Date
-    
-    private var lastPingIn: Date
+    private var lastPing: BidirectionalState<Date>
     
     private var isStopping: Bool
     
@@ -157,25 +151,9 @@ public class SessionProxy {
     
     // MARK: Control
     
-    private let controlPlainBuffer: ZeroingData
-
-    private var controlQueueOut: [CommonPacket]
-
-    private var controlQueueIn: [CommonPacket]
-
-    private var controlPendingAcks: Set<UInt32>
-    
-    private var controlPacketIdOut: UInt32
-
-    private var controlPacketIdIn: UInt32
+    private var controlChannel: ControlChannel
     
     private var authenticator: Authenticator?
-    
-    // MARK: Data
-    
-    private(set) var bytesIn: Int
-    
-    private(set) var bytesOut: Int
     
     // MARK: Init
 
@@ -192,18 +170,10 @@ public class SessionProxy {
         keys = [:]
         oldKeys = []
         negotiationKeyIdx = 0
-        lastPingOut = Date.distantPast
-        lastPingIn = Date.distantPast
+        lastPing = BidirectionalState(withResetValue: Date.distantPast)
         isStopping = false
         
-        controlPlainBuffer = Z(count: TLSBoxMaxBufferLength)
-        controlQueueOut = []
-        controlQueueIn = []
-        controlPendingAcks = []
-        controlPacketIdOut = 0
-        controlPacketIdIn = 0
-        bytesIn = 0
-        bytesOut = 0
+        controlChannel = ControlChannel()
     }
     
     deinit {
@@ -286,6 +256,15 @@ public class SessionProxy {
     }
 
     /**
+     Returns the current data bytes count.
+ 
+     - Returns: The current data bytes count as a pair, inbound first.
+     */
+    public func dataCount() -> (Int, Int) {
+        return controlChannel.currentDataCount()
+    }
+    
+    /**
      Shuts down the session with an optional `Error` reason. Does nothing if the session is already stopped or about to stop.
      
      - Parameter error: An optional `Error` being the reason of the shutdown.
@@ -329,8 +308,6 @@ public class SessionProxy {
         negotiationKeyIdx = 0
         currentKeyIdx = nil
         
-        sessionId = nil
-        remoteSessionId = nil
         nextPushRequestDate = nil
         connectedDate = nil
         authenticator = nil
@@ -433,7 +410,7 @@ public class SessionProxy {
             return
         }
         
-        lastPingIn = Date()
+        lastPing.inbound = Date()
 
         var dataPacketsByKey = [UInt8: [Data]]()
         
@@ -441,7 +418,7 @@ public class SessionProxy {
 //            log.verbose("Received data from LINK (\(packet.count) bytes): \(packet.toHex())")
 
             guard let firstByte = packet.first else {
-                log.warning("Dropped malformed packet (missing header)")
+                log.warning("Dropped malformed packet (missing opcode)")
                 continue
             }
             let codeValue = firstByte >> 3
@@ -449,20 +426,19 @@ public class SessionProxy {
                 log.warning("Dropped malformed packet (unknown code: \(codeValue))")
                 continue
             }
-            let key = firstByte & 0b111
+//            log.verbose("Parsed packet with code \(code)")
 
-//            log.verbose("Parsed packet with (code, key) = (\(code.rawValue), \(key))")
-            
             var offset = 1
             if (code == .dataV2) {
-                guard packet.count >= offset + ProtocolMacros.peerIdLength else {
+                guard packet.count >= offset + PacketPeerIdLength else {
                     log.warning("Dropped malformed packet (missing peerId)")
                     continue
                 }
-                offset += ProtocolMacros.peerIdLength
+                offset += PacketPeerIdLength
             }
 
             if (code == .dataV1) || (code == .dataV2) {
+                let key = firstByte & 0b111
                 guard let _ = keys[key] else {
                     log.error("Key with id \(key) not found")
                     deferStop(.shutdown, SessionError.badKey)
@@ -476,91 +452,27 @@ public class SessionProxy {
 
                 continue
             }
-            
-            guard packet.count >= offset + ProtocolMacros.sessionIdLength else {
-                log.warning("Dropped malformed packet (missing sessionId)")
-                continue
-            }
-            let sessionId = packet.subdata(offset: offset, count: ProtocolMacros.sessionIdLength)
-            offset += ProtocolMacros.sessionIdLength
-            
-            guard packet.count >= offset + 1 else {
-                log.warning("Dropped malformed packet (missing ackSize)")
-                continue
-            }
-            let ackSize = packet[offset]
-            offset += 1
 
-            log.debug("Packet has code \(code.rawValue), key \(key), sessionId \(sessionId.toHex()) and \(ackSize) acks entries")
-
-            if (ackSize > 0) {
-                guard packet.count >= (offset + Int(ackSize) * ProtocolMacros.packetIdLength) else {
-                    log.warning("Dropped malformed packet (missing acks)")
+            let controlPacket: ControlPacket
+            do {
+                let parsedPacket = try controlChannel.readInboundPacket(withData: packet, offset: 0)
+                handleAcks()
+                if parsedPacket.code == .ackV1 {
                     continue
                 }
-                var ackedPacketIds = [UInt32]()
-                for _ in 0..<ackSize {
-                    let ackedPacketId = packet.networkUInt32Value(from: offset)
-                    ackedPacketIds.append(ackedPacketId)
-                    offset += ProtocolMacros.packetIdLength
-                }
-
-                guard packet.count >= offset + ProtocolMacros.sessionIdLength else {
-                    log.warning("Dropped malformed packet (missing remoteSessionId)")
-                    continue
-                }
-                let remoteSessionId = packet.subdata(offset: offset, count: ProtocolMacros.sessionIdLength)
-                offset += ProtocolMacros.sessionIdLength
-
-                log.debug("Server acked packetIds \(ackedPacketIds) with remoteSessionId \(remoteSessionId.toHex())")
-
-                handleAcks(ackedPacketIds, remoteSessionId: remoteSessionId)
-            }
-
-            if (code == .ackV1) {
+                controlPacket = parsedPacket
+            } catch let e {
+                log.warning("Dropped malformed packet: \(e)")
                 continue
+//                deferStop(.shutdown, e)
+//                return
             }
 
-            guard packet.count >= offset + ProtocolMacros.packetIdLength else {
-                log.warning("Dropped malformed packet (missing packetId)")
-                continue
-            }
-            let packetId = packet.networkUInt32Value(from: offset)
-            log.debug("Control packet has packetId \(packetId)")
-            offset += ProtocolMacros.packetIdLength
+            sendAck(for: controlPacket)
 
-            sendAck(key: key, packetId: packetId, remoteSessionId: sessionId)
-
-            var payload: Data?
-            if (offset < packet.count) {
-                payload = packet.subdata(in: offset..<packet.count)
-
-                if let payload = payload {
-                    if CoreConfiguration.logsSensitiveData {
-                        log.debug("Control packet payload (\(payload.count) bytes): \(payload.toHex())")
-                    } else {
-                        log.debug("Control packet payload (\(payload.count) bytes)")
-                    }
-                }
-            }
-
-            let controlPacket = CommonPacket(packetId, code, key, sessionId, payload)
-            controlQueueIn.append(controlPacket)
-            controlQueueIn.sort { $0.packetId < $1.packetId }
-            
-            for queuedControlPacket in controlQueueIn {
-                if (queuedControlPacket.packetId < controlPacketIdIn) {
-                    controlQueueIn.removeFirst()
-                    continue
-                }
-                if (queuedControlPacket.packetId != controlPacketIdIn) {
-                    continue
-                }
-
-                handleControlPacket(queuedControlPacket)
-
-                controlPacketIdIn += 1
-                controlQueueIn.removeFirst()
+            let pendingInboundQueue = controlChannel.enqueueInboundPacket(packet: controlPacket)
+            for inboundPacket in pendingInboundQueue {
+                handleControlPacket(inboundPacket)
             }
         }
 
@@ -580,7 +492,7 @@ public class SessionProxy {
             return
         }
         sendDataPackets(packets)
-        lastPingOut = Date()
+        lastPing.outbound = Date()
     }
     
     // Ruby: ping
@@ -590,14 +502,14 @@ public class SessionProxy {
         }
         
         let now = Date()
-        guard (now.timeIntervalSince(lastPingIn) <= CoreConfiguration.pingTimeout) else {
+        guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.pingTimeout) else {
             deferStop(.shutdown, SessionError.pingTimeout)
             return
         }
 
         // postpone ping if elapsed less than keep-alive
         if let interval = keepAliveInterval {
-            let elapsed = now.timeIntervalSince(lastPingOut)
+            let elapsed = now.timeIntervalSince(lastPing.outbound)
             guard (elapsed >= interval) else {
                 scheduleNextPing(elapsed: elapsed)
                 return
@@ -606,7 +518,7 @@ public class SessionProxy {
 
         log.debug("Send ping")
         sendDataPackets([DataPacket.pingString])
-        lastPingOut = Date()
+        lastPing.outbound = Date()
 
         scheduleNextPing()
     }
@@ -624,30 +536,21 @@ public class SessionProxy {
     // MARK: Handshake
     
     // Ruby: reset_ctrl
-    private func resetControlChannel() {
-        controlPlainBuffer.zero()
-        controlQueueOut.removeAll()
-        controlQueueIn.removeAll()
-        controlPendingAcks.removeAll()
-        controlPacketIdOut = 0
-        controlPacketIdIn = 0
+    private func resetControlChannel(forNewSession: Bool) {
         authenticator = nil
-        bytesIn = 0
-        bytesOut = 0
+        do {
+            try controlChannel.reset(forNewSession: forNewSession)
+        } catch let e {
+            deferStop(.shutdown, e)
+        }
     }
     
     // Ruby: hard_reset
     private func hardReset() {
         log.debug("Send hard reset")
 
-        resetControlChannel()
+        resetControlChannel(forNewSession: true)
         pushReply = nil
-        do {
-            try sessionId = SecureRandom.data(length: ProtocolMacros.sessionIdLength)
-        } catch let e {
-            deferStop(.shutdown, e)
-            return
-        }
         negotiationKeyIdx = 0
         let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
@@ -661,7 +564,7 @@ public class SessionProxy {
     private func softReset() {
         log.debug("Send soft reset")
         
-        resetControlChannel()
+        resetControlChannel(forNewSession: false)
         negotiationKeyIdx = max(1, (negotiationKeyIdx + 1) % ProtocolMacros.numberOfKeys)
         let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
@@ -750,41 +653,32 @@ public class SessionProxy {
     // MARK: Control
 
     // Ruby: handle_ctrl_pkt
-    private func handleControlPacket(_ packet: CommonPacket) {
+    private func handleControlPacket(_ packet: ControlPacket) {
         guard (packet.key == negotiationKey.id) else {
             log.error("Bad key in control packet (\(packet.key) != \(negotiationKey.id))")
 //            deferStop(.shutdown, SessionError.badKey)
             return
         }
         
-        log.debug("Handle control packet with code \(packet.code.rawValue) and id \(packet.packetId)")
-
         if (((packet.code == .hardResetServerV2) && (negotiationKey.state == .hardReset)) ||
             ((packet.code == .softResetV1) && (negotiationKey.state == .softReset))) {
             
-            if (negotiationKey.state == .hardReset) {
-                guard let sessionId = packet.sessionId else {
-                    deferStop(.shutdown, SessionError.missingSessionId)
-                    return
-                }
-                remoteSessionId = sessionId
+            if negotiationKey.state == .hardReset {
+                controlChannel.remoteSessionId = packet.sessionId
             }
-            guard let remoteSessionId = remoteSessionId else {
-                log.error("No remote session id")
+            guard let remoteSessionId = controlChannel.remoteSessionId else {
+                log.error("No remote sessionId (never set)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
-            guard (packet.sessionId == remoteSessionId) else {
-                if let packetSessionId = packet.sessionId {
-                    log.error("Packet session mismatch (\(packetSessionId.toHex()) != \(remoteSessionId.toHex()))")
-                }
+            guard packet.sessionId == remoteSessionId else {
+                log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
                 deferStop(.shutdown, SessionError.sessionMismatch)
                 return
             }
 
             negotiationKey.state = .tls
 
-            log.debug("Remote sessionId is \(remoteSessionId.toHex())")
             log.debug("Start TLS handshake")
 
             negotiationKey.tlsOptional = TLSBox(
@@ -808,14 +702,13 @@ public class SessionProxy {
             enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
         }
         else if ((packet.code == .controlV1) && (negotiationKey.state == .tls)) {
-            guard let remoteSessionId = remoteSessionId else {
+            guard let remoteSessionId = controlChannel.remoteSessionId else {
+                log.error("No remote sessionId found in packet (control packets before server HARD_RESET)")
                 deferStop(.shutdown, SessionError.missingSessionId)
                 return
             }
-            guard (packet.sessionId == remoteSessionId) else {
-                if let packetSessionId = packet.sessionId {
-                    log.error("Packet session mismatch (\(packetSessionId.toHex()) != \(remoteSessionId.toHex()))")
-                }
+            guard packet.sessionId == remoteSessionId else {
+                log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
                 deferStop(.shutdown, SessionError.sessionMismatch)
                 return
             }
@@ -838,10 +731,7 @@ public class SessionProxy {
             }
 
             do {
-                var length = 0
-                try negotiationKey.tls.pullRawPlainText(controlPlainBuffer.mutableBytes, length: &length)
-
-                let controlData = controlPlainBuffer.withOffset(0, count: length)
+                let controlData = try controlChannel.currentControlData(withTLS: negotiationKey.tls)
                 handleControlData(controlData)
             } catch _ {
             }
@@ -850,7 +740,9 @@ public class SessionProxy {
 
     // Ruby: handle_ctrl_data
     private func handleControlData(_ data: ZeroingData) {
-        guard let auth = authenticator else { return }
+        guard let auth = authenticator else {
+            return
+        }
 
         if CoreConfiguration.logsSensitiveData {
             log.debug("Pulled plain control data (\(data.count) bytes): \(data.toHex())")
@@ -946,75 +838,35 @@ public class SessionProxy {
             log.warning("Not writing to LINK, interface is down")
             return
         }
-        
-        let oldIdOut = controlPacketIdOut
-        let maxCount = link.mtu
-        var queuedCount = 0
-        var offset = 0
-        
-        repeat {
-            let subPayloadLength = min(maxCount, payload.count - offset)
-            let subPayloadData = payload.subdata(offset: offset, count: subPayloadLength)
-            let packet = CommonPacket(controlPacketIdOut, code, key, sessionId, subPayloadData)
-            
-            controlQueueOut.append(packet)
-            controlPacketIdOut += 1
-            offset += maxCount
-            queuedCount += subPayloadLength
-        } while (offset < payload.count)
-        
-        assert(queuedCount == payload.count)
-        
-        let packetCount = controlPacketIdOut - oldIdOut
-        if (packetCount > 1) {
-            log.debug("Enqueued \(packetCount) control packets [\(oldIdOut)-\(controlPacketIdOut - 1)]")
-        } else {
-            log.debug("Enqueued 1 control packet [\(oldIdOut)]")
-        }
-        
+
+        controlChannel.enqueueOutboundPackets(withCode: code, key: key, payload: payload, maxPacketSize: link.mtu)
         flushControlQueue()
     }
     
     // Ruby: flush_ctrl_q_out
     private func flushControlQueue() {
-        for controlPacket in controlQueueOut {
-            if let sentDate = controlPacket.sentDate {
-                let timeAgo = -sentDate.timeIntervalSinceNow
-                guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
-                    log.debug("Skip control packet with id \(controlPacket.packetId) (sent on \(sentDate), \(timeAgo) seconds ago)")
-                    continue
-                }
-            }
-
-            log.debug("Send control packet with code \(controlPacket.code.rawValue)")
-
-            if let payload = controlPacket.payload {
-                if CoreConfiguration.logsSensitiveData {
-                    log.debug("Control packet has payload (\(payload.count) bytes): \(payload.toHex())")
-                } else {
-                    log.debug("Control packet has payload (\(payload.count) bytes)")
-                }
-            }
-
-            let raw = controlPacket.toBuffer()
-            log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
-            
-            // track pending acks for sent packets
-            controlPendingAcks.insert(controlPacket.packetId)
-
-            // WARNING: runs in Network.framework queue
-            link?.writePacket(raw) { [weak self] (error) in
-                if let error = error {
-                    self?.queue.sync {
-                        log.error("Failed LINK write during control flush: \(error)")
-                        self?.deferStop(.reconnect, SessionError.failedLinkWrite)
-                        return
-                    }
-                }
-            }
-            controlPacket.sentDate = Date()
+        let rawList: [Data]
+        do {
+            rawList = try controlChannel.writeOutboundPackets()
+        } catch let e {
+            log.warning("Failed control packet serialization: \(e)")
+            deferStop(.shutdown, e)
+            return
         }
-//        log.verbose("Packets now pending ack: \(controlPendingAcks)")
+        for raw in rawList {
+            log.debug("Send control packet (\(raw.count) bytes): \(raw.toHex())")
+        }
+        
+        // WARNING: runs in Network.framework queue
+        link?.writePackets(rawList) { [weak self] (error) in
+            if let error = error {
+                self?.queue.sync {
+                    log.error("Failed LINK write during control flush: \(error)")
+                    self?.deferStop(.reconnect, SessionError.failedLinkWrite)
+                    return
+                }
+            }
+        }
     }
     
     // Ruby: setup_keys
@@ -1022,10 +874,10 @@ public class SessionProxy {
         guard let auth = authenticator else {
             fatalError("Setting up encryption without having authenticated")
         }
-        guard let sessionId = sessionId else {
+        guard let sessionId = controlChannel.sessionId else {
             fatalError("Setting up encryption without a local sessionId")
         }
-        guard let remoteSessionId = remoteSessionId else {
+        guard let remoteSessionId = controlChannel.remoteSessionId else {
             fatalError("Setting up encryption without a remote sessionId")
         }
         guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
@@ -1088,7 +940,7 @@ public class SessionProxy {
 
     // Ruby: handle_data_pkt
     private func handleDataPackets(_ packets: [Data], key: SessionKey) {
-        bytesIn += packets.flatCount
+        controlChannel.addReceivedDataCount(packets.flatCount)
         do {
             guard let decryptedPackets = try key.decrypt(packets: packets) else {
                 log.warning("Could not decrypt packets, is SessionKey properly configured (dataPath, peerId)?")
@@ -1123,7 +975,7 @@ public class SessionProxy {
             }
             
             // WARNING: runs in Network.framework queue
-            bytesOut += encryptedPackets.flatCount
+            controlChannel.addSentDataCount(encryptedPackets.flatCount)
             link?.writePackets(encryptedPackets) { [weak self] (error) in
                 if let error = error {
                     self?.queue.sync {
@@ -1145,52 +997,40 @@ public class SessionProxy {
     
     // MARK: Acks
     
-    // Ruby: handle_acks
-    private func handleAcks(_ packetIds: [UInt32], remoteSessionId: Data) {
-        guard (remoteSessionId == sessionId) else {
-            if let sessionId = sessionId {
-                log.error("Ack session mismatch (\(remoteSessionId.toHex()) != \(sessionId.toHex()))")
-            }
-            deferStop(.shutdown, SessionError.sessionMismatch)
-            return
-        }
-        
-        // drop queued out packets if ack-ed
-        for (i, controlPacket) in controlQueueOut.enumerated() {
-            if packetIds.contains(controlPacket.packetId) {
-                controlQueueOut.remove(at: i)
-            }
-        }
-
-        // remove ack-ed packets from pending
-        controlPendingAcks.subtract(packetIds)
-//        log.verbose("Packets still pending ack: \(controlPendingAcks)")
+    private func handleAcks() {
 
         // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
-        if (isReliableLink && controlPendingAcks.isEmpty) {
+        if isReliableLink && !controlChannel.hasPendingAcks() {
             pushRequest()
         }
     }
     
     // Ruby: send_ack
-    private func sendAck(key: UInt8, packetId: UInt32, remoteSessionId: Data) {
-        log.debug("Send ack for received packetId \(packetId)")
+    private func sendAck(for controlPacket: ControlPacket) {
+        log.debug("Send ack for received packetId \(controlPacket.packetId)")
 
-        var raw = PacketWithHeader(.ackV1, key, sessionId)
-        raw.append(UInt8(1)) // ackSize
-        raw.append(UInt32(packetId).bigEndian)
-        raw.append(remoteSessionId)
+        let raw: Data
+        do {
+            raw = try controlChannel.writeAcks(
+                withKey: controlPacket.key,
+                ackPacketIds: [controlPacket.packetId],
+                ackRemoteSessionId: controlPacket.sessionId
+            )
+        } catch let e {
+            deferStop(.shutdown, e)
+            return
+        }
         
         // WARNING: runs in Network.framework queue
         link?.writePacket(raw) { [weak self] (error) in
             if let error = error {
                 self?.queue.sync {
-                    log.error("Failed LINK write during send ack for packetId \(packetId): \(error)")
+                    log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
                     self?.deferStop(.reconnect, SessionError.failedLinkWrite)
                     return
                 }
             }
-            log.debug("Ack successfully written to LINK for packetId \(packetId)")
+            log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
         }
     }
     

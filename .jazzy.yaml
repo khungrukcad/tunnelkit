@@ -17,8 +17,13 @@ custom_categories:
         - IOInterface
         - LinkInterface
         - TunnelInterface
+        - PacketStream
+        - BidirectionalState
         - SessionProxy
         - SessionProxyDelegate
+        - SessionReply
+        - IPv4Settings
+        - IPv6Settings
         - SessionError
     - name: AppExtension
       children:

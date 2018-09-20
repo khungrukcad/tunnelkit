@@ -39,8 +39,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#define PacketPeerIdDisabled        0xffffffu
-#define PacketIdLength              4
+#define PacketHeaderLength          ((NSInteger)1)
+#define PacketIdLength              ((NSInteger)4)
+#define PacketSessionIdLength       ((NSInteger)8)
+#define PacketAckLengthLength       ((NSInteger)1)
+#define PacketPeerIdLength          ((NSInteger)3)
+#define PacketPeerIdDisabled        ((uint32_t)0xffffffu)
 
 typedef NS_ENUM(uint8_t, PacketCode) {
     PacketCodeSoftResetV1           = 0x03,
@@ -59,42 +63,26 @@ typedef NS_ENUM(uint8_t, PacketCode) {
 extern const uint8_t DataPacketPingData[16];
 
 // Ruby: header
-static inline int PacketHeaderSet(uint8_t *to, PacketCode code, uint8_t key)
+static inline int PacketHeaderSet(uint8_t *to, PacketCode code, uint8_t key, const uint8_t *_Nullable sessionId)
 {
     *(uint8_t *)to = (code << 3) | (key & 0b111);
-    return sizeof(uint8_t);
-}
-
-// Ruby: header
-static inline NSData *PacketWithHeader(PacketCode code, uint8_t key, NSData *_Nullable sessionId)
-{
-    NSMutableData *to = [[NSMutableData alloc] initWithLength:(sizeof(uint8_t) + (sessionId ? sessionId.length : 0))];
-    const int offset = PacketHeaderSet(to.mutableBytes, code, key);
+    int offset = PacketHeaderLength;
     if (sessionId) {
-        memcpy(to.mutableBytes + offset, sessionId.bytes, sessionId.length);
+        memcpy(to + offset, sessionId, PacketSessionIdLength);
+        offset += PacketSessionIdLength;
     }
-    return to;
+    return offset;
 }
 
 static inline int PacketHeaderSetDataV2(uint8_t *to, uint8_t key, uint32_t peerId)
 {
     *(uint32_t *)to = ((PacketCodeDataV2 << 3) | (key & 0b111)) | htonl(peerId & 0xffffff);
-    return sizeof(uint32_t);
+    return PacketHeaderLength + PacketPeerIdLength;
 }
 
 static inline int PacketHeaderGetDataV2PeerId(const uint8_t *from)
 {
     return ntohl(*(const uint32_t *)from & 0xffffff00);
-}
-
-static inline NSData *PacketWithHeaderDataV2(uint8_t key, uint32_t peerId, NSData *sessionId)
-{
-    NSMutableData *to = [[NSMutableData alloc] initWithLength:(sizeof(uint32_t) + (sessionId ? sessionId.length : 0))];
-    const int offset = PacketHeaderSetDataV2(to.mutableBytes, key, peerId);
-    if (sessionId) {
-        memcpy(to.mutableBytes + offset, sessionId.bytes, sessionId.length);
-    }
-    return to;
 }
 
 NS_ASSUME_NONNULL_END

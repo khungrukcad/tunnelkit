@@ -29,8 +29,19 @@
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
+		0E12B2A32145341B00B4BAE9 /* PacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A22145341B00B4BAE9 /* PacketTests.swift */; };
+		0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
+		0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
+		0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
+		0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
+		0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
+		0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
 		0E245D692135972800B012A2 /* PushTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E245D682135972800B012A2 /* PushTests.swift */; };
 		0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
+		0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
+		0E39BCE9214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
+		0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E39BCE7214B2AB60035E9DE /* ControlPacket.m */; };
+		0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E39BCE7214B2AB60035E9DE /* ControlPacket.m */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58F12F2138AC2F00A49F27 /* DNSTests.swift */; };
@@ -189,10 +200,16 @@
 		0E1108B21F77B9F900A92462 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E12B2A22145341B00B4BAE9 /* PacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketTests.swift; sourceTree = "<group>"; };
+		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
+		0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannel.swift; sourceTree = "<group>"; };
+		0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannelSerializer.swift; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E245D682135972800B012A2 /* PushTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTests.swift; sourceTree = "<group>"; };
 		0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFramingNative.h; sourceTree = "<group>"; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		0E39BCE6214B2AB60035E9DE /* ControlPacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlPacket.h; sourceTree = "<group>"; };
+		0E39BCE7214B2AB60035E9DE /* ControlPacket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlPacket.m; sourceTree = "<group>"; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
 		0E58F12F2138AC2F00A49F27 /* DNSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSTests.swift; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -318,6 +335,7 @@
 				0EB2B45E20F0C098004233D7 /* EncryptionPerformanceTests.swift */,
 				0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */,
 				0EB2B45820F0BD9A004233D7 /* LinkTests.swift */,
+				0E12B2A22145341B00B4BAE9 /* PacketTests.swift */,
 				0E245D682135972800B012A2 /* PushTests.swift */,
 				0EB2B45620F0BD16004233D7 /* RandomTests.swift */,
 				0EB2B45C20F0BF41004233D7 /* RawPerformanceTests.swift */,
@@ -415,7 +433,12 @@
 			children = (
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
+				0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */,
 				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
+				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
+				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
+				0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */,
+				0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */,
 				0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */,
 				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
 				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
@@ -522,6 +545,7 @@
 				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
 				0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */,
 				0EFEB4602006D3C800F81029 /* DataPath.h in Headers */,
+				0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */,
 				0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
 				0EFEB46C2006D3C800F81029 /* ZeroingData.h in Headers */,
 			);
@@ -543,6 +567,7 @@
 				0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */,
 				0EEC49E820B5F7F6008FEB91 /* ReplayProtector.h in Headers */,
 				0EEC49E920B5F7F6008FEB91 /* TLSBox.h in Headers */,
+				0E39BCE9214B2AB60035E9DE /* ControlPacket.h in Headers */,
 				0E07597F20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
 				0EEC49E220B5F7F6008FEB91 /* CryptoBox.h in Headers */,
 			);
@@ -808,6 +833,7 @@
 				0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */,
 				0EB2B45B20F0BE4C004233D7 /* TestUtils.swift in Sources */,
 				0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */,
+				0E12B2A32145341B00B4BAE9 /* PacketTests.swift in Sources */,
 				0E245D692135972800B012A2 /* PushTests.swift in Sources */,
 				0EB2B46120F0C0A4004233D7 /* DataPathPerformanceTests.swift in Sources */,
 				0EB2B45F20F0C098004233D7 /* EncryptionPerformanceTests.swift in Sources */,
@@ -845,6 +871,7 @@
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
 				0EBBF2FA2085061600E36B40 /* NETCPInterface.swift in Sources */,
 				0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */,
+				0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */,
 				0EFEB4552006D3C800F81029 /* SessionProxy+EncryptionBridge.swift in Sources */,
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
 				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
@@ -857,6 +884,8 @@
 				0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
 				0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */,
 				0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
+				0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */,
 				0EBBF2F3208505D300E36B40 /* NEUDPInterface.swift in Sources */,
 				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
@@ -869,6 +898,7 @@
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
+				0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EBBF2E52084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
 				0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
@@ -896,6 +926,7 @@
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */,
 				0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */,
+				0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */,
 				0EBBF2FB2085061600E36B40 /* NETCPInterface.swift in Sources */,
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,
@@ -908,6 +939,8 @@
 				0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
 				0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
 				0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */,
+				0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
 				0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */,
 				0EBBF2F4208505D400E36B40 /* NEUDPInterface.swift in Sources */,
@@ -920,6 +953,7 @@
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
+				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
 				0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,

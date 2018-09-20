@@ -328,7 +328,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     if (peerId == PacketPeerIdDisabled) {
         self.headerLength = 1;
         self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSet(to, PacketCodeDataV1, key);
+            PacketHeaderSet(to, PacketCodeDataV1, key, nil);
         };
         self.checkPeerId = NULL;
     }

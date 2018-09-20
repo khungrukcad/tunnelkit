@@ -36,14 +36,8 @@
 //
 
 import Foundation
-import __TunnelKitNative
 
 class ProtocolMacros {
-    static let peerIdLength = 3
-
-    static let sessionIdLength = 8
-    
-    static let packetIdLength = 4
     
     // UInt32(0) + UInt8(KeyMethod = 2)
     static let tlsPrefix = Data(hex: "0000000002")
