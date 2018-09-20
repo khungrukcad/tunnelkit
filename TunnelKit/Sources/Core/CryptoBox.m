@@ -45,6 +45,7 @@
 
 #import "CryptoCBC.h"
 #import "CryptoAEAD.h"
+#import "CryptoCTR.h"
 
 @interface CryptoBox ()
 
@@ -121,6 +122,11 @@
             CryptoAEAD *gcm = [[CryptoAEAD alloc] initWithCipherName:self.cipherAlgorithm];
             self.encrypter = gcm;
             self.decrypter = gcm;
+        }
+        else if ([self.cipherAlgorithm hasSuffix:@"-ctr"]) {
+            CryptoCTR *ctr = [[CryptoCTR alloc] initWithCipherName:self.cipherAlgorithm digestName:self.digestAlgorithm];
+            self.encrypter = ctr;
+            self.decrypter = ctr;
         }
         // not supported
         else {

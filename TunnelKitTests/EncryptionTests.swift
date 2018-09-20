@@ -96,6 +96,23 @@ class EncryptionTests: XCTestCase {
         XCTAssertEqual(md5, exp)
     }
 
+    func testCTR() {
+        let (client, server) = clientServer("aes-256-ctr", "sha256")
+
+        let original = Data(hex: "0000000000")
+        let ad: [UInt8] = [UInt8](Data(hex: "38afa8f1162096081e000000015ba35373"))
+        var flags = CryptoFlags(iv: nil, ivLength: 0, ad: ad, adLength: ad.count)
+
+//        let expEncrypted = Data(hex: "319bb8e7f8f7930cc4625079dd32a6ef9540c2fc001c53f909f712037ae9818af840b88714")
+        let encrypted = try! client.encrypter().encryptData(original, flags: &flags)
+        print(encrypted.toHex())
+//        XCTAssertEqual(encrypted, expEncrypted)
+
+        let decrypted = try! server.decrypter().decryptData(encrypted, flags: &flags)
+        print(decrypted.toHex())
+        XCTAssertEqual(decrypted, original)
+    }
+
     private func clientServer(_ c: String?, _ d: String?) -> (CryptoBox, CryptoBox) {
         let client = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)
         let server = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)

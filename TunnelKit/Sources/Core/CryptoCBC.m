@@ -113,11 +113,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     self.digest = NULL;
 }
 
-- (int)extraLength
-{
-    return 0;
-}
-
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
 {
     return safe_crypto_capacity(length, self.digestLength + self.cipherIVLength);
