@@ -902,14 +902,14 @@ public class SessionProxy {
         
         let pushedFraming = pushReply.compressionFraming
         if let negFraming = pushedFraming {
-            log.info("Negotiated compression framing: \(negFraming.rawValue)")
+            log.info("\tNegotiated compression framing: \(negFraming.rawValue)")
         }
         if let negPing = pushReply.ping {
-            log.info("Negotiated keep-alive: \(negPing) seconds")
+            log.info("\tNegotiated keep-alive: \(negPing) seconds")
         }
         let pushedCipher = pushReply.cipher
         if let negCipher = pushedCipher {
-            log.info("Negotiated cipher: \(negCipher.rawValue)")
+            log.info("\tNegotiated cipher: \(negCipher.rawValue)")
         }
 
         let bridge: EncryptionBridge
