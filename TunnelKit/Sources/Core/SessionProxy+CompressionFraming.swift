@@ -34,8 +34,7 @@ extension SessionProxy {
         /// No compression framing.
         case disabled
         
-        /// Framing compatible with `comp-lzo` (deprecated).
-        @available(*, deprecated)
+        /// Framing compatible with `comp-lzo` (deprecated in 2.4).
         case compLZO
 
         /// Framing compatible with 2.4 `compress`.
