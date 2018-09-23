@@ -39,8 +39,6 @@ import Foundation
 import SwiftyBeaver
 
 class MemoryDestination: BaseDestination, CustomStringConvertible {
-    private let queue = DispatchQueue(label: "MemoryDestination")
-    
     private var buffer: [String] = []
     
     var maxLines: Int?
@@ -51,36 +49,35 @@ class MemoryDestination: BaseDestination, CustomStringConvertible {
     }
     
     func start(with existing: [String]) {
-        queue.sync {
-            buffer = existing
+        execute(synchronously: true) {
+            self.buffer = existing
         }
     }
     
     func flush(to: UserDefaults, with key: String) {
-        queue.sync {
-            to.set(buffer, forKey: key)
+        execute(synchronously: true) {
+            to.set(self.buffer, forKey: key)
         }
         to.synchronize()
     }
     
     var description: String {
-        return queue.sync {
-            return buffer.joined(separator: "\n")
+        return executeSynchronously {
+            return self.buffer.joined(separator: "\n")
         }
     }
     
     // MARK: BaseDestination
 
+    // XXX: executed in SwiftyBeaver queue. DO NOT invoke execute* here (sync in sync would crash otherwise)
     override func send(_ level: SwiftyBeaver.Level, msg: String, thread: String, file: String, function: String, line: Int, context: Any?) -> String? {
         guard let message = super.send(level, msg: msg, thread: thread, file: file, function: function, line: line) else {
             return nil
         }
-        queue.sync {
-            buffer.append(message)
-            if let maxLines = maxLines {
-                while (buffer.count > maxLines) {
-                    buffer.removeFirst()
-                }
+        buffer.append(message)
+        if let maxLines = maxLines {
+            while buffer.count > maxLines {
+                buffer.removeFirst()
             }
         }
         return message
