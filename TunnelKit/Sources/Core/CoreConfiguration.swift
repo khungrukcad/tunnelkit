@@ -40,7 +40,20 @@ import __TunnelKitNative
 struct CoreConfiguration {
     static let identifier = "com.algoritmico.TunnelKit"
     
-    static let version = "1.1.0-dev"
+    static let version: String = {
+        let bundle = Bundle(for: SessionProxy.self)
+        guard let info = bundle.infoDictionary else {
+            return ""
+        }
+//        guard let version = info["CFBundleShortVersionString"] as? String else {
+//            return ""
+//        }
+//        guard let build = info["CFBundleVersion"] as? String else {
+//            return version
+//        }
+//        return "\(version) (\(build))"
+        return info["CFBundleShortVersionString"] as? String ?? ""
+    }()
     
     // MARK: Session
     
