@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name              = "TunnelKit"
-    s.version           = File.read("ci/VERSION")
+    s.version           = "1.1.0"
     s.summary           = "Non-official OpenVPN client for Apple platforms."
 
     s.homepage          = "https://github.com/keeshux/tunnelkit"
