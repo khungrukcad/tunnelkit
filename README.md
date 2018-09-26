@@ -40,7 +40,7 @@ The library therefore supports compression framing, just not compression. Rememb
 - Xcode 9+ (Swift 4)
 - Git (preinstalled with Xcode Command Line Tools)
 - Ruby (preinstalled with macOS)
-- [CocoaPods 1.5.0][dep-cocoapods]
+- [CocoaPods 1.4.0][dep-cocoapods]
 - [jazzy][dep-jazzy] (optional, for documentation)
 
 It's highly recommended to use the Git and Ruby packages provided by [Homebrew][dep-brew].
