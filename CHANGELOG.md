@@ -21,9 +21,11 @@ and this project _will soonly adhere_ to [Semantic Versioning](https://semver.or
 
 ### Changed
 
+- Raised iOS target to 11 (drops 32-bit support).
+- Upgraded OpenSSL from 1.1.0h to 1.1.0i.
+- Minor adjustments for Xcode 10 / Swift 4.2.
 - Deep refactoring of control channel for future extensibility.
 - App group moved out of tunnel configuration, to make it more platform-agnostic and coherent to serialize.
-- Minor adjustments for Xcode 10 / Swift 4.2.
 - Several internal renamings.
 
 ### Fixed
