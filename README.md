@@ -36,8 +36,8 @@ The library therefore supports compression framing, just not compression. Rememb
 
 ### Requirements
 
-- iOS 9.0+ / macOS 10.11+
-- Xcode 9+ (Swift 4)
+- iOS 11.0+ / macOS 10.11+
+- Xcode 10+ (Swift 4.2)
 - Git (preinstalled with Xcode Command Line Tools)
 - Ruby (preinstalled with macOS)
 - [CocoaPods 1.4.0][dep-cocoapods]
