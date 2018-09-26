@@ -57,7 +57,7 @@ pod 'TunnelKit'
 
 Download the library codebase locally:
 
-    $ git clone https://github.com/keeshux/TunnelKit.git
+    $ git clone https://github.com/keeshux/tunnelkit.git
 
 Assuming you have a [working CocoaPods environment][dep-cocoapods], setting up the library workspace only requires installing the pod dependencies:
 
