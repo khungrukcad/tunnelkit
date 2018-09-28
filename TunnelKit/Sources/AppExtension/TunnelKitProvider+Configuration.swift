@@ -526,12 +526,12 @@ extension TunnelKitProvider {
             }
             log.info("\tMTU: \(mtu)")
             log.info("\tCompression framing: \(compressionFraming)")
-            if let keepAliveSeconds = keepAliveSeconds {
+            if let keepAliveSeconds = keepAliveSeconds, keepAliveSeconds > 0 {
                 log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
             } else {
-                log.info("\tKeep-alive: default")
+                log.info("\tKeep-alive: never")
             }
-            if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
+            if let renegotiatesAfterSeconds = renegotiatesAfterSeconds, renegotiatesAfterSeconds > 0 {
                 log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
                 log.info("\tRenegotiation: never")

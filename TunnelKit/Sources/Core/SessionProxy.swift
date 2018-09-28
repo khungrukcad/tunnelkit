@@ -902,7 +902,7 @@ public class SessionProxy {
         
         let pushedFraming = pushReply.compressionFraming
         if let negFraming = pushedFraming {
-            log.info("\tNegotiated compression framing: \(negFraming.rawValue)")
+            log.info("\tNegotiated compression framing: \(negFraming)")
         }
         if let negPing = pushReply.ping {
             log.info("\tNegotiated keep-alive: \(negPing) seconds")
