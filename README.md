@@ -125,12 +125,22 @@ For more details please see [CONTRIBUTING][contrib-readme].
 
 ## License
 
-This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content]. I can provide a different license on request, e.g. if you want to use the library on the App Store. Feel free to contact me in such case.
+### Part I
 
-## Credits
+Copyright 2018-present Davide De Rosa
 
-- [PIATunnel][dep-piatunnel-repo] - TunnelKit is a hard fork of PIATunnel that repurposes it substantially. PIATunnel is licensed under the [MIT (Expat) license][license-mit], which can be found [here][dep-piatunnel-license].
-- [SwiftyBeaver][dep-swiftybeaver-repo] - A convenient logging library.
+This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content].
+
+### Part II
+
+As seen in [libsignal-protocol-c][license-signal]:
+
+> Additional Permissions For Submission to Apple App Store: Provided that you are otherwise in compliance with the GPLv3 for each covered work you convey (including without limitation making the Corresponding Source available in compliance with Section 6 of the GPLv3), the Author also grants you the additional permission to convey through the Apple App Store non-source executable versions of the Program as incorporated into each applicable covered work as Executable Versions only under the Mozilla Public License version 2.0 (https://www.mozilla.org/en-US/MPL/2.0/).
+
+## Acknowledgements
+
+- [PIATunnel][dep-piatunnel-repo] - Copyright (c) 2018-Present Private Internet Access
+- [SwiftyBeaver][dep-swiftybeaver-repo] - Copyright (c) 2015 Sebastian Kreutzberger
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. ([https://www.openssl.org/][dep-openssl])
 
@@ -159,6 +169,7 @@ Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][me-btc]
 
 [license-content]: /LICENSE
 [license-gpl3]: https://choosealicense.com/licenses/gpl-3.0/
+[license-signal]: https://github.com/signalapp/libsignal-protocol-c#license
 [license-mit]: https://choosealicense.com/licenses/mit/
 
 [contrib-cla]: /CLA.rst
