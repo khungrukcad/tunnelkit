@@ -32,7 +32,9 @@ extension SessionProxy {
 
         /// The wrapping strategy.
         public enum Strategy: String, Codable {
-            case none
+            
+            /// Authenticates payload (--tls-auth).
+            case auth
         }
 
         /// The wrapping strategy.
