@@ -124,8 +124,8 @@ extension SessionProxy {
         /// The digest algorithm for HMAC.
         public var digest: Digest
         
-        /// The path to the optional CA for TLS negotiation (PEM format).
-        public var caPath: String?
+        /// The path to the CA for TLS negotiation (PEM format).
+        public let caPath: String
         
         /// The path to the optional client certificate for TLS negotiation (PEM format).
         public var clientCertificatePath: String?
@@ -143,12 +143,12 @@ extension SessionProxy {
         public var renegotiatesAfter: TimeInterval?
         
         /// :nodoc:
-        public init(username: String, password: String) {
+        public init(username: String, password: String, caPath: String) {
             self.username = username
             self.password = password
             cipher = .aes128cbc
             digest = .sha1
-            caPath = nil
+            self.caPath = caPath
             clientCertificatePath = nil
             clientKeyPath = nil
             compressionFraming = .disabled
@@ -193,7 +193,7 @@ extension SessionProxy {
         public let digest: Digest
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
-        public let caPath: String?
+        public let caPath: String
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificatePath`
         public let clientCertificatePath: String?

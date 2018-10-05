@@ -37,6 +37,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 extern const NSInteger TLSBoxMaxBufferLength;
 
 extern NSString *const TLSBoxPeerVerificationErrorNotification;
@@ -50,12 +52,12 @@ extern NSString *const TLSBoxPeerVerificationErrorNotification;
 @interface TLSBox : NSObject
 
 - (instancetype)initWithCAPath:(NSString *)caPath
-                 clientCertificatePath:(NSString *)clientCertificatePath
-                         clientKeyPath:(NSString *)clientKeyPath;
+         clientCertificatePath:(nullable NSString *)clientCertificatePath
+                 clientKeyPath:(nullable NSString *)clientKeyPath;
 
 - (BOOL)startWithError:(NSError **)error;
 
-- (NSData *)pullCipherTextWithError:(NSError **)error;
+- (nullable NSData *)pullCipherTextWithError:(NSError **)error;
 // WARNING: text must be able to hold plain text output
 - (BOOL)pullRawPlainText:(uint8_t *)text length:(NSInteger *)length error:(NSError **)error;
 
@@ -67,3 +69,5 @@ extern NSString *const TLSBoxPeerVerificationErrorNotification;
 - (BOOL)isConnected;
 
 @end
+
+NS_ASSUME_NONNULL_END
