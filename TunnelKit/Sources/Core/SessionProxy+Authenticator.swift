@@ -62,18 +62,23 @@ extension SessionProxy {
 
         private(set) var serverRandom2: ZeroingData?
 
-        let username: ZeroingData
+        let username: ZeroingData?
         
-        let password: ZeroingData
+        let password: ZeroingData?
         
-        init(_ username: String, _ password: String) throws {
+        init(_ username: String?, _ password: String?) throws {
             preMaster = try SecureRandom.safeData(length: CoreConfiguration.preMasterLength)
             random1 = try SecureRandom.safeData(length: CoreConfiguration.randomLength)
             random2 = try SecureRandom.safeData(length: CoreConfiguration.randomLength)
             
             // XXX: not 100% secure, can't erase input username/password
-            self.username = Z(username, nullTerminated: true)
-            self.password = Z(password, nullTerminated: true)
+            if let username = username, let password = password {
+                self.username = Z(username, nullTerminated: true)
+                self.password = Z(password, nullTerminated: true)
+            } else {
+                self.username = nil
+                self.password = nil
+            }
             
             controlBuffer = Z()
         }
@@ -93,8 +98,13 @@ extension SessionProxy {
             raw.appendSized(Z(UInt8(0)))
             
             // credentials
-            raw.appendSized(username)
-            raw.appendSized(password)
+            if let username = username, let password = password {
+                raw.appendSized(username)
+                raw.appendSized(password)
+            } else {
+                raw.append(Z(UInt16(0)))
+                raw.append(Z(UInt16(0)))
+            }
 
             // peer info
             raw.appendSized(Z(CoreConfiguration.peerInfo))

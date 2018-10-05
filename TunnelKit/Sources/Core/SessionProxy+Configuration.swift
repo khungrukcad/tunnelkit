@@ -113,10 +113,10 @@ extension SessionProxy {
     public struct ConfigurationBuilder {
 
         /// An username.
-        public let username: String
+        public var username: String?
         
         /// A password.
-        public let password: String
+        public var password: String?
         
         /// The cipher algorithm for data encryption.
         public var cipher: Cipher
@@ -143,9 +143,9 @@ extension SessionProxy {
         public var renegotiatesAfter: TimeInterval?
         
         /// :nodoc:
-        public init(username: String, password: String, caPath: String) {
-            self.username = username
-            self.password = password
+        public init(caPath: String) {
+            username = nil
+            password = nil
             cipher = .aes128cbc
             digest = .sha1
             self.caPath = caPath
@@ -181,10 +181,10 @@ extension SessionProxy {
     public struct Configuration: Codable {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.username`
-        public let username: String
+        public let username: String?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.password`
-        public let password: String
+        public let password: String?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
         public let cipher: Cipher

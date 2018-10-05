@@ -112,10 +112,10 @@ extension TunnelKitProvider {
         public let hostname: String
         
         /// The username.
-        public let username: String
+        public let username: String?
         
         /// The password.
-        public let password: String
+        public let password: String?
         
         /// :nodoc:
         public init(hostname: String, username: String, password: String) {
@@ -128,19 +128,15 @@ extension TunnelKitProvider {
             guard let hostname = protocolConfiguration.serverAddress else {
                 throw ProviderError.configuration(field: "protocolConfiguration.serverAddress")
             }
-            guard let username = protocolConfiguration.username else {
-                throw ProviderError.credentials(field: "protocolConfiguration.username")
-            }
-            guard let passwordReference = protocolConfiguration.passwordReference else {
-                throw ProviderError.credentials(field: "protocolConfiguration.passwordReference")
-            }
-            guard let password = try? Keychain.password(for: username, reference: passwordReference) else {
-                throw ProviderError.credentials(field: "protocolConfiguration.passwordReference (keychain)")
-            }
             
             self.hostname = hostname
-            self.username = username
-            self.password = password
+            if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference {
+                self.username = username
+                password = try? Keychain.password(for: username, reference: passwordReference)
+            } else {
+                username = nil
+                password = nil
+            }
         }
     }
     
@@ -488,17 +484,18 @@ extension TunnelKitProvider {
         public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, endpoint: AuthenticatedEndpoint) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
-            let keychain = Keychain(group: appGroup)
-            do {
-                try keychain.set(password: endpoint.password, for: endpoint.username, label: Bundle.main.bundleIdentifier)
-            } catch _ {
-                throw ProviderError.credentials(field: "keychain.set()")
-            }
-            
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
             protocolConfiguration.serverAddress = endpoint.hostname
-            protocolConfiguration.username = endpoint.username
-            protocolConfiguration.passwordReference = try? keychain.passwordReference(for: endpoint.username)
+            if let username = endpoint.username, let password = endpoint.password {
+                let keychain = Keychain(group: appGroup)
+                do {
+                    try keychain.set(password: password, for: username, label: Bundle.main.bundleIdentifier)
+                } catch _ {
+                    throw ProviderError.credentials(field: "keychain.set()")
+                }
+                protocolConfiguration.username = username
+                protocolConfiguration.passwordReference = try? keychain.passwordReference(for: username)
+            }
             protocolConfiguration.providerConfiguration = generatedProviderConfiguration(appGroup: appGroup)
             
             return protocolConfiguration
