@@ -105,41 +105,6 @@ extension TunnelKitProvider {
         }
     }
 
-    /// Encapsulates an endpoint along with the authentication credentials.
-    public struct AuthenticatedEndpoint {
-        
-        /// The remote hostname or IP address.
-        public let hostname: String
-        
-        /// The username.
-        public let username: String?
-        
-        /// The password.
-        public let password: String?
-        
-        /// :nodoc:
-        public init(hostname: String, username: String, password: String) {
-            self.hostname = hostname
-            self.username = username
-            self.password = password
-        }
-        
-        init(protocolConfiguration: NEVPNProtocol) throws {
-            guard let hostname = protocolConfiguration.serverAddress else {
-                throw ProviderError.configuration(field: "protocolConfiguration.serverAddress")
-            }
-            
-            self.hostname = hostname
-            if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference {
-                self.username = username
-                password = try? Keychain.password(for: username, reference: passwordReference)
-            } else {
-                username = nil
-                password = nil
-            }
-        }
-    }
-    
     /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
         
@@ -477,16 +442,17 @@ extension TunnelKitProvider {
          
          - Parameter bundleIdentifier: The provider bundle identifier required to locate the tunnel extension.
          - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
-         - Parameter endpoint: The `TunnelKitProvider.AuthenticatedEndpoint` the tunnel will connect to.
+         - Parameter hostname: The hostname the tunnel will connect to.
+         - Parameter credentials: The optional credentials to authenticate with.
          - Returns: The generated `NETunnelProviderProtocol` object.
-         - Throws: `ProviderError.configuration` if unable to store the `endpoint.password` to the `appGroup` keychain.
+         - Throws: `ProviderError.credentials` if unable to store `credentials.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, endpoint: AuthenticatedEndpoint) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, hostname: String, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
-            protocolConfiguration.serverAddress = endpoint.hostname
-            if let username = endpoint.username, let password = endpoint.password {
+            protocolConfiguration.serverAddress = hostname
+            if let username = credentials?.username, let password = credentials?.password {
                 let keychain = Keychain(group: appGroup)
                 do {
                     try keychain.set(password: password, for: username, label: Bundle.main.bundleIdentifier)

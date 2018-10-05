@@ -583,7 +583,7 @@ public class SessionProxy {
         negotiationKey.controlState = .preAuth
         
         do {
-            authenticator = try Authenticator(configuration.username, pushReply?.authToken ?? configuration.password)
+            authenticator = try Authenticator(configuration.credentials?.username, pushReply?.authToken ?? configuration.credentials?.password)
             try authenticator?.putAuth(into: negotiationKey.tls)
         } catch let e {
             deferStop(.shutdown, e)

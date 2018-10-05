@@ -57,11 +57,8 @@ class AppExtensionTests: XCTestCase {
 
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
-        let endpoint = TunnelKitProvider.AuthenticatedEndpoint(
-            hostname: "example.com",
-            username: "foo",
-            password: "bar"
-        )
+        let hostname = "example.com"
+        let credentials = SessionProxy.Credentials("foo", "bar")
 
         builder = TunnelKitProvider.ConfigurationBuilder(ca: CryptoContainer(pem: "abcdef"))
         XCTAssertNotNil(builder)
@@ -70,13 +67,13 @@ class AppExtensionTests: XCTestCase {
         builder.digest = .sha256
         cfg = builder.build()
 
-        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, endpoint: endpoint)
+        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, hostname: hostname, credentials: credentials)
         XCTAssertNotNil(proto)
         
         XCTAssertEqual(proto?.providerBundleIdentifier, identifier)
-        XCTAssertEqual(proto?.serverAddress, endpoint.hostname)
-        XCTAssertEqual(proto?.username, endpoint.username)
-        XCTAssertEqual(proto?.passwordReference, try? Keychain(group: appGroup).passwordReference(for: endpoint.username))
+        XCTAssertEqual(proto?.serverAddress, hostname)
+        XCTAssertEqual(proto?.username, credentials.username)
+        XCTAssertEqual(proto?.passwordReference, try? Keychain(group: appGroup).passwordReference(for: credentials.username))
 
         if let pc = proto?.providerConfiguration {
             print("\(pc)")
