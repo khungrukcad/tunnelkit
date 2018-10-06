@@ -127,7 +127,7 @@ For more details please see [CONTRIBUTING][contrib-readme].
 
 ### Part I
 
-Copyright 2018-present Davide De Rosa
+Copyright 2018 Davide De Rosa
 
 This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content].
 
