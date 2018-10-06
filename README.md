@@ -80,16 +80,15 @@ For the VPN to work properly, the `BasicTunnel` demo requires:
 
 both in the main app and the tunnel extension target.
 
-In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `builder.ca` to the PEM encoded certificate of your VPN server's CA (or `nil` to skip CA validation, however discouraged).
+In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `ca` to the PEM encoded certificate of your VPN server's CA.
 
 Example:
 
-    builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(.udp, 1194)]
-    builder.ca = """
-    -----BEGIN CERTIFICATE-----
-    MIIFJDCC...
-    -----END CERTIFICATE-----
-    """
+    private let ca = CryptoContainer(pem: """
+	-----BEGIN CERTIFICATE-----
+	MIIFJDCC...
+	-----END CERTIFICATE-----
+    """)
 
 ## Documentation
 
