@@ -604,7 +604,6 @@
 				0E1108A61F77B9F900A92462 /* Frameworks */,
 				0E1108A71F77B9F900A92462 /* Resources */,
 				B90665BB6148F76EE6C7B876 /* [CP] Embed Pods Frameworks */,
-				CB8BC028A305D776BF99051F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -625,7 +624,6 @@
 				0E17D7F51F730D9F009EE129 /* Frameworks */,
 				0E17D7F61F730D9F009EE129 /* Headers */,
 				0E17D7F71F730D9F009EE129 /* Resources */,
-				D908F7F68DFAC49339D3642D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -645,7 +643,6 @@
 				0E3251C11F95770D00C108D9 /* Frameworks */,
 				0E3251C21F95770D00C108D9 /* Headers */,
 				0E3251C31F95770D00C108D9 /* Resources */,
-				4D0B460E051C7982B3C6766D /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -770,25 +767,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4D0B460E051C7982B3C6766D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TunnelKit-TunnelKit-macOS/Pods-TunnelKit-TunnelKit-macOS-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		94AA64A70C6BF0AD8E5BA279 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -831,7 +809,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-frameworks.sh",
 				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
 			);
@@ -842,45 +820,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CB8BC028A305D776BF99051F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D908F7F68DFAC49339D3642D /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TunnelKit-TunnelKit-iOS/Pods-TunnelKit-TunnelKit-iOS-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */

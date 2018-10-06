@@ -47,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         let logDestination = ConsoleDestination()
         logDestination.minLevel = .debug
         logDestination.format = "$DHH:mm:ss$d $L $N.$F:$l - $M"

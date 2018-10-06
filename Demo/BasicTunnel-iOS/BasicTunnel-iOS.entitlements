@@ -12,7 +12,7 @@
 	</array>
 	<key>keychain-access-groups</key>
 	<array>
-		<string>$(AppIdentifierPrefix)group.com.privateinternetaccess.ios.demo.BasicTunnel</string>
+		<string>$(AppIdentifierPrefix)group.com.algoritmico.ios.demo.BasicTunnel</string>
 	</array>
 </dict>
 </plist>
