@@ -105,45 +105,6 @@ extension TunnelKitProvider {
         }
     }
 
-    /// Encapsulates an endpoint along with the authentication credentials.
-    public struct AuthenticatedEndpoint {
-        
-        /// The remote hostname or IP address.
-        public let hostname: String
-        
-        /// The username.
-        public let username: String
-        
-        /// The password.
-        public let password: String
-        
-        /// :nodoc:
-        public init(hostname: String, username: String, password: String) {
-            self.hostname = hostname
-            self.username = username
-            self.password = password
-        }
-        
-        init(protocolConfiguration: NEVPNProtocol) throws {
-            guard let hostname = protocolConfiguration.serverAddress else {
-                throw ProviderError.configuration(field: "protocolConfiguration.serverAddress")
-            }
-            guard let username = protocolConfiguration.username else {
-                throw ProviderError.credentials(field: "protocolConfiguration.username")
-            }
-            guard let passwordReference = protocolConfiguration.passwordReference else {
-                throw ProviderError.credentials(field: "protocolConfiguration.passwordReference")
-            }
-            guard let password = try? Keychain.password(for: username, reference: passwordReference) else {
-                throw ProviderError.credentials(field: "protocolConfiguration.passwordReference (keychain)")
-            }
-            
-            self.hostname = hostname
-            self.username = username
-            self.password = password
-        }
-    }
-    
     /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
         
@@ -164,8 +125,8 @@ extension TunnelKitProvider {
         /// The message digest algorithm.
         public var digest: SessionProxy.Digest
         
-        /// The optional CA certificate to validate server against. Set to `nil` to disable CA validation (default).
-        public var ca: CryptoContainer?
+        /// The CA certificate to validate server against.
+        public let ca: CryptoContainer
         
         /// The optional client certificate to authenticate with. Set to `nil` to disable client authentication (default).
         public var clientCertificate: CryptoContainer?
@@ -200,14 +161,16 @@ extension TunnelKitProvider {
         
         /**
          Default initializer.
+         
+         - Parameter ca: The CA certificate.
          */
-        public init() {
+        public init(ca: CryptoContainer) {
             prefersResolvedAddresses = false
             resolvedAddresses = nil
             endpointProtocols = [EndpointProtocol(.udp, 1194)]
             cipher = .aes128cbc
             digest = .sha1
-            ca = nil
+            self.ca = ca
             clientCertificate = nil
             clientKey = nil
             mtu = 1500
@@ -229,20 +192,19 @@ extension TunnelKitProvider {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
             }
 
-            let ca: CryptoContainer?
+            let ca: CryptoContainer
             let clientCertificate: CryptoContainer?
             let clientKey: CryptoContainer?
-            if let pem = providerConfiguration[S.ca] as? String {
-                ca = CryptoContainer(pem: pem)
-            } else {
-                ca = nil
+            guard let caPEM = providerConfiguration[S.ca] as? String else {
+                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.ca)]")
             }
-            if let pem = providerConfiguration[S.clientCertificate] as? String {
+            ca = CryptoContainer(pem: caPEM)
+            if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
                 guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
                     throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
                 }
 
-                clientCertificate = CryptoContainer(pem: pem)
+                clientCertificate = CryptoContainer(pem: clientPEM)
                 clientKey = CryptoContainer(pem: keyPEM)
             } else {
                 clientCertificate = nil
@@ -365,7 +327,7 @@ extension TunnelKitProvider {
         public let digest: SessionProxy.Digest
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
-        public let ca: CryptoContainer?
+        public let ca: CryptoContainer
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientCertificate`
         public let clientCertificate: CryptoContainer?
@@ -446,12 +408,10 @@ extension TunnelKitProvider {
                 S.endpointProtocols: endpointProtocols.map { $0.serialized() },
                 S.cipherAlgorithm: cipher.rawValue,
                 S.digestAlgorithm: digest.rawValue,
+                S.ca: ca.pem,
                 S.mtu: mtu,
                 S.debug: shouldDebug
             ]
-            if let ca = ca {
-                dict[S.ca] = ca.pem
-            }
             if let clientCertificate = clientCertificate {
                 dict[S.clientCertificate] = clientCertificate.pem
             }
@@ -482,24 +442,26 @@ extension TunnelKitProvider {
          
          - Parameter bundleIdentifier: The provider bundle identifier required to locate the tunnel extension.
          - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
-         - Parameter endpoint: The `TunnelKitProvider.AuthenticatedEndpoint` the tunnel will connect to.
+         - Parameter hostname: The hostname the tunnel will connect to.
+         - Parameter credentials: The optional credentials to authenticate with.
          - Returns: The generated `NETunnelProviderProtocol` object.
-         - Throws: `ProviderError.configuration` if unable to store the `endpoint.password` to the `appGroup` keychain.
+         - Throws: `ProviderError.credentials` if unable to store `credentials.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, endpoint: AuthenticatedEndpoint) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, hostname: String, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
-            let keychain = Keychain(group: appGroup)
-            do {
-                try keychain.set(password: endpoint.password, for: endpoint.username, label: Bundle.main.bundleIdentifier)
-            } catch _ {
-                throw ProviderError.credentials(field: "keychain.set()")
-            }
-            
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
-            protocolConfiguration.serverAddress = endpoint.hostname
-            protocolConfiguration.username = endpoint.username
-            protocolConfiguration.passwordReference = try? keychain.passwordReference(for: endpoint.username)
+            protocolConfiguration.serverAddress = hostname
+            if let username = credentials?.username, let password = credentials?.password {
+                let keychain = Keychain(group: appGroup)
+                do {
+                    try keychain.set(password: password, for: username, label: Bundle.main.bundleIdentifier)
+                } catch _ {
+                    throw ProviderError.credentials(field: "keychain.set()")
+                }
+                protocolConfiguration.username = username
+                protocolConfiguration.passwordReference = try? keychain.passwordReference(for: username)
+            }
             protocolConfiguration.providerConfiguration = generatedProviderConfiguration(appGroup: appGroup)
             
             return protocolConfiguration
@@ -514,11 +476,6 @@ extension TunnelKitProvider {
             log.info("\tProtocols: \(endpointProtocols)")
             log.info("\tCipher: \(cipher)")
             log.info("\tDigest: \(digest)")
-            if let _ = ca {
-                log.info("\tCA verification: enabled")
-            } else {
-                log.info("\tCA verification: disabled")
-            }
             if let _ = clientCertificate {
                 log.info("\tClient verification: enabled")
             } else {
@@ -551,11 +508,10 @@ extension TunnelKitProvider.Configuration: Equatable {
      - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
      */
     public func builder() -> TunnelKitProvider.ConfigurationBuilder {
-        var builder = TunnelKitProvider.ConfigurationBuilder()
+        var builder = TunnelKitProvider.ConfigurationBuilder(ca: ca)
         builder.endpointProtocols = endpointProtocols
         builder.cipher = cipher
         builder.digest = digest
-        builder.ca = ca
         builder.clientCertificate = clientCertificate
         builder.clientKey = clientKey
         builder.mtu = mtu

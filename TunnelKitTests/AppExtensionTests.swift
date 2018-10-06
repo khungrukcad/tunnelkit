@@ -57,27 +57,23 @@ class AppExtensionTests: XCTestCase {
 
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
-        let endpoint = TunnelKitProvider.AuthenticatedEndpoint(
-            hostname: "example.com",
-            username: "foo",
-            password: "bar"
-        )
+        let hostname = "example.com"
+        let credentials = SessionProxy.Credentials("foo", "bar")
 
-        builder = TunnelKitProvider.ConfigurationBuilder()
+        builder = TunnelKitProvider.ConfigurationBuilder(ca: CryptoContainer(pem: "abcdef"))
         XCTAssertNotNil(builder)
 
         builder.cipher = .aes128cbc
         builder.digest = .sha256
-        builder.ca = CryptoContainer(pem: "abcdef")
         cfg = builder.build()
 
-        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, endpoint: endpoint)
+        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, hostname: hostname, credentials: credentials)
         XCTAssertNotNil(proto)
         
         XCTAssertEqual(proto?.providerBundleIdentifier, identifier)
-        XCTAssertEqual(proto?.serverAddress, endpoint.hostname)
-        XCTAssertEqual(proto?.username, endpoint.username)
-        XCTAssertEqual(proto?.passwordReference, try? Keychain(group: appGroup).passwordReference(for: endpoint.username))
+        XCTAssertEqual(proto?.serverAddress, hostname)
+        XCTAssertEqual(proto?.username, credentials.username)
+        XCTAssertEqual(proto?.passwordReference, try? Keychain(group: appGroup).passwordReference(for: credentials.username))
 
         if let pc = proto?.providerConfiguration {
             print("\(pc)")
@@ -87,7 +83,7 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca?.pem)
+        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca.pem)
         XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.mtu)
         XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? Int, cfg.renegotiatesAfterSeconds)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)

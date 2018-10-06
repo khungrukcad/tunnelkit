@@ -38,6 +38,29 @@
 import Foundation
 
 extension SessionProxy {
+    
+    /// A pair of credentials for authentication.
+    public struct Credentials: Codable, Equatable {
+
+        /// The username.
+        public let username: String
+        
+        /// The password.
+        public let password: String
+        
+        /// :nodoc
+        public init(_ username: String, _ password: String) {
+            self.username = username
+            self.password = password
+        }
+        
+        // MARK: Equatable
+
+        /// :nodoc:
+        public static func ==(lhs: Credentials, rhs: Credentials) -> Bool {
+            return (lhs.username == rhs.username) && (lhs.password == rhs.password)
+        }
+    }
 
     /// The available encryption algorithms.
     public enum Cipher: String, Codable, CustomStringConvertible {
@@ -112,11 +135,8 @@ extension SessionProxy {
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
-        /// An username.
-        public let username: String
-        
-        /// A password.
-        public let password: String
+        /// The credentials.
+        public var credentials: Credentials?
         
         /// The cipher algorithm for data encryption.
         public var cipher: Cipher
@@ -124,8 +144,8 @@ extension SessionProxy {
         /// The digest algorithm for HMAC.
         public var digest: Digest
         
-        /// The path to the optional CA for TLS negotiation (PEM format).
-        public var caPath: String?
+        /// The path to the CA for TLS negotiation (PEM format).
+        public let caPath: String
         
         /// The path to the optional client certificate for TLS negotiation (PEM format).
         public var clientCertificatePath: String?
@@ -143,12 +163,11 @@ extension SessionProxy {
         public var renegotiatesAfter: TimeInterval?
         
         /// :nodoc:
-        public init(username: String, password: String) {
-            self.username = username
-            self.password = password
+        public init(caPath: String) {
+            credentials = nil
             cipher = .aes128cbc
             digest = .sha1
-            caPath = nil
+            self.caPath = caPath
             clientCertificatePath = nil
             clientKeyPath = nil
             compressionFraming = .disabled
@@ -163,8 +182,7 @@ extension SessionProxy {
          */
         public func build() -> Configuration {
             return Configuration(
-                username: username,
-                password: password,
+                credentials: credentials,
                 cipher: cipher,
                 digest: digest,
                 caPath: caPath,
@@ -180,11 +198,8 @@ extension SessionProxy {
     /// The immutable configuration for `SessionProxy`.
     public struct Configuration: Codable {
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.username`
-        public let username: String
-        
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.password`
-        public let password: String
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.credentials`
+        public let credentials: Credentials?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
         public let cipher: Cipher
@@ -193,7 +208,7 @@ extension SessionProxy {
         public let digest: Digest
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
-        public let caPath: String?
+        public let caPath: String
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificatePath`
         public let clientCertificatePath: String?

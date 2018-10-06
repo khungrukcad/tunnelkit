@@ -116,24 +116,26 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     /// :nodoc:
     open override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
-        let endpoint: AuthenticatedEndpoint
+
+        // required configuration
+        let hostname: String
         do {
             guard let tunnelProtocol = protocolConfiguration as? NETunnelProviderProtocol else {
                 throw ProviderError.configuration(field: "protocolConfiguration")
             }
+            guard let serverAddress = tunnelProtocol.serverAddress else {
+                throw ProviderError.configuration(field: "protocolConfiguration.serverAddress")
+            }
             guard let providerConfiguration = tunnelProtocol.providerConfiguration else {
                 throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration")
             }
-            try endpoint = AuthenticatedEndpoint(protocolConfiguration: tunnelProtocol)
+            hostname = serverAddress
             try appGroup = Configuration.appGroup(from: providerConfiguration)
             try cfg = Configuration.parsed(from: providerConfiguration)
         } catch let e {
             var message: String?
             if let te = e as? ProviderError {
                 switch te {
-                case .credentials(let field):
-                    message = "Tunnel credentials unavailable: \(field)"
-                    
                 case .configuration(let field):
                     message = "Tunnel configuration incomplete: \(field)"
                     
@@ -146,7 +148,16 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             return
         }
 
-        strategy = ConnectionStrategy(hostname: endpoint.hostname, configuration: cfg)
+        // optional credentials
+        let credentials: SessionProxy.Credentials?
+        if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference,
+            let password = try? Keychain.password(for: username, reference: passwordReference) {
+            credentials = SessionProxy.Credentials(username, password)
+        } else {
+            credentials = nil
+        }
+
+        strategy = ConnectionStrategy(hostname: hostname, configuration: cfg)
 
         if let defaults = defaults, var existingLog = cfg.existingLog(in: defaults) {
             if let i = existingLog.index(of: logSeparator) {
@@ -171,20 +182,16 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             return
         }
         
-        let caPath: String?
+        let caPath: String
         let clientCertificatePath: String?
         let clientKeyPath: String?
-        if let ca = cfg.ca {
-            do {
-                let url = temporaryURL(forKey: Configuration.Keys.ca)
-                try ca.write(to: url)
-                caPath = url.path
-            } catch {
-                completionHandler(ProviderError.certificateSerialization)
-                return
-            }
-        } else {
-            caPath = nil
+        do {
+            let url = temporaryURL(forKey: Configuration.Keys.ca)
+            try cfg.ca.write(to: url)
+            caPath = url.path
+        } catch {
+            completionHandler(ProviderError.certificateSerialization)
+            return
         }
         if let clientCertificate = cfg.clientCertificate {
             do {
@@ -214,10 +221,10 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         cfg.print(appVersion: appVersion)
         
 //        log.info("Temporary CA is stored to: \(caPath)")
-        var sessionConfiguration = SessionProxy.ConfigurationBuilder(username: endpoint.username, password: endpoint.password)
+        var sessionConfiguration = SessionProxy.ConfigurationBuilder(caPath: caPath)
+        sessionConfiguration.credentials = credentials
         sessionConfiguration.cipher = cfg.cipher
         sessionConfiguration.digest = cfg.digest
-        sessionConfiguration.caPath = caPath
         sessionConfiguration.clientCertificatePath = clientCertificatePath
         sessionConfiguration.clientKeyPath = clientKeyPath
         sessionConfiguration.compressionFraming = cfg.compressionFraming

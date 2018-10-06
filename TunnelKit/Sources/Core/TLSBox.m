@@ -77,7 +77,8 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 - (instancetype)init
 {
-    return [self initWithCAPath:nil clientCertificatePath:nil clientKeyPath:nil];
+    [NSException raise:NSInvalidArgumentException format:@"Use initWithCAPath:clientCertificatePath:clientKeyPath:"];
+    return nil;
 }
 
 - (instancetype)initWithCAPath:(NSString *)caPath clientCertificatePath:(NSString *)clientCertificatePath clientKeyPath:(NSString *)clientKeyPath
@@ -115,18 +116,13 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     
     self.ctx = SSL_CTX_new(TLS_client_method());
     SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
-    if (self.caPath) {
-        SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
-        if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
-            ERR_print_errors_fp(stdout);
-            if (error) {
-                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
-            }
-            return NO;
+    SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
+    if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
+        ERR_print_errors_fp(stdout);
+        if (error) {
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
         }
-    }
-    else {
-        SSL_CTX_set_verify(self.ctx, SSL_VERIFY_NONE, NULL);
+        return NO;
     }
     
     if (self.clientCertificatePath) {
