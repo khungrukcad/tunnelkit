@@ -177,6 +177,9 @@ public class SessionProxy {
             switch tlsWrap.strategy {
             case .auth:
                 controlChannel = try ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.digest)
+
+            case .crypt:
+                controlChannel = try ControlChannel(withCryptKey: tlsWrap.key)
             }
         } else {
             controlChannel = ControlChannel()
