@@ -2,12 +2,6 @@
 
 This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms. The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0i, which in turn enables support for a certain range of encryption and digest algorithms.
 
-## Contacts
-
-Twitter: [@keeshux][me-twitter]
-
-Website: [davidederosa.com][me-website]
-
 ## Getting started
 
 The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegotiation and replay protection are also included, but full-fledged configuration files (.ovpn) are not currently supported.
@@ -116,19 +110,11 @@ The goal of this module is packaging up a black box implementation of a [NEPacke
 
 Currently, the extension supports VPN over both [UDP][ne-udp] and [TCP][ne-tcp] sockets. A debug log snapshot is optionally maintained and shared to host apps via `UserDefaults` in a shared App Group.
 
-## Contributing
-
-By contributing to this project you are agreeing to the terms stated in the [Contributor License Agreement (CLA)][contrib-cla].
-
-For more details please see [CONTRIBUTING][contrib-readme].
-
 ## License
 
 ### Part I
 
-Copyright 2018 Davide De Rosa
-
-This project is licensed under the [GPLv3 license][license-gpl3], which can be found [here][license-content].
+This project is licensed under the [GPLv3][license-content].
 
 ### Part II
 
@@ -136,7 +122,13 @@ As seen in [libsignal-protocol-c][license-signal]:
 
 > Additional Permissions For Submission to Apple App Store: Provided that you are otherwise in compliance with the GPLv3 for each covered work you convey (including without limitation making the Corresponding Source available in compliance with Section 6 of the GPLv3), the Author also grants you the additional permission to convey through the Apple App Store non-source executable versions of the Program as incorporated into each applicable covered work as Executable Versions only under the Mozilla Public License version 2.0 (https://www.mozilla.org/en-US/MPL/2.0/).
 
-## Acknowledgements
+### Contributing
+
+By contributing to this project you are agreeing to the terms stated in the [Contributor License Agreement (CLA)][contrib-cla].
+
+For more details please see [CONTRIBUTING][contrib-readme].
+
+## Credits
 
 - [PIATunnel][dep-piatunnel-repo] - Copyright (c) 2018-Present Private Internet Access
 - [SwiftyBeaver][dep-swiftybeaver-repo] - Copyright (c) 2015 Sebastian Kreutzberger
@@ -145,17 +137,20 @@ This product includes software developed by the OpenSSL Project for use in the O
 
 © 2002-2018 OpenVPN Inc. - OpenVPN is a registered trademark of OpenVPN Inc.
 
+## Contacts
+
+Twitter: [@keeshux][about-twitter]
+
+Website: [davidederosa.com][about-website]
+
 ## Donations
 
 TunnelKit is free software, donations are extremely welcome.
 
-Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][me-btc]
-
-[me-twitter]: https://twitter.com/keeshux
-[me-website]: https://davidederosa.com
-[me-btc]: bitcoin:16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju
+Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][about-btc]
 
 [openvpn]: https://openvpn.net/index.php/open-source/overview.html
+
 [dep-cocoapods]: https://guides.cocoapods.org/using/getting-started.html
 [dep-jazzy]: https://github.com/realm/jazzy
 [dep-brew]: https://brew.sh/
@@ -166,14 +161,15 @@ Bitcoin address: [16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju][me-btc]
 [ne-udp]: https://developer.apple.com/documentation/networkextension/nwudpsession
 [ne-tcp]: https://developer.apple.com/documentation/networkextension/nwtcpconnection
 
-[license-content]: /LICENSE
-[license-gpl3]: https://choosealicense.com/licenses/gpl-3.0/
+[license-content]: LICENSE
 [license-signal]: https://github.com/signalapp/libsignal-protocol-c#license
 [license-mit]: https://choosealicense.com/licenses/mit/
-
-[contrib-cla]: /CLA.rst
-[contrib-readme]: /CONTRIBUTING.md
+[contrib-cla]: CLA.rst
+[contrib-readme]: CONTRIBUTING.md
 
 [dep-piatunnel-repo]: https://github.com/pia-foss/tunnel-apple
-[dep-piatunnel-license]: https://github.com/pia-foss/tunnel-apple/blob/master/LICENSE
 [dep-swiftybeaver-repo]: https://github.com/SwiftyBeaver/SwiftyBeaver
+
+[about-twitter]: https://twitter.com/keeshux
+[about-website]: https://davidederosa.com
+[about-btc]: bitcoin:16w2AWamiH2SS68NYSMDcrbh5MnZ1c5eju
