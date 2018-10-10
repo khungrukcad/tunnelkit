@@ -1,6 +1,6 @@
 #!/bin/sh
 PWD=`dirname $0`
-VERSION=`cat $PWD/VERSION`
+VERSION=$1
 BUILD=`git rev-list HEAD --count`
 agvtool new-marketing-version $VERSION
 agvtool new-version $BUILD
