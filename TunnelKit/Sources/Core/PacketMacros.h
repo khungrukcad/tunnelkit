@@ -45,6 +45,8 @@ NS_ASSUME_NONNULL_BEGIN
 #define PacketAckLengthLength       ((NSInteger)1)
 #define PacketPeerIdLength          ((NSInteger)3)
 #define PacketPeerIdDisabled        ((uint32_t)0xffffffu)
+#define PacketReplayIdLength        ((NSInteger)4)
+#define PacketReplayTimestampLength ((NSInteger)4)
 
 typedef NS_ENUM(uint8_t, PacketCode) {
     PacketCodeSoftResetV1           = 0x03,
