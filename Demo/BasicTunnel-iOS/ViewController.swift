@@ -91,11 +91,12 @@ extension ViewController {
         var builder = TunnelKitProvider.ConfigurationBuilder(ca: ca)
         let socketType: TunnelKitProvider.SocketType = switchTCP.isOn ? .tcp : .udp
         builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(socketType, port)]
-        builder.cipher = .aes128cbc
+        builder.cipher = .aes256gcm
         builder.digest = .sha1
         builder.mtu = 1350
         builder.compressionFraming = .compLZO
         builder.renegotiatesAfterSeconds = nil
+        builder.usesPIAPatches = true
         builder.shouldDebug = true
         builder.debugLogKey = "Log"
         
