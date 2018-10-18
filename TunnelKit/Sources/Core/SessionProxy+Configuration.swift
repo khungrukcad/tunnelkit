@@ -162,6 +162,9 @@ extension SessionProxy {
         /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
         public var renegotiatesAfter: TimeInterval?
         
+        /// Server is patched for the PIA VPN provider.
+        public var usesPIAPatches: Bool
+
         /// :nodoc:
         public init(caPath: String) {
             credentials = nil
@@ -173,6 +176,7 @@ extension SessionProxy {
             compressionFraming = .disabled
             keepAliveInterval = nil
             renegotiatesAfter = nil
+            usesPIAPatches = false
         }
 
         /**
@@ -190,7 +194,8 @@ extension SessionProxy {
                 clientKeyPath: clientKeyPath,
                 compressionFraming: compressionFraming,
                 keepAliveInterval: keepAliveInterval,
-                renegotiatesAfter: renegotiatesAfter
+                renegotiatesAfter: renegotiatesAfter,
+                usesPIAPatches: usesPIAPatches
             )
         }
     }
@@ -224,5 +229,8 @@ extension SessionProxy {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.renegotiatesAfter`
         public let renegotiatesAfter: TimeInterval?
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
+        public let usesPIAPatches: Bool
     }
 }
