@@ -46,6 +46,8 @@
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58F12F2138AC2F00A49F27 /* DNSTests.swift */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
+		0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
+		0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
 		0E85A25A202CC5AF0059E9F9 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */; };
@@ -216,6 +218,7 @@
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
+		0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PIA.swift"; sourceTree = "<group>"; };
 		0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppExtensionTests.swift; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EncryptionTests.swift; sourceTree = "<group>"; };
@@ -475,6 +478,7 @@
 				0ED9C8632138139000621BA3 /* SessionProxy+CompressionFraming.swift */,
 				0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */,
 				0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */,
+				0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */,
 				0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */,
 				0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */,
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
@@ -873,6 +877,7 @@
 				0EC1BBA520D71190007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4AB200760EC00F81029 /* MemoryDestination.swift in Sources */,
 				0EFEB4AE2007625E00F81029 /* Keychain.swift in Sources */,
+				0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
 				0EBBF3002085196000E36B40 /* NWTCPConnectionState+Description.swift in Sources */,
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
@@ -928,6 +933,7 @@
 				0EFEB4B12007627700F81029 /* MemoryDestination.swift in Sources */,
 				0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */,
+				0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
 				0EFEB4992006D7F300F81029 /* SessionProxy.swift in Sources */,
 				0EBBF3012085196000E36B40 /* NWTCPConnectionState+Description.swift in Sources */,
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
