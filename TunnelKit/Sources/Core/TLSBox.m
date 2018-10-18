@@ -75,6 +75,25 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 @implementation TLSBox
 
++ (NSString *)md5ForCertificatePath:(NSString *)path
+{
+    const EVP_MD *alg = EVP_get_digestbyname("MD5");
+    uint8_t md[16];
+    unsigned int len;
+
+    FILE *pem = fopen([path cStringUsingEncoding:NSASCIIStringEncoding], "r");
+    X509 *cert = PEM_read_X509(pem, NULL, NULL, NULL);
+    X509_digest(cert, alg, md, &len);
+    X509_free(cert);
+    NSCAssert2(len == sizeof(md), @"Unexpected MD5 size (%d != %lu)", len, sizeof(md));
+
+    NSMutableString *hex = [[NSMutableString alloc] initWithCapacity:2 * sizeof(md)];
+    for (int i = 0; i < sizeof(md); ++i) {
+        [hex appendFormat:@"%02x", md[i]];
+    }
+    return hex;
+}
+
 - (instancetype)init
 {
     [NSException raise:NSInvalidArgumentException format:@"Use initWithCAPath:clientCertificatePath:clientKeyPath:"];

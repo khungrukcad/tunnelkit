@@ -86,6 +86,14 @@ class EncryptionTests: XCTestCase {
         let decrypted = try! server.decrypter().decryptData(encrypted, extra: extra)
         XCTAssertEqual(plain, decrypted)
     }
+    
+    func testCertificateMD5() {
+        let path = Bundle(for: EncryptionTests.self).path(forResource: "pia-2048", ofType: "pem")!
+        let md5 = TLSBox.md5(forCertificatePath: path)
+        let exp = "e2fccccaba712ccc68449b1c56427ac1"
+        print(md5)
+        XCTAssertEqual(md5, exp)
+    }
 
     private func clientServer(_ c: String?, _ d: String?) -> (CryptoBox, CryptoBox) {
         let client = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)

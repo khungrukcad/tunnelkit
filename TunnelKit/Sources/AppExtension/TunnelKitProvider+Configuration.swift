@@ -146,6 +146,9 @@ extension TunnelKitProvider {
         /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
         public var renegotiatesAfterSeconds: Int?
         
+        /// Server is patched for the PIA VPN provider.
+        public var usesPIAPatches: Bool?
+        
         // MARK: Debugging
         
         /// Enables debugging. If `true`, then `debugLogKey` is a mandatory field.
@@ -177,6 +180,7 @@ extension TunnelKitProvider {
             compressionFraming = .disabled
             keepAliveSeconds = nil
             renegotiatesAfterSeconds = nil
+            usesPIAPatches = false
             shouldDebug = false
             debugLogKey = nil
             debugLogFormat = nil
@@ -232,6 +236,7 @@ extension TunnelKitProvider {
             }
             keepAliveSeconds = providerConfiguration[S.keepAlive] as? Int
             renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
+            usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
             if shouldDebug {
@@ -268,6 +273,7 @@ extension TunnelKitProvider {
                 compressionFraming: compressionFraming,
                 keepAliveSeconds: keepAliveSeconds,
                 renegotiatesAfterSeconds: renegotiatesAfterSeconds,
+                usesPIAPatches: usesPIAPatches,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil
@@ -303,6 +309,8 @@ extension TunnelKitProvider {
             static let keepAlive = "KeepAlive"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
+            
+            static let usesPIAPatches = "UsesPIAPatches"
             
             static let debug = "Debug"
             
@@ -346,6 +354,9 @@ extension TunnelKitProvider {
 
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
         public let renegotiatesAfterSeconds: Int?
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.usesPIAPatches`
+        public let usesPIAPatches: Bool?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
@@ -427,6 +438,9 @@ extension TunnelKitProvider {
             }
             if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
+            }
+            if let usesPIAPatches = usesPIAPatches {
+                dict[S.usesPIAPatches] = usesPIAPatches
             }
             if let debugLogKey = debugLogKey {
                 dict[S.debugLogKey] = debugLogKey
@@ -518,6 +532,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.compressionFraming = compressionFraming
         builder.keepAliveSeconds = keepAliveSeconds
         builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
+        builder.usesPIAPatches = usesPIAPatches
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
         builder.debugLogFormat = debugLogFormat

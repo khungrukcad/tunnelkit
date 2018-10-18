@@ -556,8 +556,22 @@ public class SessionProxy {
         keys[negotiationKeyIdx] = newKey
         log.debug("Negotiation key index is \(negotiationKeyIdx)")
 
+        let payload = hardResetPayload() ?? Data()
         negotiationKey.state = .hardReset
-        enqueueControlPackets(code: .hardResetClientV2, key: UInt8(negotiationKeyIdx), payload: Data())
+        enqueueControlPackets(code: .hardResetClientV2, key: UInt8(negotiationKeyIdx), payload: payload)
+    }
+    
+    private func hardResetPayload() -> Data? {
+        guard !configuration.usesPIAPatches else {
+            let caMD5 = TLSBox.md5(forCertificatePath: configuration.caPath)
+            log.debug("CA MD5 is: \(caMD5)")
+            return try? PIAHardReset(
+                caMd5Digest: caMD5,
+                cipher: configuration.cipher,
+                digest: configuration.digest
+            ).encodedData()
+        }
+        return nil
     }
     
     // Ruby: soft_reset

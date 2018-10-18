@@ -234,6 +234,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
             sessionConfiguration.renegotiatesAfter = TimeInterval(renegotiatesAfterSeconds)
         }
+        sessionConfiguration.usesPIAPatches = cfg.usesPIAPatches ?? false
 
         let proxy: SessionProxy
         do {

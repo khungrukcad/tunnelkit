@@ -1,8 +1,8 @@
 //
-//  TLSBox.h
+//  SessionProxy+PIA.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 2/3/17.
+//  Created by Davide De Rosa on 10/18/18.
 //  Copyright (c) 2018 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/keeshux
@@ -35,41 +35,43 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+import Foundation
 
-NS_ASSUME_NONNULL_BEGIN
-
-extern const NSInteger TLSBoxMaxBufferLength;
-
-extern NSString *const TLSBoxPeerVerificationErrorNotification;
-
-//
-// cipher text is safe within NSData
-// plain text might be sensitive and must avoid NSData
-//
-// WARNING: not thread-safe!
-//
-@interface TLSBox : NSObject
-
-+ (NSString *)md5ForCertificatePath:(NSString *)path;
-
-- (instancetype)initWithCAPath:(NSString *)caPath
-         clientCertificatePath:(nullable NSString *)clientCertificatePath
-                 clientKeyPath:(nullable NSString *)clientKeyPath;
-
-- (BOOL)startWithError:(NSError **)error;
-
-- (nullable NSData *)pullCipherTextWithError:(NSError **)error;
-// WARNING: text must be able to hold plain text output
-- (BOOL)pullRawPlainText:(uint8_t *)text length:(NSInteger *)length error:(NSError **)error;
-
-- (BOOL)putCipherText:(NSData *)text error:(NSError **)error;
-- (BOOL)putRawCipherText:(const uint8_t *)text length:(NSInteger)length error:(NSError **)error;
-- (BOOL)putPlainText:(NSString *)text error:(NSError **)error;
-- (BOOL)putRawPlainText:(const uint8_t *)text length:(NSInteger)length error:(NSError **)error;
-
-- (BOOL)isConnected;
-
-@end
-
-NS_ASSUME_NONNULL_END
+extension SessionProxy {
+    struct PIAHardReset {
+        private static let obfuscationKeyLength = 3
+        
+        private static let magic = "53eo0rk92gxic98p1asgl5auh59r1vp4lmry1e3chzi100qntd"
+        
+        private static let encodedFormat = "\(magic)crypto\t%@|%@\tca\t%@"
+        
+        private let caMd5Digest: String
+        
+        private let cipherName: String
+        
+        private let digestName: String
+        
+        init(caMd5Digest: String, cipher: Cipher, digest: Digest) {
+            self.caMd5Digest = caMd5Digest
+            cipherName = cipher.rawValue.lowercased()
+            digestName = digest.rawValue.lowercased()
+        }
+        
+        // Ruby: pia_settings
+        func encodedData() throws -> Data {
+            guard let plainData = String(format: PIAHardReset.encodedFormat, cipherName, digestName, caMd5Digest).data(using: .ascii) else {
+                fatalError("Unable to encode string to ASCII")
+            }
+            let keyBytes = try SecureRandom.data(length: PIAHardReset.obfuscationKeyLength)
+            
+            var encodedData = Data(keyBytes)
+            for (i, b) in plainData.enumerated() {
+                let keyChar = keyBytes[i % keyBytes.count]
+                let xorredB = b ^ keyChar
+                
+                encodedData.append(xorredB)
+            }
+            return encodedData
+        }
+    }
+}
