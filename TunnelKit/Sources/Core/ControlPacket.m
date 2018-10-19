@@ -176,3 +176,52 @@
 }
 
 @end
+
+@implementation ControlPacket (Encryption)
+
+- (NSInteger)capacityWithEncrypter:(id<Encrypter>)encrypter
+{
+    return PacketOpcodeLength + PacketSessionIdLength + PacketReplayIdLength + PacketReplayTimestampLength + [encrypter encryptionCapacityWithLength:self.capacity];
+}
+    
+- (BOOL)serializeTo:(uint8_t *)to encryptingWith:(nonnull id<Encrypter>)encrypter replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp length:(NSInteger *)length adLength:(NSInteger)adLength error:(NSError *__autoreleasing  _Nullable * _Nullable)error
+{
+    uint8_t *ptr;
+    
+    ptr = to;
+    ptr += PacketHeaderSet(to, self.code, self.key, self.sessionId.bytes);
+    *(uint32_t *)ptr = CFSwapInt32HostToBig(replayId);
+    ptr += PacketReplayIdLength;
+    *(uint32_t *)ptr = CFSwapInt32HostToBig(timestamp);
+    ptr += PacketReplayTimestampLength;
+    
+    NSAssert2(ptr - to == adLength, @"Incorrect AD bytes (%ld != %ld)", ptr - to, (long)adLength);
+    
+    NSMutableData *msg = [[NSMutableData alloc] initWithLength:self.rawCapacity];
+    ptr = msg.mutableBytes;
+    ptr += [self rawSerializeTo:ptr];
+    
+    CryptoFlags flags;
+    flags.ad = to;
+    flags.adLength = adLength;
+    NSInteger encryptedMsgLength;
+    if (![encrypter encryptBytes:msg.bytes length:msg.length dest:(to + adLength) destLength:&encryptedMsgLength flags:&flags error:error]) {
+        return NO;
+    }
+    *length = adLength + encryptedMsgLength;
+    
+    return YES;
+}
+
+- (NSData *)serializedWithEncrypter:(id<Encrypter>)encrypter replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp adLength:(NSInteger)adLength error:(NSError *__autoreleasing  _Nullable * _Nullable)error
+{
+    NSMutableData *data = [[NSMutableData alloc] initWithLength:[self capacityWithEncrypter:encrypter]];
+    NSInteger length;
+    if (![self serializeTo:data.mutableBytes encryptingWith:encrypter replayId:replayId timestamp:timestamp length:&length adLength:adLength error:error]) {
+        return nil;
+    }
+    data.length = length;
+    return data;
+}
+
+@end

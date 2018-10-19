@@ -33,7 +33,6 @@
 #import "Allocation.h"
 #import "Errors.h"
 
-const NSInteger CryptoCTRADLength       = PacketOpcodeLength + PacketSessionIdLength + PacketReplayIdLength + PacketReplayTimestampLength;
 const NSInteger CryptoCTRTagLength      = 32;
 
 @interface CryptoCTR ()

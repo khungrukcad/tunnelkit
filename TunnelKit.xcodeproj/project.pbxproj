@@ -50,6 +50,7 @@
 		0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B15C62152B05E00984B17 /* CryptoCTR.m */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
+		0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */; };
 		0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58F12F2138AC2F00A49F27 /* DNSTests.swift */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
 		0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
@@ -225,6 +226,7 @@
 		0E3B15C52152B05E00984B17 /* CryptoCTR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCTR.h; sourceTree = "<group>"; };
 		0E3B15C62152B05E00984B17 /* CryptoCTR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCTR.m; sourceTree = "<group>"; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
+		0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannelTests.swift; sourceTree = "<group>"; };
 		0E58F12F2138AC2F00A49F27 /* DNSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSTests.swift; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 			children = (
 				0E11089E1F77B9E800A92462 /* Info.plist */,
 				0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */,
+				0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */,
 				0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */,
 				0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */,
 				0EB2B46020F0C0A4004233D7 /* DataPathPerformanceTests.swift */,
@@ -859,6 +862,7 @@
 				0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */,
 				0EB2B45920F0BD9A004233D7 /* LinkTests.swift in Sources */,
 				0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */,
+				0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */,
 				0EB2B45320F0BB44004233D7 /* EncryptionTests.swift in Sources */,
 				0EB2B45B20F0BE4C004233D7 /* TestUtils.swift in Sources */,
 				0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */,
