@@ -124,7 +124,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     int code = 1;
 
     assert(flags->adLength >= PacketIdLength);
-    memcpy(self.cipherIVEnc, &flags->packetId, PacketIdLength);
+    memcpy(self.cipherIVEnc, flags->iv, flags->ivLength);
 
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, self.cipherIVEnc, -1);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, NULL, &x, flags->ad, flags->adLength);
@@ -170,7 +170,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     int code = 1;
     
     assert(flags->adLength >= PacketIdLength);
-    memcpy(self.cipherIVDec, &flags->packetId, PacketIdLength);
+    memcpy(self.cipherIVDec, flags->iv, flags->ivLength);
 
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxDec, NULL, NULL, self.cipherIVDec, -1);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CIPHER_CTX_ctrl(self.cipherCtxDec, EVP_CTRL_GCM_SET_TAG, CryptoAEADTagLength, (uint8_t *)bytes);
@@ -265,8 +265,11 @@ const NSInteger CryptoAEADTagLength     = 16;
     uint8_t *ptr = encryptedPacket.mutableBytes;
     NSInteger encryptedPacketLength = INT_MAX;
 
+    *(uint32_t *)(ptr + headerLength) = htonl(packetId);
+
     CryptoFlags flags;
-    flags.packetId = htonl(packetId);
+    flags.iv = ptr + headerLength;
+    flags.ivLength = PacketIdLength;
     if (hasPeerId) {
         PacketHeaderSetDataV2(ptr, key, self.peerId);
         flags.ad = ptr;
@@ -277,7 +280,6 @@ const NSInteger CryptoAEADTagLength     = 16;
         flags.ad = ptr + headerLength;
         flags.adLength = PacketIdLength;
     }
-    *(uint32_t *)(ptr + headerLength) = flags.packetId;
 
     const BOOL success = [self.crypto encryptBytes:packetBytes
                                             length:packetLength
@@ -306,9 +308,10 @@ const NSInteger CryptoAEADTagLength     = 16;
     if (packet.length < headerLength) {
         return NO;
     }
-
+    
     CryptoFlags flags;
-    flags.packetId = *(const uint32_t *)(packet.bytes + headerLength);
+    flags.iv = packet.bytes + headerLength;
+    flags.ivLength = PacketIdLength;
     if (hasPeerId) {
         if (peerId != self.peerId) {
             if (error) {
@@ -334,7 +337,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     if (!success) {
         return NO;
     }
-    *packetId = ntohl(flags.packetId);
+    *packetId = ntohl(*(const uint32_t *)(flags.iv));
     return YES;
 }
 

@@ -44,7 +44,8 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DataPathDecrypter;
 
 typedef struct {
-    uint32_t packetId;
+    const uint8_t *iv;
+    int ivLength;
     const uint8_t *ad;
     int adLength;
 } CryptoFlags;
