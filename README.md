@@ -1,6 +1,13 @@
 # TunnelKit
 
+![iOS 11+](https://img.shields.io/badge/ios-11+-green.svg)
+[![OpenSSL 1.1.0i](https://img.shields.io/badge/openssl-1.1.0i-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.0-notes.html)
+[![License GPLv3](https://img.shields.io/badge/license-GPLv3-lightgray.svg)](LICENSE)
+[![Tweet](https://img.shields.io/twitter/url/http/shields.io.svg?style=social)](https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fkeeshux%2Ftunnelkit&via=keeshux&text=TunnelKit%2C%20a%20non-official%20%23OpenVPN%20client%20for%20%23Apple%20platforms&hashtags=iOS%2CmacOS)
+
 This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms. The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0i, which in turn enables support for a certain range of encryption and digest algorithms.
+
+<a href="https://www.patreon.com/keeshux"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
 ## Getting started
 
@@ -142,10 +149,6 @@ This product includes software developed by the OpenSSL Project for use in the O
 Twitter: [@keeshux][about-twitter]
 
 Website: [davidederosa.com][about-website]
-
-## Donations
-
-TunnelKit is free software. If you like it, please [support me on Patreon][about-patreon].
 
 [openvpn]: https://openvpn.net/index.php/open-source/overview.html
 
