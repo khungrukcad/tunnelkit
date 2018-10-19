@@ -68,6 +68,10 @@ class ControlChannel {
         self.init(serializer: try AuthSerializer(withKey: key, digest: digest))
     }
 
+    convenience init(withCryptKey key: StaticKey) throws {
+        self.init(serializer: try CryptSerializer(withKey: key))
+    }
+    
     private init(serializer: ControlChannelSerializer) {
         self.serializer = serializer
         sessionId = nil

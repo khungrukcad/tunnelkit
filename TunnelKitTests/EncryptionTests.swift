@@ -81,7 +81,7 @@ class EncryptionTests: XCTestCase {
         
         let packetId: [UInt8] = [0x56, 0x34, 0x12, 0x00]
         let ad: [UInt8] = [0x00, 0x12, 0x34, 0x56]
-        var flags = CryptoFlags(iv: packetId, ivLength: 4, ad: ad, adLength: 4)
+        var flags = CryptoFlags(iv: packetId, ivLength: packetId.count, ad: ad, adLength: ad.count)
         let plain = Data(hex: "00112233445566778899")
         let encrypted = try! client.encrypter().encryptData(plain, flags: &flags)
         let decrypted = try! server.decrypter().decryptData(encrypted, flags: &flags)
@@ -94,6 +94,23 @@ class EncryptionTests: XCTestCase {
         let exp = "e2fccccaba712ccc68449b1c56427ac1"
         print(md5)
         XCTAssertEqual(md5, exp)
+    }
+
+    func testCTR() {
+        let (client, server) = clientServer("aes-256-ctr", "sha256")
+
+        let original = Data(hex: "0000000000")
+        let ad: [UInt8] = [UInt8](Data(hex: "38afa8f1162096081e000000015ba35373"))
+        var flags = CryptoFlags(iv: nil, ivLength: 0, ad: ad, adLength: ad.count)
+
+//        let expEncrypted = Data(hex: "319bb8e7f8f7930cc4625079dd32a6ef9540c2fc001c53f909f712037ae9818af840b88714")
+        let encrypted = try! client.encrypter().encryptData(original, flags: &flags)
+        print(encrypted.toHex())
+//        XCTAssertEqual(encrypted, expEncrypted)
+
+        let decrypted = try! server.decrypter().decryptData(encrypted, flags: &flags)
+        print(decrypted.toHex())
+        XCTAssertEqual(decrypted, original)
     }
 
     private func clientServer(_ c: String?, _ d: String?) -> (CryptoBox, CryptoBox) {

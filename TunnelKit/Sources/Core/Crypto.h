@@ -44,10 +44,10 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DataPathDecrypter;
 
 typedef struct {
-    const uint8_t *iv;
-    int ivLength;
-    const uint8_t *ad;
-    int adLength;
+    const uint8_t *_Nullable iv;
+    NSInteger ivLength;
+    const uint8_t *_Nullable ad;
+    NSInteger adLength;
 } CryptoFlags;
 
 // WARNING: dest must be able to hold ciphertext

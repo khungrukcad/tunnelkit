@@ -35,6 +35,9 @@ extension SessionProxy {
             
             /// Authenticates payload (--tls-auth).
             case auth
+
+            /// Encrypts payload (--tls-crypt).
+            case crypt
         }
 
         /// The wrapping strategy.

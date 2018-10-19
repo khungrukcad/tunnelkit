@@ -27,6 +27,7 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegoti
     - Client certificate
 - [x] TLS wrapping
     - Authentication (`--tls-auth`)
+    - Encryption (`--tls-crypt`)
 - [x] Compression framing
     - Disabled
     - Compress (2.4)

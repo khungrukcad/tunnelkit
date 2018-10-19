@@ -58,7 +58,7 @@ class ControlChannelTests: XCTestCase {
         let data = hmac + subject
         print(data.toHex())
         
-        XCTAssertNoThrow(try server.decrypter().verifyData(data, extra: nil))
+        XCTAssertNoThrow(try server.decrypter().verifyData(data, flags: nil))
     }
     
 //    38 // HARD_RESET

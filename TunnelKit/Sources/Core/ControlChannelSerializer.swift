@@ -203,3 +203,80 @@ extension ControlChannel {
         }
     }
 }
+
+extension ControlChannel {
+    class CryptSerializer: ControlChannelSerializer {
+        private let encrypter: Encrypter
+        
+        private let decrypter: Decrypter
+        
+        private let headerLength: Int
+        
+        private var adLength: Int
+        
+        private let tagLength: Int
+        
+        private var currentReplayId: BidirectionalState<UInt32>
+        
+        private let plain: PlainSerializer
+
+        init(withKey key: StaticKey) throws {
+            let crypto = CryptoBox(cipherAlgorithm: "AES-256-CTR", digestAlgorithm: "SHA256")
+            try crypto.configure(
+                withCipherEncKey: key.cipherEncryptKey,
+                cipherDecKey: key.cipherDecryptKey,
+                hmacEncKey: key.hmacSendKey,
+                hmacDecKey: key.hmacReceiveKey
+            )
+            encrypter = crypto.encrypter()
+            decrypter = crypto.decrypter()
+            
+            headerLength = PacketOpcodeLength + PacketSessionIdLength
+            adLength = headerLength + PacketReplayIdLength + PacketReplayTimestampLength
+            tagLength = 32
+
+            currentReplayId = BidirectionalState(withResetValue: 1)
+            plain = PlainSerializer()
+        }
+        
+        func reset() {
+            currentReplayId.reset()
+        }
+        
+        func serialize(packet: ControlPacket) throws -> Data {
+            return try serialize(packet: packet, timestamp: UInt32(Date().timeIntervalSince1970))
+        }
+        
+        func serialize(packet: ControlPacket, timestamp: UInt32) throws -> Data {
+            let data = try packet.serialized(with: encrypter, replayId: currentReplayId.outbound, timestamp: timestamp, adLength: adLength)
+            currentReplayId.outbound += 1
+            return data
+        }
+        
+        // XXX: start/end are ignored, parses whole packet
+        func deserialize(data packet: Data, start: Int, end: Int?) throws -> ControlPacket {
+            let end = end ?? packet.count
+            
+            // data starts with (ad=(header + sessionId + replayId) + tag)
+            guard end >= start + adLength + tagLength else {
+                throw ControlChannelError("Missing AD+TAG")
+            }
+            
+            let encryptedCount = packet.count - adLength
+            var decryptedPacket = Data(count: decrypter.encryptionCapacity(withLength: encryptedCount))
+            var decryptedCount = 0
+            try packet.withUnsafeBytes { (src: UnsafePointer<UInt8>) in
+                var flags = CryptoFlags(iv: nil, ivLength: 0, ad: src, adLength: adLength)
+                try decryptedPacket.withUnsafeMutableBytes { (dest: UnsafeMutablePointer<UInt8>) in
+                    try decrypter.decryptBytes(src + flags.adLength, length: encryptedCount, dest: dest + headerLength, destLength: &decryptedCount, flags: &flags)
+                    memcpy(dest, src, headerLength)
+                }
+            }
+            decryptedPacket.count = headerLength + decryptedCount
+            
+            // TODO: validate replay packet id
+            
+            return try plain.deserialize(data: decryptedPacket, start: 0, end: nil)
+        }
+    }
+}

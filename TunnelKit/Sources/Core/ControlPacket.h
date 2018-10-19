@@ -62,9 +62,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface ControlPacket (Authentication)
 
-//- (NSInteger)capacityWithAuthenticator:(id<Encrypter>)auth;
-//- (BOOL)serializeTo:(uint8_t *)to authenticatingWith:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError * _Nullable __autoreleasing *)error;
 - (nullable NSData *)serializedWithAuthenticator:(id<Encrypter>)auth replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp error:(NSError * _Nullable __autoreleasing *)error;
+
+@end
+
+@interface ControlPacket (Encryption)
+
+- (nullable NSData *)serializedWithEncrypter:(id<Encrypter>)encrypter replayId:(uint32_t)replayId timestamp:(uint32_t)timestamp adLength:(NSInteger)adLength error:(NSError * _Nullable __autoreleasing *)error;
 
 @end
 
