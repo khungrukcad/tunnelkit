@@ -228,6 +228,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         sessionConfiguration.clientCertificatePath = clientCertificatePath
         sessionConfiguration.clientKeyPath = clientKeyPath
         sessionConfiguration.compressionFraming = cfg.compressionFraming
+        sessionConfiguration.tlsWrap = cfg.tlsWrap
         if let keepAliveSeconds = cfg.keepAliveSeconds {
             sessionConfiguration.keepAliveInterval = TimeInterval(keepAliveSeconds)
         }

@@ -75,13 +75,12 @@
     return (self.packetId == UINT32_MAX);
 }
 
-- (NSInteger)capacity
+- (NSInteger)rawCapacity
 {
     const BOOL isAck = self.isAck;
     const NSUInteger ackLength = self.ackIds.count;
     NSCAssert(!isAck || ackLength > 0, @"Ack packet must provide positive ackLength");
-    NSInteger n = PacketOpcodeLength + PacketSessionIdLength;
-    n += PacketAckLengthLength;
+    NSInteger n = PacketAckLengthLength;
     if (ackLength > 0) {
         n += ackLength * PacketIdLength + PacketSessionIdLength;
     }
@@ -93,10 +92,9 @@
 }
 
 // Ruby: send_ctrl
-- (NSInteger)serializeTo:(uint8_t *)to
+- (NSInteger)rawSerializeTo:(uint8_t *)to
 {
     uint8_t *ptr = to;
-    ptr += PacketHeaderSet(ptr, self.code, self.key, self.sessionId.bytes);
     if (self.ackIds.count > 0) {
         NSCParameterAssert(self.ackRemoteSessionId.length == PacketSessionIdLength);
         *ptr = self.ackIds.count;
@@ -124,10 +122,17 @@
     return ptr - to;
 }
 
+- (NSInteger)capacity
+{
+    return PacketOpcodeLength + PacketSessionIdLength + self.rawCapacity;
+}
+
 - (NSData *)serialized
 {
     NSMutableData *data = [[NSMutableData alloc] initWithLength:self.capacity];
-    [self serializeTo:data.mutableBytes];
+    uint8_t *ptr = data.mutableBytes;
+    ptr += PacketHeaderSet(ptr, self.code, self.key, self.sessionId.bytes);
+    [self rawSerializeTo:ptr];
     return data;
 }
 

@@ -156,6 +156,9 @@ extension SessionProxy {
         /// Sets compression framing, disabled by default.
         public var compressionFraming: CompressionFraming
 
+        /// The optional TLS wrapping.
+        public var tlsWrap: TLSWrap?
+
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
@@ -174,6 +177,7 @@ extension SessionProxy {
             clientCertificatePath = nil
             clientKeyPath = nil
             compressionFraming = .disabled
+            tlsWrap = nil
             keepAliveInterval = nil
             renegotiatesAfter = nil
             usesPIAPatches = false
@@ -193,6 +197,7 @@ extension SessionProxy {
                 clientCertificatePath: clientCertificatePath,
                 clientKeyPath: clientKeyPath,
                 compressionFraming: compressionFraming,
+                tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
                 usesPIAPatches: usesPIAPatches
@@ -223,6 +228,9 @@ extension SessionProxy {
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+        public var tlsWrap: TLSWrap?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?

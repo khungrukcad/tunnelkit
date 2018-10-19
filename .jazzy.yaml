@@ -19,6 +19,7 @@ custom_categories:
         - TunnelInterface
         - PacketStream
         - BidirectionalState
+        - StaticKey
         - SessionProxy
         - SessionProxyDelegate
         - SessionReply
