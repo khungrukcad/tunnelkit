@@ -79,9 +79,9 @@ class EncryptionTests: XCTestCase {
     func testGCM() {
         let (client, server) = clientServer("aes-256-gcm", nil)
         
-//        let packetId: UInt32 = 0x56341200
+        let packetId: [UInt8] = [0x56, 0x34, 0x12, 0x00]
         let ad: [UInt8] = [0x00, 0x12, 0x34, 0x56]
-        var flags = CryptoFlags(packetId: 0, ad: ad, adLength: 4)
+        var flags = CryptoFlags(iv: packetId, ivLength: 4, ad: ad, adLength: 4)
         let plain = Data(hex: "00112233445566778899")
         let encrypted = try! client.encrypter().encryptData(plain, flags: &flags)
         let decrypted = try! server.decrypter().decryptData(encrypted, flags: &flags)
