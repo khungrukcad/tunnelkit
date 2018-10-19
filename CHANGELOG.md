@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for `--tls-auth` wrapping. [#34](https://github.com/keeshux/tunnelkit/pull/34)
+- Support for `--tls-crypt` wrapping. [#35](https://github.com/keeshux/tunnelkit/pull/35)
+- Parser for static OpenVPN keys from file. [#36](https://github.com/keeshux/tunnelkit/pull/36)
+
 ### Fixed
 
 - Handling of mixed DATA_V1/DATA_V2 packets. [#30](https://github.com/keeshux/tunnelkit/issues/30)
-- Support for `--tls-auth` wrapping. [#34](https://github.com/keeshux/tunnelkit/pull/34)
-- Support for `--tls-crypt` wrapping. [#35](https://github.com/keeshux/tunnelkit/pull/35)
 
 ## 1.1.2 (2018-10-18)
 
