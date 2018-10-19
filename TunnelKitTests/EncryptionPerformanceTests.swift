@@ -80,9 +80,8 @@ class EncryptionPerformanceTests: XCTestCase {
     // 0.684s
     func testGCMEncryption() {
         let suite = TestUtils.generateDataSuite(1000, 100000)
-        let iv: [UInt8] = [0x11, 0x22, 0x33, 0x44]
         let ad: [UInt8] = [0x11, 0x22, 0x33, 0x44]
-        var flags = CryptoFlags(iv: iv, ivLength: 4, ad: ad, adLength: 4)
+        var flags = CryptoFlags(iv: nil, ivLength: 0, ad: ad, adLength: ad.count)
         measure {
             for data in suite {
                 let _ = try! self.gcmEncrypter.encryptData(data, flags: &flags)
