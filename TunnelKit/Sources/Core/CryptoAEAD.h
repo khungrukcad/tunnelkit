@@ -43,13 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CryptoAEAD : NSObject <Encrypter, Decrypter>
 
-@property (nonatomic, assign) int extraLength;
-
 - (instancetype)initWithCipherName:(NSString *)cipherName;
 
 @end
 
 @interface DataPathCryptoAEAD : NSObject <DataPathEncrypter, DataPathDecrypter>
+
+@property (nonatomic, assign) uint32_t peerId;
 
 - (instancetype)initWithCrypto:(CryptoAEAD *)crypto;
 

@@ -86,6 +86,8 @@
     NSParameterAssert(decrypter);
     NSParameterAssert(maxPackets > 0);
     
+    peerId &= 0xffffff;
+    
     if ((self = [super init])) {
         self.encrypter = encrypter;
         self.decrypter = decrypter;

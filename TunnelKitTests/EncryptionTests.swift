@@ -63,8 +63,8 @@ class EncryptionTests: XCTestCase {
         let (client, server) = clientServer("aes-128-cbc", "sha256")
 
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! client.encrypter().encryptData(plain, extra: nil)
-        let decrypted = try! server.decrypter().decryptData(encrypted, extra: nil)
+        let encrypted = try! client.encrypter().encryptData(plain, flags: nil)
+        let decrypted = try! server.decrypter().decryptData(encrypted, flags: nil)
         XCTAssertEqual(plain, decrypted)
     }
 
@@ -72,18 +72,19 @@ class EncryptionTests: XCTestCase {
         let (client, server) = clientServer(nil, "sha256")
 
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! client.encrypter().encryptData(plain, extra: nil)
-        XCTAssertNoThrow(try server.decrypter().verifyData(encrypted, extra: nil))
+        let encrypted = try! client.encrypter().encryptData(plain, flags: nil)
+        XCTAssertNoThrow(try server.decrypter().verifyData(encrypted, flags: nil))
     }
     
     func testGCM() {
         let (client, server) = clientServer("aes-256-gcm", nil)
         
 //        let packetId: UInt32 = 0x56341200
-        let extra: [UInt8] = [0x00, 0x12, 0x34, 0x56]
+        let ad: [UInt8] = [0x00, 0x12, 0x34, 0x56]
+        var flags = CryptoFlags(packetId: 0, ad: ad, adLength: 4)
         let plain = Data(hex: "00112233445566778899")
-        let encrypted = try! client.encrypter().encryptData(plain, extra: extra)
-        let decrypted = try! server.decrypter().decryptData(encrypted, extra: extra)
+        let encrypted = try! client.encrypter().encryptData(plain, flags: &flags)
+        let decrypted = try! server.decrypter().decryptData(encrypted, flags: &flags)
         XCTAssertEqual(plain, decrypted)
     }
     
