@@ -174,11 +174,9 @@ public class SessionProxy {
         isStopping = false
         
         if let tlsWrap = configuration.tlsWrap {
-
-            // TODO: select strategy
             switch tlsWrap.strategy {
-            default:
-                controlChannel = ControlChannel()
+            case .auth:
+                controlChannel = try ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.digest)
             }
         } else {
             controlChannel = ControlChannel()

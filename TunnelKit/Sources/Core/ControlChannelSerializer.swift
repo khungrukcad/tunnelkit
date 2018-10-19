@@ -127,3 +127,79 @@ extension ControlChannel {
         }
     }
 }
+
+extension ControlChannel {
+    class AuthSerializer: ControlChannelSerializer {
+        private let encrypter: Encrypter
+        
+        private let decrypter: Decrypter
+        
+        private let prefixLength: Int
+        
+        private let hmacLength: Int
+        
+        private let authLength: Int
+        
+        private let preambleLength: Int
+        
+        private var currentReplayId: BidirectionalState<UInt32>
+        
+        private let plain: PlainSerializer
+        
+        init(withKey key: StaticKey, digest: SessionProxy.Digest) throws {
+            let crypto = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: digest.rawValue)
+            try crypto.configure(
+                withCipherEncKey: nil,
+                cipherDecKey: nil,
+                hmacEncKey: key.hmacSendKey,
+                hmacDecKey: key.hmacReceiveKey
+            )
+            encrypter = crypto.encrypter()
+            decrypter = crypto.decrypter()
+            
+            prefixLength = PacketOpcodeLength + PacketSessionIdLength
+            hmacLength = crypto.digestLength()
+            authLength = hmacLength + PacketReplayIdLength + PacketReplayTimestampLength
+            preambleLength = prefixLength + authLength
+            
+            currentReplayId = BidirectionalState(withResetValue: 1)
+            plain = PlainSerializer()
+        }
+        
+        func reset() {
+            currentReplayId.reset()
+        }
+        
+        func serialize(packet: ControlPacket) throws -> Data {
+            return try serialize(packet: packet, timestamp: UInt32(Date().timeIntervalSince1970))
+        }
+        
+        func serialize(packet: ControlPacket, timestamp: UInt32) throws -> Data {
+            let data = try packet.serialized(withAuthenticator: encrypter, replayId: currentReplayId.outbound, timestamp: timestamp)
+            currentReplayId.outbound += 1
+            return data
+        }
+        
+        // XXX: start/end are ignored, parses whole packet
+        func deserialize(data packet: Data, start: Int, end: Int?) throws -> ControlPacket {
+            let end = packet.count
+            
+            // data starts with (prefix=(header + sessionId) + auth=(hmac + replayId))
+            guard end >= preambleLength else {
+                throw ControlChannelError("Missing HMAC")
+            }
+            
+            // needs a copy for swapping
+            var authPacket = packet
+            let authCount = authPacket.count
+            try authPacket.withUnsafeMutableBytes { (ptr: UnsafeMutablePointer<UInt8>) in
+                PacketSwapCopy(ptr, packet, prefixLength, authLength)
+                try decrypter.verifyBytes(ptr, length: authCount, flags: nil)
+            }
+            
+            // TODO: validate replay packet id
+            
+            return try plain.deserialize(data: authPacket, start: authLength, end: nil)
+        }
+    }
+}

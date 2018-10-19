@@ -64,6 +64,10 @@ class ControlChannel {
         self.init(serializer: PlainSerializer())
     }
     
+    convenience init(withAuthKey key: StaticKey, digest: SessionProxy.Digest) throws {
+        self.init(serializer: try AuthSerializer(withKey: key, digest: digest))
+    }
+
     private init(serializer: ControlChannelSerializer) {
         self.serializer = serializer
         sessionId = nil

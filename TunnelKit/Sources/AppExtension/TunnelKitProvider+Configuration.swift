@@ -140,9 +140,9 @@ extension TunnelKitProvider {
         /// Sets compression framing, disabled by default.
         public var compressionFraming: SessionProxy.CompressionFraming
 
-        /// The optional TLS wrapping.
+        /// The optional TLS wrapping. When `strategy == .auth`, uses `digest` as HMAC algorithm.
         public var tlsWrap: SessionProxy.TLSWrap?
-        
+
         /// Sends periodical keep-alive packets (ping) if set. Useful with stateful firewalls.
         public var keepAliveSeconds: Int?
 

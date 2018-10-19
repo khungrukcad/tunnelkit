@@ -10,6 +10,7 @@ and this project _will soon adhere_ to [Semantic Versioning](https://semver.org/
 ### Fixed
 
 - Handling of mixed DATA_V1/DATA_V2 packets. [#30](https://github.com/keeshux/tunnelkit/issues/30)
+- Support for `--tls-auth` wrapping. [#34](https://github.com/keeshux/tunnelkit/pull/34)
 
 ## 1.1.2 (2018-10-18)
 
