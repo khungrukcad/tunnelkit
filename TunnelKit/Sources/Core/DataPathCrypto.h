@@ -38,11 +38,30 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+#define DATA_PATH_ENCRYPT_INIT(peerId) \
+    const BOOL hasPeerId = (peerId != PacketPeerIdDisabled); \
+    int headerLength = PacketOpcodeLength; \
+    if (hasPeerId) { \
+        headerLength += PacketPeerIdLength; \
+    }
+
+#define DATA_PATH_DECRYPT_INIT(ptr) \
+    PacketCode code; \
+    PacketOpcodeGet(ptr, &code, NULL); \
+    uint32_t peerId = PacketPeerIdDisabled; \
+    const BOOL hasPeerId = (code == PacketCodeDataV2); \
+    int headerLength = PacketOpcodeLength; \
+    if (hasPeerId) { \
+        headerLength += PacketPeerIdLength; \
+        peerId = PacketHeaderGetDataV2PeerId(packet.bytes); \
+    }
+
 typedef void (^DataPathAssembleBlock)(uint8_t *packetDest, NSInteger *packetLengthOffset, NSData *payload);
 typedef void (^DataPathParseBlock)(uint8_t *payload, NSInteger *payloadOffset, NSInteger *headerLength, const uint8_t *packet, NSInteger packetLength);
 
 @protocol DataPathChannel
 
+- (uint32_t)peerId;
 - (void)setPeerId:(uint32_t)peerId;
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 

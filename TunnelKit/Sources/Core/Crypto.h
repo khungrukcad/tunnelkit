@@ -43,6 +43,13 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol DataPathEncrypter;
 @protocol DataPathDecrypter;
 
+typedef struct {
+    const uint8_t *iv;
+    int ivLength;
+    const uint8_t *ad;
+    int adLength;
+} CryptoFlags;
+
 // WARNING: dest must be able to hold ciphertext
 @protocol Encrypter
 
@@ -50,7 +57,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (int)digestLength;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
-- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
 
 - (id<DataPathEncrypter>)dataPathEncrypter;
 
@@ -63,8 +70,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (int)digestLength;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
-- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(nullable const uint8_t *)extra error:(NSError **)error;
-- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(nullable const uint8_t *)extra error:(NSError **)error;
+- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
 
 - (id<DataPathDecrypter>)dataPathDecrypter;
 

@@ -50,7 +50,6 @@ const NSInteger CryptoAEADTagLength     = 16;
 @property (nonatomic, unsafe_unretained) const EVP_CIPHER *cipher;
 @property (nonatomic, assign) int cipherKeyLength;
 @property (nonatomic, assign) int cipherIVLength; // 12 (AD packetId + HMAC key)
-@property (nonatomic, assign) int extraPacketIdOffset;
 
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxEnc;
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxDec;
@@ -72,8 +71,6 @@ const NSInteger CryptoAEADTagLength     = 16;
         
         self.cipherKeyLength = EVP_CIPHER_key_length(self.cipher);
         self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
-        self.extraLength = PacketIdLength;
-        self.extraPacketIdOffset = 0;
         
         self.cipherCtxEnc = EVP_CIPHER_CTX_new();
         self.cipherCtxDec = EVP_CIPHER_CTX_new();
@@ -118,19 +115,19 @@ const NSInteger CryptoAEADTagLength     = 16;
     [self prepareIV:self.cipherIVEnc withHMACKey:hmacKey];
 }
 
-- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
-    NSParameterAssert(extra);
+    NSParameterAssert(flags);
 
     int l1 = 0, l2 = 0;
     int x = 0;
     int code = 1;
 
-    assert(self.extraLength >= PacketIdLength);
-    memcpy(self.cipherIVEnc, extra + self.extraPacketIdOffset, PacketIdLength);
-    
+    assert(flags->adLength >= PacketIdLength);
+    memcpy(self.cipherIVEnc, flags->iv, flags->ivLength);
+
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxEnc, NULL, NULL, self.cipherIVEnc, -1);
-    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, NULL, &x, extra, self.extraLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, NULL, &x, flags->ad, flags->adLength);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxEnc, dest + CryptoAEADTagLength, &l1, bytes, (int)length);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxEnc, dest + CryptoAEADTagLength + l1, &l2);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CIPHER_CTX_ctrl(self.cipherCtxEnc, EVP_CTRL_GCM_GET_TAG, CryptoAEADTagLength, dest);
@@ -164,20 +161,20 @@ const NSInteger CryptoAEADTagLength     = 16;
     [self prepareIV:self.cipherIVDec withHMACKey:hmacKey];
 }
 
-- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
-    NSParameterAssert(extra);
+    NSParameterAssert(flags);
 
     int l1 = 0, l2 = 0;
     int x = 0;
     int code = 1;
     
-    assert(self.extraLength >= PacketIdLength);
-    memcpy(self.cipherIVDec, extra + self.extraPacketIdOffset, PacketIdLength);
+    assert(flags->adLength >= PacketIdLength);
+    memcpy(self.cipherIVDec, flags->iv, flags->ivLength);
 
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherInit(self.cipherCtxDec, NULL, NULL, self.cipherIVDec, -1);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CIPHER_CTX_ctrl(self.cipherCtxDec, EVP_CTRL_GCM_SET_TAG, CryptoAEADTagLength, (uint8_t *)bytes);
-    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, NULL, &x, extra, self.extraLength);
+    TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, NULL, &x, flags->ad, flags->adLength);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherUpdate(self.cipherCtxDec, dest, &l1, bytes + CryptoAEADTagLength, (int)length - CryptoAEADTagLength);
     TUNNEL_CRYPTO_TRACK_STATUS(code) EVP_CipherFinal(self.cipherCtxDec, dest + l1, &l2);
 
@@ -192,7 +189,7 @@ const NSInteger CryptoAEADTagLength     = 16;
     TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
-- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
     [NSException raise:NSInvalidArgumentException format:@"Verification not supported"];
     return NO;
@@ -218,9 +215,6 @@ const NSInteger CryptoAEADTagLength     = 16;
 @interface DataPathCryptoAEAD ()
 
 @property (nonatomic, strong) CryptoAEAD *crypto;
-@property (nonatomic, assign) int headerLength;
-@property (nonatomic, copy) void (^setDataHeader)(uint8_t *, uint8_t);
-@property (nonatomic, copy) BOOL (^checkPeerId)(const uint8_t *);
 
 @end
 
@@ -239,28 +233,7 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (void)setPeerId:(uint32_t)peerId
 {
-    peerId &= 0xffffff;
-    
-    if (peerId == PacketPeerIdDisabled) {
-        self.headerLength = PacketOpcodeLength;
-        self.crypto.extraLength = PacketIdLength;
-        self.crypto.extraPacketIdOffset = 0;
-        self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSet(to, PacketCodeDataV1, key, nil);
-        };
-        self.checkPeerId = NULL;
-    }
-    else {
-        self.headerLength = PacketOpcodeLength + PacketPeerIdLength;
-        self.crypto.extraLength = self.headerLength + PacketIdLength;
-        self.crypto.extraPacketIdOffset = self.headerLength;
-        self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSetDataV2(to, key, peerId);
-        };
-        self.checkPeerId = ^BOOL(const uint8_t *ptr) {
-            return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
-        };
-    }
+    _peerId = peerId & 0xffffff;
 }
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
@@ -285,24 +258,34 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + PacketIdLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
+    DATA_PATH_ENCRYPT_INIT(self.peerId)
+    
+    const int capacity = headerLength + PacketIdLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
     NSInteger encryptedPacketLength = INT_MAX;
 
-    self.setDataHeader(ptr, key);
-    *(uint32_t *)(ptr + self.headerLength) = htonl(packetId);
+    *(uint32_t *)(ptr + headerLength) = htonl(packetId);
 
-    const uint8_t *extra = ptr; // AD = header + peer id + packet id
-    if (!self.checkPeerId) {
-        extra += self.headerLength; // AD = packet id only
+    CryptoFlags flags;
+    flags.iv = ptr + headerLength;
+    flags.ivLength = PacketIdLength;
+    if (hasPeerId) {
+        PacketHeaderSetDataV2(ptr, key, self.peerId);
+        flags.ad = ptr;
+        flags.adLength = headerLength + PacketIdLength;
+    }
+    else {
+        PacketHeaderSet(ptr, PacketCodeDataV1, key, nil);
+        flags.ad = ptr + headerLength;
+        flags.adLength = PacketIdLength;
     }
 
     const BOOL success = [self.crypto encryptBytes:packetBytes
                                             length:packetLength
-                                              dest:(ptr + self.headerLength + PacketIdLength) // skip header and packet id
+                                              dest:(ptr + headerLength + PacketIdLength) // skip header and packet id
                                         destLength:&encryptedPacketLength
-                                             extra:extra
+                                             flags:&flags
                                              error:error];
     
     NSAssert(encryptedPacketLength <= capacity, @"Did not allocate enough bytes for payload");
@@ -311,7 +294,7 @@ const NSInteger CryptoAEADTagLength     = 16;
         return nil;
     }
     
-    encryptedPacket.length = self.headerLength + PacketIdLength + encryptedPacketLength;
+    encryptedPacket.length = headerLength + PacketIdLength + encryptedPacketLength;
     return encryptedPacket;
 }
 
@@ -319,28 +302,42 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
-    const uint8_t *extra = packet.bytes; // AD = header + peer id + packet id
-    if (!self.checkPeerId) {
-        extra += self.headerLength; // AD = packet id only
+    NSAssert(packet.length > 0, @"Decrypting an empty packet, how did it get this far?");
+
+    DATA_PATH_DECRYPT_INIT(packet.bytes)
+    if (packet.length < headerLength) {
+        return NO;
+    }
+    
+    CryptoFlags flags;
+    flags.iv = packet.bytes + headerLength;
+    flags.ivLength = PacketIdLength;
+    if (hasPeerId) {
+        if (peerId != self.peerId) {
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathPeerIdMismatch);
+            }
+            return NO;
+        }
+        flags.ad = packet.bytes;
+        flags.adLength = headerLength + PacketIdLength;
+    }
+    else {
+        flags.ad = packet.bytes + headerLength;
+        flags.adLength = PacketIdLength;
     }
 
     // skip header + packet id
-    const BOOL success = [self.crypto decryptBytes:(packet.bytes + self.headerLength + PacketIdLength)
-                                            length:(int)(packet.length - (self.headerLength + PacketIdLength))
+    const BOOL success = [self.crypto decryptBytes:(packet.bytes + headerLength + PacketIdLength)
+                                            length:(int)(packet.length - (headerLength + PacketIdLength))
                                               dest:packetBytes
                                         destLength:packetLength
-                                             extra:extra
+                                             flags:&flags
                                              error:error];
     if (!success) {
         return NO;
     }
-    if (self.checkPeerId && !self.checkPeerId(packet.bytes)) {
-        if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathPeerIdMismatch);
-        }
-        return NO;
-    }
-    *packetId = ntohl(*(const uint32_t *)(packet.bytes + self.headerLength));
+    *packetId = ntohl(*(const uint32_t *)(flags.iv));
     return YES;
 }
 

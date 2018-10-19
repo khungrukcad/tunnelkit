@@ -62,6 +62,16 @@ typedef NS_ENUM(uint8_t, PacketCode) {
 
 extern const uint8_t DataPacketPingData[16];
 
+static inline void PacketOpcodeGet(const uint8_t *from, PacketCode *_Nullable code, uint8_t *_Nullable key)
+{
+    if (code) {
+        *code = (PacketCode)(*from >> 3);
+    }
+    if (key) {
+        *key = *from & 0b111;
+    }
+}
+
 // Ruby: header
 static inline int PacketHeaderSet(uint8_t *to, PacketCode code, uint8_t key, const uint8_t *_Nullable sessionId)
 {

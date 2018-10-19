@@ -99,15 +99,17 @@ class DataPathEncryptionTests: XCTestCase {
         if let peerId = peerId {
             enc.setPeerId(peerId)
             dec.setPeerId(peerId)
-//            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
-//            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
+            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
+            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
         }
 
         let expectedPayload = Data(hex: "00112233445566778899")
         let key: UInt8 = 4
 
         let encrypted = try! path.encryptPackets([expectedPayload], key: key)
+        print(encrypted.map { $0.toHex() })
         let decrypted = try! path.decryptPackets(encrypted, keepAlive: nil)
+        print(decrypted.map { $0.toHex() })
         let payload = decrypted.first!
 
         XCTAssertEqual(payload, expectedPayload)
@@ -117,8 +119,8 @@ class DataPathEncryptionTests: XCTestCase {
         if let peerId = peerId {
             enc.setPeerId(peerId)
             dec.setPeerId(peerId)
-//            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
-//            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
+            XCTAssertEqual(enc.peerId(), peerId & 0xffffff)
+            XCTAssertEqual(dec.peerId(), peerId & 0xffffff)
         }
 
         let expectedPayload = Data(hex: "00112233445566778899")

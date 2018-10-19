@@ -57,12 +57,12 @@ class TestUtils {
 }
 
 extension Encrypter {
-    func encryptData(_ data: Data, extra: [UInt8]?) throws -> Data {
+    func encryptData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws -> Data {
         let srcLength = data.count
         var dest: [UInt8] = Array(repeating: 0, count: srcLength + 256)
         var destLength = 0
         try data.withUnsafeBytes {
-            try encryptBytes($0, length: srcLength, dest: &dest, destLength: &destLength, extra: extra)
+            try encryptBytes($0, length: srcLength, dest: &dest, destLength: &destLength, flags: flags)
         }
         dest.removeSubrange(destLength..<dest.count)
         return Data(dest)
@@ -70,21 +70,21 @@ extension Encrypter {
 }
 
 extension Decrypter {
-    func decryptData(_ data: Data, extra: [UInt8]?) throws -> Data {
+    func decryptData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws -> Data {
         let srcLength = data.count
         var dest: [UInt8] = Array(repeating: 0, count: srcLength + 256)
         var destLength = 0
         try data.withUnsafeBytes {
-            try decryptBytes($0, length: srcLength, dest: &dest, destLength: &destLength, extra: extra)
+            try decryptBytes($0, length: srcLength, dest: &dest, destLength: &destLength, flags: flags)
         }
         dest.removeSubrange(destLength..<dest.count)
         return Data(dest)
     }
     
-    func verifyData(_ data: Data, extra: [UInt8]?) throws {
+    func verifyData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws {
         let srcLength = data.count
         try data.withUnsafeBytes {
-            try verifyBytes($0, length: srcLength, extra: extra)
+            try verifyBytes($0, length: srcLength, flags: flags)
         }
     }
 }

@@ -141,7 +141,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     HMAC_Init_ex(self.hmacCtxEnc, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
-- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
     uint8_t *outIV = dest + self.digestLength;
     uint8_t *outEncrypted = dest + self.digestLength + self.cipherIVLength;
@@ -200,7 +200,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     HMAC_Init_ex(self.hmacCtxDec, hmacKey.bytes, self.hmacKeyLength, self.digest, NULL);
 }
 
-- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
     NSAssert(self.cipher, @"No cipher provided");
 
@@ -229,7 +229,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     TUNNEL_CRYPTO_RETURN_STATUS(code)
 }
 
-- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length extra:(const uint8_t *)extra error:(NSError *__autoreleasing *)error
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length flags:(const CryptoFlags * _Nullable)flags error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
     int l1 = 0;
     int code = 1;
@@ -260,9 +260,6 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 @interface DataPathCryptoCBC ()
 
 @property (nonatomic, strong) CryptoCBC *crypto;
-@property (nonatomic, assign) int headerLength;
-@property (nonatomic, copy) void (^setDataHeader)(uint8_t *, uint8_t);
-@property (nonatomic, copy) BOOL (^checkPeerId)(const uint8_t *);
 
 @end
 
@@ -281,24 +278,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (void)setPeerId:(uint32_t)peerId
 {
-    peerId &= 0xffffff;
-
-    if (peerId == PacketPeerIdDisabled) {
-        self.headerLength = PacketOpcodeLength;
-        self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSet(to, PacketCodeDataV1, key, nil);
-        };
-        self.checkPeerId = NULL;
-    }
-    else {
-        self.headerLength = PacketOpcodeLength + PacketPeerIdLength;
-        self.setDataHeader = ^(uint8_t *to, uint8_t key) {
-            PacketHeaderSetDataV2(to, key, peerId);
-        };
-        self.checkPeerId = ^BOOL(const uint8_t *ptr) {
-            return (PacketHeaderGetDataV2PeerId(ptr) == peerId);
-        };
-    }
+    _peerId = peerId & 0xffffff;
 }
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
@@ -326,15 +306,17 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (NSData *)encryptedDataPacketWithKey:(uint8_t)key packetId:(uint32_t)packetId packetBytes:(const uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError *__autoreleasing *)error
 {
-    const int capacity = self.headerLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
+    DATA_PATH_ENCRYPT_INIT(self.peerId)
+
+    const int capacity = headerLength + (int)[self.crypto encryptionCapacityWithLength:packetLength];
     NSMutableData *encryptedPacket = [[NSMutableData alloc] initWithLength:capacity];
     uint8_t *ptr = encryptedPacket.mutableBytes;
     NSInteger encryptedPacketLength = INT_MAX;
     const BOOL success = [self.crypto encryptBytes:packetBytes
                                             length:packetLength
-                                              dest:(ptr + self.headerLength) // skip header byte
+                                              dest:(ptr + headerLength) // skip header bytes
                                         destLength:&encryptedPacketLength
-                                             extra:NULL
+                                             flags:NULL
                                              error:error];
     
     NSAssert(encryptedPacketLength <= capacity, @"Did not allocate enough bytes for payload");
@@ -343,8 +325,13 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
         return nil;
     }
 
-    self.setDataHeader(ptr, key);
-    encryptedPacket.length = self.headerLength + encryptedPacketLength;
+    if (hasPeerId) {
+        PacketHeaderSetDataV2(ptr, key, self.peerId);
+    }
+    else {
+        PacketHeaderSet(ptr, PacketCodeDataV1, key, nil);
+    }
+    encryptedPacket.length = headerLength + encryptedPacketLength;
     return encryptedPacket;
 }
 
@@ -352,21 +339,30 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
+    NSAssert(packet.length > 0, @"Decrypting an empty packet, how did it get this far?");
+
+    DATA_PATH_DECRYPT_INIT(packet.bytes)
+    if (packet.length < headerLength) {
+        return NO;
+    }
+
     // skip header = (code, key)
-    const BOOL success = [self.crypto decryptBytes:(packet.bytes + self.headerLength)
-                                            length:(int)(packet.length - self.headerLength)
+    const BOOL success = [self.crypto decryptBytes:(packet.bytes + headerLength)
+                                            length:(int)(packet.length - headerLength)
                                               dest:packetBytes
                                         destLength:packetLength
-                                             extra:NULL
+                                             flags:NULL
                                              error:error];
     if (!success) {
         return NO;
     }
-    if (self.checkPeerId && !self.checkPeerId(packet.bytes)) {
-        if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathPeerIdMismatch);
+    if (hasPeerId) {
+        if (peerId != self.peerId) {
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathPeerIdMismatch);
+            }
+            return NO;
         }
-        return NO;
     }
     *packetId = ntohl(*(uint32_t *)packetBytes);
     return YES;
