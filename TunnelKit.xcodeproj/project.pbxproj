@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
+		0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */; };
 		0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
 		0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
 		0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
@@ -196,6 +197,7 @@
 
 /* Begin PBXFileReference section */
 		0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+TLSWrap.swift"; sourceTree = "<group>"; };
+		0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKeyTests.swift; sourceTree = "<group>"; };
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
 		0E07596120EF733F00F38FD8 /* CryptoMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoMacros.h; sourceTree = "<group>"; };
 		0E07596A20EF79AB00F38FD8 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				0E245D682135972800B012A2 /* PushTests.swift */,
 				0EB2B45620F0BD16004233D7 /* RandomTests.swift */,
 				0EB2B45C20F0BF41004233D7 /* RawPerformanceTests.swift */,
+				0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */,
 				0EB2B45A20F0BE4C004233D7 /* TestUtils.swift */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
 			);
@@ -867,6 +870,7 @@
 				0EB2B45B20F0BE4C004233D7 /* TestUtils.swift in Sources */,
 				0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */,
 				0E12B2A32145341B00B4BAE9 /* PacketTests.swift in Sources */,
+				0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */,
 				0E245D692135972800B012A2 /* PushTests.swift in Sources */,
 				0EB2B46120F0C0A4004233D7 /* DataPathPerformanceTests.swift in Sources */,
 				0EB2B45F20F0C098004233D7 /* EncryptionPerformanceTests.swift in Sources */,
@@ -1140,7 +1144,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 236;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -1204,7 +1208,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 202;
+				CURRENT_PROJECT_VERSION = 236;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -1237,7 +1241,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 202;
+				DYLIB_CURRENT_VERSION = 236;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-iOS/Info.plist";
@@ -1260,7 +1264,7 @@
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 202;
+				DYLIB_CURRENT_VERSION = 236;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-iOS/Info.plist";
@@ -1283,7 +1287,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 202;
+				DYLIB_CURRENT_VERSION = 236;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-macOS/Info.plist";
@@ -1306,7 +1310,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 202;
+				DYLIB_CURRENT_VERSION = 236;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
 				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-macOS/Info.plist";

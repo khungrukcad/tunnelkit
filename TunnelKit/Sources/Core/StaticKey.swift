@@ -50,6 +50,12 @@ public class StaticKey: Codable {
     
     private static let keyLength = StaticKey.contentLength / StaticKey.keyCount
 
+    private static let fileHead = "-----BEGIN OpenVPN Static key V1-----"
+    
+    private static let fileFoot = "-----END OpenVPN Static key V1-----"
+    
+    private static let nonHexCharset = CharacterSet(charactersIn: "0123456789abcdefABCDEF").inverted
+    
     private let secureData: ZeroingData
 
     private let direction: Direction?
@@ -130,6 +136,57 @@ public class StaticKey: Codable {
         precondition(data.count == StaticKey.contentLength)
         secureData = Z(data)
         self.direction = direction
+    }
+    
+    /**
+     Initializes with file content and direction.
+     
+     - Parameter file: The text file containing the key.
+     - Parameter direction: The key direction, or bidirectional if nil.
+     */
+    public convenience init?(file: String, direction: Direction?) {
+        let lines = file.split(separator: "\n")
+        self.init(lines: lines, direction: direction)
+    }
+    
+    /// :nodoc:
+    public convenience init?(lines: [Substring], direction: Direction?) {
+        var isHead = true
+        var hexLines: [Substring] = []
+
+        for l in lines {
+            if isHead {
+                guard !l.hasPrefix("#") else {
+                    continue
+                }
+                guard l == StaticKey.fileHead else {
+                    return nil
+                }
+                isHead = false
+                continue
+            }
+            guard let first = l.first else {
+                return nil
+            }
+            if first == "-" {
+                guard l == StaticKey.fileFoot else {
+                    return nil
+                }
+                break
+            }
+            hexLines.append(l)
+        }
+
+        let hex = String(hexLines.joined())
+        guard hex.count == 2 * StaticKey.contentLength else {
+            return nil
+        }
+        if let _ = hex.rangeOfCharacter(from: StaticKey.nonHexCharset) {
+            return nil
+        }
+        let data = Data(hex: hex)
+        
+        self.init(data: data, direction: direction)
     }
     
     /**
