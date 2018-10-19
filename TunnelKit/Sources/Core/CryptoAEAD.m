@@ -319,6 +319,10 @@ const NSInteger CryptoAEADTagLength     = 16;
 
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
+    NSAssert(packet.length > 0, @"Decrypting an empty packet, how did it get this far?");
+    PacketCode code;
+    PacketOpcodeGet(packet.bytes, &code, NULL);
+
     const uint8_t *extra = packet.bytes; // AD = header + peer id + packet id
     if (!self.checkPeerId) {
         extra += self.headerLength; // AD = packet id only

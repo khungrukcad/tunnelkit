@@ -352,6 +352,10 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
 
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError *__autoreleasing *)error
 {
+    NSAssert(packet.length > 0, @"Decrypting an empty packet, how did it get this far?");
+    PacketCode code;
+    PacketOpcodeGet(packet.bytes, &code, NULL);
+    
     // skip header = (code, key)
     const BOOL success = [self.crypto decryptBytes:(packet.bytes + self.headerLength)
                                             length:(int)(packet.length - self.headerLength)
