@@ -85,6 +85,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     X509 *cert = PEM_read_X509(pem, NULL, NULL, NULL);
     X509_digest(cert, alg, md, &len);
     X509_free(cert);
+    fclose(pem);
     NSCAssert2(len == sizeof(md), @"Unexpected MD5 size (%d != %lu)", len, sizeof(md));
 
     NSMutableString *hex = [[NSMutableString alloc] initWithCapacity:2 * sizeof(md)];
