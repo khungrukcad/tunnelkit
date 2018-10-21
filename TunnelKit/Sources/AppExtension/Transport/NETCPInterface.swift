@@ -106,7 +106,7 @@ class NETCPSocket: NSObject, GenericSocket {
     }
     
     func link(withMTU mtu: Int) -> LinkInterface {
-        return NETCPLink(impl: impl)
+        return NETCPLink(impl: impl, mtu: mtu)
     }
     
     // MARK: Connection KVO (any queue)
@@ -181,9 +181,9 @@ class NETCPLink: LinkInterface {
     
     private let maxPacketSize: Int
     
-    init(impl: NWTCPConnection, maxPacketSize: Int? = nil) {
+    init(impl: NWTCPConnection, mtu: Int, maxPacketSize: Int? = nil) {
         self.impl = impl
-        self.mtu = .max
+        self.mtu = mtu
         self.maxPacketSize = maxPacketSize ?? (512 * 1024)
     }
 
