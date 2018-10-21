@@ -176,6 +176,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         )
         
         log.info("Starting tunnel...")
+        clearErrorStatus()
         
         guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderConfigurationError.prngInitialization)
@@ -259,6 +260,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     open override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         pendingStartHandler = nil
         log.info("Stopping tunnel...")
+        clearErrorStatus()
 
         guard let proxy = proxy else {
             flushLog()
@@ -324,6 +326,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     private func connectTunnel(via socket: GenericSocket) {
         log.info("Will connect to \(socket)")
+        clearErrorStatus()
 
         log.debug("Socket type is \(type(of: socket))")
         self.socket = socket
@@ -342,6 +345,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         
         if let error = error {
             log.error("Tunnel did stop (error: \(error))")
+            setErrorStatus(with: error)
         } else {
             log.info("Tunnel did stop on request")
         }
@@ -349,7 +353,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     private func disposeTunnel(error: Error?) {
         flushLog()
-        
+
         // failed to start
         if (pendingStartHandler != nil) {
             
@@ -599,6 +603,38 @@ extension TunnelKitProvider {
         }
     }
     
+    private func setErrorStatus(with error: Error) {
+        guard let lastErrorKey = cfg.lastErrorKey else {
+            return
+        }
+        let providerError: ProviderError
+        if let se = error as? SessionError {
+            switch se {
+            case .badCredentials:
+                providerError = .authenticationFailed
+                
+            case .peerVerification, .tlsError:
+                providerError = .tlsFailed
+                
+            case .negotiationTimeout, .pingTimeout:
+                providerError = .timeout
+                
+            default:
+                providerError = .unexpectedReply
+            }
+        } else {
+            providerError = error as? ProviderError ?? .linkError
+        }
+        defaults?.set(providerError.rawValue, forKey: lastErrorKey)
+    }
+    
+    private func clearErrorStatus() {
+        guard let lastErrorKey = cfg.lastErrorKey else {
+            return
+        }
+        defaults?.removeObject(forKey: lastErrorKey)
+    }
+
     private func logCurrentSSID() {
         if let ssid = observer.currentWifiNetworkName() {
             log.debug("Current SSID: '\(ssid)'")
