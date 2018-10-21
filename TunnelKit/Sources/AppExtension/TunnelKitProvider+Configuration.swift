@@ -163,6 +163,9 @@ extension TunnelKitProvider {
         /// Optional debug log format (SwiftyBeaver format).
         public var debugLogFormat: String?
         
+        /// The key in `defaults` where to set the raw value of last `TunnelKitProvider.ProviderError`.
+        public var lastErrorKey: String?
+        
         // MARK: Building
         
         /**
@@ -188,6 +191,7 @@ extension TunnelKitProvider {
             shouldDebug = false
             debugLogKey = nil
             debugLogFormat = nil
+            lastErrorKey = nil
         }
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
@@ -259,6 +263,7 @@ extension TunnelKitProvider {
             } else {
                 debugLogKey = nil
             }
+            lastErrorKey = providerConfiguration[S.lastErrorKey] as? String
 
             guard !prefersResolvedAddresses || !(resolvedAddresses?.isEmpty ?? true) else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
@@ -288,7 +293,8 @@ extension TunnelKitProvider {
                 usesPIAPatches: usesPIAPatches,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
-                debugLogFormat: shouldDebug ? debugLogFormat : nil
+                debugLogFormat: shouldDebug ? debugLogFormat : nil,
+                lastErrorKey: lastErrorKey
             )
         }
     }
@@ -331,6 +337,8 @@ extension TunnelKitProvider {
             static let debugLogKey = "DebugLogKey"
             
             static let debugLogFormat = "DebugLogFormat"
+            
+            static let lastErrorKey = "LastErrorKey"
         }
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
@@ -383,6 +391,9 @@ extension TunnelKitProvider {
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.lastErrorKey`
+        public let lastErrorKey: String?
         
         // MARK: Shortcuts
 
@@ -467,6 +478,9 @@ extension TunnelKitProvider {
             }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
+            }
+            if let lastErrorKey = lastErrorKey {
+                dict[S.lastErrorKey] = lastErrorKey
             }
             return dict
         }
@@ -562,6 +576,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
         builder.debugLogFormat = debugLogFormat
+        builder.lastErrorKey = lastErrorKey
         return builder
     }
 
