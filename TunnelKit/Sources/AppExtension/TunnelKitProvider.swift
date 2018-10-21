@@ -121,23 +121,23 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         let hostname: String
         do {
             guard let tunnelProtocol = protocolConfiguration as? NETunnelProviderProtocol else {
-                throw ProviderError.configuration(field: "protocolConfiguration")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration")
             }
             guard let serverAddress = tunnelProtocol.serverAddress else {
-                throw ProviderError.configuration(field: "protocolConfiguration.serverAddress")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.serverAddress")
             }
             guard let providerConfiguration = tunnelProtocol.providerConfiguration else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration")
             }
             hostname = serverAddress
             try appGroup = Configuration.appGroup(from: providerConfiguration)
             try cfg = Configuration.parsed(from: providerConfiguration)
         } catch let e {
             var message: String?
-            if let te = e as? ProviderError {
+            if let te = e as? ProviderConfigurationError {
                 switch te {
-                case .configuration(let field):
-                    message = "Tunnel configuration incomplete: \(field)"
+                case .parameter(let name):
+                    message = "Tunnel configuration incomplete: \(name)"
                     
                 default:
                     break
@@ -178,7 +178,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         log.info("Starting tunnel...")
         
         guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
-            completionHandler(ProviderError.prngInitialization)
+            completionHandler(ProviderConfigurationError.prngInitialization)
             return
         }
         
@@ -190,7 +190,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             try cfg.ca.write(to: url)
             caPath = url.path
         } catch {
-            completionHandler(ProviderError.certificateSerialization)
+            completionHandler(ProviderConfigurationError.certificateSerialization)
             return
         }
         if let clientCertificate = cfg.clientCertificate {
@@ -199,7 +199,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
                 try clientCertificate.write(to: url)
                 clientCertificatePath = url.path
             } catch {
-                completionHandler(ProviderError.certificateSerialization)
+                completionHandler(ProviderConfigurationError.certificateSerialization)
                 return
             }
         } else {
@@ -211,7 +211,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
                 try clientKey.write(to: url)
                 clientKeyPath = url.path
             } catch {
-                completionHandler(ProviderError.certificateSerialization)
+                completionHandler(ProviderConfigurationError.certificateSerialization)
                 return
             }
         } else {

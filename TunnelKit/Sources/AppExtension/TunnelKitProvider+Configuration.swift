@@ -74,13 +74,13 @@ extension TunnelKitProvider {
         public static func deserialized(_ string: String) throws -> EndpointProtocol {
             let components = string.components(separatedBy: ":")
             guard components.count == 2 else {
-                throw ProviderError.configuration(field: "endpointProtocol")
+                throw ProviderConfigurationError.parameter(name: "endpointProtocol")
             }
             guard let socketType = SocketType(rawValue: components[0]) else {
-                throw ProviderError.configuration(field: "endpointProtocol.socketType")
+                throw ProviderConfigurationError.parameter(name: "endpointProtocol.socketType")
             }
             guard let port = UInt16(components[1]) else {
-                throw ProviderError.configuration(field: "endpointProtocol.port")
+                throw ProviderConfigurationError.parameter(name: "endpointProtocol.port")
             }
             return EndpointProtocol(socketType, port)
         }
@@ -194,22 +194,22 @@ extension TunnelKitProvider {
             let S = Configuration.Keys.self
 
             guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm) else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
             }
             guard let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String, let digest = SessionProxy.Digest(rawValue: digestAlgorithm) else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
             }
 
             let ca: CryptoContainer
             let clientCertificate: CryptoContainer?
             let clientKey: CryptoContainer?
             guard let caPEM = providerConfiguration[S.ca] as? String else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.ca)]")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
             }
             ca = CryptoContainer(pem: caPEM)
             if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
                 guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
                 }
 
                 clientCertificate = CryptoContainer(pem: clientPEM)
@@ -223,7 +223,7 @@ extension TunnelKitProvider {
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
             
             guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
             }
             endpointProtocols = try endpointProtocolsStrings.map { try EndpointProtocol.deserialized($0) }
             
@@ -242,7 +242,7 @@ extension TunnelKitProvider {
                 do {
                     tlsWrap = try SessionProxy.TLSWrap.deserialized(tlsWrapData)
                 } catch {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
                 }
             }
             keepAliveSeconds = providerConfiguration[S.keepAlive] as? Int
@@ -252,7 +252,7 @@ extension TunnelKitProvider {
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
             if shouldDebug {
                 guard let debugLogKey = providerConfiguration[S.debugLogKey] as? String else {
-                    throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.debugLogKey)]")
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.debugLogKey)]")
                 }
                 self.debugLogKey = debugLogKey
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
@@ -261,7 +261,7 @@ extension TunnelKitProvider {
             }
 
             guard !prefersResolvedAddresses || !(resolvedAddresses?.isEmpty ?? true) else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
             }
         }
         
@@ -404,7 +404,7 @@ extension TunnelKitProvider {
          */
         public static func appGroup(from providerConfiguration: [String: Any]) throws -> String {
             guard let appGroup = providerConfiguration[Keys.appGroup] as? String else {
-                throw ProviderError.configuration(field: "protocolConfiguration.providerConfiguration[\(Keys.appGroup)]")
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(Keys.appGroup)]")
             }
             return appGroup
         }
@@ -491,7 +491,7 @@ extension TunnelKitProvider {
                 do {
                     try keychain.set(password: password, for: username, label: Bundle.main.bundleIdentifier)
                 } catch _ {
-                    throw ProviderError.credentials(field: "keychain.set()")
+                    throw ProviderConfigurationError.credentials(details: "keychain.set()")
                 }
                 protocolConfiguration.username = username
                 protocolConfiguration.passwordReference = try? keychain.passwordReference(for: username)
