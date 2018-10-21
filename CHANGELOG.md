@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+
+- Configuration key `lastErrorKey` for reporting errors to host app. [#40](https://github.com/keeshux/tunnelkit/pull/40)
+
+### Fixed
+
+- CA file was not closed after MD5 calculation when using PIA patches.
+- Mitigated an issue with MTU in TCP mode during negotiation. [#39](https://github.com/keeshux/tunnelkit/issues/39)
+
 ## 1.2.0 (2018-10-20)
 
 ### Added
