@@ -71,20 +71,24 @@ extension TunnelKitProvider {
         }
     }
 
-    /// The errors raised by `TunnelKitProvider`.
-    public enum ProviderError: Error {
-
-        /// The `TunnelKitProvider.Configuration` provided is incorrect or incomplete.
-        case configuration(field: String)
+    // mostly programming errors by host app
+    enum ProviderConfigurationError: Error {
         
-        /// Credentials are missing or protected (e.g. device locked).
-        case credentials(field: String)
+        /// A field in the `TunnelKitProvider.Configuration` provided is incorrect or incomplete.
+        case parameter(name: String)
+        
+        /// Credentials are missing or inaccessible.
+        case credentials(details: String)
         
         /// The pseudo-random number generator could not be initialized.
         case prngInitialization
         
         /// The TLS certificate could not be serialized.
         case certificateSerialization
+    }
+        
+    /// The errors causing a tunnel disconnection.
+    public enum ProviderError: String, Error {
         
         /// Socket endpoint could not be resolved.
         case dnsFailure
@@ -95,10 +99,22 @@ extension TunnelKitProvider {
         /// Socket failed to reach active state.
         case socketActivity
         
+        /// Credentials authentication failed.
+        case authenticationFailed
+
+        /// TLS handshake failed.
+        case tlsFailed
+        
+        /// Tunnel timed out.
+        case timeout
+        
         /// An error occurred at the link level.
         case linkError
         
         /// The current network changed (e.g. switched from WiFi to data connection).
         case networkChanged
+        
+        /// The server replied in an unexpected way.
+        case unexpectedReply
     }
 }

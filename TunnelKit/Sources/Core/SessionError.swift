@@ -38,7 +38,7 @@
 import Foundation
 
 /// The possible errors raised/thrown during `SessionProxy` operation.
-public enum SessionError: Error {
+public enum SessionError: String, Error {
     
     /// The negotiation timed out.
     case negotiationTimeout
