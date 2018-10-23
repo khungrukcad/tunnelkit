@@ -38,6 +38,7 @@
 #import <openssl/ssl.h>
 #import <openssl/err.h>
 #import <openssl/evp.h>
+#import <openssl/x509v3.h>
 
 #import "TLSBox.h"
 #import "Allocation.h"
@@ -46,6 +47,8 @@
 const NSInteger TLSBoxMaxBufferLength = 16384;
 
 NSString *const TLSBoxPeerVerificationErrorNotification = @"TLSBoxPeerVerificationErrorNotification";
+static NSString *const TLSBoxClientEKU = @"TLS Web Client Authentication";
+static NSString *const TLSBoxServerEKU = @"TLS Web Server Authentication";
 
 static BOOL TLSBoxIsOpenSSLLoaded;
 
@@ -198,6 +201,13 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     const int ret = BIO_read(self.bioCipherTextOut, self.bufferCipherText, TLSBoxMaxBufferLength);
     if (!self.isConnected && SSL_is_init_finished(self.ssl)) {
         self.isConnected = YES;
+
+        if (![self verifyEKUWithSSL:self.ssl]) {
+            if (error) {
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxServerEKU);
+            }
+            return nil;
+        }
     }
     if (ret > 0) {
         return [NSData dataWithBytes:self.bufferCipherText length:ret];
@@ -270,6 +280,53 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
         return NO;
     }
     return YES;
+}
+
+#pragma mark EKU
+
+- (BOOL)verifyEKUWithSSL:(SSL *)ssl
+{
+    X509 *cert = SSL_get_peer_certificate(self.ssl);
+    if (!cert) {
+        return NO;
+    }
+
+    // don't be afraid of saving some time:
+    //
+    // https://stackoverflow.com/questions/37047379/how-extract-all-oids-from-certificate-with-openssl
+    //
+    const int extIndex = X509_get_ext_by_NID(cert, NID_ext_key_usage, -1);
+    if (extIndex < 0) {
+        X509_free(cert);
+        return NO;
+    }
+    X509_EXTENSION *ext = X509_get_ext(cert, extIndex);
+    if (!ext) {
+        X509_free(cert);
+        return NO;
+    }
+
+    EXTENDED_KEY_USAGE *eku = X509V3_EXT_d2i(ext);
+    const int num = sk_ASN1_OBJECT_num(eku);
+    char buffer[100];
+    BOOL isValid = NO;
+
+    for (int i = 0; i < num; ++i) {
+        OBJ_obj2txt(buffer, sizeof(buffer), sk_ASN1_OBJECT_value(eku, i), 1); // get OID
+        const char *oid = OBJ_nid2ln(OBJ_obj2nid(sk_ASN1_OBJECT_value(eku, i)));
+        NSString *oidString = [NSString stringWithCString:oid encoding:NSASCIIStringEncoding];
+//        NSLog(@"eku flag %d: %s - %s", i, buffer, oid);
+        if ([oidString isEqualToString:TLSBoxServerEKU]) {
+            isValid = YES;
+            break;
+        }
+    }
+    if (eku) {
+        EXTENDED_KEY_USAGE_free(eku);
+    }
+    X509_free(cert);
+
+    return isValid;
 }
 
 @end

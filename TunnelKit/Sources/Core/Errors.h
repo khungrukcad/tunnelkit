@@ -49,6 +49,7 @@ typedef NS_ENUM(NSInteger, TunnelKitErrorCode) {
     TunnelKitErrorCodeTLSBoxClientCertificate   = 204,
     TunnelKitErrorCodeTLSBoxClientKey           = 205,
     TunnelKitErrorCodeTLSBoxServerCertificate   = 206,
+    TunnelKitErrorCodeTLSBoxServerEKU           = 207,
     TunnelKitErrorCodeDataPathOverflow          = 301,
     TunnelKitErrorCodeDataPathPeerIdMismatch    = 302
 };
