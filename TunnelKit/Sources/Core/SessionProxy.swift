@@ -614,7 +614,10 @@ public class SessionProxy {
             return
         }
 
-        guard let cipherTextOut = try? negotiationKey.tls.pullCipherText() else {
+        let cipherTextOut: Data
+        do {
+            cipherTextOut = try negotiationKey.tls.pullCipherText()
+        } catch {
             log.verbose("TLS.auth: Still can't pull ciphertext")
             return
         }
@@ -637,7 +640,10 @@ public class SessionProxy {
         log.debug("TLS.ifconfig: Put plaintext (PUSH_REQUEST)")
         try? negotiationKey.tls.putPlainText("PUSH_REQUEST\0")
         
-        guard let cipherTextOut = try? negotiationKey.tls.pullCipherText() else {
+        let cipherTextOut: Data
+        do {
+            cipherTextOut = try negotiationKey.tls.pullCipherText()
+        } catch {
             log.verbose("TLS.ifconfig: Still can't pull ciphertext")
             return
         }
@@ -717,7 +723,10 @@ public class SessionProxy {
                 return
             }
 
-            guard let cipherTextOut = try? negotiationKey.tls.pullCipherText() else {
+            let cipherTextOut: Data
+            do {
+                cipherTextOut = try negotiationKey.tls.pullCipherText()
+            } catch {
                 deferStop(.shutdown, SessionError.tlsError)
                 return
             }
@@ -745,9 +754,13 @@ public class SessionProxy {
             log.debug("TLS.connect: Put received ciphertext (\(cipherTextIn.count) bytes)")
             try? negotiationKey.tls.putCipherText(cipherTextIn)
 
-            if let cipherTextOut = try? negotiationKey.tls.pullCipherText() {
+            let cipherTextOut: Data
+            do {
+                cipherTextOut = try negotiationKey.tls.pullCipherText()
                 log.debug("TLS.connect: Send pulled ciphertext (\(cipherTextOut.count) bytes)")
                 enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
+            } catch {
+                log.verbose("TLS.connect: No available ciphertext to pull")
             }
             
             if negotiationKey.shouldOnTLSConnect() {
