@@ -51,7 +51,10 @@ static BOOL TLSBoxIsOpenSSLLoaded;
 
 int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     if (!ok) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:TLSBoxPeerVerificationErrorNotification object:nil];
+        NSError *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
+        [[NSNotificationCenter defaultCenter] postNotificationName:TLSBoxPeerVerificationErrorNotification
+                                                            object:nil
+                                                          userInfo:@{TunnelKitErrorKey: error}];
     }
     return ok;
 }
@@ -201,7 +204,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
     if ((ret < 0) && !BIO_should_retry(self.bioCipherTextOut)) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
         }
     }
     return nil;
@@ -219,7 +222,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
     if ((ret < 0) && !BIO_should_retry(self.bioPlainText)) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
         }
     }
     return NO;
@@ -241,7 +244,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     const int ret = BIO_write(self.bioCipherTextIn, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
         }
         return NO;
     }
@@ -262,7 +265,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     const int ret = BIO_write(self.bioPlainText, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxGeneric);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
         }
         return NO;
     }

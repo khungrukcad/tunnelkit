@@ -36,4 +36,5 @@
 
 #import "Errors.h"
 
-NSString *const TunnelKitErrorDomain = @"TunnelKitNative";
+NSString *const TunnelKitErrorDomain    = @"TunnelKitNative";
+NSString *const TunnelKitErrorKey       = @"TunnelKitErrorKey";

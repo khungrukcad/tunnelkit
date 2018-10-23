@@ -197,8 +197,9 @@ public class SessionProxy {
         
         // WARNING: runs in notification source queue (we know it's "queue", but better be safe than sorry)
         tlsObserver = NotificationCenter.default.addObserver(forName: .TLSBoxPeerVerificationError, object: nil, queue: nil) { (notification) in
+            let error = notification.userInfo?[TunnelKitErrorKey] as? Error
             self.queue.async {
-                self.deferStop(.shutdown, SessionError.peerVerification)
+                self.deferStop(.shutdown, error)
             }
         }
         
@@ -730,7 +731,7 @@ public class SessionProxy {
                     shutdown(error: e)
                     return
                 }
-                deferStop(.shutdown, SessionError.tlsError)
+                deferStop(.shutdown, e)
                 return
             }
 
