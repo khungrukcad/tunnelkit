@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Configuration key `lastErrorKey` for reporting errors to host app. [#40](https://github.com/keeshux/tunnelkit/pull/40)
+- Server extended key usage validation (EKU). [#27](https://github.com/keeshux/tunnelkit/issues/27)
 
 ### Fixed
 

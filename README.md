@@ -23,7 +23,7 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers. Key renegoti
 - [x] NCP (Negotiable Crypto Parameters, 2.4)
     - Server-side
 - [x] TLS handshake
-    - CA validation
+    - Server validation (CA, EKU)
     - Client certificate
 - [x] TLS wrapping
     - Authentication (`--tls-auth`)
