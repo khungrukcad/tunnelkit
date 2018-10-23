@@ -41,18 +41,6 @@ import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
-private extension Error {
-    func isTunnelError() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain
-    }
-    
-    func isDataPathOverflow() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain && te.code == TunnelKitErrorCode.dataPathOverflow.rawValue
-    }
-}
-
 /// Observes major events notified by a `SessionProxy`.
 public protocol SessionProxyDelegate: class {
 
@@ -617,7 +605,12 @@ public class SessionProxy {
         let cipherTextOut: Data
         do {
             cipherTextOut = try negotiationKey.tls.pullCipherText()
-        } catch {
+        } catch let e {
+            if let _ = e.tunnelKitErrorCode() {
+                log.error("TLS.auth: Failed pulling ciphertext (error: \(e))")
+                shutdown(error: e)
+                return
+            }
             log.verbose("TLS.auth: Still can't pull ciphertext")
             return
         }
@@ -643,7 +636,12 @@ public class SessionProxy {
         let cipherTextOut: Data
         do {
             cipherTextOut = try negotiationKey.tls.pullCipherText()
-        } catch {
+        } catch let e {
+            if let _ = e.tunnelKitErrorCode() {
+                log.error("TLS.auth: Failed pulling ciphertext (error: \(e))")
+                shutdown(error: e)
+                return
+            }
             log.verbose("TLS.ifconfig: Still can't pull ciphertext")
             return
         }
@@ -726,7 +724,12 @@ public class SessionProxy {
             let cipherTextOut: Data
             do {
                 cipherTextOut = try negotiationKey.tls.pullCipherText()
-            } catch {
+            } catch let e {
+                if let _ = e.tunnelKitErrorCode() {
+                    log.error("TLS.connect: Failed pulling ciphertext (error: \(e))")
+                    shutdown(error: e)
+                    return
+                }
                 deferStop(.shutdown, SessionError.tlsError)
                 return
             }
@@ -759,7 +762,12 @@ public class SessionProxy {
                 cipherTextOut = try negotiationKey.tls.pullCipherText()
                 log.debug("TLS.connect: Send pulled ciphertext (\(cipherTextOut.count) bytes)")
                 enqueueControlPackets(code: .controlV1, key: negotiationKey.id, payload: cipherTextOut)
-            } catch {
+            } catch let e {
+                if let _ = e.tunnelKitErrorCode() {
+                    log.error("TLS.connect: Failed pulling ciphertext (error: \(e))")
+                    shutdown(error: e)
+                    return
+                }
                 log.verbose("TLS.connect: No available ciphertext to pull")
             }
             
@@ -989,7 +997,7 @@ public class SessionProxy {
 
             tunnel?.writePackets(decryptedPackets, completionHandler: nil)
         } catch let e {
-            guard !e.isTunnelError() else {
+            guard !e.isTunnelKitError() else {
                 deferStop(.shutdown, e)
                 return
             }
@@ -1024,7 +1032,7 @@ public class SessionProxy {
 //                log.verbose("Data: \(encryptedPackets.count) packets successfully written to LINK")
             }
         } catch let e {
-            guard !e.isTunnelError() else {
+            guard !e.isTunnelKitError() else {
                 deferStop(.shutdown, e)
                 return
             }
