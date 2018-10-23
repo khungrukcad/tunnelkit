@@ -47,8 +47,8 @@
 const NSInteger TLSBoxMaxBufferLength = 16384;
 
 NSString *const TLSBoxPeerVerificationErrorNotification = @"TLSBoxPeerVerificationErrorNotification";
-static NSString *const TLSBoxClientEKU = @"TLS Web Client Authentication";
-static NSString *const TLSBoxServerEKU = @"TLS Web Server Authentication";
+//static const char *const TLSBoxClientEKU = "TLS Web Client Authentication";
+static const char *const TLSBoxServerEKU = "TLS Web Server Authentication";
 
 int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     if (!ok) {
@@ -301,6 +301,10 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     }
 
     EXTENDED_KEY_USAGE *eku = X509V3_EXT_d2i(ext);
+    if (!eku) {
+        X509_free(cert);
+        return NO;
+    }
     const int num = sk_ASN1_OBJECT_num(eku);
     char buffer[100];
     BOOL isValid = NO;
@@ -308,16 +312,13 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     for (int i = 0; i < num; ++i) {
         OBJ_obj2txt(buffer, sizeof(buffer), sk_ASN1_OBJECT_value(eku, i), 1); // get OID
         const char *oid = OBJ_nid2ln(OBJ_obj2nid(sk_ASN1_OBJECT_value(eku, i)));
-        NSString *oidString = [NSString stringWithCString:oid encoding:NSASCIIStringEncoding];
 //        NSLog(@"eku flag %d: %s - %s", i, buffer, oid);
-        if ([oidString isEqualToString:TLSBoxServerEKU]) {
+        if (!strcmp(oid, TLSBoxServerEKU)) {
             isValid = YES;
             break;
         }
     }
-    if (eku) {
-        EXTENDED_KEY_USAGE_free(eku);
-    }
+    EXTENDED_KEY_USAGE_free(eku);
     X509_free(cert);
 
     return isValid;
