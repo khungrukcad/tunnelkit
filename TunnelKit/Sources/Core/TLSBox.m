@@ -50,8 +50,6 @@ NSString *const TLSBoxPeerVerificationErrorNotification = @"TLSBoxPeerVerificati
 static NSString *const TLSBoxClientEKU = @"TLS Web Client Authentication";
 static NSString *const TLSBoxServerEKU = @"TLS Web Server Authentication";
 
-static BOOL TLSBoxIsOpenSSLLoaded;
-
 int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     if (!ok) {
         NSError *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
@@ -136,10 +134,6 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 - (BOOL)startWithError:(NSError *__autoreleasing *)error
 {
-    if (!TLSBoxIsOpenSSLLoaded) {
-        TLSBoxIsOpenSSLLoaded = YES;
-    }
-    
     self.ctx = SSL_CTX_new(TLS_client_method());
     SSL_CTX_set_options(self.ctx, SSL_OP_NO_SSLv2 | SSL_OP_NO_SSLv3 | SSL_OP_NO_COMPRESSION);
     SSL_CTX_set_verify(self.ctx, SSL_VERIFY_PEER, TLSBoxVerifyPeer);
