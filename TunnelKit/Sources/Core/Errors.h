@@ -37,6 +37,7 @@
 #import <Foundation/Foundation.h>
 
 extern NSString *const TunnelKitErrorDomain;
+extern NSString *const TunnelKitErrorKey;
 
 typedef NS_ENUM(NSInteger, TunnelKitErrorCode) {
     TunnelKitErrorCodeCryptoBoxRandomGenerator  = 101,
@@ -45,9 +46,9 @@ typedef NS_ENUM(NSInteger, TunnelKitErrorCode) {
     TunnelKitErrorCodeCryptoBoxAlgorithm        = 104,
     TunnelKitErrorCodeTLSBoxCA                  = 201,
     TunnelKitErrorCodeTLSBoxHandshake           = 202,
-    TunnelKitErrorCodeTLSBoxGeneric             = 203,
     TunnelKitErrorCodeTLSBoxClientCertificate   = 204,
     TunnelKitErrorCodeTLSBoxClientKey           = 205,
+    TunnelKitErrorCodeTLSBoxServerCertificate   = 206,
     TunnelKitErrorCodeDataPathOverflow          = 301,
     TunnelKitErrorCodeDataPathPeerIdMismatch    = 302
 };

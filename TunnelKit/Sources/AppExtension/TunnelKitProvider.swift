@@ -575,7 +575,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
 
 extension TunnelKitProvider {
     
-    // MARK: Helpers
+    // MARK: Logging
     
     private func configureLogging(debug: Bool, customFormat: String? = nil) {
         let logLevel: SwiftyBeaver.Level = (debug ? .debug : .info)
@@ -603,38 +603,6 @@ extension TunnelKitProvider {
         }
     }
     
-    private func setErrorStatus(with error: Error) {
-        guard let lastErrorKey = cfg.lastErrorKey else {
-            return
-        }
-        let providerError: ProviderError
-        if let se = error as? SessionError {
-            switch se {
-            case .badCredentials:
-                providerError = .authenticationFailed
-                
-            case .peerVerification, .tlsError:
-                providerError = .tlsFailed
-                
-            case .negotiationTimeout, .pingTimeout:
-                providerError = .timeout
-                
-            default:
-                providerError = .unexpectedReply
-            }
-        } else {
-            providerError = error as? ProviderError ?? .linkError
-        }
-        defaults?.set(providerError.rawValue, forKey: lastErrorKey)
-    }
-    
-    private func clearErrorStatus() {
-        guard let lastErrorKey = cfg.lastErrorKey else {
-            return
-        }
-        defaults?.removeObject(forKey: lastErrorKey)
-    }
-
     private func logCurrentSSID() {
         if let ssid = observer.currentWifiNetworkName() {
             log.debug("Current SSID: '\(ssid)'")
@@ -647,4 +615,59 @@ extension TunnelKitProvider {
 //        let anyObject = object as AnyObject
 //        return Unmanaged<AnyObject>.passUnretained(anyObject).toOpaque()
 //    }
+
+    // MARK: Errors
+    
+    private func setErrorStatus(with error: Error) {
+        guard let lastErrorKey = cfg.lastErrorKey else {
+            return
+        }
+        defaults?.set(unifiedError(from: error).rawValue, forKey: lastErrorKey)
+    }
+    
+    private func clearErrorStatus() {
+        guard let lastErrorKey = cfg.lastErrorKey else {
+            return
+        }
+        defaults?.removeObject(forKey: lastErrorKey)
+    }
+    
+    private func unifiedError(from error: Error) -> ProviderError {
+        if let te = error.tunnelKitErrorCode() {
+            switch te {
+            case .cryptoBoxRandomGenerator, .cryptoBoxAlgorithm:
+                return .encryptionInitialization
+                
+            case .cryptoBoxEncryption, .cryptoBoxHMAC:
+                return .encryptionData
+                
+            case .tlsBoxCA, .tlsBoxClientCertificate, .tlsBoxClientKey:
+                return .tlsInitialization
+                
+            case .tlsBoxServerCertificate, .tlsBoxServerEKU:
+                return .tlsServerVerification
+                
+            case .tlsBoxHandshake:
+                return .tlsHandshake
+                
+            case .dataPathOverflow, .dataPathPeerIdMismatch:
+                return .unexpectedReply
+            }
+        } else if let se = error as? SessionError {
+            switch se {
+            case .negotiationTimeout, .pingTimeout:
+                return .timeout
+                
+            case .badCredentials:
+                return .authentication
+                
+            case .failedLinkWrite:
+                return .linkError
+
+            default:
+                return .unexpectedReply
+            }
+        }
+        return error as? ProviderError ?? .linkError
+    }
 }

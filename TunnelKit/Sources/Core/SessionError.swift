@@ -36,15 +36,13 @@
 //
 
 import Foundation
+import __TunnelKitNative
 
 /// The possible errors raised/thrown during `SessionProxy` operation.
 public enum SessionError: String, Error {
     
     /// The negotiation timed out.
     case negotiationTimeout
-    
-    /// The peer failed to verify.
-    case peerVerification
     
     /// The VPN session id is missing.
     case missingSessionId
@@ -54,9 +52,6 @@ public enum SessionError: String, Error {
     
     /// The connection key is wrong or wasn't expected.
     case badKey
-    
-    /// The TLS negotiation failed.
-    case tlsError
     
     /// The control packet has an incorrect prefix payload.
     case wrongControlDataPrefix
@@ -72,4 +67,19 @@ public enum SessionError: String, Error {
     
     /// The server couldn't ping back before timeout.
     case pingTimeout
+}
+
+extension Error {
+    func isTunnelKitError() -> Bool {
+        let te = self as NSError
+        return te.domain == TunnelKitErrorDomain
+    }
+    
+    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
+        let te = self as NSError
+        guard te.domain == TunnelKitErrorDomain else {
+            return nil
+        }
+        return TunnelKitErrorCode(rawValue: te.code)
+    }
 }

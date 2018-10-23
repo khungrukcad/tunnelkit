@@ -100,10 +100,22 @@ extension TunnelKitProvider {
         case socketActivity
         
         /// Credentials authentication failed.
-        case authenticationFailed
+        case authentication
+        
+        /// TLS could not be initialized (e.g. malformed CA or client PEMs).
+        case tlsInitialization
+
+        /// TLS server verification failed.
+        case tlsServerVerification
 
         /// TLS handshake failed.
-        case tlsFailed
+        case tlsHandshake
+        
+        /// The encryption logic could not be initialized (e.g. PRNG, algorithms).
+        case encryptionInitialization
+        
+        /// Data encryption/decryption failed.
+        case encryptionData
         
         /// Tunnel timed out.
         case timeout
