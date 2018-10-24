@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Configuration key `lastErrorKey` for reporting errors to host app. [#40](https://github.com/keeshux/tunnelkit/pull/40)
 - Server extended key usage validation (EKU). [#27](https://github.com/keeshux/tunnelkit/issues/27)
 
+### Changed
+
+- Potentially private data (e.g. Internet addresses) is now masked in debug log. [#42](https://github.com/keeshux/tunnelkit/pull/42)
+
 ### Fixed
 
 - CA file was not closed after MD5 calculation when using PIA patches.
