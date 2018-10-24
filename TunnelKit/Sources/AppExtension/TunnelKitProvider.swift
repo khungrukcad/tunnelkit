@@ -483,10 +483,10 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("Session did start")
         
         log.info("Returned ifconfig parameters:")
-        log.info("\tRemote: \(remoteAddress)")
+        log.info("\tRemote: \(remoteAddress.maskedDescription)")
         log.info("\tIPv4: \(reply.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.ipv6?.description ?? "not configured")")
-        log.info("\tDNS: \(reply.dnsServers)")
+        log.info("\tDNS: \(reply.dnsServers.map { $0.maskedDescription })")
         
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
             if let error = error {

@@ -250,8 +250,8 @@ class NETCPLink: LinkInterface {
 extension NETCPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
-            return impl.endpoint.description
+            return impl.endpoint.maskedDescription
         }
-        return "\(hostEndpoint.hostname):\(hostEndpoint.port)"
+        return "\(hostEndpoint.hostname.maskedDescription):\(hostEndpoint.port.maskedDescription)"
     }
 }
