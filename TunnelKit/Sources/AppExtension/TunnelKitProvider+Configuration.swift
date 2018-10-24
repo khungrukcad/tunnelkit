@@ -56,7 +56,7 @@ extension TunnelKitProvider {
     }
     
     /// Defines the communication protocol of an endpoint.
-    public struct EndpointProtocol: Equatable, CustomStringConvertible {
+    public struct EndpointProtocol: RawRepresentable, Equatable, CustomStringConvertible {
 
         /// The socket type.
         public let socketType: SocketType
@@ -70,23 +70,25 @@ extension TunnelKitProvider {
             self.port = port
         }
         
+        // MARK: RawRepresentable
+        
         /// :nodoc:
-        public static func deserialized(_ string: String) throws -> EndpointProtocol {
-            let components = string.components(separatedBy: ":")
+        public init?(rawValue: String) {
+            let components = rawValue.components(separatedBy: ":")
             guard components.count == 2 else {
-                throw ProviderConfigurationError.parameter(name: "endpointProtocol")
+                return nil
             }
             guard let socketType = SocketType(rawValue: components[0]) else {
-                throw ProviderConfigurationError.parameter(name: "endpointProtocol.socketType")
+                return nil
             }
             guard let port = UInt16(components[1]) else {
-                throw ProviderConfigurationError.parameter(name: "endpointProtocol.port")
+                return nil
             }
-            return EndpointProtocol(socketType, port)
+            self.init(socketType, port)
         }
         
         /// :nodoc:
-        public func serialized() -> String {
+        public var rawValue: String {
             return "\(socketType.rawValue):\(port)"
         }
 
@@ -101,7 +103,7 @@ extension TunnelKitProvider {
         
         /// :nodoc:
         public var description: String {
-            return serialized()
+            return rawValue
         }
     }
 
@@ -229,7 +231,12 @@ extension TunnelKitProvider {
             guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
             }
-            endpointProtocols = try endpointProtocolsStrings.map { try EndpointProtocol.deserialized($0) }
+            endpointProtocols = try endpointProtocolsStrings.map {
+                guard let ep = EndpointProtocol(rawValue: $0) else {
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
+                }
+                return ep
+            }
             
             self.cipher = cipher
             self.digest = digest
@@ -444,7 +451,7 @@ extension TunnelKitProvider {
             var dict: [String: Any] = [
                 S.appGroup: appGroup,
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
-                S.endpointProtocols: endpointProtocols.map { $0.serialized() },
+                S.endpointProtocols: endpointProtocols.map { $0.rawValue },
                 S.cipherAlgorithm: cipher.rawValue,
                 S.digestAlgorithm: digest.rawValue,
                 S.ca: ca.pem,
@@ -602,12 +609,14 @@ extension TunnelKitProvider.Configuration: Equatable {
 extension TunnelKitProvider.EndpointProtocol: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        let proto = try TunnelKitProvider.EndpointProtocol.deserialized(container.decode(String.self))
+        guard let proto = try TunnelKitProvider.EndpointProtocol(rawValue: container.decode(String.self)) else {
+            throw TunnelKitProvider.ProviderConfigurationError.parameter(name: "endpointProtocol.decodable")
+        }
         self.init(proto.socketType, proto.port)
     }
     
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
-        try container.encode(serialized())
+        try container.encode(rawValue)
     }
 }
