@@ -137,9 +137,9 @@ class NEUDPSocket: NSObject, GenericSocket {
         switch keyPath {
         case #keyPath(NWUDPSession.state):
             if let resolvedEndpoint = impl.resolvedEndpoint {
-                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint) -> \(resolvedEndpoint))")
+                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint.maskedDescription) -> \(resolvedEndpoint.maskedDescription))")
             } else {
-                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint) -> in progress)")
+                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint.maskedDescription) -> in progress)")
             }
             
             switch impl.state {
@@ -236,8 +236,8 @@ class NEUDPLink: LinkInterface {
 extension NEUDPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
-            return impl.endpoint.description
+            return impl.endpoint.maskedDescription
         }
-        return "\(hostEndpoint.hostname):\(hostEndpoint.port)"
+        return "\(hostEndpoint.hostname.maskedDescription):\(hostEndpoint.port.maskedDescription)"
     }
 }

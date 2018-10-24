@@ -36,6 +36,7 @@
 
 import Foundation
 import __TunnelKitNative
+import CommonCrypto
 
 struct CoreConfiguration {
     static let identifier = "com.algoritmico.TunnelKit"
@@ -59,6 +60,8 @@ struct CoreConfiguration {
     
     static let logsSensitiveData = false
 
+    static let masksPrivateData = true
+    
     static let usesReplayProtection = true
 
     static let tickInterval = 0.2
@@ -96,4 +99,18 @@ struct CoreConfiguration {
     static let keyLength = 64
     
     static let keysCount = 4
+}
+
+extension CustomStringConvertible {
+    var maskedDescription: String {
+        guard CoreConfiguration.masksPrivateData else {
+            return description
+        }
+        var data = description.data(using: .utf8)!
+        var md = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
+        md.withUnsafeMutableBytes {
+            _ = CC_SHA1(&data, CC_LONG(data.count), $0)
+        }
+        return "#\(md.toHex().prefix(16))#"
+    }
 }

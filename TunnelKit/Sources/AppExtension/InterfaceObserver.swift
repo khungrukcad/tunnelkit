@@ -75,7 +75,7 @@ class InterfaceObserver: NSObject {
         let currentWifiName = currentWifiNetworkName()
         if (currentWifiName != lastWifiName) {
             if let current = currentWifiName {
-                log.debug("SSID is now '\(current)'")
+                log.debug("SSID is now '\(current.maskedDescription)'")
                 if let last = lastWifiName, (current != last) {
                     queue?.async {
                         NotificationCenter.default.post(name: .__InterfaceObserverDidDetectWifiChange, object: nil)

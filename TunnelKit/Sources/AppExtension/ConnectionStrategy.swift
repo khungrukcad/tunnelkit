@@ -70,7 +70,7 @@ class ConnectionStrategy {
         
         // reuse preferred address
         if let preferredAddress = preferredAddress {
-            log.debug("Pick preferred address: \(preferredAddress)")
+            log.debug("Pick preferred address: \(preferredAddress.maskedDescription)")
             let socket = provider.createSocket(to: preferredAddress, protocol: currentProtocol())
             completionHandler(socket, nil)
             return
@@ -78,21 +78,21 @@ class ConnectionStrategy {
         
         // use any resolved address
         if prefersResolvedAddresses, let resolvedAddress = anyResolvedAddress() {
-            log.debug("Pick resolved address: \(resolvedAddress)")
+            log.debug("Pick resolved address: \(resolvedAddress.maskedDescription)")
             let socket = provider.createSocket(to: resolvedAddress, protocol: currentProtocol())
             completionHandler(socket, nil)
             return
         }
         
         // fall back to DNS
-        log.debug("DNS resolve hostname: \(hostname)")
+        log.debug("DNS resolve hostname: \(hostname.maskedDescription)")
         DNSResolver.resolve(hostname, timeout: timeout, queue: queue) { (addresses, error) in
             
             // refresh resolved addresses
             if let resolved = addresses, !resolved.isEmpty {
                 self.resolvedAddresses = resolved
 
-                log.debug("DNS resolved addresses: \(resolved)")
+                log.debug("DNS resolved addresses: \(resolved.map { $0.maskedDescription })")
             } else {
                 log.error("DNS resolution failed!")
             }

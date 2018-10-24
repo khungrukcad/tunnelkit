@@ -137,9 +137,9 @@ class NETCPSocket: NSObject, GenericSocket {
         switch keyPath {
         case #keyPath(NWTCPConnection.state):
             if let resolvedEndpoint = impl.remoteAddress {
-                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint) -> \(resolvedEndpoint))")
+                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint.maskedDescription) -> \(resolvedEndpoint.maskedDescription))")
             } else {
-                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint) -> in progress)")
+                log.debug("Socket state is \(impl.state) (endpoint: \(impl.endpoint.maskedDescription) -> in progress)")
             }
             
             switch impl.state {
@@ -250,8 +250,8 @@ class NETCPLink: LinkInterface {
 extension NETCPSocket {
     override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
-            return impl.endpoint.description
+            return impl.endpoint.maskedDescription
         }
-        return "\(hostEndpoint.hostname):\(hostEndpoint.port)"
+        return "\(hostEndpoint.hostname.maskedDescription):\(hostEndpoint.port.maskedDescription)"
     }
 }

@@ -527,7 +527,6 @@ extension TunnelKitProvider {
                 log.info("App version: \(appVersion)")
             }
             
-//            log.info("\tAddress: \(endpoint.hostname):\(endpoint.port)")
             log.info("\tProtocols: \(endpointProtocols)")
             log.info("\tCipher: \(cipher)")
             log.info("\tDigest: \(digest)")

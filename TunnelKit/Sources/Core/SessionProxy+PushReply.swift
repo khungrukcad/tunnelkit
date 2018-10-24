@@ -62,7 +62,7 @@ public struct IPv4Settings: CustomStringConvertible {
         
         /// :nodoc:
         public var description: String {
-            return "{\(destination)/\(mask) \(gateway ?? "default")}"
+            return "{\(destination.maskedDescription)/\(mask.maskedDescription) \(gateway?.maskedDescription ?? "default")}"
         }
     }
 
@@ -82,7 +82,7 @@ public struct IPv4Settings: CustomStringConvertible {
 
     /// :nodoc:
     public var description: String {
-        return "addr \(address) netmask \(addressMask) gw \(defaultGateway) routes \(routes)"
+        return "addr \(address.maskedDescription) netmask \(addressMask.maskedDescription) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
     }
 }
 
@@ -111,7 +111,7 @@ public struct IPv6Settings: CustomStringConvertible {
         
         /// :nodoc:
         public var description: String {
-            return "{\(destination)/\(prefixLength) \(gateway ?? "default")}"
+            return "{\(destination.maskedDescription)/\(prefixLength.maskedDescription) \(gateway?.maskedDescription ?? "default")}"
         }
     }
 
@@ -131,7 +131,7 @@ public struct IPv6Settings: CustomStringConvertible {
     
     /// :nodoc:
     public var description: String {
-        return "addr \(address)/\(addressPrefixLength) gw \(defaultGateway) routes \(routes)"
+        return "addr \(address.maskedDescription)/\(addressPrefixLength.maskedDescription) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
     }
 }
 
