@@ -111,6 +111,6 @@ extension CustomStringConvertible {
         md.withUnsafeMutableBytes {
             _ = CC_SHA1(&data, CC_LONG(data.count), $0)
         }
-        return md.toHex()
+        return "#\(md.toHex().prefix(16))#"
     }
 }
