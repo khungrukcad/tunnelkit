@@ -106,8 +106,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     private var socket: GenericSocket?
 
-    private var linkFailures = 0
-
     private var pendingStartHandler: ((Error?) -> Void)?
     
     private var pendingStopHandler: (() -> Void)?
@@ -400,14 +398,14 @@ extension TunnelKitProvider: GenericSocketDelegate {
         log.debug("Socket timed out waiting for activity, cancelling...")
         reasserting = true
         socket.shutdown()
-    }
-    
-    func socketShouldChangeProtocol(_ socket: GenericSocket) -> Bool {
-        guard strategy.tryNextProtocol() else {
-            disposeTunnel(error: ProviderError.exhaustedProtocols)
-            return false
+
+        // fallback: TCP connection timeout suggests falling back
+        if let _ = socket as? NETCPSocket {
+            guard tryNextProtocol() else {
+                // disposeTunnel
+                return
+            }
         }
-        return true
     }
     
     func socketDidBecomeActive(_ socket: GenericSocket) {
@@ -428,19 +426,17 @@ extension TunnelKitProvider: GenericSocketDelegate {
         }
         
         var shutdownError: Error?
-        if !failure {
-            shutdownError = proxy.stopError
-        } else {
-            shutdownError = proxy.stopError ?? ProviderError.linkError
-            linkFailures += 1
-            log.debug("Link failures so far: \(linkFailures) (max = \(maxLinkFailures))")
+        let didTimeoutNegotiation: Bool
+        var upgradedSocket: GenericSocket?
+
+        // look for error causing shutdown
+        shutdownError = proxy.stopError
+        if failure && (shutdownError == nil) {
+            shutdownError = ProviderError.linkError
         }
-        
-        // neg timeout?
-        let didTimeoutNegotiation = (proxy.stopError as? SessionError == .negotiationTimeout)
+        didTimeoutNegotiation = (shutdownError as? SessionError == .negotiationTimeout)
         
         // only try upgrade on network errors
-        var upgradedSocket: GenericSocket? = nil
         if shutdownError as? SessionError == nil {
             upgradedSocket = socket.upgraded()
         }
@@ -448,9 +444,9 @@ extension TunnelKitProvider: GenericSocketDelegate {
         // clean up
         finishTunnelDisconnection(error: shutdownError)
 
-        // treat negotiation timeout as socket timeout, UDP is connection-less
+        // fallback: UDP is connection-less, treat negotiation timeout as socket timeout
         if didTimeoutNegotiation {
-            guard socketShouldChangeProtocol(socket) else {
+            guard tryNextProtocol() else {
                 // disposeTunnel
                 return
             }
@@ -458,12 +454,6 @@ extension TunnelKitProvider: GenericSocketDelegate {
 
         // reconnect?
         if reasserting {
-            guard (linkFailures < maxLinkFailures) else {
-                log.debug("Too many link failures (\(linkFailures)), tunnel will die now")
-                reasserting = false
-                disposeTunnel(error: shutdownError)
-                return
-            }
             log.debug("Disconnection is recoverable, tunnel will reconnect in \(reconnectionDelay) milliseconds...")
             tunnelQueue.schedule(after: .milliseconds(reconnectionDelay)) {
                 self.connectTunnel(upgradedSocket: upgradedSocket, preferredAddress: socket.remoteAddress)
@@ -574,6 +564,13 @@ extension TunnelKitProvider: SessionProxyDelegate {
 }
 
 extension TunnelKitProvider {
+    private func tryNextProtocol() -> Bool {
+        guard strategy.tryNextProtocol() else {
+            disposeTunnel(error: ProviderError.exhaustedProtocols)
+            return false
+        }
+        return true
+    }
     
     // MARK: Logging
     
