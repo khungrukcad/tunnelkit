@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - CA file was not closed after MD5 calculation when using PIA patches.
 - Mitigated an issue with MTU in TCP mode during negotiation. [#39](https://github.com/keeshux/tunnelkit/issues/39)
+- Handle server-initiated renegotiation. [#41](https://github.com/keeshux/tunnelkit/pull/41)
 
 ## 1.2.0 (2018-10-20)
 

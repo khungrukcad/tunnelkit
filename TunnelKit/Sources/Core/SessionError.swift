@@ -67,6 +67,9 @@ public enum SessionError: String, Error {
     
     /// The server couldn't ping back before timeout.
     case pingTimeout
+    
+    /// The session reached a stale state and can't be recovered.
+    case staleSession
 }
 
 extension Error {
