@@ -79,7 +79,6 @@ class NETCPSocket: NSObject, GenericSocket {
                 return
             }
             guard _self.isActive else {
-                _ = _self.delegate?.socketShouldChangeProtocol(_self)
                 _self.delegate?.socketDidTimeout(_self)
                 return
             }

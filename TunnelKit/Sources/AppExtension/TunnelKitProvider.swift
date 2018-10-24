@@ -400,14 +400,14 @@ extension TunnelKitProvider: GenericSocketDelegate {
         log.debug("Socket timed out waiting for activity, cancelling...")
         reasserting = true
         socket.shutdown()
-    }
-    
-    func socketShouldChangeProtocol(_ socket: GenericSocket) -> Bool {
-        guard strategy.tryNextProtocol() else {
-            disposeTunnel(error: ProviderError.exhaustedProtocols)
-            return false
+
+        // fallback: TCP connection timeout suggests falling back
+        if let _ = socket as? NETCPSocket {
+            guard tryNextProtocol() else {
+                // disposeTunnel
+                return
+            }
         }
-        return true
     }
     
     func socketDidBecomeActive(_ socket: GenericSocket) {
@@ -448,9 +448,9 @@ extension TunnelKitProvider: GenericSocketDelegate {
         // clean up
         finishTunnelDisconnection(error: shutdownError)
 
-        // treat negotiation timeout as socket timeout, UDP is connection-less
+        // fallback: UDP is connection-less, treat negotiation timeout as socket timeout
         if didTimeoutNegotiation {
-            guard socketShouldChangeProtocol(socket) else {
+            guard tryNextProtocol() else {
                 // disposeTunnel
                 return
             }
@@ -574,6 +574,13 @@ extension TunnelKitProvider: SessionProxyDelegate {
 }
 
 extension TunnelKitProvider {
+    private func tryNextProtocol() -> Bool {
+        guard strategy.tryNextProtocol() else {
+            disposeTunnel(error: ProviderError.exhaustedProtocols)
+            return false
+        }
+        return true
+    }
     
     // MARK: Logging
     
