@@ -106,8 +106,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     private var socket: GenericSocket?
 
-    private var linkFailures = 0
-
     private var pendingStartHandler: ((Error?) -> Void)?
     
     private var pendingStopHandler: (() -> Void)?
@@ -428,19 +426,17 @@ extension TunnelKitProvider: GenericSocketDelegate {
         }
         
         var shutdownError: Error?
-        if !failure {
-            shutdownError = proxy.stopError
-        } else {
-            shutdownError = proxy.stopError ?? ProviderError.linkError
-            linkFailures += 1
-            log.debug("Link failures so far: \(linkFailures) (max = \(maxLinkFailures))")
+        let didTimeoutNegotiation: Bool
+        var upgradedSocket: GenericSocket?
+
+        // look for error causing shutdown
+        shutdownError = proxy.stopError
+        if failure && (shutdownError == nil) {
+            shutdownError = ProviderError.linkError
         }
-        
-        // neg timeout?
-        let didTimeoutNegotiation = (proxy.stopError as? SessionError == .negotiationTimeout)
+        didTimeoutNegotiation = (shutdownError as? SessionError == .negotiationTimeout)
         
         // only try upgrade on network errors
-        var upgradedSocket: GenericSocket? = nil
         if shutdownError as? SessionError == nil {
             upgradedSocket = socket.upgraded()
         }
@@ -458,12 +454,6 @@ extension TunnelKitProvider: GenericSocketDelegate {
 
         // reconnect?
         if reasserting {
-            guard (linkFailures < maxLinkFailures) else {
-                log.debug("Too many link failures (\(linkFailures)), tunnel will die now")
-                reasserting = false
-                disposeTunnel(error: shutdownError)
-                return
-            }
             log.debug("Disconnection is recoverable, tunnel will reconnect in \(reconnectionDelay) milliseconds...")
             tunnelQueue.schedule(after: .milliseconds(reconnectionDelay)) {
                 self.connectTunnel(upgradedSocket: upgradedSocket, preferredAddress: socket.remoteAddress)
