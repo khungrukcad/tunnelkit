@@ -404,7 +404,13 @@ extension TunnelKitProvider {
         
         // MARK: Shortcuts
         
-        func urlForLog(in appGroup: String) -> URL? {
+        /**
+         Returns the URL of the latest debug log.
+
+         - Parameter in: The app group where to locate the log file.
+         - Returns: The URL of the debug log, if any.
+         */
+        public func urlForLog(in appGroup: String) -> URL? {
             guard shouldDebug, let key = debugLogKey else {
                 return nil
             }
@@ -414,7 +420,13 @@ extension TunnelKitProvider {
             return parentURL.appendingPathComponent("\(key).log")
         }
 
-        func existingLog(in appGroup: String) -> String? {
+        /**
+         Returns the content of the latest debug log.
+         
+         - Parameter in: The app group where to locate the log file.
+         - Returns: The content of the debug log, if any.
+         */
+        public func existingLog(in appGroup: String) -> String? {
             guard let url = urlForLog(in: appGroup) else {
                 return nil
             }
