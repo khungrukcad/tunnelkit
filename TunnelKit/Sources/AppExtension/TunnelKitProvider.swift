@@ -652,7 +652,7 @@ extension TunnelKitProvider {
             }
         } else if let se = error as? SessionError {
             switch se {
-            case .negotiationTimeout, .pingTimeout:
+            case .negotiationTimeout, .pingTimeout, .staleSession:
                 return .timeout
                 
             case .badCredentials:

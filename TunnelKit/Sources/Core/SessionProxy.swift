@@ -326,12 +326,6 @@ public class SessionProxy {
     private func start() {
         loopLink()
         hardReset()
-
-        guard !keys.isEmpty else {
-            fatalError("Main loop must follow hard reset, keys are empty!")
-        }
-
-        loopNegotiation()
     }
     
     private func loopNegotiation() {
@@ -466,7 +460,10 @@ public class SessionProxy {
 //                deferStop(.shutdown, e)
 //                return
             }
-            if (code == .softResetV1) && (negotiationKey.state != .softReset) {
+            if (code == .hardResetServerV2) && (negotiationKey.state != .hardReset) {
+                deferStop(.shutdown, SessionError.staleSession)
+                return
+            } else if (code == .softResetV1) && (negotiationKey.state != .softReset) {
                 softReset(isServerInitiated: true)
             }
 
@@ -560,6 +557,10 @@ public class SessionProxy {
 
         let payload = hardResetPayload() ?? Data()
         negotiationKey.state = .hardReset
+        guard !keys.isEmpty else {
+            fatalError("Main loop must follow hard reset, keys are empty!")
+        }
+        loopNegotiation()
         enqueueControlPackets(code: .hardResetClientV2, key: UInt8(negotiationKeyIdx), payload: payload)
     }
     
