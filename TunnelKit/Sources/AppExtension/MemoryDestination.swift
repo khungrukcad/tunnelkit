@@ -54,11 +54,11 @@ class MemoryDestination: BaseDestination, CustomStringConvertible {
         }
     }
     
-    func flush(to: UserDefaults, with key: String) {
+    func flush(to url: URL) {
         execute(synchronously: true) {
-            to.set(self.buffer, forKey: key)
+            let content = self.buffer.joined(separator: "\n")
+            try? content.write(to: url, atomically: true, encoding: .utf8)
         }
-        to.synchronize()
     }
     
     var description: String {
