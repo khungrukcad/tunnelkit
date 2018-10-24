@@ -7,20 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Debug log is saved to group container rather than `UserDefaults`. [#43](https://github.com/keeshux/tunnelkit/pull/43)
+
+### Fixed
+
+- Handle server-initiated renegotiation. [#41](https://github.com/keeshux/tunnelkit/pull/41)
+- Potentially private data (e.g. Internet addresses) is now masked in debug log. [#42](https://github.com/keeshux/tunnelkit/pull/42)
+
+## 1.2.1 (2018-10-24)
+
 ### Added
 
 - Configuration key `lastErrorKey` for reporting errors to host app. [#40](https://github.com/keeshux/tunnelkit/pull/40)
 - Server extended key usage validation (EKU). [#27](https://github.com/keeshux/tunnelkit/issues/27)
 
-### Changed
-
-- Potentially private data (e.g. Internet addresses) is now masked in debug log. [#42](https://github.com/keeshux/tunnelkit/pull/42)
-
 ### Fixed
 
 - CA file was not closed after MD5 calculation when using PIA patches.
 - Mitigated an issue with MTU in TCP mode during negotiation. [#39](https://github.com/keeshux/tunnelkit/issues/39)
-- Handle server-initiated renegotiation. [#41](https://github.com/keeshux/tunnelkit/pull/41)
 
 ## 1.2.0 (2018-10-20)
 
