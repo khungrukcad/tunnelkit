@@ -856,7 +856,7 @@ public class SessionProxy {
                 return
             }
             reply = optionalReply
-            log.debug("Received PUSH_REPLY: \"\(reply)\"")
+            log.debug("Received PUSH_REPLY: \"\(reply.maskedDescription)\"")
         } catch let e {
             deferStop(.shutdown, e)
             return

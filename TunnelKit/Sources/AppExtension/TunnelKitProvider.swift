@@ -602,7 +602,7 @@ extension TunnelKitProvider {
     
     private func logCurrentSSID() {
         if let ssid = observer.currentWifiNetworkName() {
-            log.debug("Current SSID: '\(ssid)'")
+            log.debug("Current SSID: '\(ssid.maskedDescription)'")
         } else {
             log.debug("Current SSID: none (disconnected from WiFi)")
         }
