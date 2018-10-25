@@ -166,7 +166,7 @@ extension SessionProxy {
         public var renegotiatesAfter: TimeInterval?
         
         /// Server is patched for the PIA VPN provider.
-        public var usesPIAPatches: Bool
+        public var usesPIAPatches: Bool?
 
         /// :nodoc:
         public init(ca: CryptoContainer) {
@@ -239,6 +239,6 @@ extension SessionProxy {
         public let renegotiatesAfter: TimeInterval?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
-        public let usesPIAPatches: Bool
+        public let usesPIAPatches: Bool?
     }
 }
