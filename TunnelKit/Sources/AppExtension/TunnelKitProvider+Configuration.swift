@@ -129,16 +129,18 @@ extension TunnelKitProvider {
         
         // MARK: Debugging
         
-        /// Enables debugging. If `true`, then `debugLogKey` is a mandatory field.
+        /// Enables debugging.
         public var shouldDebug: Bool
         
-        /// The filename in group container where the latest debug log snapshot is stored. Ignored if `shouldDebug` is `false`.
+        /// This attribute is ignored and deprecated. Use `urlForLog(...)` or `existingLog(...)` to access the debug log.
+        @available(*, deprecated)
         public var debugLogKey: String?
         
         /// Optional debug log format (SwiftyBeaver format).
         public var debugLogFormat: String?
         
-        /// The key in `defaults` where to set the raw value of last `TunnelKitProvider.ProviderError`.
+        /// This attribute is ignored and deprecated. Use `lastError(...)` to access the last error.
+        @available(*, deprecated)
         public var lastErrorKey: String?
         
         // MARK: Building
@@ -155,9 +157,7 @@ extension TunnelKitProvider {
             mtu = 1500
             self.sessionConfiguration = sessionConfiguration
             shouldDebug = false
-            debugLogKey = nil
             debugLogFormat = nil
-            lastErrorKey = nil
         }
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
@@ -228,15 +228,8 @@ extension TunnelKitProvider {
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
             if shouldDebug {
-                guard let debugLogKey = providerConfiguration[S.debugLogKey] as? String else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.debugLogKey)]")
-                }
-                self.debugLogKey = debugLogKey
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
-            } else {
-                debugLogKey = nil
             }
-            lastErrorKey = providerConfiguration[S.lastErrorKey] as? String
 
             guard !prefersResolvedAddresses || !(resolvedAddresses?.isEmpty ?? true) else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
@@ -256,9 +249,9 @@ extension TunnelKitProvider {
                 mtu: mtu,
                 sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
-                debugLogKey: shouldDebug ? debugLogKey : nil,
+                debugLogKey: nil,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
-                lastErrorKey: lastErrorKey
+                lastErrorKey: nil
             )
         }
     }
@@ -302,11 +295,7 @@ extension TunnelKitProvider {
             
             static let debug = "Debug"
             
-            static let debugLogKey = "DebugLogKey"
-            
             static let debugLogFormat = "DebugLogFormat"
-            
-            static let lastErrorKey = "LastErrorKey"
         }
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
@@ -328,15 +317,21 @@ extension TunnelKitProvider {
         public let shouldDebug: Bool
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogKey`
+        @available(*, deprecated)
         public let debugLogKey: String?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.lastErrorKey`
+        @available(*, deprecated)
         public let lastErrorKey: String?
         
         // MARK: Shortcuts
+
+        static let debugLogFilename = "debug.log"
+
+        static let lastErrorKey = "LastTunnelKitError"
         
         /**
          Returns the URL of the latest debug log.
@@ -345,13 +340,13 @@ extension TunnelKitProvider {
          - Returns: The URL of the debug log, if any.
          */
         public func urlForLog(in appGroup: String) -> URL? {
-            guard shouldDebug, let key = debugLogKey else {
+            guard shouldDebug else {
                 return nil
             }
             guard let parentURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
                 return nil
             }
-            return parentURL.appendingPathComponent("\(key).log")
+            return parentURL.appendingPathComponent(Configuration.debugLogFilename)
         }
 
         /**
@@ -365,6 +360,28 @@ extension TunnelKitProvider {
                 return nil
             }
             return try? String(contentsOf: url)
+        }
+        
+        /**
+         Returns the last error reported by the tunnel, if any.
+         
+         - Parameter in: The app group where to locate the error key.
+         - Returns: The last tunnel error, if any.
+         */
+        public func lastError(in appGroup: String) -> ProviderError? {
+            guard let rawValue = UserDefaults(suiteName: appGroup)?.string(forKey: Configuration.lastErrorKey) else {
+                return nil
+            }
+            return ProviderError(rawValue: rawValue)
+        }
+
+        /**
+         Clear the last error status.
+         
+         - Parameter in: The app group where to locate the error key.
+         */
+        public func clearLastError(in appGroup: String) {
+            UserDefaults(suiteName: appGroup)?.removeObject(forKey: Configuration.lastErrorKey)
         }
         
         // MARK: API
@@ -436,14 +453,8 @@ extension TunnelKitProvider {
             if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
                 dict[S.usesPIAPatches] = usesPIAPatches
             }
-            if let debugLogKey = debugLogKey {
-                dict[S.debugLogKey] = debugLogKey
-            }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
-            }
-            if let lastErrorKey = lastErrorKey {
-                dict[S.lastErrorKey] = lastErrorKey
             }
             return dict
         }
@@ -527,9 +538,7 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.endpointProtocols = endpointProtocols
         builder.mtu = mtu
         builder.shouldDebug = shouldDebug
-        builder.debugLogKey = debugLogKey
         builder.debugLogFormat = debugLogFormat
-        builder.lastErrorKey = lastErrorKey
         return builder
     }
 
