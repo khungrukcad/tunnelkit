@@ -60,11 +60,12 @@ class AppExtensionTests: XCTestCase {
         let hostname = "example.com"
         let credentials = SessionProxy.Credentials("foo", "bar")
 
-        builder = TunnelKitProvider.ConfigurationBuilder(ca: CryptoContainer(pem: "abcdef"))
+        var sessionBuilder = SessionProxy.ConfigurationBuilder(ca: CryptoContainer(pem: "abcdef"))
+        sessionBuilder.cipher = .aes128cbc
+        sessionBuilder.digest = .sha256
+        builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         XCTAssertNotNil(builder)
 
-        builder.cipher = .aes128cbc
-        builder.digest = .sha256
         cfg = builder.build()
 
         let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, hostname: hostname, credentials: credentials)
@@ -81,11 +82,11 @@ class AppExtensionTests: XCTestCase {
         
         let K = TunnelKitProvider.Configuration.Keys.self
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
-        XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.cipher.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.digest.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.ca.pem)
+        XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.sessionConfiguration.cipher.rawValue)
+        XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.sessionConfiguration.digest.rawValue)
+        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.sessionConfiguration.ca.pem)
         XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.mtu)
-        XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? Int, cfg.renegotiatesAfterSeconds)
+        XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? TimeInterval, cfg.sessionConfiguration.renegotiatesAfter)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)
         XCTAssertEqual(proto?.providerConfiguration?[K.debugLogKey] as? String, cfg.debugLogKey)
     }
