@@ -83,13 +83,15 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     private let prngSeedLength = 64
     
     private var cachesURL: URL {
-        return URL(fileURLWithPath: NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)[0])
+        guard let appGroup = appGroup else {
+            fatalError("Accessing cachesURL before parsing app group")
+        }
+        guard let containerURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+            fatalError("No access to app group: \(appGroup)")
+        }
+        return containerURL.appendingPathComponent("Library/Caches/")
     }
 
-    private func temporaryURL(forKey key: String) -> URL {
-        return cachesURL.appendingPathComponent("\(key).pem")
-    }
-    
     // MARK: Tunnel configuration
 
     private var appGroup: String!
@@ -181,42 +183,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             completionHandler(ProviderConfigurationError.prngInitialization)
             return
         }
-        
-//        let caPath: String
-//        let clientCertificatePath: String?
-//        let clientKeyPath: String?
-//        do {
-//            let url = temporaryURL(forKey: Configuration.Keys.ca)
-//            try cfg.ca.write(to: url)
-//            caPath = url.path
-//        } catch {
-//            completionHandler(ProviderConfigurationError.certificateSerialization)
-//            return
-//        }
-//        if let clientCertificate = cfg.clientCertificate {
-//            do {
-//                let url = temporaryURL(forKey: Configuration.Keys.clientCertificate)
-//                try clientCertificate.write(to: url)
-//                clientCertificatePath = url.path
-//            } catch {
-//                completionHandler(ProviderConfigurationError.certificateSerialization)
-//                return
-//            }
-//        } else {
-//            clientCertificatePath = nil
-//        }
-//        if let clientKey = cfg.clientKey {
-//            do {
-//                let url = temporaryURL(forKey: Configuration.Keys.clientKey)
-//                try clientKey.write(to: url)
-//                clientKeyPath = url.path
-//            } catch {
-//                completionHandler(ProviderConfigurationError.certificateSerialization)
-//                return
-//            }
-//        } else {
-//            clientKeyPath = nil
-//        }
 
         cfg.print(appVersion: appVersion)
         
@@ -239,7 +205,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
         let proxy: SessionProxy
         do {
-            proxy = try SessionProxy(queue: tunnelQueue, configuration: sessionConfiguration.build())
+            proxy = try SessionProxy(queue: tunnelQueue, configuration: sessionConfiguration.build(), cachesURL: cachesURL)
         } catch let e {
             completionHandler(e)
             return
@@ -382,10 +348,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         }
         // stopped externally, unrecoverable
         else {
-            let fm = FileManager.default
-            for key in [Configuration.Keys.ca, Configuration.Keys.clientCertificate, Configuration.Keys.clientKey] {
-                try? fm.removeItem(at: temporaryURL(forKey: key))
-            }
             cancelTunnelWithError(error)
         }
     }

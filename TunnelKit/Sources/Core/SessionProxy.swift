@@ -69,6 +69,14 @@ public class SessionProxy {
         case reconnect
     }
     
+    private struct Caches {
+        static let ca = "ca.pem"
+
+        static let clientCertificate = "cert.pem"
+
+        static let clientKey = "key.pem"
+    }
+    
     // MARK: Configuration
     
     private let configuration: Configuration
@@ -143,6 +151,22 @@ public class SessionProxy {
     
     private var authenticator: Authenticator?
     
+    // MARK: Caching
+    
+    private let cachesURL: URL
+    
+    private var caURL: URL {
+        return cachesURL.appendingPathComponent(Caches.ca)
+    }
+    
+    private var clientCertificateURL: URL {
+        return cachesURL.appendingPathComponent(Caches.clientCertificate)
+    }
+    
+    private var clientKeyURL: URL {
+        return cachesURL.appendingPathComponent(Caches.clientKey)
+    }
+    
     // MARK: Init
 
     /**
@@ -151,9 +175,10 @@ public class SessionProxy {
      - Parameter queue: The `DispatchQueue` where to run the session loop.
      - Parameter configuration: The `SessionProxy.Configuration` to use for this session.
      */
-    public init(queue: DispatchQueue, configuration: Configuration) throws {
+    public init(queue: DispatchQueue, configuration: Configuration, cachesURL: URL) throws {
         self.queue = queue
         self.configuration = configuration
+        self.cachesURL = cachesURL
 
         keys = [:]
         oldKeys = []
@@ -172,10 +197,29 @@ public class SessionProxy {
         } else {
             controlChannel = ControlChannel()
         }
+        
+        // cache PEMs locally (mandatory for OpenSSL)
+        let fm = FileManager.default
+        try configuration.ca.pem.write(to: caURL, atomically: true, encoding: .ascii)
+        if let container = configuration.clientCertificate {
+            try container.pem.write(to: clientCertificateURL, atomically: true, encoding: .ascii)
+        } else {
+            try? fm.removeItem(at: clientCertificateURL)
+        }
+        if let container = configuration.clientKey {
+            try container.pem.write(to: clientKeyURL, atomically: true, encoding: .ascii)
+        } else {
+            try? fm.removeItem(at: clientKeyURL)
+        }
     }
     
     deinit {
         cleanup()
+
+        let fm = FileManager.default
+        for url in [caURL, clientCertificateURL, clientKeyURL] {
+            try? fm.removeItem(at: url)
+        }
     }
     
     // MARK: Public interface
@@ -566,7 +610,7 @@ public class SessionProxy {
     
     private func hardResetPayload() -> Data? {
         guard !configuration.usesPIAPatches else {
-            let caMD5 = TLSBox.md5(forCertificatePath: configuration.caPath)
+            let caMD5 = TLSBox.md5(forCertificatePath: caURL.path)
             log.debug("CA MD5 is: \(caMD5)")
             return try? PIAHardReset(
                 caMd5Digest: caMD5,
@@ -722,9 +766,9 @@ public class SessionProxy {
             log.debug("Start TLS handshake")
 
             negotiationKey.tlsOptional = TLSBox(
-                caPath: configuration.caPath,
-                clientCertificatePath: configuration.clientCertificatePath,
-                clientKeyPath: configuration.clientKeyPath
+                caPath: caURL.path,
+                clientCertificatePath: (configuration.clientCertificate != nil) ? clientCertificateURL.path : nil,
+                clientKeyPath: (configuration.clientKey != nil) ? clientKeyURL.path : nil
             )
             do {
                 try negotiationKey.tls.start()
