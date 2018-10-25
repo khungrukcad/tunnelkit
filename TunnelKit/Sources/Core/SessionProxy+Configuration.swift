@@ -240,5 +240,40 @@ extension SessionProxy {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
         public let usesPIAPatches: Bool?
+
+        /**
+         Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+         
+         - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
+         */
+        public func builder() -> SessionProxy.ConfigurationBuilder {
+            var builder = SessionProxy.ConfigurationBuilder(ca: ca)
+            builder.cipher = cipher
+            builder.digest = digest
+            builder.clientCertificate = clientCertificate
+            builder.clientKey = clientKey
+            builder.compressionFraming = compressionFraming
+            builder.tlsWrap = tlsWrap
+            builder.keepAliveInterval = keepAliveInterval
+            builder.renegotiatesAfter = renegotiatesAfter
+            builder.usesPIAPatches = usesPIAPatches
+            return builder
+        }
+
+        // MARK: Equatable
+        
+        /// :nodoc:
+        public static func ==(lhs: Configuration, rhs: Configuration) -> Bool {
+            return
+                (lhs.cipher == rhs.cipher) &&
+                (lhs.digest == rhs.digest) &&
+                (lhs.ca == rhs.ca) &&
+                (lhs.clientCertificate == rhs.clientCertificate) &&
+                (lhs.clientKey == rhs.clientKey) &&
+                (lhs.compressionFraming == rhs.compressionFraming) &&
+                (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
+                (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
+                (lhs.usesPIAPatches == rhs.usesPIAPatches)
+        }
     }
 }
