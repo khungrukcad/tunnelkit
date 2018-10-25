@@ -135,9 +135,6 @@ extension SessionProxy {
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
-        /// The credentials.
-        public var credentials: Credentials?
-        
         /// The cipher algorithm for data encryption.
         public var cipher: Cipher
         
@@ -170,7 +167,6 @@ extension SessionProxy {
 
         /// :nodoc:
         public init(ca: CryptoContainer) {
-            credentials = nil
             cipher = .aes128cbc
             digest = .sha1
             self.ca = ca
@@ -190,7 +186,6 @@ extension SessionProxy {
          */
         public func build() -> Configuration {
             return Configuration(
-                credentials: credentials,
                 cipher: cipher,
                 digest: digest,
                 ca: ca,
@@ -206,11 +201,8 @@ extension SessionProxy {
     }
     
     /// The immutable configuration for `SessionProxy`.
-    public struct Configuration: Codable {
+    public struct Configuration: Codable, Equatable {
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.credentials`
-        public let credentials: Credentials?
-        
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
         public let cipher: Cipher
         

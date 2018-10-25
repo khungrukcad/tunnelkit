@@ -81,6 +81,9 @@ public class SessionProxy {
     
     private let configuration: Configuration
     
+    /// The optional credentials.
+    public var credentials: Credentials?
+    
     private var keepAliveInterval: TimeInterval? {
         let interval: TimeInterval?
         if let negInterval = pushReply?.ping, negInterval > 0 {
@@ -650,7 +653,7 @@ public class SessionProxy {
         negotiationKey.controlState = .preAuth
         
         do {
-            authenticator = try Authenticator(configuration.credentials?.username, pushReply?.authToken ?? configuration.credentials?.password)
+            authenticator = try Authenticator(credentials?.username, pushReply?.authToken ?? credentials?.password)
             try authenticator?.putAuth(into: negotiationKey.tls)
         } catch let e {
             deferStop(.shutdown, e)

@@ -121,38 +121,11 @@ extension TunnelKitProvider {
         /// The accepted communication protocols. Must be non-empty.
         public var endpointProtocols: [EndpointProtocol]
 
-        /// The encryption algorithm.
-        public var cipher: SessionProxy.Cipher
-        
-        /// The message digest algorithm.
-        public var digest: SessionProxy.Digest
-        
-        /// The CA certificate to validate server against.
-        public let ca: CryptoContainer
-        
-        /// The optional client certificate to authenticate with. Set to `nil` to disable client authentication (default).
-        public var clientCertificate: CryptoContainer?
-        
-        /// The optional key for `clientCertificate`. Set to `nil` if client authentication unused (default).
-        public var clientKey: CryptoContainer?
-        
         /// The MTU of the link.
         public var mtu: Int
         
-        /// Sets compression framing, disabled by default.
-        public var compressionFraming: SessionProxy.CompressionFraming
-
-        /// The optional TLS wrapping. When `strategy == .auth`, uses `digest` as HMAC algorithm.
-        public var tlsWrap: SessionProxy.TLSWrap?
-
-        /// Sends periodical keep-alive packets (ping) if set. Useful with stateful firewalls.
-        public var keepAliveSeconds: Int?
-
-        /// The number of seconds after which a renegotiation is started. Set to `nil` to disable renegotiation (default).
-        public var renegotiatesAfterSeconds: Int?
-        
-        /// Server is patched for the PIA VPN provider.
-        public var usesPIAPatches: Bool?
+        /// The session configuration.
+        public var sessionConfiguration: SessionProxy.Configuration
         
         // MARK: Debugging
         
@@ -175,21 +148,12 @@ extension TunnelKitProvider {
          
          - Parameter ca: The CA certificate.
          */
-        public init(ca: CryptoContainer) {
+        public init(sessionConfiguration: SessionProxy.Configuration) {
             prefersResolvedAddresses = false
             resolvedAddresses = nil
             endpointProtocols = [EndpointProtocol(.udp, 1194)]
-            cipher = .aes128cbc
-            digest = .sha1
-            self.ca = ca
-            clientCertificate = nil
-            clientKey = nil
             mtu = 1500
-            compressionFraming = .disabled
-            tlsWrap = nil
-            keepAliveSeconds = nil
-            renegotiatesAfterSeconds = nil
-            usesPIAPatches = false
+            self.sessionConfiguration = sessionConfiguration
             shouldDebug = false
             debugLogKey = nil
             debugLogFormat = nil
@@ -198,6 +162,21 @@ extension TunnelKitProvider {
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
             let S = Configuration.Keys.self
+
+            prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
+            resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
+            guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
+                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
+            }
+            endpointProtocols = try endpointProtocolsStrings.map {
+                guard let ep = EndpointProtocol(rawValue: $0) else {
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
+                }
+                return ep
+            }
+            mtu = providerConfiguration[S.mtu] as? Int ?? 1250
+            
+            //
 
             guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm) else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
@@ -224,41 +203,28 @@ extension TunnelKitProvider {
                 clientCertificate = nil
                 clientKey = nil
             }
-            
-            prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
-            resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
-            
-            guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
-                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
-            }
-            endpointProtocols = try endpointProtocolsStrings.map {
-                guard let ep = EndpointProtocol(rawValue: $0) else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
-                }
-                return ep
-            }
-            
-            self.cipher = cipher
-            self.digest = digest
-            self.ca = ca
-            self.clientCertificate = clientCertificate
-            self.clientKey = clientKey
-            mtu = providerConfiguration[S.mtu] as? Int ?? 1250
+
+            var sessionConfigurationBuilder = SessionProxy.ConfigurationBuilder(ca: ca)
+            sessionConfigurationBuilder.cipher = cipher
+            sessionConfigurationBuilder.digest = digest
+            sessionConfigurationBuilder.clientCertificate = clientCertificate
+            sessionConfigurationBuilder.clientKey = clientKey
             if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = SessionProxy.CompressionFraming(rawValue: compressionFramingValue) {
-                self.compressionFraming = compressionFraming
+                sessionConfigurationBuilder.compressionFraming = compressionFraming
             } else {
-                compressionFraming = .disabled
+                sessionConfigurationBuilder.compressionFraming = .disabled
             }
             if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
                 do {
-                    tlsWrap = try SessionProxy.TLSWrap.deserialized(tlsWrapData)
+                    sessionConfigurationBuilder.tlsWrap = try SessionProxy.TLSWrap.deserialized(tlsWrapData)
                 } catch {
                     throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
                 }
             }
-            keepAliveSeconds = providerConfiguration[S.keepAlive] as? Int
-            renegotiatesAfterSeconds = providerConfiguration[S.renegotiatesAfter] as? Int
-            usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
+            sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval
+            sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval
+            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
+            sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
             if shouldDebug {
@@ -287,17 +253,8 @@ extension TunnelKitProvider {
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
                 endpointProtocols: endpointProtocols,
-                cipher: cipher,
-                digest: digest,
-                ca: ca,
-                clientCertificate: clientCertificate,
-                clientKey: clientKey,
                 mtu: mtu,
-                compressionFraming: compressionFraming,
-                tlsWrap: tlsWrap,
-                keepAliveSeconds: keepAliveSeconds,
-                renegotiatesAfterSeconds: renegotiatesAfterSeconds,
-                usesPIAPatches: usesPIAPatches,
+                sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
                 debugLogKey: shouldDebug ? debugLogKey : nil,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
@@ -317,6 +274,10 @@ extension TunnelKitProvider {
 
             static let endpointProtocols = "EndpointProtocols"
             
+            static let mtu = "MTU"
+            
+            // MARK: SessionConfiguration
+
             static let cipherAlgorithm = "CipherAlgorithm"
             
             static let digestAlgorithm = "DigestAlgorithm"
@@ -327,8 +288,6 @@ extension TunnelKitProvider {
             
             static let clientKey = "ClientKey"
             
-            static let mtu = "MTU"
-            
             static let compressionFraming = "CompressionFraming"
             
             static let tlsWrap = "TLSWrap"
@@ -338,6 +297,8 @@ extension TunnelKitProvider {
             static let renegotiatesAfter = "RenegotiatesAfter"
             
             static let usesPIAPatches = "UsesPIAPatches"
+
+            // MARK: Debugging
             
             static let debug = "Debug"
             
@@ -357,38 +318,11 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.endpointProtocols`
         public let endpointProtocols: [EndpointProtocol]
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.cipher`
-        public let cipher: SessionProxy.Cipher
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.digest`
-        public let digest: SessionProxy.Digest
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.ca`
-        public let ca: CryptoContainer
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientCertificate`
-        public let clientCertificate: CryptoContainer?
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.clientKey`
-        public let clientKey: CryptoContainer?
-        
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.compressionFraming`
-        public let compressionFraming: SessionProxy.CompressionFraming
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.tlsWrap`
-        public let tlsWrap: SessionProxy.TLSWrap?
-
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.keepAliveSeconds`
-        public let keepAliveSeconds: Int?
-
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.renegotiatesAfterSeconds`
-        public let renegotiatesAfterSeconds: Int?
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.usesPIAPatches`
-        public let usesPIAPatches: Bool?
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.sessionConfiguration`
+        public let sessionConfiguration: SessionProxy.Configuration
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
@@ -474,32 +408,32 @@ extension TunnelKitProvider {
                 S.appGroup: appGroup,
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
                 S.endpointProtocols: endpointProtocols.map { $0.rawValue },
-                S.cipherAlgorithm: cipher.rawValue,
-                S.digestAlgorithm: digest.rawValue,
-                S.ca: ca.pem,
+                S.cipherAlgorithm: sessionConfiguration.cipher.rawValue,
+                S.digestAlgorithm: sessionConfiguration.digest.rawValue,
+                S.ca: sessionConfiguration.ca.pem,
                 S.mtu: mtu,
                 S.debug: shouldDebug
             ]
-            if let clientCertificate = clientCertificate {
+            if let clientCertificate = sessionConfiguration.clientCertificate {
                 dict[S.clientCertificate] = clientCertificate.pem
             }
-            if let clientKey = clientKey {
+            if let clientKey = sessionConfiguration.clientKey {
                 dict[S.clientKey] = clientKey.pem
             }
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
-            dict[S.compressionFraming] = compressionFraming.rawValue
-            if let tlsWrapData = tlsWrap?.serialized() {
+            dict[S.compressionFraming] = sessionConfiguration.compressionFraming.rawValue
+            if let tlsWrapData = sessionConfiguration.tlsWrap?.serialized() {
                 dict[S.tlsWrap] = tlsWrapData
             }
-            if let keepAliveSeconds = keepAliveSeconds {
+            if let keepAliveSeconds = sessionConfiguration.keepAliveInterval {
                 dict[S.keepAlive] = keepAliveSeconds
             }
-            if let renegotiatesAfterSeconds = renegotiatesAfterSeconds {
+            if let renegotiatesAfterSeconds = sessionConfiguration.renegotiatesAfter {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
             }
-            if let usesPIAPatches = usesPIAPatches {
+            if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
                 dict[S.usesPIAPatches] = usesPIAPatches
             }
             if let debugLogKey = debugLogKey {
@@ -550,26 +484,26 @@ extension TunnelKitProvider {
             }
             
             log.info("\tProtocols: \(endpointProtocols)")
-            log.info("\tCipher: \(cipher)")
-            log.info("\tDigest: \(digest)")
-            if let _ = clientCertificate {
+            log.info("\tCipher: \(sessionConfiguration.cipher)")
+            log.info("\tDigest: \(sessionConfiguration.digest)")
+            if let _ = sessionConfiguration.clientCertificate {
                 log.info("\tClient verification: enabled")
             } else {
                 log.info("\tClient verification: disabled")
             }
             log.info("\tMTU: \(mtu)")
-            log.info("\tCompression framing: \(compressionFraming)")
-            if let keepAliveSeconds = keepAliveSeconds, keepAliveSeconds > 0 {
+            log.info("\tCompression framing: \(sessionConfiguration.compressionFraming)")
+            if let keepAliveSeconds = sessionConfiguration.keepAliveInterval, keepAliveSeconds > 0 {
                 log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
             } else {
                 log.info("\tKeep-alive: never")
             }
-            if let renegotiatesAfterSeconds = renegotiatesAfterSeconds, renegotiatesAfterSeconds > 0 {
+            if let renegotiatesAfterSeconds = sessionConfiguration.renegotiatesAfter, renegotiatesAfterSeconds > 0 {
                 log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
             } else {
                 log.info("\tRenegotiation: never")
             }
-            if let tlsWrap = tlsWrap {
+            if let tlsWrap = sessionConfiguration.tlsWrap {
                 log.info("\tTLS wrapping: \(tlsWrap.strategy)")
             } else {
                 log.info("\tTLS wrapping: disabled")
@@ -589,18 +523,9 @@ extension TunnelKitProvider.Configuration: Equatable {
      - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
      */
     public func builder() -> TunnelKitProvider.ConfigurationBuilder {
-        var builder = TunnelKitProvider.ConfigurationBuilder(ca: ca)
+        var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.endpointProtocols = endpointProtocols
-        builder.cipher = cipher
-        builder.digest = digest
-        builder.clientCertificate = clientCertificate
-        builder.clientKey = clientKey
         builder.mtu = mtu
-        builder.compressionFraming = compressionFraming
-        builder.tlsWrap = tlsWrap
-        builder.keepAliveSeconds = keepAliveSeconds
-        builder.renegotiatesAfterSeconds = renegotiatesAfterSeconds
-        builder.usesPIAPatches = usesPIAPatches
         builder.shouldDebug = shouldDebug
         builder.debugLogKey = debugLogKey
         builder.debugLogFormat = debugLogFormat
@@ -612,15 +537,8 @@ extension TunnelKitProvider.Configuration: Equatable {
     public static func ==(lhs: TunnelKitProvider.Configuration, rhs: TunnelKitProvider.Configuration) -> Bool {
         return (
             (lhs.endpointProtocols == rhs.endpointProtocols) &&
-            (lhs.cipher == rhs.cipher) &&
-            (lhs.digest == rhs.digest) &&
-            (lhs.ca == rhs.ca) &&
-            (lhs.clientCertificate == rhs.clientCertificate) &&
-            (lhs.clientKey == rhs.clientKey) &&
             (lhs.mtu == rhs.mtu) &&
-            (lhs.compressionFraming == rhs.compressionFraming) &&
-            (lhs.keepAliveSeconds == rhs.keepAliveSeconds) &&
-            (lhs.renegotiatesAfterSeconds == rhs.renegotiatesAfterSeconds)
+            (lhs.sessionConfiguration == rhs.sessionConfiguration)
             // XXX: tlsWrap not copied
         )
     }

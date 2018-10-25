@@ -186,30 +186,14 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
         cfg.print(appVersion: appVersion)
         
-//        log.info("Temporary CA is stored to: \(caPath)")
-        var sessionConfiguration = SessionProxy.ConfigurationBuilder(ca: cfg.ca)
-        sessionConfiguration.credentials = credentials
-        sessionConfiguration.cipher = cfg.cipher
-        sessionConfiguration.digest = cfg.digest
-        sessionConfiguration.clientCertificate = cfg.clientCertificate
-        sessionConfiguration.clientKey = cfg.clientKey
-        sessionConfiguration.compressionFraming = cfg.compressionFraming
-        sessionConfiguration.tlsWrap = cfg.tlsWrap
-        if let keepAliveSeconds = cfg.keepAliveSeconds {
-            sessionConfiguration.keepAliveInterval = TimeInterval(keepAliveSeconds)
-        }
-        if let renegotiatesAfterSeconds = cfg.renegotiatesAfterSeconds {
-            sessionConfiguration.renegotiatesAfter = TimeInterval(renegotiatesAfterSeconds)
-        }
-        sessionConfiguration.usesPIAPatches = cfg.usesPIAPatches ?? false
-
         let proxy: SessionProxy
         do {
-            proxy = try SessionProxy(queue: tunnelQueue, configuration: sessionConfiguration.build(), cachesURL: cachesURL)
+            proxy = try SessionProxy(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
         } catch let e {
             completionHandler(e)
             return
         }
+        proxy.credentials = credentials
         proxy.delegate = self
         self.proxy = proxy
 
