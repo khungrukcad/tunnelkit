@@ -129,10 +129,11 @@ extension TunnelKitProvider {
         
         // MARK: Debugging
         
-        /// Enables debugging. If `true`, then `debugLogKey` is a mandatory field.
+        /// Enables debugging.
         public var shouldDebug: Bool
         
-        /// The filename in group container where the latest debug log snapshot is stored. Ignored if `shouldDebug` is `false`.
+        /// This attribute is ignored and deprecated. Use `urlForLog(...)` or `existingLog(...)` to access the debug log.
+        @available(*, deprecated)
         public var debugLogKey: String?
         
         /// Optional debug log format (SwiftyBeaver format).
@@ -155,7 +156,6 @@ extension TunnelKitProvider {
             mtu = 1500
             self.sessionConfiguration = sessionConfiguration
             shouldDebug = false
-            debugLogKey = nil
             debugLogFormat = nil
             lastErrorKey = nil
         }
@@ -228,13 +228,7 @@ extension TunnelKitProvider {
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
             if shouldDebug {
-                guard let debugLogKey = providerConfiguration[S.debugLogKey] as? String else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.debugLogKey)]")
-                }
-                self.debugLogKey = debugLogKey
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
-            } else {
-                debugLogKey = nil
             }
             lastErrorKey = providerConfiguration[S.lastErrorKey] as? String
 
@@ -256,7 +250,7 @@ extension TunnelKitProvider {
                 mtu: mtu,
                 sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
-                debugLogKey: shouldDebug ? debugLogKey : nil,
+                debugLogKey: nil,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
                 lastErrorKey: lastErrorKey
             )
@@ -302,8 +296,6 @@ extension TunnelKitProvider {
             
             static let debug = "Debug"
             
-            static let debugLogKey = "DebugLogKey"
-            
             static let debugLogFormat = "DebugLogFormat"
             
             static let lastErrorKey = "LastErrorKey"
@@ -328,6 +320,7 @@ extension TunnelKitProvider {
         public let shouldDebug: Bool
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogKey`
+        @available(*, deprecated)
         public let debugLogKey: String?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
@@ -338,6 +331,8 @@ extension TunnelKitProvider {
         
         // MARK: Shortcuts
         
+        static let debugLogFilename = "debug.log"
+
         /**
          Returns the URL of the latest debug log.
 
@@ -345,13 +340,13 @@ extension TunnelKitProvider {
          - Returns: The URL of the debug log, if any.
          */
         public func urlForLog(in appGroup: String) -> URL? {
-            guard shouldDebug, let key = debugLogKey else {
+            guard shouldDebug else {
                 return nil
             }
             guard let parentURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
                 return nil
             }
-            return parentURL.appendingPathComponent("\(key).log")
+            return parentURL.appendingPathComponent(Configuration.debugLogFilename)
         }
 
         /**
@@ -435,9 +430,6 @@ extension TunnelKitProvider {
             }
             if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
                 dict[S.usesPIAPatches] = usesPIAPatches
-            }
-            if let debugLogKey = debugLogKey {
-                dict[S.debugLogKey] = debugLogKey
             }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
@@ -527,7 +519,6 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.endpointProtocols = endpointProtocols
         builder.mtu = mtu
         builder.shouldDebug = shouldDebug
-        builder.debugLogKey = debugLogKey
         builder.debugLogFormat = debugLogFormat
         builder.lastErrorKey = lastErrorKey
         return builder

@@ -88,7 +88,6 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.mtu)
         XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? TimeInterval, cfg.sessionConfiguration.renegotiatesAfter)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)
-        XCTAssertEqual(proto?.providerConfiguration?[K.debugLogKey] as? String, cfg.debugLogKey)
     }
     
     func testDNSResolver() {
