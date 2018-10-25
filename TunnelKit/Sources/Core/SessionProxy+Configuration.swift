@@ -135,23 +135,20 @@ extension SessionProxy {
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
-        /// The credentials.
-        public var credentials: Credentials?
-        
         /// The cipher algorithm for data encryption.
         public var cipher: Cipher
         
         /// The digest algorithm for HMAC.
         public var digest: Digest
         
-        /// The path to the CA for TLS negotiation (PEM format).
-        public let caPath: String
+        /// The CA for TLS negotiation (PEM format).
+        public let ca: CryptoContainer
         
-        /// The path to the optional client certificate for TLS negotiation (PEM format).
-        public var clientCertificatePath: String?
+        /// The optional client certificate for TLS negotiation (PEM format).
+        public var clientCertificate: CryptoContainer?
         
-        /// The path to the private key for the certificate at `clientCertificatePath` (PEM format).
-        public var clientKeyPath: String?
+        /// The private key for the certificate in `clientCertificate` (PEM format).
+        public var clientKey: CryptoContainer?
         
         /// Sets compression framing, disabled by default.
         public var compressionFraming: CompressionFraming
@@ -166,16 +163,15 @@ extension SessionProxy {
         public var renegotiatesAfter: TimeInterval?
         
         /// Server is patched for the PIA VPN provider.
-        public var usesPIAPatches: Bool
+        public var usesPIAPatches: Bool?
 
         /// :nodoc:
-        public init(caPath: String) {
-            credentials = nil
+        public init(ca: CryptoContainer) {
             cipher = .aes128cbc
             digest = .sha1
-            self.caPath = caPath
-            clientCertificatePath = nil
-            clientKeyPath = nil
+            self.ca = ca
+            clientCertificate = nil
+            clientKey = nil
             compressionFraming = .disabled
             tlsWrap = nil
             keepAliveInterval = nil
@@ -190,12 +186,11 @@ extension SessionProxy {
          */
         public func build() -> Configuration {
             return Configuration(
-                credentials: credentials,
                 cipher: cipher,
                 digest: digest,
-                caPath: caPath,
-                clientCertificatePath: clientCertificatePath,
-                clientKeyPath: clientKeyPath,
+                ca: ca,
+                clientCertificate: clientCertificate,
+                clientKey: clientKey,
                 compressionFraming: compressionFraming,
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
@@ -206,25 +201,22 @@ extension SessionProxy {
     }
     
     /// The immutable configuration for `SessionProxy`.
-    public struct Configuration: Codable {
+    public struct Configuration: Codable, Equatable {
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.credentials`
-        public let credentials: Credentials?
-        
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
         public let cipher: Cipher
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
         public let digest: Digest
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
-        public let caPath: String
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.ca`
+        public let ca: CryptoContainer
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificatePath`
-        public let clientCertificatePath: String?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificate`
+        public let clientCertificate: CryptoContainer?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKeyPath`
-        public let clientKeyPath: String?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKey`
+        public let clientKey: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming
@@ -239,6 +231,41 @@ extension SessionProxy {
         public let renegotiatesAfter: TimeInterval?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
-        public let usesPIAPatches: Bool
+        public let usesPIAPatches: Bool?
+
+        /**
+         Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+         
+         - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
+         */
+        public func builder() -> SessionProxy.ConfigurationBuilder {
+            var builder = SessionProxy.ConfigurationBuilder(ca: ca)
+            builder.cipher = cipher
+            builder.digest = digest
+            builder.clientCertificate = clientCertificate
+            builder.clientKey = clientKey
+            builder.compressionFraming = compressionFraming
+            builder.tlsWrap = tlsWrap
+            builder.keepAliveInterval = keepAliveInterval
+            builder.renegotiatesAfter = renegotiatesAfter
+            builder.usesPIAPatches = usesPIAPatches
+            return builder
+        }
+
+        // MARK: Equatable
+        
+        /// :nodoc:
+        public static func ==(lhs: Configuration, rhs: Configuration) -> Bool {
+            return
+                (lhs.cipher == rhs.cipher) &&
+                (lhs.digest == rhs.digest) &&
+                (lhs.ca == rhs.ca) &&
+                (lhs.clientCertificate == rhs.clientCertificate) &&
+                (lhs.clientKey == rhs.clientKey) &&
+                (lhs.compressionFraming == rhs.compressionFraming) &&
+                (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
+                (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
+                (lhs.usesPIAPatches == rhs.usesPIAPatches)
+        }
     }
 }
