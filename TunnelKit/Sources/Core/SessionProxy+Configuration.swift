@@ -144,14 +144,14 @@ extension SessionProxy {
         /// The digest algorithm for HMAC.
         public var digest: Digest
         
-        /// The path to the CA for TLS negotiation (PEM format).
-        public let caPath: String
+        /// The CA for TLS negotiation (PEM format).
+        public let ca: CryptoContainer
         
-        /// The path to the optional client certificate for TLS negotiation (PEM format).
-        public var clientCertificatePath: String?
+        /// The optional client certificate for TLS negotiation (PEM format).
+        public var clientCertificate: CryptoContainer?
         
-        /// The path to the private key for the certificate at `clientCertificatePath` (PEM format).
-        public var clientKeyPath: String?
+        /// The private key for the certificate in `clientCertificate` (PEM format).
+        public var clientKey: CryptoContainer?
         
         /// Sets compression framing, disabled by default.
         public var compressionFraming: CompressionFraming
@@ -169,13 +169,13 @@ extension SessionProxy {
         public var usesPIAPatches: Bool
 
         /// :nodoc:
-        public init(caPath: String) {
+        public init(ca: CryptoContainer) {
             credentials = nil
             cipher = .aes128cbc
             digest = .sha1
-            self.caPath = caPath
-            clientCertificatePath = nil
-            clientKeyPath = nil
+            self.ca = ca
+            clientCertificate = nil
+            clientKey = nil
             compressionFraming = .disabled
             tlsWrap = nil
             keepAliveInterval = nil
@@ -193,9 +193,9 @@ extension SessionProxy {
                 credentials: credentials,
                 cipher: cipher,
                 digest: digest,
-                caPath: caPath,
-                clientCertificatePath: clientCertificatePath,
-                clientKeyPath: clientKeyPath,
+                ca: ca,
+                clientCertificate: clientCertificate,
+                clientKey: clientKey,
                 compressionFraming: compressionFraming,
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
@@ -217,14 +217,14 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
         public let digest: Digest
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.caPath`
-        public let caPath: String
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.ca`
+        public let ca: CryptoContainer
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificatePath`
-        public let clientCertificatePath: String?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificate`
+        public let clientCertificate: CryptoContainer?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKeyPath`
-        public let clientKeyPath: String?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKey`
+        public let clientKey: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming

@@ -182,51 +182,51 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             return
         }
         
-        let caPath: String
-        let clientCertificatePath: String?
-        let clientKeyPath: String?
-        do {
-            let url = temporaryURL(forKey: Configuration.Keys.ca)
-            try cfg.ca.write(to: url)
-            caPath = url.path
-        } catch {
-            completionHandler(ProviderConfigurationError.certificateSerialization)
-            return
-        }
-        if let clientCertificate = cfg.clientCertificate {
-            do {
-                let url = temporaryURL(forKey: Configuration.Keys.clientCertificate)
-                try clientCertificate.write(to: url)
-                clientCertificatePath = url.path
-            } catch {
-                completionHandler(ProviderConfigurationError.certificateSerialization)
-                return
-            }
-        } else {
-            clientCertificatePath = nil
-        }
-        if let clientKey = cfg.clientKey {
-            do {
-                let url = temporaryURL(forKey: Configuration.Keys.clientKey)
-                try clientKey.write(to: url)
-                clientKeyPath = url.path
-            } catch {
-                completionHandler(ProviderConfigurationError.certificateSerialization)
-                return
-            }
-        } else {
-            clientKeyPath = nil
-        }
+//        let caPath: String
+//        let clientCertificatePath: String?
+//        let clientKeyPath: String?
+//        do {
+//            let url = temporaryURL(forKey: Configuration.Keys.ca)
+//            try cfg.ca.write(to: url)
+//            caPath = url.path
+//        } catch {
+//            completionHandler(ProviderConfigurationError.certificateSerialization)
+//            return
+//        }
+//        if let clientCertificate = cfg.clientCertificate {
+//            do {
+//                let url = temporaryURL(forKey: Configuration.Keys.clientCertificate)
+//                try clientCertificate.write(to: url)
+//                clientCertificatePath = url.path
+//            } catch {
+//                completionHandler(ProviderConfigurationError.certificateSerialization)
+//                return
+//            }
+//        } else {
+//            clientCertificatePath = nil
+//        }
+//        if let clientKey = cfg.clientKey {
+//            do {
+//                let url = temporaryURL(forKey: Configuration.Keys.clientKey)
+//                try clientKey.write(to: url)
+//                clientKeyPath = url.path
+//            } catch {
+//                completionHandler(ProviderConfigurationError.certificateSerialization)
+//                return
+//            }
+//        } else {
+//            clientKeyPath = nil
+//        }
 
         cfg.print(appVersion: appVersion)
         
 //        log.info("Temporary CA is stored to: \(caPath)")
-        var sessionConfiguration = SessionProxy.ConfigurationBuilder(caPath: caPath)
+        var sessionConfiguration = SessionProxy.ConfigurationBuilder(ca: cfg.ca)
         sessionConfiguration.credentials = credentials
         sessionConfiguration.cipher = cfg.cipher
         sessionConfiguration.digest = cfg.digest
-        sessionConfiguration.clientCertificatePath = clientCertificatePath
-        sessionConfiguration.clientKeyPath = clientKeyPath
+        sessionConfiguration.clientCertificate = cfg.clientCertificate
+        sessionConfiguration.clientKey = cfg.clientKey
         sessionConfiguration.compressionFraming = cfg.compressionFraming
         sessionConfiguration.tlsWrap = cfg.tlsWrap
         if let keepAliveSeconds = cfg.keepAliveSeconds {
