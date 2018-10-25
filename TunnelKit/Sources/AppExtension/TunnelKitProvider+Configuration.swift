@@ -159,7 +159,7 @@ extension TunnelKitProvider {
         /// Enables debugging. If `true`, then `debugLogKey` is a mandatory field.
         public var shouldDebug: Bool
         
-        /// The key in `defaults` where the latest debug log snapshot is stored. Ignored if `shouldDebug` is `false`.
+        /// The filename in group container where the latest debug log snapshot is stored. Ignored if `shouldDebug` is `false`.
         public var debugLogKey: String?
         
         /// Optional debug log format (SwiftyBeaver format).
@@ -403,12 +403,34 @@ extension TunnelKitProvider {
         public let lastErrorKey: String?
         
         // MARK: Shortcuts
+        
+        /**
+         Returns the URL of the latest debug log.
 
-        func existingLog(in defaults: UserDefaults) -> [String]? {
+         - Parameter in: The app group where to locate the log file.
+         - Returns: The URL of the debug log, if any.
+         */
+        public func urlForLog(in appGroup: String) -> URL? {
             guard shouldDebug, let key = debugLogKey else {
                 return nil
             }
-            return defaults.array(forKey: key) as? [String]
+            guard let parentURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup) else {
+                return nil
+            }
+            return parentURL.appendingPathComponent("\(key).log")
+        }
+
+        /**
+         Returns the content of the latest debug log.
+         
+         - Parameter in: The app group where to locate the log file.
+         - Returns: The content of the debug log, if any.
+         */
+        public func existingLog(in appGroup: String) -> String? {
+            guard let url = urlForLog(in: appGroup) else {
+                return nil
+            }
+            return try? String(contentsOf: url)
         }
         
         // MARK: API

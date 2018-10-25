@@ -94,11 +94,11 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
     private var appGroup: String!
 
+    private lazy var defaults = UserDefaults(suiteName: appGroup)
+    
     private var cfg: Configuration!
     
     private var strategy: ConnectionStrategy!
-    
-    private lazy var defaults = UserDefaults(suiteName: appGroup)
     
     // MARK: Internal state
 
@@ -157,7 +157,8 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
         strategy = ConnectionStrategy(hostname: hostname, configuration: cfg)
 
-        if let defaults = defaults, var existingLog = cfg.existingLog(in: defaults) {
+        if let content = cfg.existingLog(in: appGroup) {
+            var existingLog = content.components(separatedBy: "\n")
             if let i = existingLog.index(of: logSeparator) {
                 existingLog.removeFirst(i + 2)
             }
@@ -595,8 +596,8 @@ extension TunnelKitProvider {
     
     private func flushLog() {
         log.debug("Flushing log...")
-        if let defaults = defaults, let key = cfg.debugLogKey {
-            memoryLog.flush(to: defaults, with: key)
+        if let url = cfg.urlForLog(in: appGroup) {
+            memoryLog.flush(to: url)
         }
     }
     
