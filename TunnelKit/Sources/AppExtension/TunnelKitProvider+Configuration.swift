@@ -139,7 +139,8 @@ extension TunnelKitProvider {
         /// Optional debug log format (SwiftyBeaver format).
         public var debugLogFormat: String?
         
-        /// The key in `defaults` where to set the raw value of last `TunnelKitProvider.ProviderError`.
+        /// This attribute is ignored and deprecated. Use `lastError(...)` to access the last error.
+        @available(*, deprecated)
         public var lastErrorKey: String?
         
         // MARK: Building
@@ -157,7 +158,6 @@ extension TunnelKitProvider {
             self.sessionConfiguration = sessionConfiguration
             shouldDebug = false
             debugLogFormat = nil
-            lastErrorKey = nil
         }
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
@@ -230,7 +230,6 @@ extension TunnelKitProvider {
             if shouldDebug {
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
             }
-            lastErrorKey = providerConfiguration[S.lastErrorKey] as? String
 
             guard !prefersResolvedAddresses || !(resolvedAddresses?.isEmpty ?? true) else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
@@ -252,7 +251,7 @@ extension TunnelKitProvider {
                 shouldDebug: shouldDebug,
                 debugLogKey: nil,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
-                lastErrorKey: lastErrorKey
+                lastErrorKey: nil
             )
         }
     }
@@ -297,8 +296,6 @@ extension TunnelKitProvider {
             static let debug = "Debug"
             
             static let debugLogFormat = "DebugLogFormat"
-            
-            static let lastErrorKey = "LastErrorKey"
         }
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
@@ -327,12 +324,15 @@ extension TunnelKitProvider {
         public let debugLogFormat: String?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.lastErrorKey`
+        @available(*, deprecated)
         public let lastErrorKey: String?
         
         // MARK: Shortcuts
-        
+
         static let debugLogFilename = "debug.log"
 
+        static let lastErrorKey = "LastTunnelKitError"
+        
         /**
          Returns the URL of the latest debug log.
 
@@ -360,6 +360,28 @@ extension TunnelKitProvider {
                 return nil
             }
             return try? String(contentsOf: url)
+        }
+        
+        /**
+         Returns the last error reported by the tunnel, if any.
+         
+         - Parameter in: The app group where to locate the error key.
+         - Returns: The last tunnel error, if any.
+         */
+        public func lastError(in appGroup: String) -> ProviderError? {
+            guard let rawValue = UserDefaults(suiteName: appGroup)?.string(forKey: Configuration.lastErrorKey) else {
+                return nil
+            }
+            return ProviderError(rawValue: rawValue)
+        }
+
+        /**
+         Clear the last error status.
+         
+         - Parameter in: The app group where to locate the error key.
+         */
+        public func clearLastError(in appGroup: String) {
+            UserDefaults(suiteName: appGroup)?.removeObject(forKey: Configuration.lastErrorKey)
         }
         
         // MARK: API
@@ -433,9 +455,6 @@ extension TunnelKitProvider {
             }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
-            }
-            if let lastErrorKey = lastErrorKey {
-                dict[S.lastErrorKey] = lastErrorKey
             }
             return dict
         }
@@ -520,7 +539,6 @@ extension TunnelKitProvider.Configuration: Equatable {
         builder.mtu = mtu
         builder.shouldDebug = shouldDebug
         builder.debugLogFormat = debugLogFormat
-        builder.lastErrorKey = lastErrorKey
         return builder
     }
 

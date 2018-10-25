@@ -177,7 +177,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         )
         
         log.info("Starting tunnel...")
-        clearErrorStatus()
+        cfg.clearLastError(in: appGroup)
         
         guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderConfigurationError.prngInitialization)
@@ -209,7 +209,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     open override func stopTunnel(with reason: NEProviderStopReason, completionHandler: @escaping () -> Void) {
         pendingStartHandler = nil
         log.info("Stopping tunnel...")
-        clearErrorStatus()
+        cfg.clearLastError(in: appGroup)
 
         guard let proxy = proxy else {
             flushLog()
@@ -275,7 +275,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     private func connectTunnel(via socket: GenericSocket) {
         log.info("Will connect to \(socket)")
-        clearErrorStatus()
+        cfg.clearLastError(in: appGroup)
 
         log.debug("Socket type is \(type(of: socket))")
         self.socket = socket
@@ -563,17 +563,7 @@ extension TunnelKitProvider {
     // MARK: Errors
     
     private func setErrorStatus(with error: Error) {
-        guard let lastErrorKey = cfg.lastErrorKey else {
-            return
-        }
-        defaults?.set(unifiedError(from: error).rawValue, forKey: lastErrorKey)
-    }
-    
-    private func clearErrorStatus() {
-        guard let lastErrorKey = cfg.lastErrorKey else {
-            return
-        }
-        defaults?.removeObject(forKey: lastErrorKey)
+        defaults?.set(unifiedError(from: error).rawValue, forKey: Configuration.lastErrorKey)
     }
     
     private func unifiedError(from error: Error) -> ProviderError {
