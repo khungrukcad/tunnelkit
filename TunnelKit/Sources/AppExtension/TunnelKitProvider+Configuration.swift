@@ -109,6 +109,30 @@ extension TunnelKitProvider {
 
     /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
+
+        /// :nodoc:
+        public static let defaults = Configuration(
+            prefersResolvedAddresses: false,
+            resolvedAddresses: nil,
+            endpointProtocols: [EndpointProtocol(.udp, 1194)],
+            mtu: 1250,
+            sessionConfiguration: SessionProxy.Configuration(
+                cipher: .aes128cbc,
+                digest: .sha1,
+                ca: CryptoContainer(pem: ""),
+                clientCertificate: nil,
+                clientKey: nil,
+                compressionFraming: .disabled,
+                tlsWrap: nil,
+                keepAliveInterval: nil,
+                renegotiatesAfter: nil,
+                usesPIAPatches: nil
+            ),
+            shouldDebug: false,
+            debugLogKey: nil,
+            debugLogFormat: nil,
+            lastErrorKey: nil
+        )
         
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
         ///
@@ -151,19 +175,19 @@ extension TunnelKitProvider {
          - Parameter ca: The CA certificate.
          */
         public init(sessionConfiguration: SessionProxy.Configuration) {
-            prefersResolvedAddresses = false
+            prefersResolvedAddresses = ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = nil
-            endpointProtocols = [EndpointProtocol(.udp, 1194)]
-            mtu = 1500
+            endpointProtocols = ConfigurationBuilder.defaults.endpointProtocols
+            mtu = ConfigurationBuilder.defaults.mtu
             self.sessionConfiguration = sessionConfiguration
-            shouldDebug = false
-            debugLogFormat = nil
+            shouldDebug = ConfigurationBuilder.defaults.shouldDebug
+            debugLogFormat = ConfigurationBuilder.defaults.debugLogFormat
         }
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
             let S = Configuration.Keys.self
 
-            prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? false
+            prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
             guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
@@ -174,7 +198,7 @@ extension TunnelKitProvider {
                 }
                 return ep
             }
-            mtu = providerConfiguration[S.mtu] as? Int ?? 1250
+            mtu = providerConfiguration[S.mtu] as? Int ?? ConfigurationBuilder.defaults.mtu
             
             //
 
@@ -212,7 +236,7 @@ extension TunnelKitProvider {
             if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = SessionProxy.CompressionFraming(rawValue: compressionFramingValue) {
                 sessionConfigurationBuilder.compressionFraming = compressionFraming
             } else {
-                sessionConfigurationBuilder.compressionFraming = .disabled
+                sessionConfigurationBuilder.compressionFraming = ConfigurationBuilder.defaults.sessionConfiguration.compressionFraming
             }
             if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
                 do {
