@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Use high-level accessories instead of `debugLogKey` and `lastErrorKey`. [#45](https://github.com/keeshux/tunnelkit/pull/45)
 
+### Fixed
+
+- IPv4/UInt32 calculations were wrong.
+
 ## 1.2.2 (2018-10-25)
 
 ### Changed

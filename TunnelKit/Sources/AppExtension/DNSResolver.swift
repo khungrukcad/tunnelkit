@@ -96,10 +96,10 @@ public class DNSResolver {
     }
 
     public static func string(fromIPv4 ipv4: UInt32) -> String {
-        let a = UInt8(ipv4 & UInt32(0xff))
-        let b = UInt8((ipv4 >> 8) & UInt32(0xff))
-        let c = UInt8((ipv4 >> 16) & UInt32(0xff))
-        let d = UInt8((ipv4 >> 24) & UInt32(0xff))
+        let a = UInt8((ipv4 >> 24) & UInt32(0xff))
+        let b = UInt8((ipv4 >> 16) & UInt32(0xff))
+        let c = UInt8((ipv4 >> 8) & UInt32(0xff))
+        let d = UInt8(ipv4 & UInt32(0xff))
 
         return "\(a).\(b).\(c).\(d)"
     }
@@ -110,13 +110,13 @@ public class DNSResolver {
             return nil
         }
         var ipv4: UInt32 = 0
-        var bits: UInt32 = 0
+        var bits: UInt32 = 32
         comps.forEach {
             guard let octet = UInt32($0), octet <= 255 else {
                 return
             }
+            bits -= 8
             ipv4 |= octet << bits
-            bits += 8
         }
         return ipv4
     }

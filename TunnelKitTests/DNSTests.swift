@@ -38,7 +38,7 @@ class DNSTests: XCTestCase {
 
     func testIPv4() {
         let addr = "1.2.3.4"
-        let ip: UInt32 = 0x04030201
+        let ip: UInt32 = 0x01020304
         
         XCTAssertEqual(DNSResolver.ipv4(fromString: addr), ip)
         XCTAssertEqual(DNSResolver.string(fromIPv4: ip), addr)
