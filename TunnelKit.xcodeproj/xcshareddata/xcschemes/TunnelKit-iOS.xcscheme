@@ -33,8 +33,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0E1108991F77B9E800A92462"
-               BuildableName = "TunnelKitTests.xctest"
-               BlueprintName = "TunnelKitTests"
+               BuildableName = "TunnelKitTests-iOS.xctest"
+               BlueprintName = "TunnelKitTests-iOS"
                ReferencedContainer = "container:TunnelKit.xcodeproj">
             </BuildableReference>
          </TestableReference>
