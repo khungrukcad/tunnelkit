@@ -252,6 +252,6 @@ extension NETCPSocket {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.maskedDescription
         }
-        return "\(hostEndpoint.hostname.maskedDescription):\(hostEndpoint.port.maskedDescription)"
+        return "\(hostEndpoint.hostname.maskedDescription):\(hostEndpoint.port)"
     }
 }
