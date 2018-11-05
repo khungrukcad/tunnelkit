@@ -96,29 +96,29 @@ public class DNSResolver {
     }
 
     public static func string(fromIPv4 ipv4: UInt32) -> String {
-        let a = UInt8((ipv4 >> 24) & UInt32(0xff))
-        let b = UInt8((ipv4 >> 16) & UInt32(0xff))
-        let c = UInt8((ipv4 >> 8) & UInt32(0xff))
-        let d = UInt8(ipv4 & UInt32(0xff))
-
-        return "\(a).\(b).\(c).\(d)"
+        var addr = in_addr(s_addr: CFSwapInt32HostToBig(ipv4))
+        var buf = Data(count: Int(INET_ADDRSTRLEN))
+        let bufCount = socklen_t(buf.count)
+        let resultPtr = buf.withUnsafeMutableBytes { (bufPtr) in
+            return withUnsafePointer(to: &addr) {
+                return inet_ntop(AF_INET, $0, bufPtr, bufCount)
+            }
+        }
+        guard let result = resultPtr else {
+            preconditionFailure()
+        }
+        return String(cString: result)
     }
     
     public static func ipv4(fromString string: String) -> UInt32? {
-        let comps = string.components(separatedBy: ".")
-        guard comps.count == 4 else {
+        var addr = in_addr()
+        let result = string.withCString {
+            inet_pton(AF_INET, $0, &addr)
+        }
+        guard result > 0 else {
             return nil
         }
-        var ipv4: UInt32 = 0
-        var bits: UInt32 = 32
-        comps.forEach {
-            guard let octet = UInt32($0), octet <= 255 else {
-                return
-            }
-            bits -= 8
-            ipv4 |= octet << bits
-        }
-        return ipv4
+        return CFSwapInt32BigToHost(addr.s_addr)
     }
 
     private init() {
