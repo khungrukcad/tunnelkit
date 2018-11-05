@@ -15,4 +15,7 @@ abstract_target 'TunnelKit' do
     target 'TunnelKit-macOS' do
         platform :osx, '10.11'
     end
+    target 'TunnelKitTests-macOS' do
+        platform :osx, '10.11'
+    end
 end
