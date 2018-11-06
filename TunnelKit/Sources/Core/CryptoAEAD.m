@@ -97,6 +97,11 @@ static const NSInteger CryptoAEADTagLength = 16;
     return 0;
 }
 
+- (int)tagLength
+{
+    return CryptoAEADTagLength;
+}
+
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
 {
     return safe_crypto_capacity(length, CryptoAEADTagLength);

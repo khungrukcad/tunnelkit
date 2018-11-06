@@ -95,6 +95,11 @@ static const NSInteger CryptoCTRTagLength = 32;
     self.digest = NULL;
 }
 
+- (int)tagLength
+{
+    return CryptoCTRTagLength;
+}
+
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
 {
     return safe_crypto_capacity(length, PacketOpcodeLength + PacketSessionIdLength + PacketReplayIdLength + PacketReplayTimestampLength + CryptoCTRTagLength);

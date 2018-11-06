@@ -55,6 +55,7 @@ typedef struct {
 
 - (void)configureEncryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
+- (int)tagLength;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
@@ -68,6 +69,7 @@ typedef struct {
 
 - (void)configureDecryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
 - (int)digestLength;
+- (int)tagLength;
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
 - (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
