@@ -73,6 +73,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (id<Decrypter>)decrypter;
 
 - (NSInteger)digestLength;
+- (NSInteger)tagLength;
 
 @end
 

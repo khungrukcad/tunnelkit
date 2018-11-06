@@ -233,7 +233,7 @@ extension ControlChannel {
             
             headerLength = PacketOpcodeLength + PacketSessionIdLength
             adLength = headerLength + PacketReplayIdLength + PacketReplayTimestampLength
-            tagLength = 32
+            tagLength = crypto.tagLength()
 
             currentReplayId = BidirectionalState(withResetValue: 1)
             plain = PlainSerializer()

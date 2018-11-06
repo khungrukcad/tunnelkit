@@ -43,7 +43,7 @@
 #import "Allocation.h"
 #import "Errors.h"
 
-const NSInteger CryptoAEADTagLength     = 16;
+static const NSInteger CryptoAEADTagLength = 16;
 
 @interface CryptoAEAD ()
 
@@ -95,6 +95,11 @@ const NSInteger CryptoAEADTagLength     = 16;
 - (int)digestLength
 {
     return 0;
+}
+
+- (int)tagLength
+{
+    return CryptoAEADTagLength;
 }
 
 - (NSInteger)encryptionCapacityWithLength:(NSInteger)length
