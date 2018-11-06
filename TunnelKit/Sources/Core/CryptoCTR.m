@@ -42,7 +42,6 @@ static const NSInteger CryptoCTRTagLength = 32;
 @property (nonatomic, assign) int cipherKeyLength;
 @property (nonatomic, assign) int cipherIVLength;
 @property (nonatomic, assign) int hmacKeyLength;
-@property (nonatomic, assign) int digestLength;
 
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxEnc;
 @property (nonatomic, unsafe_unretained) EVP_CIPHER_CTX *cipherCtxDec;
@@ -70,14 +69,13 @@ static const NSInteger CryptoCTRTagLength = 32;
         self.cipherIVLength = EVP_CIPHER_iv_length(self.cipher);
         // as seen in OpenVPN's crypto_openssl.c:md_kt_size()
         self.hmacKeyLength = EVP_MD_size(self.digest);
-        self.digestLength = EVP_MD_size(self.digest);
-        NSAssert(self.digestLength == CryptoCTRTagLength, @"Expected digest size to be tag length (%ld)", CryptoCTRTagLength);
+        NSAssert(EVP_MD_size(self.digest) == CryptoCTRTagLength, @"Expected digest size to be tag length (%ld)", CryptoCTRTagLength);
         
         self.cipherCtxEnc = EVP_CIPHER_CTX_new();
         self.cipherCtxDec = EVP_CIPHER_CTX_new();
         self.hmacCtxEnc = HMAC_CTX_new();
         self.hmacCtxDec = HMAC_CTX_new();
-        self.bufferDecHMAC = allocate_safely(self.digestLength);
+        self.bufferDecHMAC = allocate_safely(CryptoCTRTagLength);
     }
     return self;
 }
@@ -88,11 +86,16 @@ static const NSInteger CryptoCTRTagLength = 32;
     EVP_CIPHER_CTX_free(self.cipherCtxDec);
     HMAC_CTX_free(self.hmacCtxEnc);
     HMAC_CTX_free(self.hmacCtxDec);
-    bzero(self.bufferDecHMAC, self.digestLength);
+    bzero(self.bufferDecHMAC, CryptoCTRTagLength);
     free(self.bufferDecHMAC);
     
     self.cipher = NULL;
     self.digest = NULL;
+}
+
+- (int)digestLength
+{
+    return CryptoCTRTagLength;
 }
 
 - (int)tagLength
