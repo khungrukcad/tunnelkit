@@ -30,8 +30,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern const NSInteger CryptoCTRADLength;
-
 @interface CryptoCTR : NSObject <Encrypter, Decrypter>
 
 - (instancetype)initWithCipherName:(nullable NSString *)cipherName digestName:(NSString *)digestName;

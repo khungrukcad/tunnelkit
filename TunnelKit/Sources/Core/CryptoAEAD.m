@@ -43,7 +43,7 @@
 #import "Allocation.h"
 #import "Errors.h"
 
-const NSInteger CryptoAEADTagLength     = 16;
+static const NSInteger CryptoAEADTagLength = 16;
 
 @interface CryptoAEAD ()
 

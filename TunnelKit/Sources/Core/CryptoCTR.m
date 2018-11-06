@@ -33,7 +33,7 @@
 #import "Allocation.h"
 #import "Errors.h"
 
-const NSInteger CryptoCTRTagLength      = 32;
+static const NSInteger CryptoCTRTagLength = 32;
 
 @interface CryptoCTR ()
 
