@@ -13,6 +13,10 @@
 		0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
 		0E011F882196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
 		0E011F892196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
+		0E011F812196E23700BA59EE /* ConfigurationParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7F2196E20300BA59EE /* ConfigurationParserTests.swift */; };
+		0E011F822196E23800BA59EE /* ConfigurationParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7F2196E20300BA59EE /* ConfigurationParserTests.swift */; };
+		0E011F852196E25900BA59EE /* pia-hungary.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E011F832196E25400BA59EE /* pia-hungary.ovpn */; };
+		0E011F862196E25A00BA59EE /* pia-hungary.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E011F832196E25400BA59EE /* pia-hungary.ovpn */; };
 		0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */; };
@@ -232,6 +236,8 @@
 		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
 		0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParser.swift; sourceTree = "<group>"; };
+		0E011F7F2196E20300BA59EE /* ConfigurationParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParserTests.swift; sourceTree = "<group>"; };
+		0E011F832196E25400BA59EE /* pia-hungary.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "pia-hungary.ovpn"; sourceTree = "<group>"; };
 		0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+TLSWrap.swift"; sourceTree = "<group>"; };
 		0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKeyTests.swift; sourceTree = "<group>"; };
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
@@ -400,6 +406,7 @@
 			isa = PBXGroup;
 			children = (
 				0E85A259202CC5AE0059E9F9 /* AppExtensionTests.swift */,
+				0E011F7F2196E20300BA59EE /* ConfigurationParserTests.swift */,
 				0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */,
 				0EB2B45420F0BB53004233D7 /* DataManipulationTests.swift */,
 				0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */,
@@ -415,6 +422,7 @@
 				0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */,
 				0EB2B45A20F0BE4C004233D7 /* TestUtils.swift */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
+				0E011F832196E25400BA59EE /* pia-hungary.ovpn */,
 			);
 			path = TunnelKitTests;
 			sourceTree = "<group>";
@@ -853,6 +861,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E011F852196E25900BA59EE /* pia-hungary.ovpn in Resources */,
 				0E749F622178911D00BB2701 /* pia-2048.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -885,6 +894,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E011F862196E25A00BA59EE /* pia-hungary.ovpn in Resources */,
 				0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1036,6 +1046,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */,
+				0E011F812196E23700BA59EE /* ConfigurationParserTests.swift in Sources */,
 				0EB2B45920F0BD9A004233D7 /* LinkTests.swift in Sources */,
 				0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */,
 				0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */,
@@ -1193,6 +1204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EA82A3A2190B2B9007960EB /* RandomTests.swift in Sources */,
+				0E011F822196E23800BA59EE /* ConfigurationParserTests.swift in Sources */,
 				0EA82A332190B2B9007960EB /* DataPathPerformanceTests.swift in Sources */,
 				0EA82A372190B2B9007960EB /* LinkTests.swift in Sources */,
 				0EA82A352190B2B9007960EB /* EncryptionPerformanceTests.swift in Sources */,
