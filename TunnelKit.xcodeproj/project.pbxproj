@@ -32,6 +32,8 @@
 		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
 		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
 		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
+		0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */; };
+		0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */; };
 		0E12B2A32145341B00B4BAE9 /* PacketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A22145341B00B4BAE9 /* PacketTests.swift */; };
 		0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
 		0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
@@ -240,6 +242,7 @@
 		0E1108B21F77B9F900A92462 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Shortcuts.swift"; sourceTree = "<group>"; };
 		0E12B2A22145341B00B4BAE9 /* PacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketTests.swift; sourceTree = "<group>"; };
 		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
 		0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannel.swift; sourceTree = "<group>"; };
@@ -544,6 +547,7 @@
 				0EFEB4422006D3C800F81029 /* module.modulemap */,
 				0EFEB42D2006D3C800F81029 /* MSS.h */,
 				0EFEB43D2006D3C800F81029 /* MSS.m */,
+				0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */,
 				0EFEB43E2006D3C800F81029 /* Packet.swift */,
 				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
 				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
@@ -1059,6 +1063,7 @@
 				0EFEB4562006D3C800F81029 /* SessionProxy+SessionKey.swift in Sources */,
 				0EC1BBA520D71190007C4C7B /* DNSResolver.swift in Sources */,
 				0EFEB4AB200760EC00F81029 /* MemoryDestination.swift in Sources */,
+				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EFEB4AE2007625E00F81029 /* Keychain.swift in Sources */,
 				0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
 				0EBBF3002085196000E36B40 /* NWTCPConnectionState+Description.swift in Sources */,
@@ -1118,6 +1123,7 @@
 				0EEC49DD20B5E732008FEB91 /* Utils.swift in Sources */,
 				0EFEB4B12007627700F81029 /* MemoryDestination.swift in Sources */,
 				0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */,
+				0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */,
 				0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
 				0EFEB4992006D7F300F81029 /* SessionProxy.swift in Sources */,
