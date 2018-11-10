@@ -11,6 +11,8 @@
 		0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F792196D93600BA59EE /* SocketType.swift */; };
 		0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
 		0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
+		0E011F882196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
+		0E011F892196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
 		0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */; };
@@ -229,6 +231,7 @@
 /* Begin PBXFileReference section */
 		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
 		0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
+		0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParser.swift; sourceTree = "<group>"; };
 		0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+TLSWrap.swift"; sourceTree = "<group>"; };
 		0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKeyTests.swift; sourceTree = "<group>"; };
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
@@ -526,6 +529,7 @@
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
 				0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */,
 				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
+				0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */,
 				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
 				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
 				0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */,
@@ -1095,6 +1099,7 @@
 				0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
 				0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */,
 				0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
+				0E011F882196E2AB00BA59EE /* ConfigurationParser.swift in Sources */,
 				0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */,
 				0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */,
@@ -1157,6 +1162,7 @@
 				0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
 				0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */,
 				0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */,
+				0E011F892196E2AB00BA59EE /* ConfigurationParser.swift in Sources */,
 				0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */,
 				0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
