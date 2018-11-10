@@ -45,68 +45,6 @@ extension TunnelKitProvider {
 
     // MARK: Configuration
     
-    /// A socket type between UDP (recommended) and TCP.
-    public enum SocketType: String {
-
-        /// UDP socket type.
-        case udp = "UDP"
-        
-        /// TCP socket type.
-        case tcp = "TCP"
-    }
-    
-    /// Defines the communication protocol of an endpoint.
-    public struct EndpointProtocol: RawRepresentable, Equatable, CustomStringConvertible {
-
-        /// The socket type.
-        public let socketType: SocketType
-        
-        /// The remote port.
-        public let port: UInt16
-        
-        /// :nodoc:
-        public init(_ socketType: SocketType, _ port: UInt16) {
-            self.socketType = socketType
-            self.port = port
-        }
-        
-        // MARK: RawRepresentable
-        
-        /// :nodoc:
-        public init?(rawValue: String) {
-            let components = rawValue.components(separatedBy: ":")
-            guard components.count == 2 else {
-                return nil
-            }
-            guard let socketType = SocketType(rawValue: components[0]) else {
-                return nil
-            }
-            guard let port = UInt16(components[1]) else {
-                return nil
-            }
-            self.init(socketType, port)
-        }
-        
-        /// :nodoc:
-        public var rawValue: String {
-            return "\(socketType.rawValue):\(port)"
-        }
-
-        // MARK: Equatable
-        
-        /// :nodoc:
-        public static func ==(lhs: EndpointProtocol, rhs: EndpointProtocol) -> Bool {
-            return (lhs.socketType == rhs.socketType) && (lhs.port == rhs.port)
-        }
-        
-        // MARK: CustomStringConvertible
-        
-        /// :nodoc:
-        public var description: String {
-            return rawValue
-        }
-    }
-
     /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
 
@@ -578,10 +516,10 @@ extension TunnelKitProvider.Configuration: Equatable {
 }
 
 /// :nodoc:
-extension TunnelKitProvider.EndpointProtocol: Codable {
+extension EndpointProtocol: Codable {
     public init(from decoder: Decoder) throws {
         let container = try decoder.singleValueContainer()
-        guard let proto = try TunnelKitProvider.EndpointProtocol(rawValue: container.decode(String.self)) else {
+        guard let proto = try EndpointProtocol(rawValue: container.decode(String.self)) else {
             throw TunnelKitProvider.ProviderConfigurationError.parameter(name: "endpointProtocol.decodable")
         }
         self.init(proto.socketType, proto.port)

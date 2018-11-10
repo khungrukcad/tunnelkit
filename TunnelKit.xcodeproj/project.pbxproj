@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0E011F7A2196D93600BA59EE /* SocketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F792196D93600BA59EE /* SocketType.swift */; };
+		0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F792196D93600BA59EE /* SocketType.swift */; };
+		0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
+		0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
 		0E041D092152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0A2152E6FE0025FE3C /* SessionProxy+TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */; };
 		0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */; };
@@ -223,6 +227,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
+		0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+TLSWrap.swift"; sourceTree = "<group>"; };
 		0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKeyTests.swift; sourceTree = "<group>"; };
 		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
@@ -540,6 +546,7 @@
 				0EFEB4352006D3C800F81029 /* DataPath.h */,
 				0EFEB44C2006D3C800F81029 /* DataPath.m */,
 				0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */,
+				0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
 				0EFEB4452006D3C800F81029 /* IOInterface.swift */,
@@ -565,6 +572,7 @@
 				0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */,
 				0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */,
 				0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */,
+				0E011F792196D93600BA59EE /* SocketType.swift */,
 				0EE3B3E321471C3A0027AB17 /* StaticKey.swift */,
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
 				0EFEB4302006D3C800F81029 /* TLSBox.m */,
@@ -1071,6 +1079,7 @@
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
 				0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */,
+				0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
 				0EBBF2FA2085061600E36B40 /* NETCPInterface.swift in Sources */,
 				0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */,
 				0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */,
@@ -1106,6 +1115,7 @@
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
 				0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
 				0EFEB4692006D3C800F81029 /* Packet.swift in Sources */,
+				0E011F7A2196D93600BA59EE /* SocketType.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1131,6 +1141,7 @@
 				0EBBF3012085196000E36B40 /* NWTCPConnectionState+Description.swift in Sources */,
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */,
+				0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
 				0EFEB48A2006D7C400F81029 /* TunnelKitProvider.swift in Sources */,
 				0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */,
 				0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */,
@@ -1166,6 +1177,7 @@
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
 				0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
 				0EFEB4972006D7F300F81029 /* SessionProxy+Authenticator.swift in Sources */,
+				0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */,
 				0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
