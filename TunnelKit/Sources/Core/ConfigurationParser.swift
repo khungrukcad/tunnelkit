@@ -28,24 +28,41 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
+/// Provides methods to parse a `SessionProxy.Configuration` from an .ovpn configuration file.
 public class ConfigurationParser {
+
+    /// Error raised by the parser, with details about the line that triggered it.
     public enum ParsingError: Error {
+
+        /// The file misses a required option.
         case missingConfiguration(option: String)
 
+        /// The file includes an unsupported option.
         case unsupportedConfiguration(option: String)
     }
-    
+
+    /// Result of the parser.
     public struct ParsingResult {
+
+        /// Original URL of the configuration file, if parsed from an URL.
         public let url: URL?
-        
+
+        /// The main endpoint hostname.
         public let hostname: String
         
+        /// The list of `EndpointProtocol` to which the client can connect to.
         public let protocols: [EndpointProtocol]
-        
+
+        /// The overall parsed `SessionProxy.Configuration`.
         public let configuration: SessionProxy.Configuration
-        
+
+        /// The lines of the configuration file stripped of any sensitive data. Lines that
+        /// the parser does not recognize are discarded in the first place.
+        ///
+        /// - Seealso: `ConfigurationParser.parsed(...)`
         public let strippedLines: [String]?
         
+        /// Holds an optional `ParsingError` that didn't block the parser, but it would be worth taking care of.
         public let warning: ParsingError?
     }
     
@@ -84,11 +101,28 @@ public class ConfigurationParser {
         static let externalFiles = NSRegularExpression("^(ca|cert|key|tls-auth|tls-crypt) ")
     }
     
+    /**
+     Parses an .ovpn file from an URL.
+     
+     - Parameter url: The URL of the configuration file.
+     - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
+     - Returns: The `ParsingResult` outcome of the parsing.
+     - Throws: `ParsingError` if the configuration file is wrong or incomplete.
+     */
     public static func parsed(fromURL url: URL, returnsStripped: Bool = false) throws -> ParsingResult {
         let lines = try String(contentsOf: url).trimmedLines()
         return try parsed(fromLines: lines, originalURL: url, returnsStripped: returnsStripped)
     }
 
+    /**
+     Parses an .ovpn file as an array of lines.
+     
+     - Parameter lines: The array of lines holding the configuration.
+     - Parameter url: The optional URL of the configuration file.
+     - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
+     - Returns: The `ParsingResult` outcome of the parsing.
+     - Throws: `ParsingError` if the configuration file is wrong or incomplete.
+     */
     public static func parsed(fromLines lines: [String], originalURL: URL? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
         var strippedLines: [String]? = returnsStripped ? [] : nil
         var warning: ParsingError? = nil
