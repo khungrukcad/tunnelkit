@@ -26,6 +26,9 @@ custom_categories:
         - IPv4Settings
         - IPv6Settings
         - SessionError
+        - SocketType
+        - EndpointProtocol
+        - ConfigurationParser
     - name: AppExtension
       children:
         - CryptoContainer

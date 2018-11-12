@@ -48,7 +48,7 @@ class ConnectionStrategy {
 
     private var resolvedAddresses: [String]?
     
-    private let endpointProtocols: [TunnelKitProvider.EndpointProtocol]
+    private let endpointProtocols: [EndpointProtocol]
     
     private var currentProtocolIndex = 0
 
@@ -119,7 +119,7 @@ class ConnectionStrategy {
         return true
     }
     
-    private func currentProtocol() -> TunnelKitProvider.EndpointProtocol {
+    private func currentProtocol() -> EndpointProtocol {
         return endpointProtocols[currentProtocolIndex]
     }
 
@@ -140,7 +140,7 @@ class ConnectionStrategy {
 }
 
 private extension NEProvider {
-    func createSocket(to address: String, protocol endpointProtocol: TunnelKitProvider.EndpointProtocol) -> GenericSocket {
+    func createSocket(to address: String, protocol endpointProtocol: EndpointProtocol) -> GenericSocket {
         let endpoint = NWHostEndpoint(hostname: address, port: "\(endpointProtocol.port)")
         switch endpointProtocol.socketType {
         case .udp:
