@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 1.4.0 (2018-11-12)
 
 ### Added
 
@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Due to #47, `SocketType` and `EndpointProtocol` were moved to Core subspec.
+- Due to [#47](https://github.com/keeshux/tunnelkit/pull/47), `SocketType` and `EndpointProtocol` were moved to Core subspec.
 
 ## 1.3.1 (2018-11-07)
 
