@@ -95,8 +95,8 @@ extension ViewController {
         sessionBuilder.renegotiatesAfter = nil
         sessionBuilder.usesPIAPatches = true
         var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
-        let socketType: TunnelKitProvider.SocketType = switchTCP.isOn ? .tcp : .udp
-        builder.endpointProtocols = [TunnelKitProvider.EndpointProtocol(socketType, port)]
+        let socketType: SocketType = switchTCP.isOn ? .tcp : .udp
+        builder.endpointProtocols = [EndpointProtocol(socketType, port)]
         builder.mtu = 1350
         builder.shouldDebug = true
         builder.debugLogKey = "Log"
