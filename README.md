@@ -70,6 +70,7 @@ Many other flags are ignored too but it's normally not an issue.
 - Ruby (preinstalled with macOS)
 - [CocoaPods 1.4.0][dep-cocoapods]
 - [jazzy][dep-jazzy] (optional, for documentation)
+- [Disable Bitcode][issue-51]
 
 It's highly recommended to use the Git and Ruby packages provided by [Homebrew][dep-brew].
 
@@ -183,6 +184,7 @@ Website: [davidederosa.com][about-website]
 [dep-jazzy]: https://github.com/realm/jazzy
 [dep-brew]: https://brew.sh/
 [dep-openssl]: https://www.openssl.org/
+[issue-51]: https://github.com/keeshux/tunnelkit/issues/51
 
 [ne-home]: https://developer.apple.com/documentation/networkextension
 [ne-ptp]: https://developer.apple.com/documentation/networkextension/nepackettunnelprovider
