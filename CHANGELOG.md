@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Override DNS servers client side. [#56](https://github.com/keeshux/tunnelkit/pull/56)
+
 ### Fixed
 
 - Compiling errors in demo target.
