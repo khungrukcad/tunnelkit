@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Override DNS servers client side. [#56](https://github.com/keeshux/tunnelkit/pull/56)
 
+### Changed
+
+- Enable or disable EKU according to `remote-cert-tls server` in .ovpn file. [#64](https://github.com/keeshux/tunnelkit/pull/64)
+
 ### Fixed
 
 - Compiling errors in demo target.
