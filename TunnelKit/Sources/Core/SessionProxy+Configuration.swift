@@ -150,6 +150,9 @@ extension SessionProxy {
         /// The private key for the certificate in `clientCertificate` (PEM format).
         public var clientKey: CryptoContainer?
         
+        /// If true, checks EKU of server certificate.
+        public var checksEKU: Bool
+        
         /// Sets compression framing, disabled by default.
         public var compressionFraming: CompressionFraming
 
@@ -175,6 +178,7 @@ extension SessionProxy {
             self.ca = ca
             clientCertificate = nil
             clientKey = nil
+            checksEKU = false
             compressionFraming = .disabled
             tlsWrap = nil
             keepAliveInterval = nil
@@ -195,6 +199,7 @@ extension SessionProxy {
                 ca: ca,
                 clientCertificate: clientCertificate,
                 clientKey: clientKey,
+                checksEKU: checksEKU,
                 compressionFraming: compressionFraming,
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
@@ -223,6 +228,9 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKey`
         public let clientKey: CryptoContainer?
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
+        public let checksEKU: Bool
+
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming
 
@@ -252,6 +260,7 @@ extension SessionProxy {
             builder.digest = digest
             builder.clientCertificate = clientCertificate
             builder.clientKey = clientKey
+            builder.checksEKU = checksEKU
             builder.compressionFraming = compressionFraming
             builder.tlsWrap = tlsWrap
             builder.keepAliveInterval = keepAliveInterval
@@ -271,6 +280,7 @@ extension SessionProxy {
                 (lhs.ca == rhs.ca) &&
                 (lhs.clientCertificate == rhs.clientCertificate) &&
                 (lhs.clientKey == rhs.clientKey) &&
+                (lhs.checksEKU == rhs.checksEKU) &&
                 (lhs.compressionFraming == rhs.compressionFraming) &&
                 (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
                 (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&

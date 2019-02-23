@@ -60,6 +60,7 @@ extension TunnelKitProvider {
                 ca: CryptoContainer(pem: ""),
                 clientCertificate: nil,
                 clientKey: nil,
+                checksEKU: false,
                 compressionFraming: .disabled,
                 tlsWrap: nil,
                 keepAliveInterval: nil,
@@ -464,6 +465,11 @@ extension TunnelKitProvider {
                 log.info("\tClient verification: enabled")
             } else {
                 log.info("\tClient verification: disabled")
+            }
+            if sessionConfiguration.checksEKU {
+                log.info("\tServer EKU verification: enabled")
+            } else {
+                log.info("\tServer EKU verification: disabled")
             }
             log.info("\tMTU: \(mtu)")
             log.info("\tCompression framing: \(sessionConfiguration.compressionFraming)")
