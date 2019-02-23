@@ -28,6 +28,8 @@ import XCTest
 
 private extension SessionReply {
     func debug() {
+        print("Compression framing: \(dnsServers)")
+        print("Compression: \(usesCompression)")
         print("IPv4: \(ipv4?.description ?? "none")")
         print("IPv6: \(ipv6?.description ?? "none")")
         print("DNS: \(dnsServers)")
@@ -98,6 +100,36 @@ class PushTests: XCTestCase {
         reply.debug()
         
         XCTAssertEqual(reply.compressionFraming, .compLZO)
+    }
+    
+    func testCompression() {
+        let msg = "PUSH_REPLY,dhcp-option DNS 8.8.8.8,dhcp-option DNS 4.4.4.4,route 10.8.0.1,topology net30,ping 10,ping-restart 120,ifconfig 10.8.0.6 10.8.0.5,peer-id 0,cipher AES-256-CBC"
+        var reply: SessionReply
+        
+        reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo no"))!
+        reply.debug()
+        XCTAssertEqual(reply.compressionFraming, .compLZO)
+        XCTAssertFalse(reply.usesCompression)
+
+        reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo"))!
+        reply.debug()
+        XCTAssertEqual(reply.compressionFraming, .compLZO)
+        XCTAssertTrue(reply.usesCompression)
+
+        reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo yes"))!
+        reply.debug()
+        XCTAssertEqual(reply.compressionFraming, .compLZO)
+        XCTAssertTrue(reply.usesCompression)
+
+        reply = try! SessionProxy.PushReply(message: msg.appending(",compress"))!
+        reply.debug()
+        XCTAssertEqual(reply.compressionFraming, .compress)
+        XCTAssertFalse(reply.usesCompression)
+
+        reply = try! SessionProxy.PushReply(message: msg.appending(",compress lz4"))!
+        reply.debug()
+        XCTAssertEqual(reply.compressionFraming, .compress)
+        XCTAssertTrue(reply.usesCompression)
     }
     
     func testNCP() {

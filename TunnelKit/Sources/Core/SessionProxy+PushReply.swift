@@ -150,6 +150,9 @@ public protocol SessionReply {
     /// The optional compression framing.
     var compressionFraming: SessionProxy.CompressionFraming? { get }
     
+    /// True if uses compression.
+    var usesCompression: Bool { get }
+    
     /// The optional keep-alive interval.
     var ping: Int? { get }
 
@@ -193,7 +196,7 @@ extension SessionProxy {
             
             static let dns = NSRegularExpression("dhcp-option DNS6? [\\d\\.a-fA-F:]+")
             
-            static let comp = NSRegularExpression("comp(ress|-lzo)")
+            static let comp = NSRegularExpression("comp(ress|-lzo)[ \\w]*")
             
             static let ping = NSRegularExpression("ping \\d+")
             
@@ -214,6 +217,8 @@ extension SessionProxy {
         
         let compressionFraming: SessionProxy.CompressionFraming?
         
+        let usesCompression: Bool
+
         let ping: Int?
         
         let authToken: String?
@@ -241,6 +246,7 @@ extension SessionProxy {
 
             var dnsServers: [String] = []
             var compressionFraming: SessionProxy.CompressionFraming?
+            var usesCompression = false
             var ping: Int?
             var authToken: String?
             var peerId: UInt32?
@@ -389,10 +395,12 @@ extension SessionProxy {
                 switch $0[0] {
                 case "comp-lzo":
                     compressionFraming = .compLZO
+                    usesCompression = !(($0.count == 2) && ($0[1] == "no"))
                     
                 case "compress":
                     compressionFraming = .compress
-                    
+                    usesCompression = ($0.count > 1)
+
                 default:
                     break
                 }
@@ -422,6 +430,7 @@ extension SessionProxy {
 
             self.dnsServers = dnsServers
             self.compressionFraming = compressionFraming
+            self.usesCompression = usesCompression
             self.ping = ping
             self.authToken = authToken
             self.peerId = peerId
