@@ -165,6 +165,9 @@ extension SessionProxy {
         /// Server is patched for the PIA VPN provider.
         public var usesPIAPatches: Bool?
 
+        /// Optionally override the server DNS entries.
+        public var dnsServers: [String]?
+        
         /// :nodoc:
         public init(ca: CryptoContainer) {
             cipher = .aes128cbc
@@ -177,6 +180,7 @@ extension SessionProxy {
             keepAliveInterval = nil
             renegotiatesAfter = nil
             usesPIAPatches = false
+            dnsServers = nil
         }
 
         /**
@@ -195,7 +199,8 @@ extension SessionProxy {
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
-                usesPIAPatches: usesPIAPatches
+                usesPIAPatches: usesPIAPatches,
+                dnsServers: dnsServers
             )
         }
     }
@@ -233,6 +238,9 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
         public let usesPIAPatches: Bool?
 
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
+        public let dnsServers: [String]?
+        
         /**
          Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
          
@@ -249,6 +257,7 @@ extension SessionProxy {
             builder.keepAliveInterval = keepAliveInterval
             builder.renegotiatesAfter = renegotiatesAfter
             builder.usesPIAPatches = usesPIAPatches
+            builder.dnsServers = dnsServers
             return builder
         }
 
@@ -265,7 +274,8 @@ extension SessionProxy {
                 (lhs.compressionFraming == rhs.compressionFraming) &&
                 (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
                 (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
-                (lhs.usesPIAPatches == rhs.usesPIAPatches)
+                (lhs.usesPIAPatches == rhs.usesPIAPatches) &&
+                (lhs.dnsServers == rhs.dnsServers)
         }
     }
 }

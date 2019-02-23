@@ -91,6 +91,8 @@ public class ConfigurationParser {
         
         static let blockEnd = NSRegularExpression("^<\\/[\\w\\-]+>")
 
+        static let dnsRegexp = NSRegularExpression("dhcp-option DNS6? [\\d\\.a-fA-F:]+")
+        
         // unsupported
 
 //        static let fragment = NSRegularExpression("^fragment +\\d+")
@@ -143,6 +145,7 @@ public class ConfigurationParser {
         var tlsStrategy: SessionProxy.TLSWrap.Strategy?
         var tlsKeyLines: [Substring]?
         var tlsWrap: SessionProxy.TLSWrap?
+        var dnsServers: [String]?
 
         var currentBlockName: String?
         var currentBlock: [String] = []
@@ -316,6 +319,16 @@ public class ConfigurationParser {
                 }
                 renegotiateAfterSeconds = TimeInterval(arg)
             }
+            Regex.dnsRegexp.enumerateArguments(in: line) {
+                isHandled = true
+                guard $0.count == 2 else {
+                    return
+                }
+                if dnsServers == nil {
+                    dnsServers = []
+                }
+                dnsServers?.append($0[1])
+            }
             Regex.fragment.enumerateArguments(in: line) { (_) in
                 unsupportedError = ParsingError.unsupportedConfiguration(option: "fragment")
             }
@@ -388,6 +401,7 @@ public class ConfigurationParser {
         sessionBuilder.clientKey = clientKey
         sessionBuilder.keepAliveInterval = keepAliveSeconds
         sessionBuilder.renegotiatesAfter = renegotiateAfterSeconds
+        sessionBuilder.dnsServers = dnsServers
 
         return ParsingResult(
             url: originalURL,
