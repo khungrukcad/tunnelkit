@@ -466,7 +466,7 @@ extension TunnelKitProvider {
             } else {
                 log.info("\tClient verification: disabled")
             }
-            if sessionConfiguration.checksEKU {
+            if sessionConfiguration.checksEKU ?? false {
                 log.info("\tServer EKU verification: enabled")
             } else {
                 log.info("\tServer EKU verification: disabled")

@@ -151,7 +151,7 @@ extension SessionProxy {
         public var clientKey: CryptoContainer?
         
         /// If true, checks EKU of server certificate.
-        public var checksEKU: Bool
+        public var checksEKU: Bool?
         
         /// Sets compression framing, disabled by default.
         public var compressionFraming: CompressionFraming
@@ -229,7 +229,7 @@ extension SessionProxy {
         public let clientKey: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
-        public let checksEKU: Bool
+        public let checksEKU: Bool?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming
