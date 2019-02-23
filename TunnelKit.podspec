@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name              = "TunnelKit"
-    s.version           = "1.4.0"
+    s.version           = "1.4.1"
     s.summary           = "Non-official OpenVPN client for Apple platforms."
 
     s.homepage          = "https://github.com/keeshux/tunnelkit"
@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
         p.pod_target_xcconfig   = { "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Core",
                                     "APPLICATION_EXTENSION_API_ONLY" => "YES" }
         p.dependency "SwiftyBeaver"
-        p.dependency "OpenSSL-Apple", "~> 1.1.0h"
+        p.dependency "OpenSSL-Apple", "~> 1.1.0i.2"
     end
 
     s.subspec "AppExtension" do |p|

@@ -3,7 +3,7 @@ use_frameworks!
 
 abstract_target 'TunnelKit' do
     pod 'SwiftyBeaver'
-    pod 'OpenSSL-Apple', '~> 1.1.0i'
+    pod 'OpenSSL-Apple', '~> 1.1.0i.2'
 
     target 'TunnelKit-iOS' do
         platform :ios, '11.0'

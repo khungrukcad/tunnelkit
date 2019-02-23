@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Compiling errors in demo target.
+- Linking errors with OpenSSL.
 
 ## 1.4.0 (2018-11-12)
 
