@@ -68,7 +68,7 @@ Many other flags are ignored too but it's normally not an issue.
 - Xcode 10+ (Swift 4.2)
 - Git (preinstalled with Xcode Command Line Tools)
 - Ruby (preinstalled with macOS)
-- [CocoaPods 1.4.0][dep-cocoapods]
+- [CocoaPods 1.6.0][dep-cocoapods]
 - [jazzy][dep-jazzy] (optional, for documentation)
 - [Disable Bitcode][issue-51]
 
