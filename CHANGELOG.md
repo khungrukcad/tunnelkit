@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Compiling errors in demo target.
 - Linking errors with OpenSSL.
+- A few potential vulnerabilities.
 
 ## 1.4.0 (2018-11-12)
 
