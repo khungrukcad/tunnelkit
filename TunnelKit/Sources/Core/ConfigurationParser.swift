@@ -87,11 +87,13 @@ public class ConfigurationParser {
 
         static let keyDirection = NSRegularExpression("^key-direction +\\d")
         
+        static let eku = NSRegularExpression("^remote-cert-tls +server")
+
         static let blockBegin = NSRegularExpression("^<[\\w\\-]+>")
         
         static let blockEnd = NSRegularExpression("^<\\/[\\w\\-]+>")
 
-        static let dnsRegexp = NSRegularExpression("dhcp-option DNS6? [\\d\\.a-fA-F:]+")
+        static let dns = NSRegularExpression("^dhcp-option +DNS6? +[\\d\\.a-fA-F:]+")
         
         // unsupported
 
@@ -139,6 +141,7 @@ public class ConfigurationParser {
         var optCA: CryptoContainer?
         var clientCertificate: CryptoContainer?
         var clientKey: CryptoContainer?
+        var checksEKU = false
         var keepAliveSeconds: TimeInterval?
         var renegotiateAfterSeconds: TimeInterval?
         var keyDirection: StaticKey.Direction?
@@ -218,6 +221,9 @@ public class ConfigurationParser {
                 continue
             }
             
+            Regex.eku.enumerateComponents(in: line) { (_) in
+                checksEKU = true
+            }
             Regex.proto.enumerateArguments(in: line) {
                 isHandled = true
                 guard let str = $0.first else {
@@ -319,7 +325,7 @@ public class ConfigurationParser {
                 }
                 renegotiateAfterSeconds = TimeInterval(arg)
             }
-            Regex.dnsRegexp.enumerateArguments(in: line) {
+            Regex.dns.enumerateArguments(in: line) {
                 isHandled = true
                 guard $0.count == 2 else {
                     return
@@ -399,6 +405,7 @@ public class ConfigurationParser {
         sessionBuilder.tlsWrap = tlsWrap
         sessionBuilder.clientCertificate = clientCertificate
         sessionBuilder.clientKey = clientKey
+        sessionBuilder.checksEKU = checksEKU
         sessionBuilder.keepAliveInterval = keepAliveSeconds
         sessionBuilder.renegotiatesAfter = renegotiateAfterSeconds
         sessionBuilder.dnsServers = dnsServers

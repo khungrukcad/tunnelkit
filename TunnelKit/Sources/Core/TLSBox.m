@@ -65,6 +65,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 @property (nonatomic, strong) NSString *caPath;
 @property (nonatomic, strong) NSString *clientCertificatePath;
 @property (nonatomic, strong) NSString *clientKeyPath;
+@property (nonatomic, assign) BOOL checksEKU;
 @property (nonatomic, assign) BOOL isConnected;
 
 @property (nonatomic, unsafe_unretained) SSL_CTX *ctx;
@@ -105,12 +106,16 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     return nil;
 }
 
-- (instancetype)initWithCAPath:(NSString *)caPath clientCertificatePath:(NSString *)clientCertificatePath clientKeyPath:(NSString *)clientKeyPath
+- (instancetype)initWithCAPath:(NSString *)caPath
+         clientCertificatePath:(NSString *)clientCertificatePath
+                 clientKeyPath:(NSString *)clientKeyPath
+                     checksEKU:(BOOL)checksEKU
 {
     if ((self = [super init])) {
         self.caPath = caPath;
         self.clientCertificatePath = clientCertificatePath;
         self.clientKeyPath = clientKeyPath;
+        self.checksEKU = checksEKU;
         self.bufferCipherText = allocate_safely(TLSBoxMaxBufferLength);
     }
     return self;
@@ -196,7 +201,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     if (!self.isConnected && SSL_is_init_finished(self.ssl)) {
         self.isConnected = YES;
 
-        if (![self verifyEKUWithSSL:self.ssl]) {
+        if (self.checksEKU && ![self verifyEKUWithSSL:self.ssl]) {
             if (error) {
                 *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxServerEKU);
             }
