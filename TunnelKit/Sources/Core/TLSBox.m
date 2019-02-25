@@ -325,7 +325,7 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
         OBJ_obj2txt(buffer, sizeof(buffer), sk_ASN1_OBJECT_value(eku, i), 1); // get OID
         const char *oid = OBJ_nid2ln(OBJ_obj2nid(sk_ASN1_OBJECT_value(eku, i)));
 //        NSLog(@"eku flag %d: %s - %s", i, buffer, oid);
-        if (!strcmp(oid, TLSBoxServerEKU)) {
+        if (oid && !strcmp(oid, TLSBoxServerEKU)) {
             isValid = YES;
             break;
         }
