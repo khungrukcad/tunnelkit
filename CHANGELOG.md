@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Override DNS servers client side. [#56](https://github.com/keeshux/tunnelkit/pull/56)
-- Shut down if server pushes a compression directive.
+- Shut down if server pushes a compression directive. [#65](https://github.com/keeshux/tunnelkit/pull/65)
 
 ### Changed
 
