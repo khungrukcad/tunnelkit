@@ -595,6 +595,9 @@ extension TunnelKitProvider {
             case .badCredentials:
                 return .authentication
                 
+            case .serverCompression:
+                return .serverCompression
+                
             case .failedLinkWrite:
                 return .linkError
 
