@@ -80,14 +80,21 @@ int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
 
 @implementation TLSBox
 
-+ (NSString *)md5ForCertificatePath:(NSString *)path
++ (NSString *)md5ForCertificatePath:(NSString *)path error:(NSError * _Nullable __autoreleasing * _Nullable)error
 {
     const EVP_MD *alg = EVP_get_digestbyname("MD5");
     uint8_t md[16];
     unsigned int len;
 
     FILE *pem = fopen([path cStringUsingEncoding:NSASCIIStringEncoding], "r");
+    if (!pem) {
+        return NULL;
+    }
     X509 *cert = PEM_read_X509(pem, NULL, NULL, NULL);
+    if (!cert) {
+        fclose(pem);
+        return NULL;
+    }
     X509_digest(cert, alg, md, &len);
     X509_free(cert);
     fclose(pem);

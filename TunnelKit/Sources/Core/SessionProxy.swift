@@ -613,7 +613,13 @@ public class SessionProxy {
     
     private func hardResetPayload() -> Data? {
         guard !(configuration.usesPIAPatches ?? false) else {
-            let caMD5 = TLSBox.md5(forCertificatePath: caURL.path)
+            let caMD5: String
+            do {
+                caMD5 = try TLSBox.md5(forCertificatePath: caURL.path)
+            } catch {
+                log.error("CA MD5 could not be computed, skipping custom HARD_RESET")
+                return nil
+            }
             log.debug("CA MD5 is: \(caMD5)")
             return try? PIAHardReset(
                 caMd5Digest: caMD5,
