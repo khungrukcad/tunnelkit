@@ -586,6 +586,9 @@ extension TunnelKitProvider {
                 
             case .dataPathOverflow, .dataPathPeerIdMismatch:
                 return .unexpectedReply
+                
+            case .dataPathCompression:
+                return .serverCompression
             }
         } else if let se = error as? SessionError {
             switch se {
