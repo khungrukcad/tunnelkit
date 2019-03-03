@@ -188,6 +188,7 @@ extension TunnelKitProvider {
             sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval
             sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval
             sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
+            sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
@@ -255,6 +256,8 @@ extension TunnelKitProvider {
             
             static let usesPIAPatches = "UsesPIAPatches"
 
+            static let dnsServers = "DNSServers"
+            
             // MARK: Debugging
             
             static let debug = "Debug"
@@ -417,6 +420,9 @@ extension TunnelKitProvider {
             if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
                 dict[S.usesPIAPatches] = usesPIAPatches
             }
+            if let dnsServers = sessionConfiguration.dnsServers {
+                dict[S.dnsServers] = dnsServers
+            }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
             }
@@ -487,6 +493,9 @@ extension TunnelKitProvider {
                 log.info("\tTLS wrapping: \(tlsWrap.strategy)")
             } else {
                 log.info("\tTLS wrapping: disabled")
+            }
+            if let dnsServers = sessionConfiguration.dnsServers {
+                log.info("\tCustom DNS servers: \(dnsServers.maskedDescription)")
             }
             log.info("\tDebug: \(shouldDebug)")
         }
