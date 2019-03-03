@@ -50,6 +50,7 @@ Unsupported:
 - Proxy
 - External file references (inline `<block>` only)
 - Encrypted client certificate keys
+- `<connection>` blocks
 
 Ignored:
 
