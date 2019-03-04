@@ -103,6 +103,8 @@ public class ConfigurationParser {
         static let proxy = NSRegularExpression("^\\w+-proxy")
 
         static let externalFiles = NSRegularExpression("^(ca|cert|key|tls-auth|tls-crypt) ")
+
+        static let connection = NSRegularExpression("^<connection>")
     }
     
     /**
@@ -166,55 +168,62 @@ public class ConfigurationParser {
                 }
             }
 
-            Regex.blockBegin.enumerateComponents(in: line) {
-                isHandled = true
-                let tag = $0.first!
-                let from = tag.index(after: tag.startIndex)
-                let to = tag.index(before: tag.endIndex)
-
-                currentBlockName = String(tag[from..<to])
-                currentBlock = []
+            // check blocks first
+            Regex.connection.enumerateComponents(in: line) { (_) in
+                unsupportedError = ParsingError.unsupportedConfiguration(option: "<connection> blocks")
             }
-            Regex.blockEnd.enumerateComponents(in: line) {
-                isHandled = true
-                let tag = $0.first!
-                let from = tag.index(tag.startIndex, offsetBy: 2)
-                let to = tag.index(before: tag.endIndex)
 
-                let blockName = String(tag[from..<to])
-                guard blockName == currentBlockName else {
-                    return
+            if unsupportedError == nil {
+                Regex.blockBegin.enumerateComponents(in: line) {
+                    isHandled = true
+                    let tag = $0.first!
+                    let from = tag.index(after: tag.startIndex)
+                    let to = tag.index(before: tag.endIndex)
+
+                    currentBlockName = String(tag[from..<to])
+                    currentBlock = []
                 }
+                Regex.blockEnd.enumerateComponents(in: line) {
+                    isHandled = true
+                    let tag = $0.first!
+                    let from = tag.index(tag.startIndex, offsetBy: 2)
+                    let to = tag.index(before: tag.endIndex)
 
-                // first is opening tag
-                currentBlock.removeFirst()
-                switch blockName {
-                case "ca":
-                    optCA = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
-                    
-                case "cert":
-                    clientCertificate = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
-                    
-                case "key":
-                    let container = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
-                    clientKey = container
-                    if container.isEncrypted {
-                        unsupportedError = ParsingError.unsupportedConfiguration(option: "encrypted client certificate key")
+                    let blockName = String(tag[from..<to])
+                    guard blockName == currentBlockName else {
+                        return
                     }
-                    
-                case "tls-auth":
-                    tlsKeyLines = currentBlock.map { Substring($0) }
-                    tlsStrategy = .auth
-                    
-                case "tls-crypt":
-                    tlsKeyLines = currentBlock.map { Substring($0) }
-                    tlsStrategy = .crypt
-                    
-                default:
-                    break
+
+                    // first is opening tag
+                    currentBlock.removeFirst()
+                    switch blockName {
+                    case "ca":
+                        optCA = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
+                        
+                    case "cert":
+                        clientCertificate = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
+                        
+                    case "key":
+                        let container = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
+                        clientKey = container
+                        if container.isEncrypted {
+                            unsupportedError = ParsingError.unsupportedConfiguration(option: "encrypted client certificate key")
+                        }
+                        
+                    case "tls-auth":
+                        tlsKeyLines = currentBlock.map { Substring($0) }
+                        tlsStrategy = .auth
+                        
+                    case "tls-crypt":
+                        tlsKeyLines = currentBlock.map { Substring($0) }
+                        tlsStrategy = .crypt
+                        
+                    default:
+                        break
+                    }
+                    currentBlockName = nil
+                    currentBlock = []
                 }
-                currentBlockName = nil
-                currentBlock = []
             }
             if let _ = currentBlockName {
                 currentBlock.append(line)
@@ -335,13 +344,13 @@ public class ConfigurationParser {
                 }
                 dnsServers?.append($0[1])
             }
-            Regex.fragment.enumerateArguments(in: line) { (_) in
+            Regex.fragment.enumerateComponents(in: line) { (_) in
                 unsupportedError = ParsingError.unsupportedConfiguration(option: "fragment")
             }
-            Regex.proxy.enumerateArguments(in: line) { (_) in
+            Regex.proxy.enumerateComponents(in: line) { (_) in
                 unsupportedError = ParsingError.unsupportedConfiguration(option: "proxy: \"\(line)\"")
             }
-            Regex.externalFiles.enumerateArguments(in: line) { (_) in
+            Regex.externalFiles.enumerateComponents(in: line) { (_) in
                 unsupportedError = ParsingError.unsupportedConfiguration(option: "external file: \"\(line)\"")
             }
             if line.contains("mtu") || line.contains("mssfix") {

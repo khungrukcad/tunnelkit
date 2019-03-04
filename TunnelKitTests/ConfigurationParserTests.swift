@@ -73,6 +73,11 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertEqual(parsed.configuration.dnsServers, ["8.8.8.8", "ffff::1"])
     }
     
+    func testConnectionBlock() throws {
+        let lines = base + ["<connection>", "</connection>"]
+        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
+    }
+    
     private func url(withName name: String) -> URL {
         return Bundle(for: ConfigurationParserTests.self).url(forResource: name, withExtension: "ovpn")!
     }
