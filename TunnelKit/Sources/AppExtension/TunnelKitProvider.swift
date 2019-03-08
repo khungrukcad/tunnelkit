@@ -403,6 +403,12 @@ extension TunnelKitProvider: GenericSocketDelegate {
         if reasserting {
             log.debug("Disconnection is recoverable, tunnel will reconnect in \(reconnectionDelay) milliseconds...")
             tunnelQueue.schedule(after: .milliseconds(reconnectionDelay)) {
+
+                // give up if reasserting cleared in the meantime
+                guard self.reasserting else {
+                    return
+                }
+
                 self.connectTunnel(upgradedSocket: upgradedSocket, preferredAddress: socket.remoteAddress)
             }
             return
