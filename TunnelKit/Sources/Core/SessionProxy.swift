@@ -979,7 +979,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
-                    self?.deferStop(.reconnect, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
                     return
                 }
             }
@@ -1097,7 +1097,7 @@ public class SessionProxy {
                 if let error = error {
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
-                        self?.deferStop(.reconnect, SessionError.failedLinkWrite)
+                        self?.deferStop(.shutdown, SessionError.failedLinkWrite)
                         return
                     }
                 }
@@ -1143,7 +1143,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
-                    self?.deferStop(.reconnect, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
                     return
                 }
             }
