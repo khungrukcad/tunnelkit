@@ -456,9 +456,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
     public func sessionDidStop(_: SessionProxy, shouldReconnect: Bool) {
         log.info("Session did stop")
 
-        if shouldReconnect {
-            reasserting = true
-        }
+        reasserting = shouldReconnect
         socket?.shutdown()
     }
     
