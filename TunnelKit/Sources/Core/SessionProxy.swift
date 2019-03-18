@@ -778,7 +778,7 @@ public class SessionProxy {
                 caPath: caURL.path,
                 clientCertificatePath: (configuration.clientCertificate != nil) ? clientCertificateURL.path : nil,
                 clientKeyPath: (configuration.clientKey != nil) ? clientKeyURL.path : nil,
-                checksEKU: true
+                checksEKU: configuration.checksEKU ?? false
             )
             do {
                 try negotiationKey.tls.start()

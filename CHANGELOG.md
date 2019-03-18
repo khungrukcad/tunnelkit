@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Several reconnection issues.
+- Missing EKU flag evaluation.
 
 ## 1.4.2 (2019-03-05)
 
