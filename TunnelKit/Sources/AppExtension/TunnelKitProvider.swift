@@ -593,6 +593,9 @@ extension TunnelKitProvider {
                 
             case .dataPathCompression:
                 return .serverCompression
+                
+            case .LZO:
+                return .lzo
             }
         } else if let se = error as? SessionError {
             switch se {

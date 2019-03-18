@@ -35,6 +35,7 @@
 //
 
 #import <stdlib.h>
+#import <Foundation/Foundation.h>
 
 #import "Allocation.h"
 
@@ -43,7 +44,7 @@
 void *allocate_safely(size_t size) {
     void *memory = malloc(size);
     if (!memory) {
-//        abort("malloc() call failed")
+        NSLog(@"malloc() call failed");
         abort();
         return NULL;
     }
