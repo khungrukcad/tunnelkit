@@ -147,6 +147,10 @@ The goal of this module is packaging up a black box implementation of a [NEPacke
 
 Currently, the extension supports VPN over both [UDP][ne-udp] and [TCP][ne-tcp] sockets. A debug log snapshot is optionally maintained and shared to host apps via the App Group container.
 
+### LZO
+
+Due to the restrictive license (GPLv2), LZO support is provided as an optional subspec.
+
 ## License
 
 ### Part I

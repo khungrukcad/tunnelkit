@@ -12,6 +12,8 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "11.0"
     s.osx.deployment_target = "10.11"
 
+    s.default_subspecs = "Core", "AppExtension"
+
     s.subspec "Core" do |p|
         p.source_files          = "TunnelKit/Sources/Core/**/*.{h,m,swift}"
         p.private_header_files  = "TunnelKit/Sources/Core/**/*.h"
@@ -30,5 +32,14 @@ Pod::Spec.new do |s|
 
         p.dependency "TunnelKit/Core"
         p.dependency "SwiftyBeaver"
+    end
+
+    s.subspec "LZO" do |p|
+        p.source_files          = "TunnelKit/Sources/Core/LZO.h",
+                                  "TunnelKit/Sources/Core/Errors.{h,m}",
+                                  "TunnelKit/Sources/LZO/**/*.{h,m,c}"
+        p.private_header_files  = "TunnelKit/Sources/Core/LZO.h",
+                                  "TunnelKit/Sources/LZO/lib/*.h"
+        p.pod_target_xcconfig   = { "APPLICATION_EXTENSION_API_ONLY" => "YES" }
     end
 end
