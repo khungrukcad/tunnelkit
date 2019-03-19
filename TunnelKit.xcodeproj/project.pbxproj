@@ -80,6 +80,10 @@
 		0E58BF5722411F3E006FB157 /* LZO.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF5522411F37006FB157 /* LZO.h */; };
 		0E58BF5922411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E58BF5A22411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
+		0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */; };
+		0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */; };
+		0E58BF532240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF522240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift */; };
+		0E58BF542240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF522240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift */; };
 		0E58F1302138AC2F00A49F27 /* DNSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58F12F2138AC2F00A49F27 /* DNSTests.swift */; };
 		0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
 		0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
@@ -296,6 +300,8 @@
 		0E58BF4922405C2F006FB157 /* StandardLZO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandardLZO.m; sourceTree = "<group>"; };
 		0E58BF5522411F37006FB157 /* LZO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LZO.h; sourceTree = "<group>"; };
 		0E58BF5822411FEF006FB157 /* LZO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LZO.m; sourceTree = "<group>"; };
+		0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionAlgorithmNative.h; sourceTree = "<group>"; };
+		0E58BF522240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+CompressionAlgorithm.swift"; sourceTree = "<group>"; };
 		0E58F12F2138AC2F00A49F27 /* DNSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DNSTests.swift; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -582,6 +588,7 @@
 				0EFEB42E2006D3C800F81029 /* Allocation.h */,
 				0EFEB4462006D3C800F81029 /* Allocation.m */,
 				0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */,
+				0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */,
 				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
 				0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */,
 				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
@@ -625,6 +632,7 @@
 				0E0C2123212ED29D008AB282 /* SessionError.swift */,
 				0EFEB43C2006D3C800F81029 /* SessionProxy.swift */,
 				0EFEB43A2006D3C800F81029 /* SessionProxy+Authenticator.swift */,
+				0E58BF522240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift */,
 				0ED9C8632138139000621BA3 /* SessionProxy+CompressionFraming.swift */,
 				0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */,
 				0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */,
@@ -703,6 +711,7 @@
 				0E58BF3722405410006FB157 /* minilzo.h in Headers */,
 				0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3522405410006FB157 /* lzodefs.h in Headers */,
+				0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
 				0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */,
 				0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */,
@@ -730,6 +739,7 @@
 				0E58BF3822405410006FB157 /* minilzo.h in Headers */,
 				0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3622405410006FB157 /* lzodefs.h in Headers */,
+				0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
 				0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */,
 				0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */,
@@ -1178,6 +1188,7 @@
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
+				0E58BF532240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
 				0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EBBF2E52084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
@@ -1244,6 +1255,7 @@
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
+				0E58BF542240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
 				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,

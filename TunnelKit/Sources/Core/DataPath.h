@@ -51,6 +51,7 @@ NS_ASSUME_NONNULL_BEGIN
                                 decrypter:(id<DataPathDecrypter>)decrypter
                                    peerId:(uint32_t)peerId // 24-bit, discard most significant byte
                        compressionFraming:(CompressionFramingNative)compressionFraming
+                     compressionAlgorithm:(CompressionAlgorithmNative)compressionAlgorithm
                                maxPackets:(NSInteger)maxPackets
                      usesReplayProtection:(BOOL)usesReplayProtection;
 

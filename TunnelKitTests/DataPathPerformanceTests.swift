@@ -59,6 +59,7 @@ class DataPathPerformanceTests: XCTestCase {
             decrypter: decrypter,
             peerId: PacketPeerIdDisabled,
             compressionFraming: .disabled,
+            compressionAlgorithm: .disabled,
             maxPackets: 200,
             usesReplayProtection: false
         )

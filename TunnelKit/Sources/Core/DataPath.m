@@ -82,7 +82,13 @@
     return (uint8_t *)addr;
 }
 
-- (instancetype)initWithEncrypter:(id<DataPathEncrypter>)encrypter decrypter:(id<DataPathDecrypter>)decrypter peerId:(uint32_t)peerId compressionFraming:(CompressionFramingNative)compressionFraming maxPackets:(NSInteger)maxPackets usesReplayProtection:(BOOL)usesReplayProtection
+- (instancetype)initWithEncrypter:(id<DataPathEncrypter>)encrypter
+                        decrypter:(id<DataPathDecrypter>)decrypter
+                           peerId:(uint32_t)peerId
+               compressionFraming:(CompressionFramingNative)compressionFraming
+             compressionAlgorithm:(CompressionAlgorithmNative)compressionAlgorithm
+                       maxPackets:(NSInteger)maxPackets
+             usesReplayProtection:(BOOL)usesReplayProtection
 {
     NSParameterAssert(encrypter);
     NSParameterAssert(decrypter);
@@ -111,8 +117,7 @@
         [self.decrypter setPeerId:peerId];
         [self setCompressionFraming:compressionFraming];
         
-        // FIXME: compress according to compression flag, not just framing
-        if (LZOIsSupported() && (compressionFraming == CompressionFramingNativeCompLZO)) {
+        if (LZOIsSupported() && (compressionFraming == CompressionFramingNativeCompLZO) && (compressionAlgorithm == CompressionAlgorithmNativeLZO)) {
             self.lzo = LZOCreate();
         }
     }

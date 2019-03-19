@@ -92,6 +92,7 @@ class DataPathEncryptionTests: XCTestCase {
             decrypter: dec,
             peerId: peerId ?? PacketPeerIdDisabled,
             compressionFraming: .disabled,
+            compressionAlgorithm: .disabled,
             maxPackets: 1000,
             usesReplayProtection: false
         )
