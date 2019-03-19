@@ -40,6 +40,7 @@
 #import "DataPathCrypto.h"
 #import "MSS.h"
 #import "ReplayProtector.h"
+#import "LZO.h"
 #import "Allocation.h"
 #import "Errors.h"
 
@@ -65,6 +66,7 @@
 
 @property (nonatomic, copy) DataPathAssembleBlock assemblePayloadBlock;
 @property (nonatomic, copy) DataPathParseBlock parsePayloadBlock;
+@property (nonatomic, strong) id<LZO> lzo;
 
 @end
 
@@ -108,6 +110,11 @@
         [self.encrypter setPeerId:peerId];
         [self.decrypter setPeerId:peerId];
         [self setCompressionFraming:compressionFraming];
+        
+        // FIXME: compress according to compression flag, not just framing
+        if (LZOIsSupported() && (compressionFraming == CompressionFramingNativeCompLZO)) {
+            self.lzo = LZOCreate();
+        }
     }
     return self;
 }
@@ -162,8 +169,9 @@
                 memcpy(packetDest, payload.bytes, payload.length);
                 *packetLengthOffset = 0;
             };
-            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
+            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
                 *payloadOffset = 0;
+                *compressionHeader = 0x00;
                 *headerLength = 0;
                 return YES;
             };
@@ -176,8 +184,9 @@
                 packetDest[0] = DataPacketNoCompressSwap;
                 *packetLengthOffset = 1;
             };
-            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
-                if (payload[0] != DataPacketNoCompressSwap) {
+            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
+                *compressionHeader = payload[0];
+                if (*compressionHeader != DataPacketNoCompressSwap) {
                     // @"Expected NO_COMPRESS_SWAP (found %X != %X)", payload[0], DataPacketNoCompressSwap);
                     *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
                     return NO;
@@ -190,18 +199,40 @@
             break;
         }
         case CompressionFramingNativeCompLZO: {
+            __weak DataPath *weakSelf = self;
             self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
+                NSData *compressedPayload = [weakSelf.lzo compressedDataWithData:payload error:NULL];
+                if (compressedPayload) {
+                    packetDest[0] = DataPacketLZOCompress;
+                    *packetLengthOffset = 1 - (payload.length - compressedPayload.length);
+                    payload = compressedPayload;
+                } else {
+                    packetDest[0] = DataPacketNoCompress;
+                    *packetLengthOffset = 1;
+                }
                 memcpy(packetDest + 1, payload.bytes, payload.length);
-                packetDest[0] = DataPacketNoCompress;
-                *packetLengthOffset = 1;
             };
-            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
-                if (payload[0] != DataPacketNoCompress) {
-                    // @"Expected NO_COMPRESS (found %X != %X)", payload[0], DataPacketNoCompress);
-                    if (error) {
-                        *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
-                    }
-                    return NO;
+            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
+                *compressionHeader = payload[0];
+                switch (*compressionHeader) {
+                    case DataPacketNoCompress:
+                        break;
+                        
+                    case DataPacketLZOCompress:
+                        if (!LZOIsSupported() || !weakSelf.lzo) { // compressed packet unexpected
+                            if (error) {
+                                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
+                            }
+                            return NO;
+                        }
+                        break;
+                        
+                    default:
+                        // @"Expected NO_COMPRESS (found %X != %X)", payload[0], DataPacketNoCompress);
+                        if (error) {
+                            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
+                        }
+                        return NO;
                 }
                 *payloadOffset = 1;
                 *headerLength = 1;
@@ -289,14 +320,22 @@
             continue;
         }
         
+        uint8_t compressionHeader;
         NSData *payload = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
+                                              compressionHeader:&compressionHeader
                                                     packetBytes:dataPacketBytes
                                                    packetLength:dataPacketLength
                                                           error:error];
         if (!payload) {
             return nil;
         }
-        
+        if (compressionHeader == DataPacketLZOCompress) {
+            payload = [self.lzo decompressedDataWithData:payload error:error];
+            if (!payload) {
+                return nil;
+            }
+        }
+
         if ((payload.length == sizeof(DataPacketPingData)) && !memcmp(payload.bytes, DataPacketPingData, payload.length)) {
             if (keepAlive) {
                 *keepAlive = true;
