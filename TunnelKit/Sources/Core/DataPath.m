@@ -168,6 +168,42 @@
 
 - (void)setCompressionFraming:(CompressionFramingNative)compressionFraming
 {
+    __weak DataPath *weakSelf = self;
+
+    DataPathParseBlock parseCompressedBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
+        *compressionHeader = payload[0];
+        *headerLength = 1;
+
+        switch (*compressionHeader) {
+            case DataPacketNoCompress:
+                *payloadOffset = 1;
+                break;
+                
+            case DataPacketNoCompressSwap:
+                payload[0] = packet[packetLength - 1];
+                *payloadOffset = 0;
+                break;
+                
+            case DataPacketLZOCompress:
+                if (!weakSelf.lzo) { // compressed packet unexpected
+                    if (error) {
+                        *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
+                    }
+                    return NO;
+                }
+                *payloadOffset = 1;
+                break;
+                
+            default:
+                // @"Expected NO_COMPRESS (found %X != %X)", payload[0], DataPacketNoCompress);
+                if (error) {
+                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
+                }
+                return NO;
+        }
+        return YES;
+    };
+
     switch (compressionFraming) {
         case CompressionFramingNativeDisabled: {
             self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
@@ -184,27 +220,30 @@
         }
         case CompressionFramingNativeCompress: {
             self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
-                memcpy(packetDest, payload.bytes, payload.length);
-                packetDest[payload.length] = packetDest[0];
-                packetDest[0] = DataPacketNoCompressSwap;
-                *packetLengthOffset = 1;
-            };
-            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
-                *compressionHeader = payload[0];
-                if (*compressionHeader != DataPacketNoCompressSwap) {
-                    // @"Expected NO_COMPRESS_SWAP (found %X != %X)", payload[0], DataPacketNoCompressSwap);
-                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
-                    return NO;
+                NSData *compressedPayload = [weakSelf.lzo compressedDataWithData:payload error:NULL];
+                if (compressedPayload) {
+                    packetDest[0] = DataPacketLZOCompress;
+                    *packetLengthOffset = 1 - (payload.length - compressedPayload.length);
+                    payload = compressedPayload;
+                    memcpy(packetDest + 1, payload.bytes, payload.length);
+                } else {
+                    *packetLengthOffset = 1;
+
+                    // do not byte swap if compression enabled
+                    if (weakSelf.lzo) {
+                        packetDest[0] = DataPacketNoCompress;
+                        memcpy(packetDest + 1, payload.bytes, payload.length);
+                    } else {
+                        memcpy(packetDest, payload.bytes, payload.length);
+                        packetDest[payload.length] = packetDest[0];
+                        packetDest[0] = DataPacketNoCompressSwap;
+                    }
                 }
-                payload[0] = packet[packetLength - 1];
-                *payloadOffset = 0;
-                *headerLength = 1;
-                return YES;
             };
+            self.parsePayloadBlock = parseCompressedBlock;
             break;
         }
         case CompressionFramingNativeCompLZO: {
-            __weak DataPath *weakSelf = self;
             self.assemblePayloadBlock = ^(uint8_t * packetDest, NSInteger * packetLengthOffset, NSData * payload) {
                 NSData *compressedPayload = [weakSelf.lzo compressedDataWithData:payload error:NULL];
                 if (compressedPayload) {
@@ -217,32 +256,7 @@
                 }
                 memcpy(packetDest + 1, payload.bytes, payload.length);
             };
-            self.parsePayloadBlock = ^BOOL(uint8_t * _Nonnull payload, NSInteger * _Nonnull payloadOffset, uint8_t * _Nonnull compressionHeader, NSInteger * _Nonnull headerLength, const uint8_t * _Nonnull packet, NSInteger packetLength, NSError * _Nullable __autoreleasing * _Nullable error) {
-                *compressionHeader = payload[0];
-                switch (*compressionHeader) {
-                    case DataPacketNoCompress:
-                        break;
-                        
-                    case DataPacketLZOCompress:
-                        if (!LZOIsSupported() || !weakSelf.lzo) { // compressed packet unexpected
-                            if (error) {
-                                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
-                            }
-                            return NO;
-                        }
-                        break;
-                        
-                    default:
-                        // @"Expected NO_COMPRESS (found %X != %X)", payload[0], DataPacketNoCompress);
-                        if (error) {
-                            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeDataPathCompression);
-                        }
-                        return NO;
-                }
-                *payloadOffset = 1;
-                *headerLength = 1;
-                return YES;
-            };
+            self.parsePayloadBlock = parseCompressedBlock;
             break;
         }
     }
