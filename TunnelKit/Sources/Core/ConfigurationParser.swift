@@ -315,10 +315,17 @@ public class ConfigurationParser {
                 isHandled = true
                 compressionFraming = .compress
 
-                guard $0.isEmpty else {
-                    compressionAlgorithm = .other
-                    unsupportedError = .unsupportedConfiguration(option: line)
-                    return
+                if !LZOIsSupported() {
+                    guard $0.isEmpty else {
+                        unsupportedError = .unsupportedConfiguration(option: line)
+                        return
+                    }
+                } else {
+                    if let arg = $0.first {
+                        compressionAlgorithm = (arg == "lzo") ? .LZO : .other
+                    } else {
+                        compressionAlgorithm = .disabled
+                    }
                 }
             }
             Regex.keyDirection.enumerateArguments(in: line) {

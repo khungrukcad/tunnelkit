@@ -395,18 +395,20 @@ extension SessionProxy {
                 switch $0[0] {
                 case "comp-lzo":
                     compressionFraming = .compLZO
-                    if !(($0.count == 2) && ($0[1] == "no")) {
-                        compressionAlgorithm = .LZO
-                    } else {
+                    if ($0.count == 2) && ($0[1] == "no") {
                         compressionAlgorithm = .disabled
+                    } else {
+                        compressionAlgorithm = .LZO
                     }
                     
                 case "compress":
                     compressionFraming = .compress
-                    if $0.count > 1 {
-                        compressionAlgorithm = .other
-                    } else {
+                    if $0.count == 1 {
                         compressionAlgorithm = .disabled
+                    } else if ($0.count == 2) && ($0[1] == "lzo") {
+                        compressionAlgorithm = .LZO
+                    } else {
+                        compressionAlgorithm = .other
                     }
 
                 default:
