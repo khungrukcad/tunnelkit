@@ -135,10 +135,9 @@ class DataPathEncryptionTests: XCTestCase {
         var decryptedBytes: [UInt8] = [UInt8](repeating: 0, count: 1000)
         var decryptedLength: Int = 0
         var packetId: UInt32 = 0
-        var payloadLength: Int = 0
+        var compressionHeader: UInt8 = 0
         try! dec.decryptDataPacket(encrypted, into: &decryptedBytes, length: &decryptedLength, packetId: &packetId)
-        let payloadBytes = try! dec.parsePayload(nil, length: &payloadLength, packetBytes: &decryptedBytes, packetLength: decryptedLength)
-        let payload = Data(bytes: payloadBytes, count: payloadLength)
+        let payload = try! dec.parsePayload(nil, compressionHeader: &compressionHeader, packetBytes: &decryptedBytes, packetLength: decryptedLength)
 
         XCTAssertEqual(payload, expectedPayload)
         XCTAssertEqual(packetId, expectedPacketId)

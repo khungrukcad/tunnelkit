@@ -82,7 +82,7 @@ typedef BOOL (^DataPathParseBlock)(uint8_t *payload,
 @protocol DataPathDecrypter <DataPathChannel>
 
 - (BOOL)decryptDataPacket:(NSData *)packet into:(uint8_t *)packetBytes length:(NSInteger *)packetLength packetId:(uint32_t *)packetId error:(NSError **)error;
-- (const uint8_t * _Nullable)parsePayloadWithBlock:(nullable DataPathParseBlock)block length:(NSInteger *)length packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError **)error;
+- (nullable NSData *)parsePayloadWithBlock:(nullable DataPathParseBlock)block packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError **)error;
 
 @end
 

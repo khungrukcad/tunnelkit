@@ -289,17 +289,15 @@
             continue;
         }
         
-        NSInteger payloadLength;
-        const uint8_t *payloadBytes = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
-                                                                     length:&payloadLength
-                                                                packetBytes:dataPacketBytes
-                                                               packetLength:dataPacketLength
-                                                                      error:error];
-        if (!payloadBytes) {
+        NSData *payload = [self.decrypter parsePayloadWithBlock:self.parsePayloadBlock
+                                                    packetBytes:dataPacketBytes
+                                                   packetLength:dataPacketLength
+                                                          error:error];
+        if (!payload) {
             return nil;
         }
         
-        if ((payloadLength == sizeof(DataPacketPingData)) && !memcmp(payloadBytes, DataPacketPingData, payloadLength)) {
+        if ((payload.length == sizeof(DataPacketPingData)) && !memcmp(payload.bytes, DataPacketPingData, payload.length)) {
             if (keepAlive) {
                 *keepAlive = true;
             }
@@ -308,7 +306,6 @@
         
 //        MSSFix(payloadBytes, payloadLength);
         
-        NSData *payload = [[NSData alloc] initWithBytes:payloadBytes length:payloadLength];
         [self.inPackets addObject:payload];
     }
     

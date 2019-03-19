@@ -346,12 +346,12 @@ static const NSInteger CryptoAEADTagLength = 16;
     return YES;
 }
 
-- (const uint8_t *)parsePayloadWithBlock:(DataPathParseBlock)block length:(NSInteger *)length packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError * _Nullable __autoreleasing * _Nullable)error
+- (NSData *)parsePayloadWithBlock:(DataPathParseBlock)block packetBytes:(uint8_t *)packetBytes packetLength:(NSInteger)packetLength error:(NSError * _Nullable __autoreleasing *)error
 {
     uint8_t *payload = packetBytes;
-    *length = packetLength - (int)(payload - packetBytes);
+    NSUInteger length = packetLength - (int)(payload - packetBytes);
     if (!block) {
-        return payload;
+        return [NSData dataWithBytes:payload length:length];
     }
     
     NSInteger payloadOffset;
@@ -359,8 +359,8 @@ static const NSInteger CryptoAEADTagLength = 16;
     if (!block(payload, &payloadOffset, &payloadHeaderLength, packetBytes, packetLength, error)) {
         return NULL;
     }
-    *length -= payloadHeaderLength;
-    return payload + payloadOffset;
+    length -= payloadHeaderLength;
+    return [NSData dataWithBytes:(payload + payloadOffset) length:length];
 }
 
 @end
