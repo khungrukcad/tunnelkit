@@ -117,7 +117,7 @@
         [self.decrypter setPeerId:peerId];
         [self setCompressionFraming:compressionFraming];
         
-        if (LZOIsSupported() && (compressionFraming == CompressionFramingNativeCompLZO) && (compressionAlgorithm == CompressionAlgorithmNativeLZO)) {
+        if (LZOIsSupported() && (compressionAlgorithm == CompressionAlgorithmNativeLZO)) {
             self.lzo = LZOCreate();
         }
     }

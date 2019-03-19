@@ -912,20 +912,20 @@ public class SessionProxy {
             reply = optionalReply
             log.debug("Received PUSH_REPLY: \"\(reply.maskedDescription)\"")
             
-            if let framing = reply.compressionFraming, let compression = reply.compressionAlgorithm, compression != .disabled {
-                switch framing {
-                case .compress:
-                    log.error("Server has new compression enabled and this is currently unsupported (\(framing))")
-                    throw SessionError.serverCompression
+            if let framing = reply.compressionFraming, let compression = reply.compressionAlgorithm {
+                switch compression {
+                case .disabled:
+                    break
 
-                case .compLZO:
+                case .LZO:
                     if !LZOIsSupported() {
-                        log.error("Server has legacy LZO compression enabled and this was not built into the library (\(framing))")
+                        log.error("Server has LZO compression enabled and this was not built into the library (framing=\(framing))")
                         throw SessionError.serverCompression
                     }
 
-                default:
-                    break
+                case .other:
+                    log.error("Server has non-LZO compression enabled and this is currently unsupported (framing=\(framing))")
+                    throw SessionError.serverCompression
                 }
             }
         } catch let e {
