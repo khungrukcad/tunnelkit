@@ -37,9 +37,9 @@ Pod::Spec.new do |s|
     s.subspec "LZO" do |p|
         p.source_files          = "TunnelKit/Sources/Core/LZO.h",
                                   "TunnelKit/Sources/Core/Errors.{h,m}",
-                                  "TunnelKit/Sources/LZO/**/*.{h,m,c}"
+                                  "TunnelKit/Sources/LZO/**/*lzo*.{h,m,c}"
         p.private_header_files  = "TunnelKit/Sources/Core/LZO.h",
-                                  "TunnelKit/Sources/LZO/lib/*.h"
+                                  "TunnelKit/Sources/LZO/lib/*lzo*.h"
         p.pod_target_xcconfig   = { "APPLICATION_EXTENSION_API_ONLY" => "YES" }
     end
 end
