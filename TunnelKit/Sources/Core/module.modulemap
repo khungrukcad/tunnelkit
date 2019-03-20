@@ -45,7 +45,9 @@ module __TunnelKitNative {
     header "ControlPacket.h"
     header "ReplayProtector.h"
     header "CompressionFramingNative.h"
+    header "CompressionAlgorithmNative.h"
     header "DataPath.h"
     header "DataPathCrypto.h"
+    header "LZO.h"
     export *
 }

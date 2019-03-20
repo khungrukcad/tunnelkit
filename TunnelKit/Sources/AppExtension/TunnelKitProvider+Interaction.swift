@@ -117,7 +117,10 @@ extension TunnelKitProvider {
         /// Data encryption/decryption failed.
         case encryptionData
         
-        /// Server uses compression and this is not supported.
+        /// The LZO engine failed.
+        case lzo
+        
+        /// Server uses an unsupported compression algorithm.
         case serverCompression
         
         /// Tunnel timed out.

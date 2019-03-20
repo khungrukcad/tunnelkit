@@ -912,9 +912,21 @@ public class SessionProxy {
             reply = optionalReply
             log.debug("Received PUSH_REPLY: \"\(reply.maskedDescription)\"")
             
-            if let framing = reply.compressionFraming, reply.usesCompression {
-                log.error("Server has compression enabled and this is currently unsupported (\(framing))")
-                throw SessionError.serverCompression
+            if let framing = reply.compressionFraming, let compression = reply.compressionAlgorithm, compression != .disabled {
+                switch framing {
+                case .compress:
+                    log.error("Server has new compression enabled and this is currently unsupported (\(framing))")
+                    throw SessionError.serverCompression
+
+                case .compLZO:
+                    if !LZOIsSupported() {
+                        log.error("Server has legacy LZO compression enabled and this was not built into the library (\(framing))")
+                        throw SessionError.serverCompression
+                    }
+
+                default:
+                    break
+                }
             }
         } catch let e {
             deferStop(.shutdown, e)
@@ -1021,6 +1033,10 @@ public class SessionProxy {
         if let negFraming = pushedFraming {
             log.info("\tNegotiated compression framing: \(negFraming)")
         }
+        let pushedCompression = pushReply.compressionAlgorithm
+        if let negCompression = pushedCompression {
+            log.info("\tNegotiated compression algorithm: \(negCompression)")
+        }
         if let negPing = pushReply.ping {
             log.info("\tNegotiated keep-alive: \(negPing) seconds")
         }
@@ -1048,6 +1064,7 @@ public class SessionProxy {
             decrypter: bridge.decrypter(),
             peerId: pushReply.peerId ?? PacketPeerIdDisabled,
             compressionFraming: (pushedFraming ?? configuration.compressionFraming).native,
+            compressionAlgorithm: (pushedCompression ?? configuration.compressionAlgorithm ?? .disabled).native,
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection
         )

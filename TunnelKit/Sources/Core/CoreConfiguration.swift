@@ -83,6 +83,8 @@ struct CoreConfiguration {
         "IV_PROTO=2",
         "IV_NCP=2",
         "IV_SSL=\(CryptoBox.version())",
+        "IV_LZO=1",
+        "IV_LZO_STUB=1",
         ""
     ].joined(separator: "\n")
     

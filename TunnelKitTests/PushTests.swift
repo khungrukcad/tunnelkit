@@ -28,8 +28,8 @@ import XCTest
 
 private extension SessionReply {
     func debug() {
-        print("Compression framing: \(dnsServers)")
-        print("Compression: \(usesCompression)")
+        print("Compression framing: \(compressionFraming?.description ?? "none")")
+        print("Compression algorithm: \(compressionAlgorithm?.description ?? "none")")
         print("IPv4: \(ipv4?.description ?? "none")")
         print("IPv6: \(ipv6?.description ?? "none")")
         print("DNS: \(dnsServers)")
@@ -109,27 +109,27 @@ class PushTests: XCTestCase {
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo no"))!
         reply.debug()
         XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertFalse(reply.usesCompression)
+        XCTAssertEqual(reply.compressionAlgorithm, .disabled)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo"))!
         reply.debug()
         XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertTrue(reply.usesCompression)
+        XCTAssertEqual(reply.compressionAlgorithm, .LZO)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo yes"))!
         reply.debug()
         XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertTrue(reply.usesCompression)
+        XCTAssertEqual(reply.compressionAlgorithm, .LZO)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",compress"))!
         reply.debug()
         XCTAssertEqual(reply.compressionFraming, .compress)
-        XCTAssertFalse(reply.usesCompression)
+        XCTAssertEqual(reply.compressionAlgorithm, .disabled)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",compress lz4"))!
         reply.debug()
         XCTAssertEqual(reply.compressionFraming, .compress)
-        XCTAssertTrue(reply.usesCompression)
+        XCTAssertEqual(reply.compressionAlgorithm, .other)
     }
     
     func testNCP() {

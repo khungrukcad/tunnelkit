@@ -25,6 +25,7 @@
 
 import Foundation
 import SwiftyBeaver
+import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
@@ -140,6 +141,7 @@ public class ConfigurationParser {
         var cipher: SessionProxy.Cipher?
         var digest: SessionProxy.Digest?
         var compressionFraming: SessionProxy.CompressionFraming = .disabled
+        var compressionAlgorithm: SessionProxy.CompressionAlgorithm = .disabled
         var optCA: CryptoContainer?
         var clientCertificate: CryptoContainer?
         var clientKey: CryptoContainer?
@@ -295,13 +297,18 @@ public class ConfigurationParser {
                 isHandled = true
                 compressionFraming = .compLZO
                 
-                guard let arg = $0.first else {
-                    warning = warning ?? .unsupportedConfiguration(option: line)
-                    return
-                }
-                guard arg == "no" else {
-                    unsupportedError = .unsupportedConfiguration(option: line)
-                    return
+                if !LZOIsSupported() {
+                    guard let arg = $0.first else {
+                        warning = warning ?? .unsupportedConfiguration(option: line)
+                        return
+                    }
+                    guard arg == "no" else {
+                        unsupportedError = .unsupportedConfiguration(option: line)
+                        return
+                    }
+                } else {
+                    let arg = $0.first
+                    compressionAlgorithm = (arg == "no") ? .disabled : .LZO
                 }
             }
             Regex.compress.enumerateArguments(in: line) {
@@ -309,6 +316,7 @@ public class ConfigurationParser {
                 compressionFraming = .compress
 
                 guard $0.isEmpty else {
+                    compressionAlgorithm = .other
                     unsupportedError = .unsupportedConfiguration(option: line)
                     return
                 }
@@ -411,6 +419,7 @@ public class ConfigurationParser {
         sessionBuilder.cipher = cipher ?? .aes128cbc
         sessionBuilder.digest = digest ?? .sha1
         sessionBuilder.compressionFraming = compressionFraming
+        sessionBuilder.compressionAlgorithm = compressionAlgorithm
         sessionBuilder.tlsWrap = tlsWrap
         sessionBuilder.clientCertificate = clientCertificate
         sessionBuilder.clientKey = clientKey

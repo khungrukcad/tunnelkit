@@ -57,9 +57,11 @@ class ConfigurationParserTests: XCTestCase {
     }
     
     func testCompression() throws {
-        XCTAssertNotNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
+//        XCTAssertNotNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
+        XCTAssertNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
         XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo no"]))
-        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
+//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
 
         XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress"]))
         XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
