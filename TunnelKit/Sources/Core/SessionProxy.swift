@@ -1177,17 +1177,31 @@ public class SessionProxy {
     private func deferStop(_ method: StopMethod, _ error: Error?) {
         isStopping = true
 
-        // send exit notification if socket is unreliable (normally UDP)
-        if let link = link, !link.isReliable {
-            sendDataPackets([OCCPacket.exit.serialized()])
+        let completion = { [weak self] in
+            switch method {
+            case .shutdown:
+                self?.doShutdown(error: error)
+                
+            case .reconnect:
+                self?.doReconnect(error: error)
+            }
         }
-        
-        switch method {
-        case .shutdown:
-            doShutdown(error: error)
-        
-        case .reconnect:
-            doReconnect(error: error)
+
+        // shut down after sending exit notification if socket is unreliable (normally UDP)
+        if let link = link, !link.isReliable {
+            do {
+                guard let packets = try currentKey?.encrypt(packets: [OCCPacket.exit.serialized()]) else {
+                    completion()
+                    return
+                }
+                link.writePackets(packets) { (error) in
+                    completion()
+                }
+            } catch {
+                completion()
+            }
+        } else {
+            completion()
         }
     }
     
