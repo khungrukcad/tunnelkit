@@ -1176,6 +1176,11 @@ public class SessionProxy {
     
     private func deferStop(_ method: StopMethod, _ error: Error?) {
         isStopping = true
+
+        // send exit notification if socket is unreliable (normally UDP)
+        if let link = link, !link.isReliable {
+            sendDataPackets([OCCPacket.exit.serialized()])
+        }
         
         switch method {
         case .shutdown:
