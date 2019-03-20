@@ -992,8 +992,8 @@ public class SessionProxy {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
                     self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                    return
                 }
+                return
             }
         }
     }
@@ -1115,8 +1115,8 @@ public class SessionProxy {
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
                         self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                        return
                     }
+                    return
                 }
 //                log.verbose("Data: \(encryptedPackets.count) packets successfully written to LINK")
             }
@@ -1161,8 +1161,8 @@ public class SessionProxy {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
                     self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                    return
                 }
+                return
             }
             log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
         }
