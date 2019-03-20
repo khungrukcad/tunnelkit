@@ -1194,8 +1194,10 @@ public class SessionProxy {
                     completion()
                     return
                 }
-                link.writePackets(packets) { (error) in
-                    completion()
+                link.writePackets(packets) { [weak self] (error) in
+                    self?.queue.sync {
+                        completion()
+                    }
                 }
             } catch {
                 completion()
