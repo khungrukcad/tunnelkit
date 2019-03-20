@@ -992,8 +992,8 @@ public class SessionProxy {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
                     self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                    return
                 }
+                return
             }
         }
     }
@@ -1115,8 +1115,8 @@ public class SessionProxy {
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
                         self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                        return
                     }
+                    return
                 }
 //                log.verbose("Data: \(encryptedPackets.count) packets successfully written to LINK")
             }
@@ -1161,8 +1161,8 @@ public class SessionProxy {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
                     self?.deferStop(.shutdown, SessionError.failedLinkWrite)
-                    return
                 }
+                return
             }
             log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
         }
@@ -1176,13 +1176,32 @@ public class SessionProxy {
     
     private func deferStop(_ method: StopMethod, _ error: Error?) {
         isStopping = true
-        
-        switch method {
-        case .shutdown:
-            doShutdown(error: error)
-        
-        case .reconnect:
-            doReconnect(error: error)
+
+        let completion = { [weak self] in
+            switch method {
+            case .shutdown:
+                self?.doShutdown(error: error)
+                
+            case .reconnect:
+                self?.doReconnect(error: error)
+            }
+        }
+
+        // shut down after sending exit notification if socket is unreliable (normally UDP)
+        if let link = link, !link.isReliable {
+            do {
+                guard let packets = try currentKey?.encrypt(packets: [OCCPacket.exit.serialized()]) else {
+                    completion()
+                    return
+                }
+                link.writePackets(packets) { (error) in
+                    completion()
+                }
+            } catch {
+                completion()
+            }
+        } else {
+            completion()
         }
     }
     
