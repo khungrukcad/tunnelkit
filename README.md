@@ -29,11 +29,10 @@ The client is known to work with [OpenVPN®][openvpn] 2.3+ servers.
     - Authentication (`--tls-auth`)
     - Encryption (`--tls-crypt`)
 - [x] Compression framing
-    - Disabled
-    - Compress (2.4)
-    - LZO (deprecated in 2.4)
+    - Via `--comp-lzo` (deprecated in 2.4)
+    - Via `--compress`
 - [x] Compression algorithms
-    - LZO (`--comp-lzo` only)
+    - LZO (via `--comp-lzo` or `--compress lzo`)
 - [x] Key renegotiation
 - [x] Replay protection (hardcoded window)
 
@@ -46,8 +45,7 @@ TunnelKit can parse .ovpn configuration files. Below are a few limitations worth
 Unsupported:
 
 - UDP fragmentation, i.e. `--fragment`
-- Compression
-    - `--compress` other than empty
+- Compression via `--compress` other than empty or `lzo`
 - Proxy
 - External file references (inline `<block>` only)
 - Encrypted client certificate keys

@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for legacy `--comp-lzo` compression. [#69](https://github.com/keeshux/tunnelkit/pull/69)
+- Support for newer `--compress lzo` option. [#70](https://github.com/keeshux/tunnelkit/pull/70)
 
 ## 1.4.3 (2019-03-18)
 
