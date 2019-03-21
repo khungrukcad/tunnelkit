@@ -100,7 +100,7 @@ extension TunnelKitProvider {
         public var debugLogFormat: String?
         
         /// Mask private data in debug log (default is `true`).
-        public var masksPrivateData: Bool
+        public var masksPrivateData: Bool?
         
         // MARK: Building
         
@@ -292,7 +292,7 @@ extension TunnelKitProvider {
         public let debugLogFormat: String?
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.masksPrivateData`
-        public let masksPrivateData: Bool
+        public let masksPrivateData: Bool?
         
         // MARK: Shortcuts
 
@@ -396,8 +396,7 @@ extension TunnelKitProvider {
                 S.digestAlgorithm: sessionConfiguration.digest.rawValue,
                 S.ca: sessionConfiguration.ca.pem,
                 S.mtu: mtu,
-                S.debug: shouldDebug,
-                S.masksPrivateData: masksPrivateData
+                S.debug: shouldDebug
             ]
             if let clientCertificate = sessionConfiguration.clientCertificate {
                 dict[S.clientCertificate] = clientCertificate.pem
@@ -429,6 +428,9 @@ extension TunnelKitProvider {
             }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
+            }
+            if let masksPrivateData = masksPrivateData {
+                dict[S.masksPrivateData] = masksPrivateData
             }
             return dict
         }
