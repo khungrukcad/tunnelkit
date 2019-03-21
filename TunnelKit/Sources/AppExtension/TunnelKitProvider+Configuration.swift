@@ -509,7 +509,7 @@ extension TunnelKitProvider {
                 log.info("\tCustom DNS servers: \(dnsServers.maskedDescription)")
             }
             log.info("\tDebug: \(shouldDebug)")
-            log.info("\tMasks private data: \(masksPrivateData)")
+            log.info("\tMasks private data: \(masksPrivateData ?? true)")
         }
     }
 }
