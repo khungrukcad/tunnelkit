@@ -70,7 +70,8 @@ extension TunnelKitProvider {
                 dnsServers: nil
             ),
             shouldDebug: false,
-            debugLogFormat: nil
+            debugLogFormat: nil,
+            masksPrivateData: true
         )
         
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
@@ -98,6 +99,9 @@ extension TunnelKitProvider {
         /// Optional debug log format (SwiftyBeaver format).
         public var debugLogFormat: String?
         
+        /// Mask private data in debug log (default is `true`).
+        public var masksPrivateData: Bool
+        
         // MARK: Building
         
         /**
@@ -113,6 +117,7 @@ extension TunnelKitProvider {
             self.sessionConfiguration = sessionConfiguration
             shouldDebug = ConfigurationBuilder.defaults.shouldDebug
             debugLogFormat = ConfigurationBuilder.defaults.debugLogFormat
+            masksPrivateData = ConfigurationBuilder.defaults.masksPrivateData
         }
         
         fileprivate init(providerConfiguration: [String: Any]) throws {
@@ -187,10 +192,11 @@ extension TunnelKitProvider {
             sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
             sessionConfiguration = sessionConfigurationBuilder.build()
 
-            shouldDebug = providerConfiguration[S.debug] as? Bool ?? false
+            shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
             if shouldDebug {
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
             }
+            masksPrivateData = providerConfiguration[S.masksPrivateData] as? Bool ?? ConfigurationBuilder.defaults.masksPrivateData
 
             guard !prefersResolvedAddresses || !(resolvedAddresses?.isEmpty ?? true) else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.prefersResolvedAddresses)] is true but no [\(S.resolvedAddresses)]")
@@ -210,7 +216,8 @@ extension TunnelKitProvider {
                 mtu: mtu,
                 sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
-                debugLogFormat: shouldDebug ? debugLogFormat : nil
+                debugLogFormat: shouldDebug ? debugLogFormat : nil,
+                masksPrivateData: masksPrivateData
             )
         }
     }
@@ -259,6 +266,8 @@ extension TunnelKitProvider {
             static let debug = "Debug"
             
             static let debugLogFormat = "DebugLogFormat"
+
+            static let masksPrivateData = "MasksPrivateData"
         }
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
@@ -281,6 +290,9 @@ extension TunnelKitProvider {
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
+        
+        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.masksPrivateData`
+        public let masksPrivateData: Bool
         
         // MARK: Shortcuts
 
@@ -384,7 +396,8 @@ extension TunnelKitProvider {
                 S.digestAlgorithm: sessionConfiguration.digest.rawValue,
                 S.ca: sessionConfiguration.ca.pem,
                 S.mtu: mtu,
-                S.debug: shouldDebug
+                S.debug: shouldDebug,
+                S.masksPrivateData: masksPrivateData
             ]
             if let clientCertificate = sessionConfiguration.clientCertificate {
                 dict[S.clientCertificate] = clientCertificate.pem
@@ -494,6 +507,7 @@ extension TunnelKitProvider {
                 log.info("\tCustom DNS servers: \(dnsServers.maskedDescription)")
             }
             log.info("\tDebug: \(shouldDebug)")
+            log.info("\tMasks private data: \(masksPrivateData)")
         }
     }
 }

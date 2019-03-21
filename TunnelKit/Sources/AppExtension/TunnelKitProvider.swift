@@ -176,6 +176,9 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             customFormat: cfg.debugLogFormat
         )
         
+        // override library configuration
+        CoreConfiguration.masksPrivateData = cfg.masksPrivateData
+
         log.info("Starting tunnel...")
         cfg.clearLastError(in: appGroup)
         

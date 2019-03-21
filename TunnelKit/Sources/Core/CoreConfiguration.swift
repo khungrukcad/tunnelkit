@@ -57,11 +57,12 @@ struct CoreConfiguration {
     }()
     
     // MARK: Session
+
+    // configurable
+    static var masksPrivateData = true
     
     static let logsSensitiveData = false
 
-    static let masksPrivateData = true
-    
     static let usesReplayProtection = true
 
     static let tickInterval = 0.2
