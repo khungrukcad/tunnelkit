@@ -70,9 +70,7 @@ extension TunnelKitProvider {
                 dnsServers: nil
             ),
             shouldDebug: false,
-            debugLogKey: nil,
-            debugLogFormat: nil,
-            lastErrorKey: nil
+            debugLogFormat: nil
         )
         
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
@@ -97,16 +95,8 @@ extension TunnelKitProvider {
         /// Enables debugging.
         public var shouldDebug: Bool
         
-        /// This attribute is ignored and deprecated. Use `urlForLog(...)` or `existingLog(...)` to access the debug log.
-        @available(*, deprecated)
-        public var debugLogKey: String?
-        
         /// Optional debug log format (SwiftyBeaver format).
         public var debugLogFormat: String?
-        
-        /// This attribute is ignored and deprecated. Use `lastError(...)` to access the last error.
-        @available(*, deprecated)
-        public var lastErrorKey: String?
         
         // MARK: Building
         
@@ -220,9 +210,7 @@ extension TunnelKitProvider {
                 mtu: mtu,
                 sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
-                debugLogKey: nil,
-                debugLogFormat: shouldDebug ? debugLogFormat : nil,
-                lastErrorKey: nil
+                debugLogFormat: shouldDebug ? debugLogFormat : nil
             )
         }
     }
@@ -291,16 +279,8 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogKey`
-        @available(*, deprecated)
-        public let debugLogKey: String?
-        
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.lastErrorKey`
-        @available(*, deprecated)
-        public let lastErrorKey: String?
         
         // MARK: Shortcuts
 

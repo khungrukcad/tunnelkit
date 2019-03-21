@@ -100,7 +100,6 @@ extension ViewController {
         builder.endpointProtocols = [EndpointProtocol(socketType, port)]
         builder.mtu = 1350
         builder.shouldDebug = true
-        builder.debugLogKey = "Log"
         
         let configuration = builder.build()
         return try! configuration.generatedTunnelProtocol(
