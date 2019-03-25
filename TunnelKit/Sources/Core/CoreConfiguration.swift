@@ -77,17 +77,22 @@ struct CoreConfiguration {
 
     // MARK: Authentication
     
-    static let peerInfo = [
-        "IV_VER=2.4",
-        "IV_PLAT=mac",
-        "IV_UI_VER=\(identifier) \(version)",
-        "IV_PROTO=2",
-        "IV_NCP=2",
-        "IV_SSL=\(CryptoBox.version())",
-        "IV_LZO=1",
-        "IV_LZO_STUB=1",
-        ""
-    ].joined(separator: "\n")
+    static let peerInfo: String = {
+        var info = [
+            "IV_VER=2.4",
+            "IV_PLAT=mac",
+            "IV_UI_VER=\(identifier) \(version)",
+            "IV_PROTO=2",
+            "IV_NCP=2",
+            "IV_SSL=\(CryptoBox.version())",
+            "IV_LZO_STUB=1",
+        ]
+        if LZOIsSupported() {
+            info.append("IV_LZO=1")
+        }
+        info.append("")
+        return info.joined(separator: "\n")
+    }()
     
     static let randomLength = 32
     
