@@ -262,7 +262,7 @@ public class SessionProxy {
     public func canRebindLink() -> Bool {
 //        return (pushReply?.peerId != nil)
 
-        // XXX: floating is currently unreliable
+        // FIXME: floating is currently unreliable
         return false
     }
     
