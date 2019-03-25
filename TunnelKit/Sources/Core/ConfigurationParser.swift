@@ -43,6 +43,9 @@ public class ConfigurationParser {
 
         /// Passphrase required to decrypt private keys.
         case encryptionPassphrase
+
+        /// Encryption passphrase is incorrect or key is corrupt.
+        case unableToDecrypt(error: Error)
     }
 
     /// Result of the parser.
@@ -224,7 +227,7 @@ public class ConfigurationParser {
                             do {
                                 clientKey = try container.decrypted(with: passphrase)
                             } catch let e {
-                                unsupportedError = ParsingError.unsupportedConfiguration(option: e.localizedDescription)
+                                unsupportedError = ParsingError.unableToDecrypt(error: e)
                             }
                         } else {
                             clientKey = container
