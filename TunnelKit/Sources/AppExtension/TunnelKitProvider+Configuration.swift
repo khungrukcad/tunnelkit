@@ -190,6 +190,7 @@ extension TunnelKitProvider {
             sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.keepAliveInterval
             sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.renegotiatesAfter
             sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
+            sessionConfigurationBuilder.checksEKU = providerConfiguration[S.checksEKU] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.checksEKU
             sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
             sessionConfigurationBuilder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.randomizeEndpoint
             sessionConfiguration = sessionConfigurationBuilder.build()
@@ -260,6 +261,8 @@ extension TunnelKitProvider {
             static let renegotiatesAfter = "RenegotiatesAfter"
             
             static let usesPIAPatches = "UsesPIAPatches"
+            
+            static let checksEKU = "ChecksEKU"
 
             static let dnsServers = "DNSServers"
             
@@ -426,6 +429,9 @@ extension TunnelKitProvider {
             }
             if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
                 dict[S.usesPIAPatches] = usesPIAPatches
+            }
+            if let checksEKU = sessionConfiguration.checksEKU {
+                dict[S.checksEKU] = checksEKU
             }
             if let dnsServers = sessionConfiguration.dnsServers {
                 dict[S.dnsServers] = dnsServers
