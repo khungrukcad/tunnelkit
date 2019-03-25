@@ -127,7 +127,7 @@ public class ConfigurationParser {
      Parses an .ovpn file as an array of lines.
      
      - Parameter lines: The array of lines holding the configuration.
-     - Parameter url: The optional URL of the configuration file.
+     - Parameter originalURL: The optional original URL of the configuration file.
      - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
      - Returns: The `ParsingResult` outcome of the parsing.
      - Throws: `ParsingError` if the configuration file is wrong or incomplete.
