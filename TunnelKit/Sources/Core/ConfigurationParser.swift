@@ -96,6 +96,8 @@ public class ConfigurationParser {
 
         static let dns = NSRegularExpression("^dhcp-option +DNS6? +[\\d\\.a-fA-F:]+")
         
+        static let remoteRandom = NSRegularExpression("^remote-random")
+        
         // unsupported
 
 //        static let fragment = NSRegularExpression("^fragment +\\d+")
@@ -153,6 +155,7 @@ public class ConfigurationParser {
         var tlsKeyLines: [Substring]?
         var tlsWrap: SessionProxy.TLSWrap?
         var dnsServers: [String]?
+        var randomizeEndpoint = false
 
         var currentBlockName: String?
         var currentBlock: [String] = []
@@ -359,6 +362,9 @@ public class ConfigurationParser {
                 }
                 dnsServers?.append($0[1])
             }
+            Regex.remoteRandom.enumerateComponents(in: line) { (_) in
+                randomizeEndpoint = true
+            }
             Regex.fragment.enumerateComponents(in: line) { (_) in
                 unsupportedError = ParsingError.unsupportedConfiguration(option: "fragment")
             }
@@ -434,6 +440,7 @@ public class ConfigurationParser {
         sessionBuilder.keepAliveInterval = keepAliveSeconds
         sessionBuilder.renegotiatesAfter = renegotiateAfterSeconds
         sessionBuilder.dnsServers = dnsServers
+        sessionBuilder.randomizeEndpoint = randomizeEndpoint
 
         return ParsingResult(
             url: originalURL,
