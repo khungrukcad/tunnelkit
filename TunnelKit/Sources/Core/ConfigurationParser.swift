@@ -40,6 +40,9 @@ public class ConfigurationParser {
 
         /// The file includes an unsupported option.
         case unsupportedConfiguration(option: String)
+
+        /// Passphrase required to decrypt private keys.
+        case encryptionPassphrase
     }
 
     /// Result of the parser.
@@ -215,7 +218,7 @@ public class ConfigurationParser {
                         let container = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
                         if isEncrypted {
                             guard let passphrase = passphrase else {
-                                unsupportedError = ParsingError.unsupportedConfiguration(option: "encrypted client certificate key (missing passphrase)")
+                                unsupportedError = ParsingError.encryptionPassphrase
                                 break
                             }
                             do {
