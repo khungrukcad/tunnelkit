@@ -114,25 +114,27 @@ public class ConfigurationParser {
      Parses an .ovpn file from an URL.
      
      - Parameter url: The URL of the configuration file.
+     - Parameter passphrase: The optional passphrase for encrypted data.
      - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
      - Returns: The `ParsingResult` outcome of the parsing.
      - Throws: `ParsingError` if the configuration file is wrong or incomplete.
      */
-    public static func parsed(fromURL url: URL, returnsStripped: Bool = false) throws -> ParsingResult {
+    public static func parsed(fromURL url: URL, passphrase: String? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
         let lines = try String(contentsOf: url).trimmedLines()
-        return try parsed(fromLines: lines, originalURL: url, returnsStripped: returnsStripped)
+        return try parsed(fromLines: lines, passphrase: passphrase, originalURL: url, returnsStripped: returnsStripped)
     }
 
     /**
      Parses an .ovpn file as an array of lines.
      
      - Parameter lines: The array of lines holding the configuration.
+     - Parameter passphrase: The optional passphrase for encrypted data.
      - Parameter originalURL: The optional original URL of the configuration file.
      - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
      - Returns: The `ParsingResult` outcome of the parsing.
      - Throws: `ParsingError` if the configuration file is wrong or incomplete.
      */
-    public static func parsed(fromLines lines: [String], originalURL: URL? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
+    public static func parsed(fromLines lines: [String], passphrase: String? = nil, originalURL: URL? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
         var strippedLines: [String]? = returnsStripped ? [] : nil
         var warning: ParsingError? = nil
 
@@ -209,10 +211,20 @@ public class ConfigurationParser {
                         clientCertificate = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
                         
                     case "key":
+                        let isEncrypted = normalizeEncryptedPEMBlock(block: &currentBlock)
                         let container = CryptoContainer(pem: currentBlock.joined(separator: "\n"))
-                        clientKey = container
-                        if container.isEncrypted {
-                            unsupportedError = ParsingError.unsupportedConfiguration(option: "encrypted client certificate key")
+                        if isEncrypted {
+                            guard let passphrase = passphrase else {
+                                unsupportedError = ParsingError.unsupportedConfiguration(option: "encrypted client certificate key (missing passphrase)")
+                                break
+                            }
+                            do {
+                                clientKey = try container.decrypted(with: passphrase)
+                            } catch let e {
+                                unsupportedError = ParsingError.unsupportedConfiguration(option: e.localizedDescription)
+                            }
+                        } else {
+                            clientKey = container
                         }
                         
                     case "tls-auth":
@@ -451,6 +463,16 @@ public class ConfigurationParser {
             warning: warning
         )
     }
+
+    private static func normalizeEncryptedPEMBlock(block: inout [String]) -> Bool {
+        
+        // XXX: restore blank line after encryption header (easier than tweaking trimmedLines)
+        if block.count >= 3 && block[1].contains("ENCRYPTED") {
+            block.insert("", at: 3)
+            return true
+        }
+        return false
+    }
 }
 
 private extension SocketType {
@@ -470,11 +492,5 @@ extension String {
         }.filter {
             !$0.isEmpty
         }
-    }
-}
-
-extension CryptoContainer {
-    var isEncrypted: Bool {
-        return pem.contains("ENCRYPTED")
     }
 }
