@@ -95,6 +95,23 @@ class EncryptionTests: XCTestCase {
         print(md5)
         XCTAssertEqual(md5, exp)
     }
+    
+    func testPrivateKeyDecryption() {
+        let bundle = Bundle(for: EncryptionTests.self)
+        let encryptedPath = bundle.path(forResource: "tunnelbear", ofType: "enc.key")!
+        let decryptedPath = bundle.path(forResource: "tunnelbear", ofType: "key")!
+
+        XCTAssertThrowsError(try TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "wrongone"))
+        let decryptedViaPath = try! TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "foobar")
+        print(decryptedViaPath)
+        let encryptedPEM = try! String(contentsOfFile: encryptedPath, encoding: .utf8)
+        let decryptedViaString = try! TLSBox.decryptedPrivateKey(fromPEM: encryptedPEM, passphrase: "foobar")
+        print(decryptedViaString)
+        XCTAssertEqual(decryptedViaPath, decryptedViaString)
+
+        let expDecrypted = try! String(contentsOfFile: decryptedPath)
+        XCTAssertEqual(decryptedViaPath, expDecrypted)
+    }
 
     func testCTR() {
         let (client, server) = clientServer("aes-256-ctr", "sha256")
