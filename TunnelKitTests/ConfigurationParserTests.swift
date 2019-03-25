@@ -80,6 +80,12 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
     }
     
+    func testEncryptedCertificateKey() throws {
+        let url = Bundle(for: ConfigurationParserTests.self).url(forResource: "tunnelbear", withExtension: "enc.ovpn")!
+        XCTAssertThrowsError(try ConfigurationParser.parsed(fromURL: url))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromURL: url, passphrase: "foobar"))
+    }
+    
     private func url(withName name: String) -> URL {
         return Bundle(for: ConfigurationParserTests.self).url(forResource: name, withExtension: "ovpn")!
     }

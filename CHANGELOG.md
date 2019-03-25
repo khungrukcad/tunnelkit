@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Scramble endpoints via `--remote-random`. [#76](https://github.com/keeshux/tunnelkit/issues/76)
+- Support for encrypted certificate private keys. [#72](https://github.com/keeshux/tunnelkit/issues/72)
 
 ### Fixed
 
