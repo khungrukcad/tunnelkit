@@ -7,9 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Scramble endpoints via `--remote-random`. [#76](https://github.com/keeshux/tunnelkit/issues/76)
+
 ### Fixed
 
 - Send explicit exit notification if UDP. [#29](https://github.com/keeshux/tunnelkit/issues/29)
+- Broken reconnection on network change (mitigated). [#75](https://github.com/keeshux/tunnelkit/issues/75)
 
 ## 1.5.0 (2019-03-20)
 
