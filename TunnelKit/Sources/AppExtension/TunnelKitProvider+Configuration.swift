@@ -67,7 +67,8 @@ extension TunnelKitProvider {
                 keepAliveInterval: nil,
                 renegotiatesAfter: nil,
                 usesPIAPatches: nil,
-                dnsServers: nil
+                dnsServers: nil,
+                randomizeEndpoint: false
             ),
             shouldDebug: false,
             debugLogFormat: nil,
@@ -186,10 +187,11 @@ extension TunnelKitProvider {
                     throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
                 }
             }
-            sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval
-            sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval
-            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? false
+            sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.keepAliveInterval
+            sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.renegotiatesAfter
+            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
             sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
+            sessionConfigurationBuilder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.randomizeEndpoint
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
@@ -260,6 +262,8 @@ extension TunnelKitProvider {
             static let usesPIAPatches = "UsesPIAPatches"
 
             static let dnsServers = "DNSServers"
+            
+            static let randomizeEndpoint = "RandomizeEndpoint"
             
             // MARK: Debugging
             
@@ -426,6 +430,9 @@ extension TunnelKitProvider {
             if let dnsServers = sessionConfiguration.dnsServers {
                 dict[S.dnsServers] = dnsServers
             }
+            if let randomizeEndpoint = sessionConfiguration.randomizeEndpoint {
+                dict[S.randomizeEndpoint] = randomizeEndpoint
+            }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
             }
@@ -507,6 +514,9 @@ extension TunnelKitProvider {
             }
             if let dnsServers = sessionConfiguration.dnsServers {
                 log.info("\tCustom DNS servers: \(dnsServers.maskedDescription)")
+            }
+            if sessionConfiguration.randomizeEndpoint ?? false {
+                log.info("\tRandomize endpoint: true")
             }
             log.info("\tDebug: \(shouldDebug)")
             log.info("\tMasks private data: \(masksPrivateData ?? true)")
