@@ -260,7 +260,10 @@ public class SessionProxy {
      - Returns: `true` if supports link rebinding.
      */
     public func canRebindLink() -> Bool {
-        return (pushReply?.peerId != nil)
+//        return (pushReply?.peerId != nil)
+
+        // XXX: floating is currently unreliable
+        return false
     }
     
     /**
