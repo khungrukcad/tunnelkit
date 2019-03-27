@@ -305,7 +305,9 @@ extension TunnelKitProvider {
 
         static let debugLogFilename = "debug.log"
 
-        static let lastErrorKey = "LastTunnelKitError"
+        static let lastErrorKey = "TunnelKitLastError"
+
+        fileprivate static let dataCountKey = "TunnelKitDataCount"
         
         /**
          Returns the URL of the latest debug log.
@@ -356,6 +358,22 @@ extension TunnelKitProvider {
          */
         public func clearLastError(in appGroup: String) {
             UserDefaults(suiteName: appGroup)?.removeObject(forKey: Configuration.lastErrorKey)
+        }
+        
+        /**
+         Returns the most recent (received, sent) count in bytes.
+         
+         - Parameter in: The app group where to locate the count pair.
+         - Returns: The bytes count pair, if any.
+         */
+        public func dataCount(in appGroup: String) -> (Int, Int)? {
+            guard let rawValue = UserDefaults(suiteName: appGroup)?.dataCountArray else {
+                return nil
+            }
+            guard rawValue.count == 2 else {
+                return nil
+            }
+            return (rawValue[0], rawValue[1])
         }
         
         // MARK: API
@@ -572,5 +590,21 @@ extension EndpointProtocol: Codable {
     public func encode(to encoder: Encoder) throws {
         var container = encoder.singleValueContainer()
         try container.encode(rawValue)
+    }
+}
+
+/// :nodoc:
+public extension UserDefaults {
+    @objc public var dataCountArray: [Int]? {
+        get {
+            return array(forKey: TunnelKitProvider.Configuration.dataCountKey) as? [Int]
+        }
+        set {
+            set(newValue, forKey: TunnelKitProvider.Configuration.dataCountKey)
+        }
+    }
+
+    public func removeDataCountArray() {
+        removeObject(forKey: TunnelKitProvider.Configuration.dataCountKey)
     }
 }
