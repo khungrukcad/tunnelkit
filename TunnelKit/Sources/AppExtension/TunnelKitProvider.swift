@@ -166,7 +166,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
         if let content = cfg.existingLog(in: appGroup) {
             var existingLog = content.components(separatedBy: "\n")
-            if let i = existingLog.index(of: logSeparator) {
+            if let i = existingLog.firstIndex(of: logSeparator) {
                 existingLog.removeFirst(i + 2)
             }
             
