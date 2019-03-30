@@ -627,6 +627,9 @@ extension TunnelKitProvider {
                 
             case .LZO:
                 return .lzo
+
+            default:
+                break
             }
         } else if let se = error as? SessionError {
             switch se {
