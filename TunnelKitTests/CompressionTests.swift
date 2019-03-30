@@ -41,7 +41,7 @@ class CompressionTests: XCTestCase {
     func testSymmetric() {
         XCTAssertTrue(LZOIsSupported());
         let lzo = LZOCreate()
-        let src = Data(bytes: [UInt8](repeating: 6, count: 100))
+        let src = Data([UInt8](repeating: 6, count: 100))
         guard let dst = try? lzo.compressedData(with: src) else {
             XCTFail("Uncompressible data")
             return
