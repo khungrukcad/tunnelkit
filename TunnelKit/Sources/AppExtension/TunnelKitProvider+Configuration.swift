@@ -595,7 +595,7 @@ extension EndpointProtocol: Codable {
 
 /// :nodoc:
 public extension UserDefaults {
-    @objc public var dataCountArray: [Int]? {
+    @objc var dataCountArray: [Int]? {
         get {
             return array(forKey: TunnelKitProvider.Configuration.dataCountKey) as? [Int]
         }
@@ -604,7 +604,7 @@ public extension UserDefaults {
         }
     }
 
-    public func removeDataCountArray() {
+    func removeDataCountArray() {
         removeObject(forKey: TunnelKitProvider.Configuration.dataCountKey)
     }
 }
