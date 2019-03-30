@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Optional data count report via `TunnelKitProvider.Configuration.dataCount(in:)`.
 
+### Changed
+
+- Upgraded to Swift 5.
+
 ### Fixed
 
 - `checksEKU` not propagated to TunnelKitProvider.
