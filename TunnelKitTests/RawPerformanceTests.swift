@@ -61,27 +61,27 @@ class RawPerformanceTests: XCTestCase {
         }
     }
     
-    // 0.463s
-    func testUInt16FromPointers() {
-        let data = Data([0x22, 0xff, 0xaa, 0xbb, 0x55, 0x66])
-        
-        measure {
-            for _ in 0..<1000000 {
-                let _ = data.UInt16ValueFromPointers(from: 3)
-            }
-        }
-    }
-    
-    // 0.863s
-    func testUInt32FromBuffer() {
-        let data = Data([0x22, 0xff, 0xaa, 0xbb, 0x55, 0x66])
-        
-        measure {
-            for _ in 0..<1000000 {
-                let _ = data.UInt32ValueFromBuffer(from: 1)
-            }
-        }
-    }
+//    // 0.463s
+//    func testUInt16FromPointers() {
+//        let data = Data([0x22, 0xff, 0xaa, 0xbb, 0x55, 0x66])
+//
+//        measure {
+//            for _ in 0..<1000000 {
+//                let _ = data.UInt16ValueFromPointers(from: 3)
+//            }
+//        }
+//    }
+//
+//    // 0.863s
+//    func testUInt32FromBuffer() {
+//        let data = Data([0x22, 0xff, 0xaa, 0xbb, 0x55, 0x66])
+//
+//        measure {
+//            for _ in 0..<1000000 {
+//                let _ = data.UInt32ValueFromBuffer(from: 1)
+//            }
+//        }
+//    }
     
     // 0.469s
     func testUInt32FromPointers() {
@@ -94,14 +94,14 @@ class RawPerformanceTests: XCTestCase {
         }
     }
     
-    // 0.071s
-    func testRandomUInt32FromBuffer() {
-        measure {
-            for _ in 0..<10000 {
-                let _ = try! SecureRandom.uint32FromBuffer()
-            }
-        }
-    }
+//    // 0.071s
+//    func testRandomUInt32FromBuffer() {
+//        measure {
+//            for _ in 0..<10000 {
+//                let _ = try! SecureRandom.uint32FromBuffer()
+//            }
+//        }
+//    }
     
     // 0.063s
     func testRandomUInt32FromPointers() {
