@@ -64,7 +64,7 @@ class ConfigurationParserTests: XCTestCase {
 //        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
 
         XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress"]))
-        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
     }
     
     func testDHCPOption() throws {
