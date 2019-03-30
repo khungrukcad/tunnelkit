@@ -484,6 +484,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
 
         isCountingData = true
+        refreshDataCount()
     }
     
     /// :nodoc:
