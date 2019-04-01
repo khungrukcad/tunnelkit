@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Unrecognized PKCS#8 encrypted private keys. [#80](https://github.com/keeshux/tunnelkit/issues/80)
+- Handle PEM with preamble. [#78](https://github.com/keeshux/tunnelkit/issues/78)
 
 ## 1.5.2 (2019-04-01)
 
