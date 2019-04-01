@@ -91,6 +91,12 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertNoThrow(try ConfigurationParser.parsed(fromURL: url, passphrase: "foobar"))
     }
     
+    func testCertificatePreamble() {
+        let url = Bundle(for: ConfigurationParserTests.self).url(forResource: "tunnelbear", withExtension: "crt")!
+        let cert = CryptoContainer(pem: try! String(contentsOf: url))
+        XCTAssert(cert.pem.hasPrefix("-----BEGIN"))
+    }
+    
     private func url(withName name: String) -> URL {
         return Bundle(for: ConfigurationParserTests.self).url(forResource: name, withExtension: "ovpn")!
     }

@@ -40,13 +40,20 @@ import __TunnelKitNative
 
 /// Represents a cryptographic container in PEM format.
 public struct CryptoContainer: Equatable {
+    private static let begin = "-----BEGIN "
 
+    private static let end = "-----END "
+    
     /// The content in PEM format (ASCII).
     public let pem: String
     
     /// :nodoc:
     public init(pem: String) {
-        self.pem = pem
+        guard let beginRange = pem.range(of: CryptoContainer.begin) else {
+            self.pem = ""
+            return
+        }
+        self.pem = String(pem[beginRange.lowerBound...])
     }
     
     func write(to url: URL) throws {
