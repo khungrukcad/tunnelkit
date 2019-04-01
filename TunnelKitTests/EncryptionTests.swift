@@ -97,8 +97,13 @@ class EncryptionTests: XCTestCase {
     }
     
     func testPrivateKeyDecryption() {
+        privateTestPrivateKeyDecryption(pkcs: "1")
+        privateTestPrivateKeyDecryption(pkcs: "8")
+    }
+
+    private func privateTestPrivateKeyDecryption(pkcs: String) {
         let bundle = Bundle(for: EncryptionTests.self)
-        let encryptedPath = bundle.path(forResource: "tunnelbear", ofType: "enc.key")!
+        let encryptedPath = bundle.path(forResource: "tunnelbear", ofType: "enc.\(pkcs).key")!
         let decryptedPath = bundle.path(forResource: "tunnelbear", ofType: "key")!
 
         XCTAssertThrowsError(try TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "wrongone"))
