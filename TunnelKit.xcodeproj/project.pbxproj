@@ -61,14 +61,14 @@
 		0E3B15C82152B05E00984B17 /* CryptoCTR.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E3B15C52152B05E00984B17 /* CryptoCTR.h */; };
 		0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B15C62152B05E00984B17 /* CryptoCTR.m */; };
 		0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B15C62152B05E00984B17 /* CryptoCTR.m */; };
-		0E3B65742249253A00EFF4DA /* tunnelbear.enc.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.ovpn */; };
-		0E3B65752249253B00EFF4DA /* tunnelbear.enc.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.ovpn */; };
+		0E3B65742249253A00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */; };
+		0E3B65752249253B00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */; };
 		0E3B65762249253F00EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
-		0E500EA622493B5B00CAE560 /* tunnelbear.enc.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.key */; };
-		0E500EA722493B5B00CAE560 /* tunnelbear.enc.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.key */; };
+		0E500EA622493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
+		0E500EA722493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */; };
 		0E58BF3322405410006FB157 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF2F22405410006FB157 /* lzoconf.h */; };
 		0E58BF3422405410006FB157 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF2F22405410006FB157 /* lzoconf.h */; };
@@ -296,10 +296,10 @@
 		0E39BCE7214B2AB60035E9DE /* ControlPacket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlPacket.m; sourceTree = "<group>"; };
 		0E3B15C52152B05E00984B17 /* CryptoCTR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCTR.h; sourceTree = "<group>"; };
 		0E3B15C62152B05E00984B17 /* CryptoCTR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCTR.m; sourceTree = "<group>"; };
-		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.ovpn; sourceTree = "<group>"; };
+		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.1.ovpn; sourceTree = "<group>"; };
 		0E3B65712249247E00EFF4DA /* tunnelbear.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.key; sourceTree = "<group>"; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
-		0E500EA522493B5B00CAE560 /* tunnelbear.enc.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.key; sourceTree = "<group>"; };
+		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
 		0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannelTests.swift; sourceTree = "<group>"; };
 		0E58BF2F22405410006FB157 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
 		0E58BF3022405410006FB157 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzodefs.h; sourceTree = "<group>"; };
@@ -463,8 +463,8 @@
 				0EB2B45A20F0BE4C004233D7 /* TestUtils.swift */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
 				0E011F832196E25400BA59EE /* pia-hungary.ovpn */,
-				0E3B656E224923EC00EFF4DA /* tunnelbear.enc.ovpn */,
-				0E500EA522493B5B00CAE560 /* tunnelbear.enc.key */,
+				0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */,
+				0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */,
 				0E3B65712249247E00EFF4DA /* tunnelbear.key */,
 			);
 			path = TunnelKitTests;
@@ -942,9 +942,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E011F852196E25900BA59EE /* pia-hungary.ovpn in Resources */,
-				0E500EA622493B5B00CAE560 /* tunnelbear.enc.key in Resources */,
+				0E500EA622493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */,
 				0E3B65762249253F00EFF4DA /* tunnelbear.key in Resources */,
-				0E3B65742249253A00EFF4DA /* tunnelbear.enc.ovpn in Resources */,
+				0E3B65742249253A00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */,
 				0E749F622178911D00BB2701 /* pia-2048.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -978,9 +978,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E011F862196E25A00BA59EE /* pia-hungary.ovpn in Resources */,
-				0E500EA722493B5B00CAE560 /* tunnelbear.enc.key in Resources */,
+				0E500EA722493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */,
 				0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */,
-				0E3B65752249253B00EFF4DA /* tunnelbear.enc.ovpn in Resources */,
+				0E3B65752249253B00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */,
 				0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
