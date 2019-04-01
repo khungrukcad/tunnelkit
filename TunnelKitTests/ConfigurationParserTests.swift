@@ -82,6 +82,7 @@ class ConfigurationParserTests: XCTestCase {
     
     func testEncryptedCertificateKey() throws {
         try privateTestEncryptedCertificateKey(pkcs: "1")
+        try privateTestEncryptedCertificateKey(pkcs: "8")
     }
     
     private func privateTestEncryptedCertificateKey(pkcs: String) throws {

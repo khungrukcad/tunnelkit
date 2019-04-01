@@ -98,6 +98,7 @@ class EncryptionTests: XCTestCase {
     
     func testPrivateKeyDecryption() {
         privateTestPrivateKeyDecryption(pkcs: "1")
+        privateTestPrivateKeyDecryption(pkcs: "8")
     }
 
     private func privateTestPrivateKeyDecryption(pkcs: String) {
