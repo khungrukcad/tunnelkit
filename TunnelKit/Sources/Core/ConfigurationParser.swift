@@ -471,7 +471,10 @@ public class ConfigurationParser {
     }
 
     private static func normalizeEncryptedPEMBlock(block: inout [String]) -> Bool {
-        
+        if block.count >= 1 && block[0].contains("ENCRYPTED") {
+            return true
+        }
+
         // XXX: restore blank line after encryption header (easier than tweaking trimmedLines)
         if block.count >= 3 && block[1].contains("Proc-Type") {
             block.insert("", at: 3)
