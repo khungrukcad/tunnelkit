@@ -88,36 +88,6 @@ class EncryptionTests: XCTestCase {
         XCTAssertEqual(plain, decrypted)
     }
     
-    func testCertificateMD5() {
-        let path = Bundle(for: EncryptionTests.self).path(forResource: "pia-2048", ofType: "pem")!
-        let md5 = try! TLSBox.md5(forCertificatePath: path)
-        let exp = "e2fccccaba712ccc68449b1c56427ac1"
-        print(md5)
-        XCTAssertEqual(md5, exp)
-    }
-    
-    func testPrivateKeyDecryption() {
-        privateTestPrivateKeyDecryption(pkcs: "1")
-        privateTestPrivateKeyDecryption(pkcs: "8")
-    }
-
-    private func privateTestPrivateKeyDecryption(pkcs: String) {
-        let bundle = Bundle(for: EncryptionTests.self)
-        let encryptedPath = bundle.path(forResource: "tunnelbear", ofType: "enc.\(pkcs).key")!
-        let decryptedPath = bundle.path(forResource: "tunnelbear", ofType: "key")!
-
-        XCTAssertThrowsError(try TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "wrongone"))
-        let decryptedViaPath = try! TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "foobar")
-        print(decryptedViaPath)
-        let encryptedPEM = try! String(contentsOfFile: encryptedPath, encoding: .utf8)
-        let decryptedViaString = try! TLSBox.decryptedPrivateKey(fromPEM: encryptedPEM, passphrase: "foobar")
-        print(decryptedViaString)
-        XCTAssertEqual(decryptedViaPath, decryptedViaString)
-
-        let expDecrypted = try! String(contentsOfFile: decryptedPath)
-        XCTAssertEqual(decryptedViaPath, expDecrypted)
-    }
-
     func testCTR() {
         let (client, server) = clientServer("aes-256-ctr", "sha256")
 
@@ -135,6 +105,42 @@ class EncryptionTests: XCTestCase {
         XCTAssertEqual(decrypted, original)
     }
 
+    func testCertificateMD5() {
+        let path = Bundle(for: EncryptionTests.self).path(forResource: "pia-2048", ofType: "pem")!
+        let md5 = try! TLSBox.md5(forCertificatePath: path)
+        let exp = "e2fccccaba712ccc68449b1c56427ac1"
+        print(md5)
+        XCTAssertEqual(md5, exp)
+    }
+    
+    func testPrivateKeyDecryption() {
+        privateTestPrivateKeyDecryption(pkcs: "1")
+        privateTestPrivateKeyDecryption(pkcs: "8")
+    }
+    
+    private func privateTestPrivateKeyDecryption(pkcs: String) {
+        let bundle = Bundle(for: EncryptionTests.self)
+        let encryptedPath = bundle.path(forResource: "tunnelbear", ofType: "enc.\(pkcs).key")!
+        let decryptedPath = bundle.path(forResource: "tunnelbear", ofType: "key")!
+        
+        XCTAssertThrowsError(try TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "wrongone"))
+        let decryptedViaPath = try! TLSBox.decryptedPrivateKey(fromPath: encryptedPath, passphrase: "foobar")
+        print(decryptedViaPath)
+        let encryptedPEM = try! String(contentsOfFile: encryptedPath, encoding: .utf8)
+        let decryptedViaString = try! TLSBox.decryptedPrivateKey(fromPEM: encryptedPEM, passphrase: "foobar")
+        print(decryptedViaString)
+        XCTAssertEqual(decryptedViaPath, decryptedViaString)
+        
+        let expDecrypted = try! String(contentsOfFile: decryptedPath)
+        XCTAssertEqual(decryptedViaPath, expDecrypted)
+    }
+    
+    func testCertificatePreamble() {
+        let url = Bundle(for: EncryptionTests.self).url(forResource: "tunnelbear", withExtension: "crt")!
+        let cert = CryptoContainer(pem: try! String(contentsOf: url))
+        XCTAssert(cert.pem.hasPrefix("-----BEGIN"))
+    }
+    
     private func clientServer(_ c: String?, _ d: String?) -> (CryptoBox, CryptoBox) {
         let client = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)
         let server = CryptoBox(cipherAlgorithm: c, digestAlgorithm: d)
