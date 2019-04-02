@@ -216,6 +216,7 @@ public class SessionProxy {
         }
     }
     
+    /// :nodoc:
     deinit {
         cleanup()
 
