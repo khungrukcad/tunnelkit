@@ -179,9 +179,9 @@ extension SessionProxy {
             case subnet
         }
         
+        private static let prefix = "PUSH_REPLY,"
+        
         private struct Regex {
-            static let prefix = "PUSH_REPLY,"
-            
             static let topology = NSRegularExpression("topology (net30|p2p|subnet)")
             
             static let ifconfig = NSRegularExpression("ifconfig [\\d\\.]+ [\\d\\.]+")
@@ -228,11 +228,13 @@ extension SessionProxy {
         let cipher: SessionProxy.Cipher?
         
         init?(message: String) throws {
-            guard message.hasPrefix(Regex.prefix) else {
+            guard message.hasPrefix(PushReply.prefix) else {
                 return nil
             }
-            let prefixOffset = message.index(message.startIndex, offsetBy: Regex.prefix.count)
-            original = String(message[prefixOffset..<message.endIndex])
+            guard let prefixIndex = message.range(of: PushReply.prefix)?.lowerBound else {
+                return nil
+            }
+            original = String(message[prefixIndex...])
 
             var optTopologyArguments: [String]?
             var optIfconfig4Arguments: [String]?
