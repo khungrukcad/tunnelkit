@@ -187,14 +187,16 @@ public class ConfigurationParser {
             }
 
             if unsupportedError == nil {
-                Regex.blockBegin.enumerateComponents(in: line) {
-                    isHandled = true
-                    let tag = $0.first!
-                    let from = tag.index(after: tag.startIndex)
-                    let to = tag.index(before: tag.endIndex)
+                if currentBlockName == nil {
+                    Regex.blockBegin.enumerateComponents(in: line) {
+                        isHandled = true
+                        let tag = $0.first!
+                        let from = tag.index(after: tag.startIndex)
+                        let to = tag.index(before: tag.endIndex)
 
-                    currentBlockName = String(tag[from..<to])
-                    currentBlock = []
+                        currentBlockName = String(tag[from..<to])
+                        currentBlock = []
+                    }
                 }
                 Regex.blockEnd.enumerateComponents(in: line) {
                     isHandled = true
