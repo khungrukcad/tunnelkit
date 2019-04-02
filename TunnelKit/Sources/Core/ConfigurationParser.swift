@@ -80,7 +80,7 @@ public class ConfigurationParser {
         
         static let remote = NSRegularExpression("^remote +[^ ]+( +\\d+)?( +(udp6?|tcp6?))?")
 
-        static let cipher = NSRegularExpression("^cipher +[\\w\\-]+")
+        static let cipher = NSRegularExpression("^cipher +[^,\\s]+")
 
         static let auth = NSRegularExpression("^auth +[\\w\\-]+")
         
