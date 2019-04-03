@@ -404,9 +404,11 @@ public struct OptionsBundle {
                 strippedLine = strippedComponents.joined(separator: " ")
             }
             Regex.eku.enumerateComponents(in: line) { (_) in
+                isHandled = true
                 optChecksEKU = true
             }
             Regex.remoteRandom.enumerateComponents(in: line) { (_) in
+                isHandled = true
                 optRandomizeEndpoint = true
             }
             
@@ -415,7 +417,6 @@ public struct OptionsBundle {
             Regex.authToken.enumerateArguments(in: line) {
                 optAuthToken = $0[0]
             }
-            
             Regex.peerId.enumerateArguments(in: line) {
                 optPeerId = UInt32($0[0])
             }
@@ -458,7 +459,6 @@ public struct OptionsBundle {
                 optGateway4Arguments = $0
             }
             Regex.dns.enumerateArguments(in: line) {
-                isHandled = true
                 guard $0.count == 2 else {
                     return
                 }
