@@ -51,11 +51,12 @@ class OptionsBundleTests: XCTestCase {
     }
     
     func testDHCPOption() throws {
-        let lines = base + ["dhcp-option DNS 8.8.8.8", "dhcp-option DNS6 ffff::1"]
+        let lines = base + ["dhcp-option DNS 8.8.8.8", "dhcp-option DNS6 ffff::1", "dhcp-option DOMAIN example.com"]
         XCTAssertNoThrow(try OptionsBundle(from: lines))
         
         let parsed = try! OptionsBundle(from: lines)
         XCTAssertEqual(parsed.dnsServers, ["8.8.8.8", "ffff::1"])
+        XCTAssertEqual(parsed.searchDomain, "example.com")
     }
     
     func testConnectionBlock() throws {

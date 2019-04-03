@@ -535,8 +535,14 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.excludedRoutes = []
         }
         
-        let dnsSettings = NEDNSSettings(servers: cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers)
-        
+        let dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers
+        let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain
+        let dnsSettings = NEDNSSettings(servers: dnsServers)
+        dnsSettings.domainName = searchDomain
+        if let searchDomain = searchDomain {
+            dnsSettings.searchDomains = [searchDomain]
+        }
+
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
         newSettings.ipv4Settings = ipv4Settings
         newSettings.ipv6Settings = ipv6Settings
