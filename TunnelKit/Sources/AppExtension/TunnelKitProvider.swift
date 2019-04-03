@@ -466,6 +466,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
         log.info("\tDNS: \(reply.options.dnsServers.map { $0.maskedDescription })")
+        log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
         
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
             if let error = error {

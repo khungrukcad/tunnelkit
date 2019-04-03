@@ -115,6 +115,7 @@ public class ConfigurationParser {
         sessionBuilder.keepAliveInterval = options.keepAliveSeconds
         sessionBuilder.renegotiatesAfter = options.renegotiateAfterSeconds
         sessionBuilder.dnsServers = options.dnsServers
+        sessionBuilder.searchDomain = options.searchDomain
         sessionBuilder.randomizeEndpoint = options.randomizeEndpoint
 
         return ParsingResult(
