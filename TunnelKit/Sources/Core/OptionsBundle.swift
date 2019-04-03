@@ -190,7 +190,6 @@ public struct OptionsBundle {
         var optIfconfig4Arguments: [String]?
         var optIfconfig6Arguments: [String]?
         var optGateway4Arguments: [String]?
-        var optGateway6Arguments: [String]?
         var optRoutes4: [(String, String, String?)] = [] // address, netmask, gateway
         var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
         var optDNSServers: [String] = []
@@ -560,7 +559,7 @@ public struct OptionsBundle {
         //
         if let ifconfig4Arguments = optIfconfig4Arguments {
             guard ifconfig4Arguments.count == 2 else {
-                throw SessionError.malformedPushReply
+                throw OptionsError.malformed(option: "ifconfig takes 2 arguments")
             }
 
             let address4: String
@@ -573,7 +572,7 @@ public struct OptionsBundle {
                 
                 // default gateway required when topology is subnet
                 guard let gateway4Arguments = optGateway4Arguments, gateway4Arguments.count == 1 else {
-                    throw SessionError.malformedPushReply
+                    throw OptionsError.malformed(option: "route-gateway takes 1 argument")
                 }
                 address4 = ifconfig4Arguments[0]
                 addressMask4 = ifconfig4Arguments[1]
@@ -598,14 +597,14 @@ public struct OptionsBundle {
 
         if let ifconfig6Arguments = optIfconfig6Arguments {
             guard ifconfig6Arguments.count == 2 else {
-                throw SessionError.malformedPushReply
+                throw OptionsError.malformed(option: "ifconfig-ipv6 takes 2 arguments")
             }
             let address6Components = ifconfig6Arguments[0].components(separatedBy: "/")
             guard address6Components.count == 2 else {
-                throw SessionError.malformedPushReply
+                throw OptionsError.malformed(option: "ifconfig-ipv6 address must have a /prefix")
             }
             guard let addressPrefix6 = UInt8(address6Components[1]) else {
-                throw SessionError.malformedPushReply
+                throw OptionsError.malformed(option: "ifconfig-ipv6 address prefix must be a 8-bit number")
             }
 
             let address6 = address6Components[0]

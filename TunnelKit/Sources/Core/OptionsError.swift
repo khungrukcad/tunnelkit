@@ -28,6 +28,9 @@ import Foundation
 /// Error raised by the options parser, with details about the line that triggered it.
 public enum OptionsError: Error {
     
+    /// Option syntax is incorrect.
+    case malformed(option: String)
+    
     /// The file misses a required option.
     case missingConfiguration(option: String)
     
