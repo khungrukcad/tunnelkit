@@ -141,6 +141,8 @@
 		0ECC60D6225497400020BEAC /* OptionsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D4225497400020BEAC /* OptionsBundle.swift */; };
 		0ECC60D82254981A0020BEAC /* OptionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* OptionsError.swift */; };
 		0ECC60D92254981A0020BEAC /* OptionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* OptionsError.swift */; };
+		0ECC60DB2254C8190020BEAC /* OptionsBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */; };
+		0ECC60DC2254C8190020BEAC /* OptionsBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */; };
 		0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
@@ -348,6 +350,7 @@
 		0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
 		0ECC60D4225497400020BEAC /* OptionsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsBundle.swift; sourceTree = "<group>"; };
 		0ECC60D72254981A0020BEAC /* OptionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsError.swift; sourceTree = "<group>"; };
+		0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsBundleTests.swift; sourceTree = "<group>"; };
 		0ECE3527212EB7770040F253 /* CryptoContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoContainer.swift; sourceTree = "<group>"; };
 		0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.ovpn; sourceTree = "<group>"; };
 		0ECEB1142252C8E900E9E551 /* tunnelbear.enc.8.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.key; sourceTree = "<group>"; };
@@ -470,6 +473,7 @@
 				0EB2B45E20F0C098004233D7 /* EncryptionPerformanceTests.swift */,
 				0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */,
 				0EB2B45820F0BD9A004233D7 /* LinkTests.swift */,
+				0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */,
 				0E12B2A22145341B00B4BAE9 /* PacketTests.swift */,
 				0E245D682135972800B012A2 /* PushTests.swift */,
 				0EB2B45620F0BD16004233D7 /* RandomTests.swift */,
@@ -1151,6 +1155,7 @@
 			files = (
 				0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */,
 				0E011F812196E23700BA59EE /* ConfigurationParserTests.swift in Sources */,
+				0ECC60DB2254C8190020BEAC /* OptionsBundleTests.swift in Sources */,
 				0EB2B45920F0BD9A004233D7 /* LinkTests.swift in Sources */,
 				0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */,
 				0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */,
@@ -1322,6 +1327,7 @@
 			files = (
 				0EA82A3A2190B2B9007960EB /* RandomTests.swift in Sources */,
 				0E011F822196E23800BA59EE /* ConfigurationParserTests.swift in Sources */,
+				0ECC60DC2254C8190020BEAC /* OptionsBundleTests.swift in Sources */,
 				0EA82A332190B2B9007960EB /* DataPathPerformanceTests.swift in Sources */,
 				0EA82A372190B2B9007960EB /* LinkTests.swift in Sources */,
 				0EA82A352190B2B9007960EB /* EncryptionPerformanceTests.swift in Sources */,
