@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Refactor options parser into `OptionsBundle` for reuse.
+- Group `SessionReply.*` fields into `SessionReply.options`.
+- Rename `ConfigurationParser.ParsingError` to `OptionsError`.
+
 ### Fixed
 
 - Unrecognized PKCS#8 encrypted private keys. [#80](https://github.com/keeshux/tunnelkit/issues/80)
