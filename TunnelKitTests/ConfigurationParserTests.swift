@@ -27,8 +27,6 @@ import XCTest
 import TunnelKit
 
 class ConfigurationParserTests: XCTestCase {
-    let base: [String] = ["<ca>", "</ca>", "remote 1.2.3.4"]
-    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -54,30 +52,6 @@ class ConfigurationParserTests: XCTestCase {
         let lines = try ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"), returnsStripped: true).strippedLines!
         let stripped = lines.joined(separator: "\n")
         print(stripped)
-    }
-    
-    func testCompression() throws {
-//        XCTAssertNotNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
-        XCTAssertNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo no"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
-//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
-
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
-    }
-    
-    func testDHCPOption() throws {
-        let lines = base + ["dhcp-option DNS 8.8.8.8", "dhcp-option DNS6 ffff::1"]
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: lines))
-
-        let parsed = try! ConfigurationParser.parsed(fromLines: lines)
-        XCTAssertEqual(parsed.configuration.dnsServers, ["8.8.8.8", "ffff::1"])
-    }
-    
-    func testConnectionBlock() throws {
-        let lines = base + ["<connection>", "</connection>"]
-        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
     }
     
     func testEncryptedCertificateKey() throws {

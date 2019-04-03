@@ -28,11 +28,11 @@ import XCTest
 
 private extension SessionReply {
     func debug() {
-        print("Compression framing: \(compressionFraming?.description ?? "none")")
-        print("Compression algorithm: \(compressionAlgorithm?.description ?? "none")")
-        print("IPv4: \(ipv4?.description ?? "none")")
-        print("IPv6: \(ipv6?.description ?? "none")")
-        print("DNS: \(dnsServers)")
+        print("Compression framing: \(options.compressionFraming?.description ?? "none")")
+        print("Compression algorithm: \(options.compressionAlgorithm?.description ?? "none")")
+        print("IPv4: \(options.ipv4?.description ?? "none")")
+        print("IPv6: \(options.ipv6?.description ?? "none")")
+        print("DNS: \(options.dnsServers)")
     }
 }
 
@@ -51,10 +51,10 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
 
-        XCTAssertEqual(reply.ipv4?.address, "10.5.10.6")
-        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.255")
-        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.5.10.5")
-        XCTAssertEqual(reply.dnsServers, ["209.222.18.222", "209.222.18.218"])
+        XCTAssertEqual(reply.options.ipv4?.address, "10.5.10.6")
+        XCTAssertEqual(reply.options.ipv4?.addressMask, "255.255.255.255")
+        XCTAssertEqual(reply.options.ipv4?.defaultGateway, "10.5.10.5")
+        XCTAssertEqual(reply.options.dnsServers, ["209.222.18.222", "209.222.18.218"])
     }
     
     func testSubnet() {
@@ -62,10 +62,10 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.ipv4?.address, "10.8.0.2")
-        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.0")
-        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.8.0.1")
-        XCTAssertEqual(reply.dnsServers, ["8.8.8.8", "4.4.4.4"])
+        XCTAssertEqual(reply.options.ipv4?.address, "10.8.0.2")
+        XCTAssertEqual(reply.options.ipv4?.addressMask, "255.255.255.0")
+        XCTAssertEqual(reply.options.ipv4?.defaultGateway, "10.8.0.1")
+        XCTAssertEqual(reply.options.dnsServers, ["8.8.8.8", "4.4.4.4"])
     }
     
     func testRoute() {
@@ -73,7 +73,7 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        let route = reply.ipv4!.routes.first!
+        let route = reply.options.ipv4!.routes.first!
         
         XCTAssertEqual(route.destination, "192.168.0.0")
         XCTAssertEqual(route.mask, "255.255.255.0")
@@ -85,13 +85,13 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.ipv4?.address, "10.8.0.2")
-        XCTAssertEqual(reply.ipv4?.addressMask, "255.255.255.0")
-        XCTAssertEqual(reply.ipv4?.defaultGateway, "10.8.0.1")
-        XCTAssertEqual(reply.ipv6?.address, "fe80::601:30ff:feb7:ec01")
-        XCTAssertEqual(reply.ipv6?.addressPrefixLength, 64)
-        XCTAssertEqual(reply.ipv6?.defaultGateway, "fe80::601:30ff:feb7:dc02")
-        XCTAssertEqual(reply.dnsServers, ["2001:4860:4860::8888", "2001:4860:4860::8844"])
+        XCTAssertEqual(reply.options.ipv4?.address, "10.8.0.2")
+        XCTAssertEqual(reply.options.ipv4?.addressMask, "255.255.255.0")
+        XCTAssertEqual(reply.options.ipv4?.defaultGateway, "10.8.0.1")
+        XCTAssertEqual(reply.options.ipv6?.address, "fe80::601:30ff:feb7:ec01")
+        XCTAssertEqual(reply.options.ipv6?.addressPrefixLength, 64)
+        XCTAssertEqual(reply.options.ipv6?.defaultGateway, "fe80::601:30ff:feb7:dc02")
+        XCTAssertEqual(reply.options.dnsServers, ["2001:4860:4860::8888", "2001:4860:4860::8844"])
     }
     
     func testCompressionFraming() {
@@ -99,7 +99,7 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.compressionFraming, .compLZO)
+        XCTAssertEqual(reply.options.compressionFraming, .compLZO)
     }
     
     func testCompression() {
@@ -108,28 +108,28 @@ class PushTests: XCTestCase {
         
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo no"))!
         reply.debug()
-        XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertEqual(reply.compressionAlgorithm, .disabled)
+        XCTAssertEqual(reply.options.compressionFraming, .compLZO)
+        XCTAssertEqual(reply.options.compressionAlgorithm, .disabled)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo"))!
         reply.debug()
-        XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertEqual(reply.compressionAlgorithm, .LZO)
+        XCTAssertEqual(reply.options.compressionFraming, .compLZO)
+        XCTAssertEqual(reply.options.compressionAlgorithm, .LZO)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",comp-lzo yes"))!
         reply.debug()
-        XCTAssertEqual(reply.compressionFraming, .compLZO)
-        XCTAssertEqual(reply.compressionAlgorithm, .LZO)
+        XCTAssertEqual(reply.options.compressionFraming, .compLZO)
+        XCTAssertEqual(reply.options.compressionAlgorithm, .LZO)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",compress"))!
         reply.debug()
-        XCTAssertEqual(reply.compressionFraming, .compress)
-        XCTAssertEqual(reply.compressionAlgorithm, .disabled)
+        XCTAssertEqual(reply.options.compressionFraming, .compress)
+        XCTAssertEqual(reply.options.compressionAlgorithm, .disabled)
 
         reply = try! SessionProxy.PushReply(message: msg.appending(",compress lz4"))!
         reply.debug()
-        XCTAssertEqual(reply.compressionFraming, .compress)
-        XCTAssertEqual(reply.compressionAlgorithm, .other)
+        XCTAssertEqual(reply.options.compressionFraming, .compress)
+        XCTAssertEqual(reply.options.compressionAlgorithm, .other)
     }
     
     func testNCP() {
@@ -137,7 +137,7 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
 
-        XCTAssertEqual(reply.cipher, .aes256gcm)
+        XCTAssertEqual(reply.options.cipher, .aes256gcm)
     }
 
     func testNCPTrailing() {
@@ -145,7 +145,7 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.cipher, .aes256gcm)
+        XCTAssertEqual(reply.options.cipher, .aes256gcm)
     }
     
     func testPing() {
@@ -153,6 +153,6 @@ class PushTests: XCTestCase {
         let reply = try! SessionProxy.PushReply(message: msg)!
         reply.debug()
         
-        XCTAssertEqual(reply.ping, 10)
+        XCTAssertEqual(reply.options.keepAliveSeconds, 10)
     }
 }

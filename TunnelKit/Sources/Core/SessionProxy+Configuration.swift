@@ -135,47 +135,47 @@ extension SessionProxy {
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
-        /// The cipher algorithm for data encryption.
+        /// - Seealso: `OptionsBundle.cipher`
         public var cipher: Cipher
         
-        /// The digest algorithm for HMAC.
+        /// - Seealso: `OptionsBundle.digest`
         public var digest: Digest
         
-        /// The CA for TLS negotiation (PEM format).
+        /// - Seealso: `OptionsBundle.ca`
         public let ca: CryptoContainer
         
-        /// The optional client certificate for TLS negotiation (PEM format).
+        /// - Seealso: `OptionsBundle.clientCertificate`
         public var clientCertificate: CryptoContainer?
         
-        /// The private key for the certificate in `clientCertificate` (PEM format).
+        /// - Seealso: `OptionsBundle.clientKey`
         public var clientKey: CryptoContainer?
         
-        /// If true, checks EKU of server certificate.
+        /// - Seealso: `OptionsBundle.checksEKU`
         public var checksEKU: Bool?
         
-        /// Sets compression framing, disabled by default.
+        /// - Seealso: `OptionsBundle.compressionFraming`
         public var compressionFraming: CompressionFraming
 
-        /// Sets compression algorithm, disabled by default.
+        /// - Seealso: `OptionsBundle.compressionAlgorithm`
         public var compressionAlgorithm: CompressionAlgorithm?
         
-        /// The optional TLS wrapping.
+        /// - Seealso: `OptionsBundle.tlsWrap`
         public var tlsWrap: TLSWrap?
 
-        /// Sends periodical keep-alive packets if set.
+        /// - Seealso: `OptionsBundle.keepAliveInterval`
         public var keepAliveInterval: TimeInterval?
         
-        /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
+        /// - Seealso: `OptionsBundle.renegotiatesAfter`
         public var renegotiatesAfter: TimeInterval?
+        
+        /// - Seealso: `OptionsBundle.dnsServers`
+        public var dnsServers: [String]?
+        
+        /// - Seealso: `OptionsBundle.randomizeEndpoint`
+        public var randomizeEndpoint: Bool?
         
         /// Server is patched for the PIA VPN provider.
         public var usesPIAPatches: Bool?
-
-        /// Optionally override the server DNS entries.
-        public var dnsServers: [String]?
-        
-        /// Optionally randomize endpoint order.
-        public var randomizeEndpoint: Bool?
         
         /// :nodoc:
         public init(ca: CryptoContainer) {
@@ -190,9 +190,9 @@ extension SessionProxy {
             tlsWrap = nil
             keepAliveInterval = nil
             renegotiatesAfter = nil
-            usesPIAPatches = false
             dnsServers = nil
             randomizeEndpoint = false
+            usesPIAPatches = false
         }
 
         /**
@@ -213,9 +213,9 @@ extension SessionProxy {
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
-                usesPIAPatches: usesPIAPatches,
                 dnsServers: dnsServers,
-                randomizeEndpoint: randomizeEndpoint
+                randomizeEndpoint: randomizeEndpoint,
+                usesPIAPatches: usesPIAPatches
             )
         }
     }
@@ -256,14 +256,14 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.renegotiatesAfter`
         public let renegotiatesAfter: TimeInterval?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
-        public let usesPIAPatches: Bool?
-
         /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
         public let dnsServers: [String]?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.randomizeEndpoint`
         public let randomizeEndpoint: Bool?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
+        public let usesPIAPatches: Bool?
         
         /**
          Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
@@ -282,9 +282,9 @@ extension SessionProxy {
             builder.tlsWrap = tlsWrap
             builder.keepAliveInterval = keepAliveInterval
             builder.renegotiatesAfter = renegotiatesAfter
-            builder.usesPIAPatches = usesPIAPatches
             builder.dnsServers = dnsServers
             builder.randomizeEndpoint = randomizeEndpoint
+            builder.usesPIAPatches = usesPIAPatches
             return builder
         }
 
@@ -303,9 +303,9 @@ extension SessionProxy {
                 (lhs.compressionAlgorithm == rhs.compressionAlgorithm) &&
                 (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
                 (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
-                (lhs.usesPIAPatches == rhs.usesPIAPatches) &&
                 (lhs.dnsServers == rhs.dnsServers) &&
-                (lhs.randomizeEndpoint == rhs.randomizeEndpoint)
+                (lhs.randomizeEndpoint == rhs.randomizeEndpoint) &&
+                (lhs.usesPIAPatches == rhs.usesPIAPatches)
         }
     }
 }

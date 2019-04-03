@@ -66,9 +66,9 @@ extension TunnelKitProvider {
                 tlsWrap: nil,
                 keepAliveInterval: nil,
                 renegotiatesAfter: nil,
-                usesPIAPatches: nil,
                 dnsServers: nil,
-                randomizeEndpoint: false
+                randomizeEndpoint: false,
+                usesPIAPatches: nil
             ),
             shouldDebug: false,
             debugLogFormat: nil,
