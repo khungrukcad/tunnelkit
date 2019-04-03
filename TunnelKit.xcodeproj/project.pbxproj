@@ -65,8 +65,8 @@
 		0E3B65752249253B00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */; };
 		0E3B65762249253F00EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
-		0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
-		0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */; };
+		0E3E0F212108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
+		0E3E0F222108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
 		0E500EA622493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E500EA722493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */; };
@@ -308,7 +308,7 @@
 		0E3B15C62152B05E00984B17 /* CryptoCTR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCTR.m; sourceTree = "<group>"; };
 		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.1.ovpn; sourceTree = "<group>"; };
 		0E3B65712249247E00EFF4DA /* tunnelbear.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.key; sourceTree = "<group>"; };
-		0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PushReply.swift"; sourceTree = "<group>"; };
+		0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+SessionReply.swift"; sourceTree = "<group>"; };
 		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
 		0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannelTests.swift; sourceTree = "<group>"; };
 		0E58BF2F22405410006FB157 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
@@ -669,8 +669,8 @@
 				0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */,
 				0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */,
 				0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */,
-				0E3E0F202108A8CC00B371C1 /* SessionProxy+PushReply.swift */,
 				0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */,
+				0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */,
 				0E041D082152E6FE0025FE3C /* SessionProxy+TLSWrap.swift */,
 				0E011F792196D93600BA59EE /* SocketType.swift */,
 				0EE3B3E321471C3A0027AB17 /* StaticKey.swift */,
@@ -1232,7 +1232,7 @@
 				0ED9C8642138139000621BA3 /* SessionProxy+CompressionFraming.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
-				0E3E0F212108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
+				0E3E0F212108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */,
 				0ECC60D82254981A0020BEAC /* OptionsError.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
 				0E58BF532240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
@@ -1303,7 +1303,7 @@
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
 				0ECC60D92254981A0020BEAC /* OptionsError.swift in Sources */,
-				0E3E0F222108A8CC00B371C1 /* SessionProxy+PushReply.swift in Sources */,
+				0E3E0F222108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */,
 				0E58BF542240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
 				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
 				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,

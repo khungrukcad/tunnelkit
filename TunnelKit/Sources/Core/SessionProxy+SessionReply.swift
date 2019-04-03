@@ -1,5 +1,5 @@
 //
-//  SessionProxy+PushReply.swift
+//  SessionProxy+SessionReply.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 7/25/18.
