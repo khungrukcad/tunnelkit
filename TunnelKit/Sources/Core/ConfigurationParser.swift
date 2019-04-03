@@ -47,13 +47,10 @@ public class ConfigurationParser {
         /// The overall parsed `SessionProxy.Configuration`.
         public let configuration: SessionProxy.Configuration
 
-        /// The lines of the configuration file stripped of any sensitive data. Lines that
-        /// the parser does not recognize are discarded in the first place.
-        ///
-        /// - Seealso: `ConfigurationParser.parsed(...)`
+        /// - Seealso: `OptionsBundle.init(...)`
         public let strippedLines: [String]?
         
-        /// Holds an optional `OptionsError` that didn't block the parser, but it would be worth taking care of.
+        /// - Seealso: `OptionsBundle.warning`
         public let warning: OptionsError?
     }
     

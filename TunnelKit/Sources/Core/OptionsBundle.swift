@@ -29,6 +29,7 @@ import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
+/// Wraps together all recognized options from either configuration files or PUSH_REPLY.
 public struct OptionsBundle {
     struct Regex {
         
@@ -106,56 +107,87 @@ public struct OptionsBundle {
         case subnet
     }
     
+    /// The lines of the configuration file stripped of any sensitive data. Lines that
+    /// the parser does not recognize are discarded in the first place.
+    ///
+    /// - Seealso: `OptionsBundle.init(...)`
     public let strippedLines: [String]?
     
+    /// Holds an optional `OptionsError` that didn't block the parser, but it would be worth taking care of.
     public let warning: OptionsError?
     
     // MARK: General
     
+    /// The cipher algorithm for data encryption.
     public let cipher: SessionProxy.Cipher?
 
+    /// The digest algorithm for HMAC.
     public let digest: SessionProxy.Digest?
 
+    /// Compression framing, disabled by default.
     public let compressionFraming: SessionProxy.CompressionFraming?
 
+    /// Compression algorithm, disabled by default.
     public let compressionAlgorithm: SessionProxy.CompressionAlgorithm?
 
+    /// The CA for TLS negotiation (PEM format).
     public let ca: CryptoContainer?
     
+    /// The optional client certificate for TLS negotiation (PEM format).
     public let clientCertificate: CryptoContainer?
     
+    /// The private key for the certificate in `clientCertificate` (PEM format).
     public let clientKey: CryptoContainer?
     
+    /// The optional TLS wrapping.
     public let tlsWrap: SessionProxy.TLSWrap?
     
+    /// Sends periodical keep-alive packets if set.
     public let keepAliveSeconds: TimeInterval?
     
+    /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
     public let renegotiateAfterSeconds: TimeInterval?
     
     // MARK: Client
     
+    /// The server hostname (picked from first remote).
     public let hostname: String?
     
+    /// The list of server endpoints (address, port, socket).
     public let remotes: [(String, UInt16, SocketType)]
     
+    /// If true, checks EKU of server certificate.
     public let checksEKU: Bool
     
+    /// Picks endpoint from `remotes` randomly.
     public let randomizeEndpoint: Bool
     
     // MARK: Server
     
+    /// The auth-token returned by the server.
     public let authToken: String?
     
+    /// The peer-id returned by the server.
     public let peerId: UInt32?
     
     // MARK: Routing
     
+    /// The settings for IPv4.
     public let ipv4: IPv4Settings?
     
+    /// The settings for IPv6.
     public let ipv6: IPv6Settings?
     
+    /// The DNS servers.
     public let dnsServers: [String]
 
+    /**
+     Parses options from an array of lines.
+     
+     - Parameter lines: The array of lines holding the options.
+     - Parameter returnsStripped: When `true`, stores the stripped lines into `strippedLines`. Defaults to `false`.
+     - Throws: `OptionsError` if the options are wrong or incomplete.
+     */
     public init(from lines: [String], returnsStripped: Bool = false) throws {
         var optStrippedLines: [String]? = returnsStripped ? [] : nil
         var optWarning: OptionsError?

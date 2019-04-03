@@ -31,10 +31,10 @@ public enum OptionsError: Error {
     /// Option syntax is incorrect.
     case malformed(option: String)
     
-    /// The file misses a required option.
+    /// A required option is missing.
     case missingConfiguration(option: String)
     
-    /// The file includes an unsupported option.
+    /// An option is unsupported.
     case unsupportedConfiguration(option: String)
     
     /// Passphrase required to decrypt private keys.
