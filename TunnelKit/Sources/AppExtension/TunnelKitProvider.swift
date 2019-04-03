@@ -466,6 +466,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
         log.info("\tDNS: \(reply.options.dnsServers.map { $0.maskedDescription })")
+        log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
         
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
             if let error = error {
@@ -535,8 +536,14 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.excludedRoutes = []
         }
         
-        let dnsSettings = NEDNSSettings(servers: cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers)
-        
+        let dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers
+        let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain
+        let dnsSettings = NEDNSSettings(servers: dnsServers)
+        dnsSettings.domainName = searchDomain
+        if let searchDomain = searchDomain {
+            dnsSettings.searchDomains = [searchDomain]
+        }
+
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
         newSettings.ipv4Settings = ipv4Settings
         newSettings.ipv6Settings = ipv6Settings

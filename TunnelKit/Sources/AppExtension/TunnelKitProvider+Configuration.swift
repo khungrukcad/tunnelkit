@@ -67,6 +67,7 @@ extension TunnelKitProvider {
                 keepAliveInterval: nil,
                 renegotiatesAfter: nil,
                 dnsServers: nil,
+                searchDomain: nil,
                 randomizeEndpoint: false,
                 usesPIAPatches: nil
             ),
@@ -189,10 +190,11 @@ extension TunnelKitProvider {
             }
             sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.keepAliveInterval
             sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.renegotiatesAfter
-            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
             sessionConfigurationBuilder.checksEKU = providerConfiguration[S.checksEKU] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.checksEKU
             sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
+            sessionConfigurationBuilder.searchDomain = providerConfiguration[S.searchDomain] as? String
             sessionConfigurationBuilder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.randomizeEndpoint
+            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
@@ -260,13 +262,15 @@ extension TunnelKitProvider {
             
             static let renegotiatesAfter = "RenegotiatesAfter"
             
-            static let usesPIAPatches = "UsesPIAPatches"
-            
             static let checksEKU = "ChecksEKU"
 
             static let dnsServers = "DNSServers"
             
+            static let searchDomain = "SearchDomain"
+            
             static let randomizeEndpoint = "RandomizeEndpoint"
+            
+            static let usesPIAPatches = "UsesPIAPatches"
             
             // MARK: Debugging
             
@@ -445,17 +449,20 @@ extension TunnelKitProvider {
             if let renegotiatesAfterSeconds = sessionConfiguration.renegotiatesAfter {
                 dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
             }
-            if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
-                dict[S.usesPIAPatches] = usesPIAPatches
-            }
             if let checksEKU = sessionConfiguration.checksEKU {
                 dict[S.checksEKU] = checksEKU
             }
             if let dnsServers = sessionConfiguration.dnsServers {
                 dict[S.dnsServers] = dnsServers
             }
+            if let searchDomain = sessionConfiguration.searchDomain {
+                dict[S.searchDomain] = searchDomain
+            }
             if let randomizeEndpoint = sessionConfiguration.randomizeEndpoint {
                 dict[S.randomizeEndpoint] = randomizeEndpoint
+            }
+            if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
+                dict[S.usesPIAPatches] = usesPIAPatches
             }
             if let debugLogFormat = debugLogFormat {
                 dict[S.debugLogFormat] = debugLogFormat
@@ -538,6 +545,9 @@ extension TunnelKitProvider {
             }
             if let dnsServers = sessionConfiguration.dnsServers {
                 log.info("\tCustom DNS servers: \(dnsServers.maskedDescription)")
+            }
+            if let searchDomain = sessionConfiguration.searchDomain {
+                log.info("\tCustom search domain: \(searchDomain.maskedDescription)")
             }
             if sessionConfiguration.randomizeEndpoint ?? false {
                 log.info("\tRandomize endpoint: true")

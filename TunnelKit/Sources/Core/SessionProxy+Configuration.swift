@@ -171,6 +171,9 @@ extension SessionProxy {
         /// - Seealso: `OptionsBundle.dnsServers`
         public var dnsServers: [String]?
         
+        /// - Seealso: `OptionsBundle.searchDomain`
+        public var searchDomain: String?
+        
         /// - Seealso: `OptionsBundle.randomizeEndpoint`
         public var randomizeEndpoint: Bool?
         
@@ -191,6 +194,7 @@ extension SessionProxy {
             keepAliveInterval = nil
             renegotiatesAfter = nil
             dnsServers = nil
+            searchDomain = nil
             randomizeEndpoint = false
             usesPIAPatches = false
         }
@@ -214,6 +218,7 @@ extension SessionProxy {
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
                 dnsServers: dnsServers,
+                searchDomain: searchDomain,
                 randomizeEndpoint: randomizeEndpoint,
                 usesPIAPatches: usesPIAPatches
             )
@@ -259,6 +264,9 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
         public let dnsServers: [String]?
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
+        public let searchDomain: String?
+        
         /// - Seealso: `SessionProxy.ConfigurationBuilder.randomizeEndpoint`
         public let randomizeEndpoint: Bool?
         
@@ -283,6 +291,7 @@ extension SessionProxy {
             builder.keepAliveInterval = keepAliveInterval
             builder.renegotiatesAfter = renegotiatesAfter
             builder.dnsServers = dnsServers
+            builder.searchDomain = searchDomain
             builder.randomizeEndpoint = randomizeEndpoint
             builder.usesPIAPatches = usesPIAPatches
             return builder
@@ -304,6 +313,7 @@ extension SessionProxy {
                 (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
                 (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
                 (lhs.dnsServers == rhs.dnsServers) &&
+                (lhs.searchDomain == rhs.searchDomain) &&
                 (lhs.randomizeEndpoint == rhs.randomizeEndpoint) &&
                 (lhs.usesPIAPatches == rhs.usesPIAPatches)
         }

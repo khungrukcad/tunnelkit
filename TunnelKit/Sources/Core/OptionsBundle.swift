@@ -87,6 +87,8 @@ public struct OptionsBundle {
         
         static let dns = NSRegularExpression("^dhcp-option +DNS6? +[\\d\\.a-fA-F:]+")
         
+        static let domain = NSRegularExpression("^dhcp-option +DOMAIN +[^ ]+")
+        
         // MARK: Unsupported
         
 //        static let fragment = NSRegularExpression("^fragment +\\d+")
@@ -181,6 +183,9 @@ public struct OptionsBundle {
     /// The DNS servers.
     public let dnsServers: [String]
 
+    /// The search domain.
+    public let searchDomain: String?
+    
     /**
      Parses options from an array of lines.
      
@@ -225,6 +230,7 @@ public struct OptionsBundle {
         var optRoutes4: [(String, String, String?)] = [] // address, netmask, gateway
         var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
         var optDNSServers: [String] = []
+        var optSearchDomain: String?
 
         log.verbose("Configuration file:")
         for line in lines {
@@ -495,6 +501,12 @@ public struct OptionsBundle {
                 }
                 optDNSServers.append($0[1])
             }
+            Regex.domain.enumerateArguments(in: line) {
+                guard $0.count == 2 else {
+                    return
+                }
+                optSearchDomain = $0[1]
+            }
             
             //
 
@@ -654,6 +666,7 @@ public struct OptionsBundle {
         }
 
         dnsServers = optDNSServers
+        searchDomain = optSearchDomain
     }
         
     private static func normalizeEncryptedPEMBlock(block: inout [String]) {
