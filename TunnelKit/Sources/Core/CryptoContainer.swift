@@ -82,7 +82,12 @@ extension CryptoContainer: Codable {
     }
 }
 
-extension CryptoContainer {
+/// :nodoc:
+public extension CryptoContainer {
+    var isEncrypted: Bool {
+        return pem.contains("ENCRYPTED")
+    }
+    
     func decrypted(with passphrase: String) throws -> CryptoContainer {
         let decryptedPEM = try TLSBox.decryptedPrivateKey(fromPEM: pem, passphrase: passphrase)
         return CryptoContainer(pem: decryptedPEM)
