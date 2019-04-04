@@ -39,10 +39,10 @@ class ConfigurationParserTests: XCTestCase {
     
     func testPIA() throws {
         let file = try ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"))
-        XCTAssertEqual(file.hostname, "hungary.privateinternetaccess.com")
+        XCTAssertEqual(file.configuration.hostname, "hungary.privateinternetaccess.com")
         XCTAssertEqual(file.configuration.cipher, .aes128cbc)
         XCTAssertEqual(file.configuration.digest, .sha1)
-        XCTAssertEqual(file.protocols, [
+        XCTAssertEqual(file.configuration.endpointProtocols, [
             EndpointProtocol(.udp, 1198),
             EndpointProtocol(.tcp, 502)
         ])

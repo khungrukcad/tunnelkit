@@ -109,13 +109,8 @@ public struct OptionsBundle {
         case subnet
     }
     
-    /// The lines of the configuration file stripped of any sensitive data. Lines that
-    /// the parser does not recognize are discarded in the first place.
-    ///
-    /// - Seealso: `OptionsBundle.init(...)`
     public let strippedLines: [String]?
     
-    /// Holds an optional `OptionsError` that didn't block the parser, but it would be worth taking care of.
     public let warning: OptionsError?
     
     // MARK: General
@@ -684,10 +679,10 @@ public struct OptionsBundle {
 }
 
 /// Encapsulates the IPv4 settings for the tunnel.
-public struct IPv4Settings: CustomStringConvertible {
+public struct IPv4Settings: Codable, CustomStringConvertible {
     
     /// Represents an IPv4 route in the routing table.
-    public struct Route: CustomStringConvertible {
+    public struct Route: Codable, CustomStringConvertible {
         
         /// The destination host or subnet.
         public let destination: String
@@ -733,10 +728,10 @@ public struct IPv4Settings: CustomStringConvertible {
 }
 
 /// Encapsulates the IPv6 settings for the tunnel.
-public struct IPv6Settings: CustomStringConvertible {
+public struct IPv6Settings: Codable, CustomStringConvertible {
     
     /// Represents an IPv6 route in the routing table.
-    public struct Route: CustomStringConvertible {
+    public struct Route: Codable, CustomStringConvertible {
         
         /// The destination host or subnet.
         public let destination: String

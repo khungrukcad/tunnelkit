@@ -179,6 +179,10 @@ public class SessionProxy {
      - Parameter configuration: The `SessionProxy.Configuration` to use for this session.
      */
     public init(queue: DispatchQueue, configuration: Configuration, cachesURL: URL) throws {
+        guard let ca = configuration.ca else {
+            throw OptionsError.missingConfiguration(option: "ca")
+        }
+        
         self.queue = queue
         self.configuration = configuration
         self.cachesURL = cachesURL
@@ -203,7 +207,7 @@ public class SessionProxy {
         
         // cache PEMs locally (mandatory for OpenSSL)
         let fm = FileManager.default
-        try configuration.ca.pem.write(to: caURL, atomically: true, encoding: .ascii)
+        try ca.pem.write(to: caURL, atomically: true, encoding: .ascii)
         if let container = configuration.clientCertificate {
             try container.pem.write(to: clientCertificateURL, atomically: true, encoding: .ascii)
         } else {

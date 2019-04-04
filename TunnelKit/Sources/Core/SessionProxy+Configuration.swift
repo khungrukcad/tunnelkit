@@ -135,68 +135,100 @@ extension SessionProxy {
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
-        /// - Seealso: `OptionsBundle.cipher`
-        public var cipher: Cipher
+        // MARK: General
         
-        /// - Seealso: `OptionsBundle.digest`
-        public var digest: Digest
+        /// The cipher algorithm for data encryption.
+        public var cipher: SessionProxy.Cipher
         
-        /// - Seealso: `OptionsBundle.ca`
-        public let ca: CryptoContainer
+        /// The digest algorithm for HMAC.
+        public var digest: SessionProxy.Digest
         
-        /// - Seealso: `OptionsBundle.clientCertificate`
+        /// Compression framing, disabled by default.
+        public var compressionFraming: SessionProxy.CompressionFraming
+        
+        /// Compression algorithm, disabled by default.
+        public var compressionAlgorithm: SessionProxy.CompressionAlgorithm?
+        
+        /// The CA for TLS negotiation (PEM format).
+        public var ca: CryptoContainer?
+        
+        /// The optional client certificate for TLS negotiation (PEM format).
         public var clientCertificate: CryptoContainer?
         
-        /// - Seealso: `OptionsBundle.clientKey`
+        /// The private key for the certificate in `clientCertificate` (PEM format).
         public var clientKey: CryptoContainer?
         
-        /// - Seealso: `OptionsBundle.checksEKU`
-        public var checksEKU: Bool?
+        /// The optional TLS wrapping.
+        public var tlsWrap: SessionProxy.TLSWrap?
         
-        /// - Seealso: `OptionsBundle.compressionFraming`
-        public var compressionFraming: CompressionFraming
-
-        /// - Seealso: `OptionsBundle.compressionAlgorithm`
-        public var compressionAlgorithm: CompressionAlgorithm?
-        
-        /// - Seealso: `OptionsBundle.tlsWrap`
-        public var tlsWrap: TLSWrap?
-
-        /// - Seealso: `OptionsBundle.keepAliveInterval`
+        /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
-        /// - Seealso: `OptionsBundle.renegotiatesAfter`
+        /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
         public var renegotiatesAfter: TimeInterval?
         
-        /// - Seealso: `OptionsBundle.dnsServers`
-        public var dnsServers: [String]?
+        // MARK: Client
         
-        /// - Seealso: `OptionsBundle.searchDomain`
-        public var searchDomain: String?
+        /// The server hostname (picked from first remote).
+        public var hostname: String?
         
-        /// - Seealso: `OptionsBundle.randomizeEndpoint`
+        /// The list of server endpoints.
+        public var endpointProtocols: [EndpointProtocol]?
+        
+        /// If true, checks EKU of server certificate.
+        public var checksEKU: Bool?
+        
+        /// Picks endpoint from `remotes` randomly.
         public var randomizeEndpoint: Bool?
         
         /// Server is patched for the PIA VPN provider.
         public var usesPIAPatches: Bool?
         
+        // MARK: Server
+        
+        /// The auth-token returned by the server.
+        public var authToken: String?
+        
+        /// The peer-id returned by the server.
+        public var peerId: UInt32?
+        
+        // MARK: Routing
+        
+        /// The settings for IPv4.
+        public var ipv4: IPv4Settings?
+        
+        /// The settings for IPv6.
+        public var ipv6: IPv6Settings?
+        
+        /// The DNS servers.
+        public var dnsServers: [String]?
+        
+        /// The search domain.
+        public var searchDomain: String?
+        
         /// :nodoc:
-        public init(ca: CryptoContainer) {
+        public init() {
             cipher = .aes128cbc
             digest = .sha1
-            self.ca = ca
+            compressionFraming = .disabled
+            compressionAlgorithm = nil
+            ca = nil
             clientCertificate = nil
             clientKey = nil
-            checksEKU = false
-            compressionFraming = .disabled
-            compressionAlgorithm = .disabled
             tlsWrap = nil
             keepAliveInterval = nil
             renegotiatesAfter = nil
-            dnsServers = nil
-            searchDomain = nil
+            hostname = nil
+            endpointProtocols = nil
+            checksEKU = false
             randomizeEndpoint = false
             usesPIAPatches = false
+            authToken = nil
+            peerId = nil
+            ipv4 = nil
+            ipv6 = nil
+            dnsServers = nil
+            searchDomain = nil
         }
 
         /**
@@ -208,25 +240,31 @@ extension SessionProxy {
             return Configuration(
                 cipher: cipher,
                 digest: digest,
+                compressionFraming: compressionFraming,
+                compressionAlgorithm: compressionAlgorithm,
                 ca: ca,
                 clientCertificate: clientCertificate,
                 clientKey: clientKey,
-                checksEKU: checksEKU,
-                compressionFraming: compressionFraming,
-                compressionAlgorithm: compressionAlgorithm,
                 tlsWrap: tlsWrap,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
-                dnsServers: dnsServers,
-                searchDomain: searchDomain,
+                hostname: hostname,
+                endpointProtocols: endpointProtocols,
+                checksEKU: checksEKU,
                 randomizeEndpoint: randomizeEndpoint,
-                usesPIAPatches: usesPIAPatches
+                usesPIAPatches: usesPIAPatches,
+                authToken: authToken,
+                peerId: peerId,
+                ipv4: ipv4,
+                ipv6: ipv6,
+                dnsServers: dnsServers,
+                searchDomain: searchDomain
             )
         }
     }
     
     /// The immutable configuration for `SessionProxy`.
-    public struct Configuration: Codable, Equatable {
+    public struct Configuration: Codable {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
         public let cipher: Cipher
@@ -234,23 +272,20 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
         public let digest: Digest
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
+        public let compressionFraming: CompressionFraming
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionAlgorithm`
+        public let compressionAlgorithm: CompressionAlgorithm?
+        
         /// - Seealso: `SessionProxy.ConfigurationBuilder.ca`
-        public let ca: CryptoContainer
+        public let ca: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificate`
         public let clientCertificate: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKey`
         public let clientKey: CryptoContainer?
-        
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
-        public let checksEKU: Bool?
-
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
-        public let compressionFraming: CompressionFraming
-
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionAlgorithm`
-        public let compressionAlgorithm: CompressionAlgorithm?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
         public var tlsWrap: TLSWrap?
@@ -261,11 +296,14 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.renegotiatesAfter`
         public let renegotiatesAfter: TimeInterval?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
-        public let dnsServers: [String]?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.hostname`
+        public var hostname: String?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
-        public let searchDomain: String?
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.endpointProtocols`
+        public var endpointProtocols: [EndpointProtocol]?
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
+        public let checksEKU: Bool?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.randomizeEndpoint`
         public let randomizeEndpoint: Bool?
@@ -273,49 +311,52 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
         public let usesPIAPatches: Bool?
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.authToken`
+        public let authToken: String?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.peerId`
+        public let peerId: UInt32?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.ipv4`
+        public let ipv4: IPv4Settings?
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.ipv6`
+        public let ipv6: IPv6Settings?
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
+        public let dnsServers: [String]?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
+        public let searchDomain: String?
+        
         /**
          Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
          
          - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
          */
         public func builder() -> SessionProxy.ConfigurationBuilder {
-            var builder = SessionProxy.ConfigurationBuilder(ca: ca)
+            var builder = SessionProxy.ConfigurationBuilder()
             builder.cipher = cipher
             builder.digest = digest
-            builder.clientCertificate = clientCertificate
-            builder.clientKey = clientKey
-            builder.checksEKU = checksEKU
             builder.compressionFraming = compressionFraming
             builder.compressionAlgorithm = compressionAlgorithm
+            builder.ca = ca
+            builder.clientCertificate = clientCertificate
+            builder.clientKey = clientKey
             builder.tlsWrap = tlsWrap
             builder.keepAliveInterval = keepAliveInterval
             builder.renegotiatesAfter = renegotiatesAfter
-            builder.dnsServers = dnsServers
-            builder.searchDomain = searchDomain
+            builder.endpointProtocols = endpointProtocols
+            builder.checksEKU = checksEKU
             builder.randomizeEndpoint = randomizeEndpoint
             builder.usesPIAPatches = usesPIAPatches
+            builder.authToken = authToken
+            builder.peerId = peerId
+            builder.ipv4 = ipv4
+            builder.ipv6 = ipv6
+            builder.dnsServers = dnsServers
+            builder.searchDomain = searchDomain
             return builder
-        }
-
-        // MARK: Equatable
-        
-        /// :nodoc:
-        public static func ==(lhs: Configuration, rhs: Configuration) -> Bool {
-            return
-                (lhs.cipher == rhs.cipher) &&
-                (lhs.digest == rhs.digest) &&
-                (lhs.ca == rhs.ca) &&
-                (lhs.clientCertificate == rhs.clientCertificate) &&
-                (lhs.clientKey == rhs.clientKey) &&
-                (lhs.checksEKU == rhs.checksEKU) &&
-                (lhs.compressionFraming == rhs.compressionFraming) &&
-                (lhs.compressionAlgorithm == rhs.compressionAlgorithm) &&
-                (lhs.keepAliveInterval == rhs.keepAliveInterval) &&
-                (lhs.renegotiatesAfter == rhs.renegotiatesAfter) &&
-                (lhs.dnsServers == rhs.dnsServers) &&
-                (lhs.searchDomain == rhs.searchDomain) &&
-                (lhs.randomizeEndpoint == rhs.randomizeEndpoint) &&
-                (lhs.usesPIAPatches == rhs.usesPIAPatches)
         }
     }
 }

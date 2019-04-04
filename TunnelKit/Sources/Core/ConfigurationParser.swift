@@ -38,19 +38,16 @@ public class ConfigurationParser {
         /// Original URL of the configuration file, if parsed from an URL.
         public let url: URL?
 
-        /// The main endpoint hostname.
-        public let hostname: String
-        
-        /// The list of `EndpointProtocol` to which the client can connect to.
-        public let protocols: [EndpointProtocol]
-
         /// The overall parsed `SessionProxy.Configuration`.
         public let configuration: SessionProxy.Configuration
 
-        /// - Seealso: `OptionsBundle.init(...)`
+        /// The lines of the configuration file stripped of any sensitive data. Lines that
+        /// the parser does not recognize are discarded in the first place.
+        ///
+        /// - Seealso: `ConfigurationParser.parsed(...)`
         public let strippedLines: [String]?
         
-        /// - Seealso: `OptionsBundle.warning`
+        /// Holds an optional `OptionsError` that didn't block the parser, but it would be worth taking care of.
         public let warning: OptionsError?
     }
     
@@ -103,7 +100,8 @@ public class ConfigurationParser {
             optClientKey = options.clientKey
         }
         
-        var sessionBuilder = SessionProxy.ConfigurationBuilder(ca: ca)
+        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        sessionBuilder.ca = ca
         sessionBuilder.cipher = options.cipher ?? .aes128cbc
         sessionBuilder.digest = options.digest ?? .sha1
         sessionBuilder.compressionFraming = options.compressionFraming ?? .disabled
@@ -111,6 +109,8 @@ public class ConfigurationParser {
         sessionBuilder.tlsWrap = options.tlsWrap
         sessionBuilder.clientCertificate = options.clientCertificate
         sessionBuilder.clientKey = optClientKey
+        sessionBuilder.hostname = hostname
+        sessionBuilder.endpointProtocols = endpointProtocols
         sessionBuilder.checksEKU = options.checksEKU
         sessionBuilder.keepAliveInterval = options.keepAliveSeconds
         sessionBuilder.renegotiatesAfter = options.renegotiateAfterSeconds
@@ -120,8 +120,6 @@ public class ConfigurationParser {
 
         return ParsingResult(
             url: originalURL,
-            hostname: hostname,
-            protocols: endpointProtocols,
             configuration: sessionBuilder.build(),
             strippedLines: options.strippedLines,
             warning: options.warning

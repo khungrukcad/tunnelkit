@@ -60,9 +60,11 @@ class AppExtensionTests: XCTestCase {
         let hostname = "example.com"
         let credentials = SessionProxy.Credentials("foo", "bar")
 
-        var sessionBuilder = SessionProxy.ConfigurationBuilder(ca: CryptoContainer(pem: "abcdef"))
+        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        sessionBuilder.ca = CryptoContainer(pem: "abcdef")
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha256
+        sessionBuilder.endpointProtocols = []
         builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         XCTAssertNotNil(builder)
 
@@ -84,7 +86,7 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.sessionConfiguration.cipher.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.sessionConfiguration.digest.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.sessionConfiguration.ca.pem)
+        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.sessionConfiguration.ca?.pem)
         XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.mtu)
         XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? TimeInterval, cfg.sessionConfiguration.renegotiatesAfter)
         XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)
