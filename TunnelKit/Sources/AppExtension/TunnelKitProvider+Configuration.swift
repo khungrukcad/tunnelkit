@@ -52,6 +52,7 @@ extension TunnelKitProvider {
         public static let defaults = Configuration(
             prefersResolvedAddresses: false,
             resolvedAddresses: nil,
+            endpointProtocols: nil,
             mtu: 1250,
             sessionConfiguration: SessionProxy.Configuration(
                 cipher: .aes128cbc,
@@ -219,6 +220,7 @@ extension TunnelKitProvider {
             return Configuration(
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
+                endpointProtocols: nil,
                 mtu: mtu,
                 sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
@@ -288,6 +290,10 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
+        /// - Seealso: `SessionProxy.Configuration.endpointProtocols`
+        @available(*, deprecated)
+        public var endpointProtocols: [EndpointProtocol]?
+        
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
         
