@@ -577,22 +577,6 @@ extension TunnelKitProvider.Configuration {
 }
 
 /// :nodoc:
-extension EndpointProtocol: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        guard let proto = try EndpointProtocol(rawValue: container.decode(String.self)) else {
-            throw TunnelKitProvider.ProviderConfigurationError.parameter(name: "endpointProtocol.decodable")
-        }
-        self.init(proto.socketType, proto.port)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(rawValue)
-    }
-}
-
-/// :nodoc:
 public extension UserDefaults {
     @objc var dataCountArray: [Int]? {
         get {

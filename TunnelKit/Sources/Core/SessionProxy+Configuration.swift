@@ -480,3 +480,19 @@ public struct IPv6Settings: Codable, CustomStringConvertible {
         return "addr \(address.maskedDescription)/\(addressPrefixLength) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
     }
 }
+
+/// :nodoc:
+extension EndpointProtocol: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        guard let proto = try EndpointProtocol(rawValue: container.decode(String.self)) else {
+            throw ConfigurationError.malformed(option: "remote/proto")
+        }
+        self.init(proto.socketType, proto.port)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(rawValue)
+    }
+}
