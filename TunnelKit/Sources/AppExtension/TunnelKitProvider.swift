@@ -465,7 +465,11 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("\tRemote: \(remoteAddress.maskedDescription)")
         log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
-        log.info("\tDNS: \(reply.options.dnsServers.map { $0.maskedDescription })")
+        if let dnsServers = reply.options.dnsServers {
+            log.info("\tDNS: \(dnsServers.map { $0.maskedDescription })")
+        } else {
+            log.info("\tDNS: not configured)")
+        }
         log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
         
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
@@ -510,7 +514,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             var routes: [NEIPv4Route] = [defaultRoute]
             for r in ipv4.routes {
                 let ipv4Route = NEIPv4Route(destinationAddress: r.destination, subnetMask: r.mask)
-                ipv4Route.gatewayAddress = r.gateway ?? ipv4.defaultGateway
+                ipv4Route.gatewayAddress = r.gateway
                 routes.append(ipv4Route)
             }
             
@@ -527,7 +531,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             var routes: [NEIPv6Route] = [defaultRoute]
             for r in ipv6.routes {
                 let ipv6Route = NEIPv6Route(destinationAddress: r.destination, networkPrefixLength: r.prefixLength as NSNumber)
-                ipv6Route.gatewayAddress = r.gateway ?? ipv6.defaultGateway
+                ipv6Route.gatewayAddress = r.gateway
                 routes.append(ipv6Route)
             }
 
@@ -538,7 +542,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         
         let dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers
         let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain
-        let dnsSettings = NEDNSSettings(servers: dnsServers)
+        let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
         dnsSettings.domainName = searchDomain
         if let searchDomain = searchDomain {
             dnsSettings.searchDomains = [searchDomain]

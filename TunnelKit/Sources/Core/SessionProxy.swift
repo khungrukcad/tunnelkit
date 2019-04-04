@@ -86,7 +86,7 @@ public class SessionProxy {
     
     private var keepAliveInterval: TimeInterval? {
         let interval: TimeInterval?
-        if let negInterval = pushReply?.options.keepAliveSeconds, negInterval > 0 {
+        if let negInterval = pushReply?.options.keepAliveInterval, negInterval > 0 {
             interval = TimeInterval(negInterval)
         } else if let cfgInterval = configuration.keepAliveInterval, cfgInterval > 0.0 {
             interval = cfgInterval
@@ -923,7 +923,10 @@ public class SessionProxy {
             reply = optionalReply
             log.debug("Received PUSH_REPLY: \"\(reply.maskedDescription)\"")
             
-            if let framing = reply.options.compressionFraming, let compression = reply.options.compressionAlgorithm {
+            // FIXME: non-optional breaks PUSH_REPLY
+//            if let framing = reply.options.compressionFraming, let compression = reply.options.compressionAlgorithm {
+            let framing = reply.options.compressionFraming
+            if framing != .disabled, let compression = reply.options.compressionAlgorithm {
                 switch compression {
                 case .disabled:
                     break
@@ -1041,24 +1044,27 @@ public class SessionProxy {
         }
         
         let pushedFraming = pushReply.options.compressionFraming
-        if let negFraming = pushedFraming {
-            log.info("\tNegotiated compression framing: \(negFraming)")
-        }
+        // FIXME: non-optional breaks PUSH_REPLY
+//        if let negFraming = pushedFraming {
+//            log.info("\tNegotiated compression framing: \(negFraming)")
+//        }
         let pushedCompression = pushReply.options.compressionAlgorithm
         if let negCompression = pushedCompression {
             log.info("\tNegotiated compression algorithm: \(negCompression)")
         }
-        if let negPing = pushReply.options.keepAliveSeconds {
-            log.info("\tNegotiated keep-alive: \(negPing) seconds")
-        }
         let pushedCipher = pushReply.options.cipher
-        if let negCipher = pushedCipher {
-            log.info("\tNegotiated cipher: \(negCipher.rawValue)")
+        // FIXME: non-optional breaks PUSH_REPLY
+//        if let negCipher = pushedCipher {
+//            log.info("\tNegotiated cipher: \(negCipher.rawValue)")
+//        }
+        if let negPing = pushReply.options.keepAliveInterval {
+            log.info("\tNegotiated keep-alive: \(negPing) seconds")
         }
 
         let bridge: EncryptionBridge
         do {
             bridge = try EncryptionBridge(
+                // FIXME: non-optional breaks PUSH_REPLY
                 pushedCipher ?? configuration.cipher,
                 configuration.digest,
                 auth,
@@ -1074,6 +1080,7 @@ public class SessionProxy {
             encrypter: bridge.encrypter(),
             decrypter: bridge.decrypter(),
             peerId: pushReply.options.peerId ?? PacketPeerIdDisabled,
+            // FIXME: non-optional breaks PUSH_REPLY
             compressionFraming: (pushedFraming ?? configuration.compressionFraming).native,
             compressionAlgorithm: (pushedCompression ?? configuration.compressionAlgorithm ?? .disabled).native,
             maxPackets: link?.packetBufferSize ?? 200,

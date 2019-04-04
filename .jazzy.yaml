@@ -22,7 +22,6 @@ custom_categories:
         - StaticKey
         - SessionProxy
         - SessionProxyDelegate
-        - OptionsBundle
         - OptionsError
         - SessionReply
         - IPv4Settings

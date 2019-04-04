@@ -27,6 +27,8 @@ import XCTest
 import TunnelKit
 
 class ConfigurationParserTests: XCTestCase {
+    let base: [String] = ["<ca>", "</ca>", "remote 1.2.3.4"]
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -36,6 +38,35 @@ class ConfigurationParserTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
+    
+    // from lines
+    
+    func testCompression() throws {
+//        XCTAssertNotNil(try OptionsBundle.parsed(fromLines: base + ["comp-lzo"]).warning)
+        XCTAssertNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo no"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
+//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
+        
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
+    }
+    
+    func testDHCPOption() throws {
+        let lines = base + ["dhcp-option DNS 8.8.8.8", "dhcp-option DNS6 ffff::1", "dhcp-option DOMAIN example.com"]
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: lines))
+        
+        let parsed = try! ConfigurationParser.parsed(fromLines: lines).configuration
+        XCTAssertEqual(parsed.dnsServers, ["8.8.8.8", "ffff::1"])
+        XCTAssertEqual(parsed.searchDomain, "example.com")
+    }
+    
+    func testConnectionBlock() throws {
+        let lines = base + ["<connection>", "</connection>"]
+        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
+    }
+
+    // from file
     
     func testPIA() throws {
         let file = try ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"))

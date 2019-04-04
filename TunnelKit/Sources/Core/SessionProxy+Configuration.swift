@@ -360,3 +360,101 @@ extension SessionProxy {
         }
     }
 }
+
+/// Encapsulates the IPv4 settings for the tunnel.
+public struct IPv4Settings: Codable, CustomStringConvertible {
+    
+    /// Represents an IPv4 route in the routing table.
+    public struct Route: Codable, CustomStringConvertible {
+        
+        /// The destination host or subnet.
+        public let destination: String
+        
+        /// The address mask.
+        public let mask: String
+        
+        /// The address of the gateway (uses default gateway if not set).
+        public let gateway: String
+        
+        init(_ destination: String, _ mask: String?, _ gateway: String) {
+            self.destination = destination
+            self.mask = mask ?? "255.255.255.255"
+            self.gateway = gateway
+        }
+        
+        // MARK: CustomStringConvertible
+        
+        /// :nodoc:
+        public var description: String {
+            return "{\(destination.maskedDescription)/\(mask) \(gateway.maskedDescription)}"
+        }
+    }
+    
+    /// The address.
+    let address: String
+    
+    /// The address mask.
+    let addressMask: String
+    
+    /// The address of the default gateway.
+    let defaultGateway: String
+    
+    /// The additional routes.
+    let routes: [Route]
+    
+    // MARK: CustomStringConvertible
+    
+    /// :nodoc:
+    public var description: String {
+        return "addr \(address.maskedDescription) netmask \(addressMask) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
+    }
+}
+
+/// Encapsulates the IPv6 settings for the tunnel.
+public struct IPv6Settings: Codable, CustomStringConvertible {
+    
+    /// Represents an IPv6 route in the routing table.
+    public struct Route: Codable, CustomStringConvertible {
+        
+        /// The destination host or subnet.
+        public let destination: String
+        
+        /// The address prefix length.
+        public let prefixLength: UInt8
+        
+        /// The address of the gateway (uses default gateway if not set).
+        public let gateway: String
+        
+        init(_ destination: String, _ prefixLength: UInt8?, _ gateway: String) {
+            self.destination = destination
+            self.prefixLength = prefixLength ?? 3
+            self.gateway = gateway
+        }
+        
+        // MARK: CustomStringConvertible
+        
+        /// :nodoc:
+        public var description: String {
+            return "{\(destination.maskedDescription)/\(prefixLength) \(gateway.maskedDescription)}"
+        }
+    }
+    
+    /// The address.
+    public let address: String
+    
+    /// The address prefix length.
+    public let addressPrefixLength: UInt8
+    
+    /// The address of the default gateway.
+    public let defaultGateway: String
+    
+    /// The additional routes.
+    public let routes: [Route]
+    
+    // MARK: CustomStringConvertible
+    
+    /// :nodoc:
+    public var description: String {
+        return "addr \(address.maskedDescription)/\(addressPrefixLength) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
+    }
+}
