@@ -28,8 +28,8 @@ import XCTest
 
 private extension SessionReply {
     func debug() {
-        print("Compression framing: \(options.compressionFraming.description ?? "none")")
-        print("Compression algorithm: \(options.compressionAlgorithm?.description ?? "none")")
+        print("Compression framing: \(options.compressionFraming?.description ?? "disabled")")
+        print("Compression algorithm: \(options.compressionAlgorithm?.description ?? "disabled")")
         print("IPv4: \(options.ipv4?.description ?? "none")")
         print("IPv6: \(options.ipv6?.description ?? "none")")
         print("DNS: \(options.dnsServers?.description ?? "none")")

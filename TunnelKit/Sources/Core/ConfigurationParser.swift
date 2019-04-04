@@ -483,10 +483,10 @@ public class ConfigurationParser {
         
         // MARK: General
         
-        sessionBuilder.cipher = optCipher ?? .aes128cbc // FIXME: non-optional breaks PUSH_REPLY
-        sessionBuilder.digest = optDigest ?? .sha1 // FIXME: non-optional breaks PUSH_REPLY
-        sessionBuilder.compressionFraming = optCompressionFraming ?? .disabled // FIXME: non-optional breaks PUSH_REPLY
-        sessionBuilder.compressionAlgorithm = optCompressionAlgorithm ?? .disabled
+        sessionBuilder.cipher = optCipher
+        sessionBuilder.digest = optDigest
+        sessionBuilder.compressionFraming = optCompressionFraming
+        sessionBuilder.compressionAlgorithm = optCompressionAlgorithm
         sessionBuilder.ca = optCA
         sessionBuilder.clientCertificate = optClientCertificate
         

@@ -132,19 +132,28 @@ extension SessionProxy {
         }
     }
     
+    /// :nodoc:
+    private struct Fallback {
+        static let cipher: Cipher = .aes128cbc
+        
+        static let digest: Digest = .sha1
+        
+        static let compressionFraming: CompressionFraming = .disabled
+    }
+    
     /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
     public struct ConfigurationBuilder {
 
         // MARK: General
         
         /// The cipher algorithm for data encryption.
-        public var cipher: SessionProxy.Cipher
+        public var cipher: SessionProxy.Cipher?
         
         /// The digest algorithm for HMAC.
-        public var digest: SessionProxy.Digest
+        public var digest: SessionProxy.Digest?
         
         /// Compression framing, disabled by default.
-        public var compressionFraming: SessionProxy.CompressionFraming
+        public var compressionFraming: SessionProxy.CompressionFraming?
         
         /// Compression algorithm, disabled by default.
         public var compressionAlgorithm: SessionProxy.CompressionAlgorithm?
@@ -210,31 +219,6 @@ extension SessionProxy {
         public init() {
         }
         
-        /// :nodoc:
-        public init() {
-            cipher = .aes128cbc
-            digest = .sha1
-            compressionFraming = .disabled
-            compressionAlgorithm = nil
-            ca = nil
-            clientCertificate = nil
-            clientKey = nil
-            tlsWrap = nil
-            keepAliveInterval = nil
-            renegotiatesAfter = nil
-            hostname = nil
-            endpointProtocols = nil
-            checksEKU = false
-            randomizeEndpoint = false
-            usesPIAPatches = false
-            authToken = nil
-            peerId = nil
-            ipv4 = nil
-            ipv6 = nil
-            dnsServers = nil
-            searchDomain = nil
-        }
-
         /**
          Builds a `SessionProxy.Configuration` object.
          
@@ -265,19 +249,36 @@ extension SessionProxy {
                 searchDomain: searchDomain
             )
         }
+
+        // MARK: Shortcuts
+        
+        /// :nodoc:
+        public var fallbackCipher: Cipher {
+            return cipher ?? Fallback.cipher
+        }
+        
+        /// :nodoc:
+        public var fallbackDigest: Digest {
+            return digest ?? Fallback.digest
+        }
+        
+        /// :nodoc:
+        public var fallbackCompressionFraming: CompressionFraming {
+            return compressionFraming ?? Fallback.compressionFraming
+        }
     }
     
     /// The immutable configuration for `SessionProxy`.
     public struct Configuration: Codable {
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
-        public let cipher: Cipher
+        public let cipher: Cipher?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
-        public let digest: Digest
+        public let digest: Digest?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
-        public let compressionFraming: CompressionFraming
+        public let compressionFraming: CompressionFraming?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionAlgorithm`
         public let compressionAlgorithm: CompressionAlgorithm?
@@ -361,6 +362,23 @@ extension SessionProxy {
             builder.dnsServers = dnsServers
             builder.searchDomain = searchDomain
             return builder
+        }
+        
+        // MARK: Shortcuts
+        
+        /// :nodoc:
+        public var fallbackCipher: Cipher {
+            return cipher ?? Fallback.cipher
+        }
+
+        /// :nodoc:
+        public var fallbackDigest: Digest {
+            return digest ?? Fallback.digest
+        }
+
+        /// :nodoc:
+        public var fallbackCompressionFraming: CompressionFraming {
+            return compressionFraming ?? Fallback.compressionFraming
         }
     }
 }

@@ -196,7 +196,7 @@ public class SessionProxy {
         if let tlsWrap = configuration.tlsWrap {
             switch tlsWrap.strategy {
             case .auth:
-                controlChannel = try ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.digest)
+                controlChannel = try ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.fallbackDigest)
 
             case .crypt:
                 controlChannel = try ControlChannel(withCryptKey: tlsWrap.key)
@@ -634,8 +634,8 @@ public class SessionProxy {
             log.debug("CA MD5 is: \(caMD5)")
             return try? PIAHardReset(
                 caMd5Digest: caMD5,
-                cipher: configuration.cipher,
-                digest: configuration.digest
+                cipher: configuration.fallbackCipher,
+                digest: configuration.fallbackDigest
             ).encodedData()
         }
         return nil
@@ -923,10 +923,7 @@ public class SessionProxy {
             reply = optionalReply
             log.debug("Received PUSH_REPLY: \"\(reply.maskedDescription)\"")
             
-            // FIXME: non-optional breaks PUSH_REPLY
-//            if let framing = reply.options.compressionFraming, let compression = reply.options.compressionAlgorithm {
-            let framing = reply.options.compressionFraming
-            if framing != .disabled, let compression = reply.options.compressionAlgorithm {
+            if let framing = reply.options.compressionFraming, let compression = reply.options.compressionAlgorithm {
                 switch compression {
                 case .disabled:
                     break
@@ -1043,20 +1040,18 @@ public class SessionProxy {
             log.debug("Set up encryption")
         }
         
+        let pushedCipher = pushReply.options.cipher
+        if let negCipher = pushedCipher {
+            log.info("\tNegotiated cipher: \(negCipher.rawValue)")
+        }
         let pushedFraming = pushReply.options.compressionFraming
-        // FIXME: non-optional breaks PUSH_REPLY
-//        if let negFraming = pushedFraming {
-//            log.info("\tNegotiated compression framing: \(negFraming)")
-//        }
+        if let negFraming = pushedFraming {
+            log.info("\tNegotiated compression framing: \(negFraming)")
+        }
         let pushedCompression = pushReply.options.compressionAlgorithm
         if let negCompression = pushedCompression {
             log.info("\tNegotiated compression algorithm: \(negCompression)")
         }
-        let pushedCipher = pushReply.options.cipher
-        // FIXME: non-optional breaks PUSH_REPLY
-//        if let negCipher = pushedCipher {
-//            log.info("\tNegotiated cipher: \(negCipher.rawValue)")
-//        }
         if let negPing = pushReply.options.keepAliveInterval {
             log.info("\tNegotiated keep-alive: \(negPing) seconds")
         }
@@ -1064,9 +1059,8 @@ public class SessionProxy {
         let bridge: EncryptionBridge
         do {
             bridge = try EncryptionBridge(
-                // FIXME: non-optional breaks PUSH_REPLY
-                pushedCipher ?? configuration.cipher,
-                configuration.digest,
+                pushedCipher ?? configuration.fallbackCipher,
+                configuration.fallbackDigest,
                 auth,
                 sessionId,
                 remoteSessionId
@@ -1080,8 +1074,7 @@ public class SessionProxy {
             encrypter: bridge.encrypter(),
             decrypter: bridge.decrypter(),
             peerId: pushReply.options.peerId ?? PacketPeerIdDisabled,
-            // FIXME: non-optional breaks PUSH_REPLY
-            compressionFraming: (pushedFraming ?? configuration.compressionFraming).native,
+            compressionFraming: (pushedFraming ?? configuration.fallbackCompressionFraming).native,
             compressionAlgorithm: (pushedCompression ?? configuration.compressionAlgorithm ?? .disabled).native,
             maxPackets: link?.packetBufferSize ?? 200,
             usesReplayProtection: CoreConfiguration.usesReplayProtection

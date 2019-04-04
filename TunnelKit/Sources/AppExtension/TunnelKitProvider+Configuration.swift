@@ -431,16 +431,22 @@ extension TunnelKitProvider {
             var dict: [String: Any] = [
                 S.appGroup: appGroup,
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
-                S.cipherAlgorithm: sessionConfiguration.cipher.rawValue,
-                S.digestAlgorithm: sessionConfiguration.digest.rawValue,
-                S.compressionFraming: sessionConfiguration.compressionFraming.rawValue,
                 S.ca: ca.pem,
                 S.endpointProtocols: endpointProtocols.map { $0.rawValue },
                 S.mtu: mtu,
                 S.debug: shouldDebug
             ]
-            if let compressionAlgorithm = sessionConfiguration.compressionAlgorithm?.rawValue {
-                dict[S.compressionAlgorithm] = compressionAlgorithm
+            if let cipher = sessionConfiguration.cipher {
+                dict[S.cipherAlgorithm] = cipher.rawValue
+            }
+            if let digest = sessionConfiguration.digest {
+                dict[S.digestAlgorithm] = digest.rawValue
+            }
+            if let compressionFraming = sessionConfiguration.compressionFraming {
+                dict[S.compressionFraming] = compressionFraming.rawValue
+            }
+            if let compressionAlgorithm = sessionConfiguration.compressionAlgorithm {
+                dict[S.compressionAlgorithm] = compressionAlgorithm.rawValue
             }
             if let clientCertificate = sessionConfiguration.clientCertificate {
                 dict[S.clientCertificate] = clientCertificate.pem
@@ -525,9 +531,9 @@ extension TunnelKitProvider {
             }
             
             log.info("\tProtocols: \(endpointProtocols)")
-            log.info("\tCipher: \(sessionConfiguration.cipher)")
-            log.info("\tDigest: \(sessionConfiguration.digest)")
-            log.info("\tCompression framing: \(sessionConfiguration.compressionFraming)")
+            log.info("\tCipher: \(sessionConfiguration.fallbackCipher)")
+            log.info("\tDigest: \(sessionConfiguration.fallbackDigest)")
+            log.info("\tCompression framing: \(sessionConfiguration.fallbackCompressionFraming)")
             if let compressionAlgorithm = sessionConfiguration.compressionAlgorithm, compressionAlgorithm != .disabled {
                 log.info("\tCompression algorithm: \(compressionAlgorithm)")
             } else {
