@@ -113,7 +113,7 @@ public class ConfigurationParser {
     }
     
     /// Result of the parser.
-    public struct ParsingResult {
+    public struct Result {
 
         /// Original URL of the configuration file, if parsed from an URL.
         public let url: URL?
@@ -136,11 +136,11 @@ public class ConfigurationParser {
      
      - Parameter url: The URL of the configuration file.
      - Parameter passphrase: The optional passphrase for encrypted data.
-     - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
-     - Returns: The `ParsingResult` outcome of the parsing.
+     - Parameter returnsStripped: When `true`, stores the stripped file into `Result.strippedLines`. Defaults to `false`.
+     - Returns: The `Result` outcome of the parsing.
      - Throws: `ConfigurationError` if the configuration file is wrong or incomplete.
      */
-    public static func parsed(fromURL url: URL, passphrase: String? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
+    public static func parsed(fromURL url: URL, passphrase: String? = nil, returnsStripped: Bool = false) throws -> Result {
         let lines = try String(contentsOf: url).trimmedLines()
         return try parsed(fromLines: lines, passphrase: passphrase, originalURL: url, returnsStripped: returnsStripped)
     }
@@ -151,11 +151,11 @@ public class ConfigurationParser {
      - Parameter lines: The array of lines holding the configuration.
      - Parameter passphrase: The optional passphrase for encrypted data.
      - Parameter originalURL: The optional original URL of the configuration file.
-     - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
-     - Returns: The `ParsingResult` outcome of the parsing.
+     - Parameter returnsStripped: When `true`, stores the stripped file into `Result.strippedLines`. Defaults to `false`.
+     - Returns: The `Result` outcome of the parsing.
      - Throws: `ConfigurationError` if the configuration file is wrong or incomplete.
      */
-    public static func parsed(fromLines lines: [String], passphrase: String? = nil, originalURL: URL? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
+    public static func parsed(fromLines lines: [String], passphrase: String? = nil, originalURL: URL? = nil, returnsStripped: Bool = false) throws -> Result {
         var optStrippedLines: [String]? = returnsStripped ? [] : nil
         var optWarning: ConfigurationError?
         var unsupportedError: ConfigurationError?
@@ -634,7 +634,7 @@ public class ConfigurationParser {
 
         //
         
-        return ParsingResult(
+        return Result(
             url: originalURL,
             configuration: sessionBuilder.build(),
             strippedLines: optStrippedLines,
