@@ -203,10 +203,10 @@ extension SessionProxy {
         
         // MARK: Routing
         
-        /// The settings for IPv4.
+        /// The settings for IPv4. `SessionProxy` only evaluates this server-side.
         public var ipv4: IPv4Settings?
         
-        /// The settings for IPv6.
+        /// The settings for IPv6. `SessionProxy` only evaluates this server-side.
         public var ipv6: IPv6Settings?
         
         /// The DNS servers.
