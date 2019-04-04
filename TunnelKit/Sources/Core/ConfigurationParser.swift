@@ -127,8 +127,8 @@ public class ConfigurationParser {
         /// - Seealso: `ConfigurationParser.parsed(...)`
         public let strippedLines: [String]?
         
-        /// Holds an optional `OptionsError` that didn't block the parser, but it would be worth taking care of.
-        public let warning: OptionsError?
+        /// Holds an optional `ConfigurationError` that didn't block the parser, but it would be worth taking care of.
+        public let warning: ConfigurationError?
     }
     
     /**
@@ -138,7 +138,7 @@ public class ConfigurationParser {
      - Parameter passphrase: The optional passphrase for encrypted data.
      - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
      - Returns: The `ParsingResult` outcome of the parsing.
-     - Throws: `OptionsError` if the configuration file is wrong or incomplete.
+     - Throws: `ConfigurationError` if the configuration file is wrong or incomplete.
      */
     public static func parsed(fromURL url: URL, passphrase: String? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
         let lines = try String(contentsOf: url).trimmedLines()
@@ -153,12 +153,12 @@ public class ConfigurationParser {
      - Parameter originalURL: The optional original URL of the configuration file.
      - Parameter returnsStripped: When `true`, stores the stripped file into `ParsingResult.strippedLines`. Defaults to `false`.
      - Returns: The `ParsingResult` outcome of the parsing.
-     - Throws: `OptionsError` if the configuration file is wrong or incomplete.
+     - Throws: `ConfigurationError` if the configuration file is wrong or incomplete.
      */
     public static func parsed(fromLines lines: [String], passphrase: String? = nil, originalURL: URL? = nil, returnsStripped: Bool = false) throws -> ParsingResult {
         var optStrippedLines: [String]? = returnsStripped ? [] : nil
-        var optWarning: OptionsError?
-        var unsupportedError: OptionsError?
+        var optWarning: ConfigurationError?
+        var unsupportedError: ConfigurationError?
         var currentBlockName: String?
         var currentBlock: [String] = []
         
@@ -210,16 +210,16 @@ public class ConfigurationParser {
             
             // check blocks first
             Regex.connection.enumerateComponents(in: line) { (_) in
-                unsupportedError = OptionsError.unsupportedConfiguration(option: "<connection> blocks")
+                unsupportedError = ConfigurationError.unsupportedConfiguration(option: "<connection> blocks")
             }
             Regex.fragment.enumerateComponents(in: line) { (_) in
-                unsupportedError = OptionsError.unsupportedConfiguration(option: "fragment")
+                unsupportedError = ConfigurationError.unsupportedConfiguration(option: "fragment")
             }
             Regex.proxy.enumerateComponents(in: line) { (_) in
-                unsupportedError = OptionsError.unsupportedConfiguration(option: "proxy: \"\(line)\"")
+                unsupportedError = ConfigurationError.unsupportedConfiguration(option: "proxy: \"\(line)\"")
             }
             Regex.externalFiles.enumerateComponents(in: line) { (_) in
-                unsupportedError = OptionsError.unsupportedConfiguration(option: "external file: \"\(line)\"")
+                unsupportedError = ConfigurationError.unsupportedConfiguration(option: "external file: \"\(line)\"")
             }
             if line.contains("mtu") || line.contains("mssfix") {
                 isHandled = true
@@ -292,7 +292,7 @@ public class ConfigurationParser {
                 }
                 optCipher = SessionProxy.Cipher(rawValue: rawValue.uppercased())
                 if optCipher == nil {
-                    unsupportedError = OptionsError.unsupportedConfiguration(option: "cipher \(rawValue)")
+                    unsupportedError = ConfigurationError.unsupportedConfiguration(option: "cipher \(rawValue)")
                 }
             }
             Regex.auth.enumerateArguments(in: line) {
@@ -302,7 +302,7 @@ public class ConfigurationParser {
                 }
                 optDigest = SessionProxy.Digest(rawValue: rawValue.uppercased())
                 if optDigest == nil {
-                    unsupportedError = OptionsError.unsupportedConfiguration(option: "auth \(rawValue)")
+                    unsupportedError = ConfigurationError.unsupportedConfiguration(option: "auth \(rawValue)")
                 }
             }
             Regex.compLZO.enumerateArguments(in: line) {
@@ -371,7 +371,7 @@ public class ConfigurationParser {
                 }
                 optDefaultProto = SocketType(protoString: str)
                 if optDefaultProto == nil {
-                    unsupportedError = OptionsError.unsupportedConfiguration(option: "proto \(str)")
+                    unsupportedError = ConfigurationError.unsupportedConfiguration(option: "proto \(str)")
                 }
             }
             Regex.port.enumerateArguments(in: line) {
@@ -492,12 +492,12 @@ public class ConfigurationParser {
         
         if let clientKey = optClientKey, clientKey.isEncrypted {
             guard let passphrase = passphrase else {
-                throw OptionsError.encryptionPassphrase
+                throw ConfigurationError.encryptionPassphrase
             }
             do {
                 sessionBuilder.clientKey = try clientKey.decrypted(with: passphrase)
             } catch let e {
-                throw OptionsError.unableToDecrypt(error: e)
+                throw ConfigurationError.unableToDecrypt(error: e)
             }
         } else {
             sessionBuilder.clientKey = optClientKey
@@ -571,7 +571,7 @@ public class ConfigurationParser {
         //
         if let ifconfig4Arguments = optIfconfig4Arguments {
             guard ifconfig4Arguments.count == 2 else {
-                throw OptionsError.malformed(option: "ifconfig takes 2 arguments")
+                throw ConfigurationError.malformed(option: "ifconfig takes 2 arguments")
             }
             
             let address4: String
@@ -584,7 +584,7 @@ public class ConfigurationParser {
                 
                 // default gateway required when topology is subnet
                 guard let gateway4Arguments = optGateway4Arguments, gateway4Arguments.count == 1 else {
-                    throw OptionsError.malformed(option: "route-gateway takes 1 argument")
+                    throw ConfigurationError.malformed(option: "route-gateway takes 1 argument")
                 }
                 address4 = ifconfig4Arguments[0]
                 addressMask4 = ifconfig4Arguments[1]
@@ -607,14 +607,14 @@ public class ConfigurationParser {
         
         if let ifconfig6Arguments = optIfconfig6Arguments {
             guard ifconfig6Arguments.count == 2 else {
-                throw OptionsError.malformed(option: "ifconfig-ipv6 takes 2 arguments")
+                throw ConfigurationError.malformed(option: "ifconfig-ipv6 takes 2 arguments")
             }
             let address6Components = ifconfig6Arguments[0].components(separatedBy: "/")
             guard address6Components.count == 2 else {
-                throw OptionsError.malformed(option: "ifconfig-ipv6 address must have a /prefix")
+                throw ConfigurationError.malformed(option: "ifconfig-ipv6 address must have a /prefix")
             }
             guard let addressPrefix6 = UInt8(address6Components[1]) else {
-                throw OptionsError.malformed(option: "ifconfig-ipv6 address prefix must be a 8-bit number")
+                throw ConfigurationError.malformed(option: "ifconfig-ipv6 address prefix must be a 8-bit number")
             }
             
             let address6 = address6Components[0]

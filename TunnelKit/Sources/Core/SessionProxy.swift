@@ -180,7 +180,7 @@ public class SessionProxy {
      */
     public init(queue: DispatchQueue, configuration: Configuration, cachesURL: URL) throws {
         guard let ca = configuration.ca else {
-            throw OptionsError.missingConfiguration(option: "ca")
+            throw ConfigurationError.missingConfiguration(option: "ca")
         }
         
         self.queue = queue
