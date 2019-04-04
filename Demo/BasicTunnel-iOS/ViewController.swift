@@ -88,15 +88,16 @@ extension ViewController {
         let port = UInt16(textPort.text!)!
         let credentials = SessionProxy.Credentials(textUsername.text!, textPassword.text!)
         
-        var sessionBuilder = SessionProxy.ConfigurationBuilder(ca: ca)
-        sessionBuilder.cipher = .aes256gcm
+        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        sessionBuilder.ca = ca
+        sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha1
         sessionBuilder.compressionFraming = .compLZO
         sessionBuilder.renegotiatesAfter = nil
+        let socketType: SocketType = switchTCP.isOn ? .tcp : .udp
+        sessionBuilder.endpointProtocols = [EndpointProtocol(socketType, port)]
         sessionBuilder.usesPIAPatches = true
         var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
-        let socketType: SocketType = switchTCP.isOn ? .tcp : .udp
-        builder.endpointProtocols = [EndpointProtocol(socketType, port)]
         builder.mtu = 1350
         builder.shouldDebug = true
         builder.masksPrivateData = false
