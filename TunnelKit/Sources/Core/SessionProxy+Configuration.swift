@@ -205,6 +205,10 @@ extension SessionProxy {
         
         /// The search domain.
         public var searchDomain: String?
+
+        /// :nodoc:
+        public init() {
+        }
         
         /// :nodoc:
         public init() {
