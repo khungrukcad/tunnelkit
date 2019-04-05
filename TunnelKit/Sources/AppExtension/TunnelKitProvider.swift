@@ -472,7 +472,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("\tRemote: \(remoteAddress.maskedDescription)")
         log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
-        if let dnsServers = reply.options.dnsServers {
+        if let dnsServers = reply.options.dnsServers, !dnsServers.isEmpty {
             log.info("\tDNS: \(dnsServers.map { $0.maskedDescription })")
         } else {
             log.info("\tDNS: not configured")
