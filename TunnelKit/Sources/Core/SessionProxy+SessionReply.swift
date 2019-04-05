@@ -41,19 +41,16 @@ import Foundation
 public protocol SessionReply {
 
     /// The returned options.
-    var options: OptionsBundle { get }
+    var options: SessionProxy.Configuration { get }
 }
 
 extension SessionProxy {
-
-    // XXX: parsing is very optimistic
-    
     struct PushReply: SessionReply, CustomStringConvertible {
         private static let prefix = "PUSH_REPLY,"
         
         private let original: String
 
-        let options: OptionsBundle
+        let options: SessionProxy.Configuration
         
         init?(message: String) throws {
             guard message.hasPrefix(PushReply.prefix) else {
@@ -65,14 +62,14 @@ extension SessionProxy {
             original = String(message[prefixIndex...])
 
             let lines = original.components(separatedBy: ",")
-            options = try OptionsBundle(from: lines)
+            options = try ConfigurationParser.parsed(fromLines: lines).configuration
         }
         
         // MARK: CustomStringConvertible
         
         var description: String {
             let stripped = NSMutableString(string: original)
-            OptionsBundle.Regex.authToken.replaceMatches(
+            ConfigurationParser.Regex.authToken.replaceMatches(
                 in: stripped,
                 options: [],
                 range: NSMakeRange(0, stripped.length),

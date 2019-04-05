@@ -1,5 +1,5 @@
 //
-//  OptionsError.swift
+//  ConfigurationError.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 4/3/19.
@@ -25,8 +25,8 @@
 
 import Foundation
 
-/// Error raised by the options parser, with details about the line that triggered it.
-public enum OptionsError: Error {
+/// Error raised by the configuration parser, with details about the line that triggered it.
+public enum ConfigurationError: Error {
     
     /// Option syntax is incorrect.
     case malformed(option: String)

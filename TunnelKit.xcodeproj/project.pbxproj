@@ -137,12 +137,8 @@
 		0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA420D71190007C4C7B /* DNSResolver.swift */; };
 		0EC1BBA820D7D803007C4C7B /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */; };
 		0EC1BBA920D7D803007C4C7B /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */; };
-		0ECC60D5225497400020BEAC /* OptionsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D4225497400020BEAC /* OptionsBundle.swift */; };
-		0ECC60D6225497400020BEAC /* OptionsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D4225497400020BEAC /* OptionsBundle.swift */; };
-		0ECC60D82254981A0020BEAC /* OptionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* OptionsError.swift */; };
-		0ECC60D92254981A0020BEAC /* OptionsError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* OptionsError.swift */; };
-		0ECC60DB2254C8190020BEAC /* OptionsBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */; };
-		0ECC60DC2254C8190020BEAC /* OptionsBundleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */; };
+		0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
+		0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
@@ -348,9 +344,7 @@
 		0EBBF2FF2085196000E36B40 /* NWTCPConnectionState+Description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NWTCPConnectionState+Description.swift"; sourceTree = "<group>"; };
 		0EC1BBA420D71190007C4C7B /* DNSResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
 		0EC1BBA720D7D803007C4C7B /* ConnectionStrategy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
-		0ECC60D4225497400020BEAC /* OptionsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsBundle.swift; sourceTree = "<group>"; };
-		0ECC60D72254981A0020BEAC /* OptionsError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsError.swift; sourceTree = "<group>"; };
-		0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsBundleTests.swift; sourceTree = "<group>"; };
+		0ECC60D72254981A0020BEAC /* ConfigurationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationError.swift; sourceTree = "<group>"; };
 		0ECE3527212EB7770040F253 /* CryptoContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoContainer.swift; sourceTree = "<group>"; };
 		0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.ovpn; sourceTree = "<group>"; };
 		0ECEB1142252C8E900E9E551 /* tunnelbear.enc.8.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.key; sourceTree = "<group>"; };
@@ -473,7 +467,6 @@
 				0EB2B45E20F0C098004233D7 /* EncryptionPerformanceTests.swift */,
 				0EB2B45220F0BB44004233D7 /* EncryptionTests.swift */,
 				0EB2B45820F0BD9A004233D7 /* LinkTests.swift */,
-				0ECC60DA2254C8190020BEAC /* OptionsBundleTests.swift */,
 				0E12B2A22145341B00B4BAE9 /* PacketTests.swift */,
 				0E245D682135972800B012A2 /* PushTests.swift */,
 				0EB2B45620F0BD16004233D7 /* RandomTests.swift */,
@@ -624,6 +617,7 @@
 				0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */,
 				0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */,
 				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
+				0ECC60D72254981A0020BEAC /* ConfigurationError.swift */,
 				0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */,
 				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
 				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
@@ -656,8 +650,6 @@
 				0EFEB42D2006D3C800F81029 /* MSS.h */,
 				0EFEB43D2006D3C800F81029 /* MSS.m */,
 				0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */,
-				0ECC60D4225497400020BEAC /* OptionsBundle.swift */,
-				0ECC60D72254981A0020BEAC /* OptionsError.swift */,
 				0EFEB43E2006D3C800F81029 /* Packet.swift */,
 				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
 				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
@@ -1155,7 +1147,6 @@
 			files = (
 				0EB2B45720F0BD16004233D7 /* RandomTests.swift in Sources */,
 				0E011F812196E23700BA59EE /* ConfigurationParserTests.swift in Sources */,
-				0ECC60DB2254C8190020BEAC /* OptionsBundleTests.swift in Sources */,
 				0EB2B45920F0BD9A004233D7 /* LinkTests.swift in Sources */,
 				0EB2B45520F0BB53004233D7 /* DataManipulationTests.swift in Sources */,
 				0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */,
@@ -1238,7 +1229,7 @@
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0EFEB4782006D3C800F81029 /* TunnelKitProvider+Configuration.swift in Sources */,
 				0E3E0F212108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */,
-				0ECC60D82254981A0020BEAC /* OptionsError.swift in Sources */,
+				0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
 				0E58BF532240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
 				0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
@@ -1246,7 +1237,6 @@
 				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
 				0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
 				0EFEB4692006D3C800F81029 /* Packet.swift in Sources */,
-				0ECC60D5225497400020BEAC /* OptionsBundle.swift in Sources */,
 				0E011F7A2196D93600BA59EE /* SocketType.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
 			);
@@ -1307,7 +1297,7 @@
 				0EFEB4AF2007627700F81029 /* InterfaceObserver.swift in Sources */,
 				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
 				0EBBF2E62084FE6F00E36B40 /* GenericSocket.swift in Sources */,
-				0ECC60D92254981A0020BEAC /* OptionsError.swift in Sources */,
+				0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */,
 				0E3E0F222108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */,
 				0E58BF542240FAA6006FB157 /* SessionProxy+CompressionAlgorithm.swift in Sources */,
 				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
@@ -1315,7 +1305,6 @@
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
 				0E0C2128212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */,
 				0EFEB4972006D7F300F81029 /* SessionProxy+Authenticator.swift in Sources */,
-				0ECC60D6225497400020BEAC /* OptionsBundle.swift in Sources */,
 				0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */,
 				0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */,
 			);
@@ -1327,7 +1316,6 @@
 			files = (
 				0EA82A3A2190B2B9007960EB /* RandomTests.swift in Sources */,
 				0E011F822196E23800BA59EE /* ConfigurationParserTests.swift in Sources */,
-				0ECC60DC2254C8190020BEAC /* OptionsBundleTests.swift in Sources */,
 				0EA82A332190B2B9007960EB /* DataPathPerformanceTests.swift in Sources */,
 				0EA82A372190B2B9007960EB /* LinkTests.swift in Sources */,
 				0EA82A352190B2B9007960EB /* EncryptionPerformanceTests.swift in Sources */,
