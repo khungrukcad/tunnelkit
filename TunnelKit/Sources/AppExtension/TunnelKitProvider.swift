@@ -571,16 +571,19 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.includedRoutes = routes
             ipv6Settings?.excludedRoutes = []
         }
-        
-        var dnsServers = cfg.sessionConfiguration.dnsServers
-        if dnsServers?.isEmpty ?? true {
-            dnsServers = reply.options.dnsServers
+
+        var dnsSettings: NEDNSSettings?
+        var cfgDNSServers = cfg.sessionConfiguration.dnsServers
+        if cfgDNSServers?.isEmpty ?? true {
+            cfgDNSServers = reply.options.dnsServers
         }
         // FIXME: default to DNS servers from current network instead
-        let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
-        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
-            dnsSettings.domainName = searchDomain
-            dnsSettings.searchDomains = [searchDomain]
+        if let dnsServers = cfgDNSServers, !dnsServers.isEmpty {
+            dnsSettings = NEDNSSettings(servers: dnsServers)
+            if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
+                dnsSettings?.domainName = searchDomain
+                dnsSettings?.searchDomains = [searchDomain]
+            }
         }
         
         var proxySettings: NEProxySettings?
