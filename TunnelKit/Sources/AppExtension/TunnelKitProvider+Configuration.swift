@@ -111,38 +111,17 @@ extension TunnelKitProvider {
             
             //
 
-            guard let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String, let cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm) else {
-                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.cipherAlgorithm)]")
-            }
-            guard let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String, let digest = SessionProxy.Digest(rawValue: digestAlgorithm) else {
-                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.digestAlgorithm)]")
-            }
-
-            let ca: CryptoContainer
-            let clientCertificate: CryptoContainer?
-            let clientKey: CryptoContainer?
             guard let caPEM = providerConfiguration[S.ca] as? String else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
             }
-            ca = CryptoContainer(pem: caPEM)
-            if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
-                guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
-                }
-
-                clientCertificate = CryptoContainer(pem: clientPEM)
-                clientKey = CryptoContainer(pem: keyPEM)
-            } else {
-                clientCertificate = nil
-                clientKey = nil
-            }
 
             var sessionConfigurationBuilder = SessionProxy.ConfigurationBuilder()
-            sessionConfigurationBuilder.ca = ca
-            sessionConfigurationBuilder.cipher = cipher
-            sessionConfigurationBuilder.digest = digest
-            sessionConfigurationBuilder.clientCertificate = clientCertificate
-            sessionConfigurationBuilder.clientKey = clientKey
+            if let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String {
+                sessionConfigurationBuilder.cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm)
+            }
+            if let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String {
+                sessionConfigurationBuilder.digest = SessionProxy.Digest(rawValue: digestAlgorithm)
+            }
             if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = SessionProxy.CompressionFraming(rawValue: compressionFramingValue) {
                 sessionConfigurationBuilder.compressionFraming = compressionFraming
             } else {
@@ -152,6 +131,14 @@ extension TunnelKitProvider {
                 sessionConfigurationBuilder.compressionAlgorithm = compressionAlgorithm
             } else {
                 sessionConfigurationBuilder.compressionAlgorithm = ConfigurationBuilder.defaults.sessionConfiguration.compressionAlgorithm
+            }
+            sessionConfigurationBuilder.ca = CryptoContainer(pem: caPEM)
+            if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
+                guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
+                }
+                sessionConfigurationBuilder.clientCertificate = CryptoContainer(pem: clientPEM)
+                sessionConfigurationBuilder.clientKey = CryptoContainer(pem: keyPEM)
             }
             if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
                 do {
@@ -172,10 +159,10 @@ extension TunnelKitProvider {
                 return ep
             }
             sessionConfigurationBuilder.checksEKU = providerConfiguration[S.checksEKU] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.checksEKU
-            sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
-            sessionConfigurationBuilder.searchDomain = providerConfiguration[S.searchDomain] as? String
             sessionConfigurationBuilder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.randomizeEndpoint
             sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
+            sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
+            sessionConfigurationBuilder.searchDomain = providerConfiguration[S.searchDomain] as? String
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
@@ -225,15 +212,15 @@ extension TunnelKitProvider {
             
             static let digestAlgorithm = "DigestAlgorithm"
             
+            static let compressionFraming = "CompressionFraming"
+            
+            static let compressionAlgorithm = "CompressionAlgorithm"
+            
             static let ca = "CA"
             
             static let clientCertificate = "ClientCertificate"
             
             static let clientKey = "ClientKey"
-            
-            static let compressionFraming = "CompressionFraming"
-            
-            static let compressionAlgorithm = "CompressionAlgorithm"
             
             static let tlsWrap = "TLSWrap"
 
@@ -245,13 +232,13 @@ extension TunnelKitProvider {
             
             static let checksEKU = "ChecksEKU"
 
-            static let dnsServers = "DNSServers"
-            
-            static let searchDomain = "SearchDomain"
-            
             static let randomizeEndpoint = "RandomizeEndpoint"
             
             static let usesPIAPatches = "UsesPIAPatches"
+            
+            static let dnsServers = "DNSServers"
+            
+            static let searchDomain = "SearchDomain"
             
             // MARK: Debugging
             
