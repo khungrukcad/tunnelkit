@@ -461,16 +461,15 @@ extension TunnelKitProvider {
          
          - Parameter bundleIdentifier: The provider bundle identifier required to locate the tunnel extension.
          - Parameter appGroup: The name of the app group in which the tunnel extension lives in.
-         - Parameter hostname: The hostname the tunnel will connect to.
          - Parameter credentials: The optional credentials to authenticate with.
          - Returns: The generated `NETunnelProviderProtocol` object.
          - Throws: `ProviderError.credentials` if unable to store `credentials.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, hostname: String?, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
-            protocolConfiguration.serverAddress = hostname
+            protocolConfiguration.serverAddress = sessionConfiguration.hostname ?? resolvedAddresses?.first
             if let username = credentials?.username, let password = credentials?.password {
                 let keychain = Keychain(group: appGroup)
                 do {
