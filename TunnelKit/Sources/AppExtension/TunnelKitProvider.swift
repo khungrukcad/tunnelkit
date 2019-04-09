@@ -123,7 +123,6 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     open override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
 
         // required configuration
-        let hostname: String
         do {
             guard let tunnelProtocol = protocolConfiguration as? NETunnelProviderProtocol else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration")
@@ -134,9 +133,17 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             guard let providerConfiguration = tunnelProtocol.providerConfiguration else {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration")
             }
-            hostname = serverAddress
             try appGroup = Configuration.appGroup(from: providerConfiguration)
             try cfg = Configuration.parsed(from: providerConfiguration)
+            
+            // inject serverAddress into sessionConfiguration.hostname
+            if !serverAddress.isEmpty {
+                var sessionBuilder = cfg.sessionConfiguration.builder()
+                sessionBuilder.hostname = serverAddress
+                var cfgBuilder = cfg.builder()
+                cfgBuilder.sessionConfiguration = sessionBuilder.build()
+                cfg = cfgBuilder.build()
+            }
         } catch let e {
             var message: String?
             if let te = e as? ProviderConfigurationError {
@@ -162,7 +169,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             credentials = nil
         }
 
-        strategy = ConnectionStrategy(hostname: hostname, configuration: cfg)
+        strategy = ConnectionStrategy(configuration: cfg)
 
         if let content = cfg.existingLog(in: appGroup) {
             var existingLog = content.components(separatedBy: "\n")

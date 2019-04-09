@@ -466,7 +466,7 @@ extension TunnelKitProvider {
          - Returns: The generated `NETunnelProviderProtocol` object.
          - Throws: `ProviderError.credentials` if unable to store `credentials.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, hostname: String, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, hostname: String?, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
