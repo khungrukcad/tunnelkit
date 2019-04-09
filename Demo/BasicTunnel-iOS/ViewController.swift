@@ -94,6 +94,7 @@ extension ViewController {
         sessionBuilder.digest = .sha1
         sessionBuilder.compressionFraming = .compLZO
         sessionBuilder.renegotiatesAfter = nil
+        sessionBuilder.hostname = hostname
         let socketType: SocketType = switchTCP.isOn ? .tcp : .udp
         sessionBuilder.endpointProtocols = [EndpointProtocol(socketType, port)]
         sessionBuilder.usesPIAPatches = true
@@ -106,7 +107,6 @@ extension ViewController {
         return try! configuration.generatedTunnelProtocol(
             withBundleIdentifier: ViewController.bundleIdentifier,
             appGroup: ViewController.appGroup,
-            hostname: hostname,
             credentials: credentials
         )
     }
