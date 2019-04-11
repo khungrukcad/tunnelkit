@@ -555,9 +555,12 @@ extension TunnelKitProvider.Configuration {
      */
     public func builder() -> TunnelKitProvider.ConfigurationBuilder {
         var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
+        builder.prefersResolvedAddresses = prefersResolvedAddresses
+        builder.resolvedAddresses = resolvedAddresses
         builder.mtu = mtu
         builder.shouldDebug = shouldDebug
         builder.debugLogFormat = debugLogFormat
+        builder.masksPrivateData = masksPrivateData
         return builder
     }
 }
