@@ -334,36 +334,6 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
         public let searchDomain: String?
         
-        /**
-         Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
-         
-         - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
-         */
-        public func builder() -> SessionProxy.ConfigurationBuilder {
-            var builder = SessionProxy.ConfigurationBuilder()
-            builder.cipher = cipher
-            builder.digest = digest
-            builder.compressionFraming = compressionFraming
-            builder.compressionAlgorithm = compressionAlgorithm
-            builder.ca = ca
-            builder.clientCertificate = clientCertificate
-            builder.clientKey = clientKey
-            builder.tlsWrap = tlsWrap
-            builder.keepAliveInterval = keepAliveInterval
-            builder.renegotiatesAfter = renegotiatesAfter
-            builder.endpointProtocols = endpointProtocols
-            builder.checksEKU = checksEKU
-            builder.randomizeEndpoint = randomizeEndpoint
-            builder.usesPIAPatches = usesPIAPatches
-            builder.authToken = authToken
-            builder.peerId = peerId
-            builder.ipv4 = ipv4
-            builder.ipv6 = ipv6
-            builder.dnsServers = dnsServers
-            builder.searchDomain = searchDomain
-            return builder
-        }
-        
         // MARK: Shortcuts
         
         /// :nodoc:
@@ -380,6 +350,41 @@ extension SessionProxy {
         public var fallbackCompressionFraming: CompressionFraming {
             return compressionFraming ?? Fallback.compressionFraming
         }
+    }
+}
+
+// MARK: Modification
+
+extension SessionProxy.Configuration {
+    
+    /**
+     Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+     
+     - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
+     */
+    public func builder() -> SessionProxy.ConfigurationBuilder {
+        var builder = SessionProxy.ConfigurationBuilder()
+        builder.cipher = cipher
+        builder.digest = digest
+        builder.compressionFraming = compressionFraming
+        builder.compressionAlgorithm = compressionAlgorithm
+        builder.ca = ca
+        builder.clientCertificate = clientCertificate
+        builder.clientKey = clientKey
+        builder.tlsWrap = tlsWrap
+        builder.keepAliveInterval = keepAliveInterval
+        builder.renegotiatesAfter = renegotiatesAfter
+        builder.endpointProtocols = endpointProtocols
+        builder.checksEKU = checksEKU
+        builder.randomizeEndpoint = randomizeEndpoint
+        builder.usesPIAPatches = usesPIAPatches
+        builder.authToken = authToken
+        builder.peerId = peerId
+        builder.ipv4 = ipv4
+        builder.ipv6 = ipv6
+        builder.dnsServers = dnsServers
+        builder.searchDomain = searchDomain
+        return builder
     }
 }
 
