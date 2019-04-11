@@ -64,13 +64,14 @@ class AppExtensionTests: XCTestCase {
         sessionBuilder.ca = CryptoContainer(pem: "abcdef")
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha256
+        sessionBuilder.hostname = hostname
         sessionBuilder.endpointProtocols = []
         builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         XCTAssertNotNil(builder)
 
         cfg = builder.build()
 
-        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, hostname: hostname, credentials: credentials)
+        let proto = try? cfg.generatedTunnelProtocol(withBundleIdentifier: identifier, appGroup: appGroup, credentials: credentials)
         XCTAssertNotNil(proto)
         
         XCTAssertEqual(proto?.providerBundleIdentifier, identifier)
