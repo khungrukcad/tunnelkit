@@ -554,11 +554,23 @@ extension TunnelKitProvider: SessionProxyDelegate {
         if let searchDomain = searchDomain {
             dnsSettings.searchDomains = [searchDomain]
         }
+        
+        var proxySettings: NEProxySettings?
+        if let httpsProxy = cfg.sessionConfiguration.httpsProxy ?? reply.options.httpsProxy {
+            proxySettings = NEProxySettings()
+            proxySettings?.httpsServer = httpsProxy.neProxy()
+            proxySettings?.httpsEnabled = true
+        } else if let httpProxy = cfg.sessionConfiguration.httpProxy ?? reply.options.httpProxy {
+            proxySettings = NEProxySettings()
+            proxySettings?.httpServer = httpProxy.neProxy()
+            proxySettings?.httpEnabled = true
+        }
 
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
         newSettings.ipv4Settings = ipv4Settings
         newSettings.ipv6Settings = ipv6Settings
         newSettings.dnsSettings = dnsSettings
+        newSettings.proxySettings = proxySettings
         
         setTunnelNetworkSettings(newSettings, completionHandler: completionHandler)
     }
@@ -669,5 +681,11 @@ extension TunnelKitProvider {
             }
         }
         return error as? ProviderError ?? .linkError
+    }
+}
+
+private extension Proxy {
+    func neProxy() -> NEProxyServer {
+        return NEProxyServer(address: address, port: Int(port))
     }
 }
