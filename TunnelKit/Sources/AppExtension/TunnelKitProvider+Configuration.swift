@@ -163,6 +163,18 @@ extension TunnelKitProvider {
             sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
             sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
             sessionConfigurationBuilder.searchDomain = providerConfiguration[S.searchDomain] as? String
+            if let proxyString = providerConfiguration[S.httpProxy] as? String {
+                guard let proxy = Proxy(rawValue: proxyString) else {
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpProxy)] has a badly formed element")
+                }
+                sessionConfigurationBuilder.httpProxy = proxy
+            }
+            if let proxyString = providerConfiguration[S.httpsProxy] as? String {
+                guard let proxy = Proxy(rawValue: proxyString) else {
+                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpsProxy)] has a badly formed element")
+                }
+                sessionConfigurationBuilder.httpsProxy = proxy
+            }
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
@@ -239,6 +251,10 @@ extension TunnelKitProvider {
             static let dnsServers = "DNSServers"
             
             static let searchDomain = "SearchDomain"
+            
+            static let httpProxy = "HTTPProxy"
+            
+            static let httpsProxy = "HTTPSProxy"
             
             // MARK: Debugging
             
@@ -443,6 +459,12 @@ extension TunnelKitProvider {
             if let searchDomain = sessionConfiguration.searchDomain {
                 dict[S.searchDomain] = searchDomain
             }
+            if let httpProxy = sessionConfiguration.httpProxy {
+                dict[S.httpProxy] = httpProxy.rawValue
+            }
+            if let httpsProxy = sessionConfiguration.httpsProxy {
+                dict[S.httpsProxy] = httpsProxy.rawValue
+            }
             //
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
@@ -536,6 +558,12 @@ extension TunnelKitProvider {
             }
             if let searchDomain = sessionConfiguration.searchDomain {
                 log.info("\tSearch domain: \(searchDomain.maskedDescription)")
+            }
+            if let httpProxy = sessionConfiguration.httpProxy {
+                log.info("\tHTTP proxy: \(httpProxy.maskedDescription)")
+            }
+            if let httpsProxy = sessionConfiguration.httpsProxy {
+                log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
             }
             log.info("\tMTU: \(mtu)")
             log.info("\tDebug: \(shouldDebug)")
