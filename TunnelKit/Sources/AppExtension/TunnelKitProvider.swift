@@ -478,7 +478,20 @@ extension TunnelKitProvider: SessionProxyDelegate {
             log.info("\tDNS: not configured)")
         }
         log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
-        
+
+        if reply.options.httpProxy != nil || reply.options.httpsProxy != nil {
+            log.info("\tProxy:")
+            if let proxy = reply.options.httpProxy {
+                log.info("\t\tHTTP: \(proxy.maskedDescription)")
+            }
+            if let proxy = reply.options.httpsProxy {
+                log.info("\t\tHTTPS: \(proxy.maskedDescription)")
+            }
+            if let bypass = reply.options.proxyBypassDomains {
+                log.info("\t\tBypass domains: \(bypass.maskedDescription)")
+            }
+        }
+
         bringNetworkUp(remoteAddress: remoteAddress, reply: reply) { (error) in
             if let error = error {
                 log.error("Failed to configure tunnel: \(error)")
@@ -568,6 +581,8 @@ extension TunnelKitProvider: SessionProxyDelegate {
             proxySettings?.httpServer = httpProxy.neProxy()
             proxySettings?.httpEnabled = true
         }
+        // only set if there is a proxy (proxySettings set to non-nil above)
+        proxySettings?.exceptionList = cfg.sessionConfiguration.proxyBypassDomains ?? reply.options.proxyBypassDomains
 
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
         newSettings.ipv4Settings = ipv4Settings

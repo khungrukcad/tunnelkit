@@ -221,6 +221,9 @@ extension SessionProxy {
         /// The HTTPS proxy.
         public var httpsProxy: Proxy?
         
+        /// The list of domains not passing through the proxy.
+        public var proxyBypassDomains: [String]?
+        
         /// :nodoc:
         public init() {
         }
@@ -254,7 +257,8 @@ extension SessionProxy {
                 dnsServers: dnsServers,
                 searchDomain: searchDomain,
                 httpProxy: httpProxy,
-                httpsProxy: httpsProxy
+                httpsProxy: httpsProxy,
+                proxyBypassDomains: proxyBypassDomains
             )
         }
 
@@ -348,6 +352,9 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.httpsProxy`
         public var httpsProxy: Proxy?
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.proxyBypassDomains`
+        public var proxyBypassDomains: [String]?
+        
         // MARK: Shortcuts
         
         /// :nodoc:
@@ -400,6 +407,7 @@ extension SessionProxy.Configuration {
         builder.searchDomain = searchDomain
         builder.httpProxy = httpProxy
         builder.httpsProxy = httpsProxy
+        builder.proxyBypassDomains = proxyBypassDomains
         return builder
     }
 }

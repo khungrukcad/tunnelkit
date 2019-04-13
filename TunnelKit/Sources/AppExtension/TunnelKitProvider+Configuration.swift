@@ -175,6 +175,7 @@ extension TunnelKitProvider {
                 }
                 sessionConfigurationBuilder.httpsProxy = proxy
             }
+            sessionConfigurationBuilder.proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String]
             sessionConfiguration = sessionConfigurationBuilder.build()
 
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
@@ -255,6 +256,8 @@ extension TunnelKitProvider {
             static let httpProxy = "HTTPProxy"
             
             static let httpsProxy = "HTTPSProxy"
+            
+            static let proxyBypassDomains = "ProxyBypassDomains"
             
             // MARK: Debugging
             
@@ -465,6 +468,9 @@ extension TunnelKitProvider {
             if let httpsProxy = sessionConfiguration.httpsProxy {
                 dict[S.httpsProxy] = httpsProxy.rawValue
             }
+            if let proxyBypassDomains = sessionConfiguration.proxyBypassDomains {
+                dict[S.proxyBypassDomains] = proxyBypassDomains
+            }
             //
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
@@ -564,6 +570,9 @@ extension TunnelKitProvider {
             }
             if let httpsProxy = sessionConfiguration.httpsProxy {
                 log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
+            }
+            if let proxyBypassDomains = sessionConfiguration.proxyBypassDomains {
+                log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
             }
             log.info("\tMTU: \(mtu)")
             log.info("\tDebug: \(shouldDebug)")

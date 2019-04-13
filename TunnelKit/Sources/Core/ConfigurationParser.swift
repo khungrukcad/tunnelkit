@@ -92,7 +92,9 @@ public class ConfigurationParser {
         
         static let domain = NSRegularExpression("^dhcp-option +DOMAIN +[^ ]+")
         
-        static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS?|BYPASS) +[^ ]+ +\\d+")
+        static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS?) +[^ ]+ +\\d+")
+        
+        static let proxyBypass = NSRegularExpression("^dhcp-option +PROXY_BYPASS +.+")
         
         // MARK: Unsupported
         
@@ -197,6 +199,7 @@ public class ConfigurationParser {
         var optSearchDomain: String?
         var optHTTPProxy: Proxy?
         var optHTTPSProxy: Proxy?
+        var optProxyBypass: [String]?
 
         log.verbose("Configuration file:")
         for line in lines {
@@ -480,7 +483,7 @@ public class ConfigurationParser {
                 switch $0[0] {
                 case "PROXY_HTTPS":
                     optHTTPSProxy = Proxy($0[1], port)
-
+                    
                 case "PROXY_HTTP":
                     optHTTPProxy = Proxy($0[1], port)
                     
@@ -488,7 +491,14 @@ public class ConfigurationParser {
                     break
                 }
             }
-            
+            Regex.proxyBypass.enumerateArguments(in: line) {
+                guard !$0.isEmpty else {
+                    return
+                }
+                optProxyBypass = $0
+                optProxyBypass?.removeFirst()
+            }
+
             //
             
             if let error = unsupportedError {
@@ -652,6 +662,7 @@ public class ConfigurationParser {
         sessionBuilder.searchDomain = optSearchDomain
         sessionBuilder.httpProxy = optHTTPProxy
         sessionBuilder.httpsProxy = optHTTPSProxy
+        sessionBuilder.proxyBypassDomains = optProxyBypass
 
         //
         
