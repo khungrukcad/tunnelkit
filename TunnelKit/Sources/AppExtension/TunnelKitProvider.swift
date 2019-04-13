@@ -560,8 +560,11 @@ extension TunnelKitProvider: SessionProxyDelegate {
             proxySettings = NEProxySettings()
             proxySettings?.httpsServer = httpsProxy.neProxy()
             proxySettings?.httpsEnabled = true
-        } else if let httpProxy = cfg.sessionConfiguration.httpProxy ?? reply.options.httpProxy {
-            proxySettings = NEProxySettings()
+        }
+        if let httpProxy = cfg.sessionConfiguration.httpProxy ?? reply.options.httpProxy {
+            if proxySettings == nil {
+                proxySettings = NEProxySettings()
+            }
             proxySettings?.httpServer = httpProxy.neProxy()
             proxySettings?.httpEnabled = true
         }
