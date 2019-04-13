@@ -78,7 +78,7 @@ YDQ8z9v+DMO6iwyIDRiU
 extension ViewController {
     private static let appGroup = "DTDYD63ZX9.group.com.algoritmico.macos.demo.BasicTunnel"
     
-    private static let bundleIdentifier = "com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension"
+    private static let tunnelIdentifier = "com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension"
     
     private func makeProtocol() -> NETunnelProviderProtocol {
         let server = textServer.stringValue
@@ -106,7 +106,7 @@ extension ViewController {
         
         let configuration = builder.build()
         return try! configuration.generatedTunnelProtocol(
-            withBundleIdentifier: ViewController.bundleIdentifier,
+            withBundleIdentifier: ViewController.tunnelIdentifier,
             appGroup: ViewController.appGroup,
             credentials: credentials
         )
@@ -239,7 +239,7 @@ class ViewController: NSViewController {
             
             for m in managers! {
                 if let p = m.protocolConfiguration as? NETunnelProviderProtocol {
-                    if (p.providerBundleIdentifier == ViewController.bundleIdentifier) {
+                    if (p.providerBundleIdentifier == ViewController.tunnelIdentifier) {
                         manager = m
                         break
                     }
