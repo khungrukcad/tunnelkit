@@ -92,12 +92,14 @@ public class ConfigurationParser {
         
         static let domain = NSRegularExpression("^dhcp-option +DOMAIN +[^ ]+")
         
+        static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS?|BYPASS) +[^ ]+ +\\d+")
+        
         // MARK: Unsupported
         
 //        static let fragment = NSRegularExpression("^fragment +\\d+")
         static let fragment = NSRegularExpression("^fragment")
         
-        static let proxy = NSRegularExpression("^\\w+-proxy")
+        static let connectionProxy = NSRegularExpression("^\\w+-proxy")
         
         static let externalFiles = NSRegularExpression("^(ca|cert|key|tls-auth|tls-crypt) ")
         
@@ -193,7 +195,9 @@ public class ConfigurationParser {
         var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
         var optDNSServers: [String] = []
         var optSearchDomain: String?
-        
+        var optHTTPProxy: Proxy?
+        var optHTTPSProxy: Proxy?
+
         log.verbose("Configuration file:")
         for line in lines {
             log.verbose(line)
@@ -215,7 +219,7 @@ public class ConfigurationParser {
             Regex.fragment.enumerateComponents(in: line) { (_) in
                 unsupportedError = ConfigurationError.unsupportedConfiguration(option: "fragment")
             }
-            Regex.proxy.enumerateComponents(in: line) { (_) in
+            Regex.connectionProxy.enumerateComponents(in: line) { (_) in
                 unsupportedError = ConfigurationError.unsupportedConfiguration(option: "proxy: \"\(line)\"")
             }
             Regex.externalFiles.enumerateComponents(in: line) { (_) in
@@ -469,6 +473,21 @@ public class ConfigurationParser {
                 }
                 optSearchDomain = $0[1]
             }
+            Regex.proxy.enumerateArguments(in: line) {
+                guard $0.count == 3, let port = UInt16($0[2]) else {
+                    return
+                }
+                switch $0[0] {
+                case "PROXY_HTTPS":
+                    optHTTPSProxy = Proxy($0[1], port)
+
+                case "PROXY_HTTP":
+                    optHTTPProxy = Proxy($0[1], port)
+                    
+                default:
+                    break
+                }
+            }
             
             //
             
@@ -631,6 +650,8 @@ public class ConfigurationParser {
         
         sessionBuilder.dnsServers = optDNSServers
         sessionBuilder.searchDomain = optSearchDomain
+        sessionBuilder.httpProxy = optHTTPProxy
+        sessionBuilder.httpsProxy = optHTTPSProxy
 
         //
         

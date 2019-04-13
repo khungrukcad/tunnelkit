@@ -215,6 +215,12 @@ extension SessionProxy {
         /// The search domain.
         public var searchDomain: String?
 
+        /// The HTTP proxy.
+        public var httpProxy: Proxy?
+        
+        /// The HTTPS proxy.
+        public var httpsProxy: Proxy?
+        
         /// :nodoc:
         public init() {
         }
@@ -246,7 +252,9 @@ extension SessionProxy {
                 ipv4: ipv4,
                 ipv6: ipv6,
                 dnsServers: dnsServers,
-                searchDomain: searchDomain
+                searchDomain: searchDomain,
+                httpProxy: httpProxy,
+                httpsProxy: httpsProxy
             )
         }
 
@@ -334,6 +342,12 @@ extension SessionProxy {
         /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
         public let searchDomain: String?
         
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.httpProxy`
+        public var httpProxy: Proxy?
+        
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.httpsProxy`
+        public var httpsProxy: Proxy?
+        
         // MARK: Shortcuts
         
         /// :nodoc:
@@ -384,6 +398,8 @@ extension SessionProxy.Configuration {
         builder.ipv6 = ipv6
         builder.dnsServers = dnsServers
         builder.searchDomain = searchDomain
+        builder.httpProxy = httpProxy
+        builder.httpsProxy = httpsProxy
         return builder
     }
 }
@@ -483,6 +499,45 @@ public struct IPv6Settings: Codable, CustomStringConvertible {
     /// :nodoc:
     public var description: String {
         return "addr \(address.maskedDescription)/\(addressPrefixLength) gw \(defaultGateway.maskedDescription) routes \(routes.map { $0.maskedDescription })"
+    }
+}
+
+/// Encapsulate a proxy setting.
+public struct Proxy: Codable, RawRepresentable, CustomStringConvertible {
+
+    /// The proxy address.
+    public let address: String
+
+    /// The proxy port.
+    public let port: UInt16
+    
+    /// :nodoc:
+    public init(_ address: String, _ port: UInt16) {
+        self.address = address
+        self.port = port
+    }
+
+    // MARK: RawRepresentable
+    
+    /// :nodoc:
+    public var rawValue: String {
+        return "\(address):\(port)"
+    }
+    
+    /// :nodoc:
+    public init?(rawValue: String) {
+        let comps = rawValue.components(separatedBy: ":")
+        guard comps.count == 2, let port = UInt16(comps[1]) else {
+            return nil
+        }
+        self.init(comps[0], port)
+    }
+    
+    // MARK: CustomStringConvertible
+    
+    /// :nodoc:
+    public var description: String {
+        return rawValue
     }
 }
 

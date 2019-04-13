@@ -53,12 +53,22 @@ class ConfigurationParserTests: XCTestCase {
     }
     
     func testDHCPOption() throws {
-        let lines = base + ["dhcp-option DNS 8.8.8.8", "dhcp-option DNS6 ffff::1", "dhcp-option DOMAIN example.com"]
+        let lines = base + [
+            "dhcp-option DNS 8.8.8.8",
+            "dhcp-option DNS6 ffff::1",
+            "dhcp-option DOMAIN example.com",
+            "dhcp-option PROXY_HTTP 1.2.3.4 8081",
+            "dhcp-option PROXY_HTTPS 7.8.9.10 8082"
+        ]
         XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: lines))
         
         let parsed = try! ConfigurationParser.parsed(fromLines: lines).configuration
         XCTAssertEqual(parsed.dnsServers, ["8.8.8.8", "ffff::1"])
         XCTAssertEqual(parsed.searchDomain, "example.com")
+        XCTAssertEqual(parsed.httpProxy?.address, "1.2.3.4")
+        XCTAssertEqual(parsed.httpProxy?.port, 8081)
+        XCTAssertEqual(parsed.httpsProxy?.address, "7.8.9.10")
+        XCTAssertEqual(parsed.httpsProxy?.port, 8082)
     }
     
     func testConnectionBlock() throws {
