@@ -76,7 +76,7 @@ YDQ8z9v+DMO6iwyIDRiU
 """)
 
 extension ViewController {
-    private static let appGroup = "group.com.algoritmico.macos.demo.BasicTunnel"
+    private static let appGroup = "DTDYD63ZX9.group.com.algoritmico.macos.demo.BasicTunnel"
     
     private static let bundleIdentifier = "com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension"
     
