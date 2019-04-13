@@ -94,7 +94,7 @@ extension SessionProxy {
             raw.append(random1)
             raw.append(random2)
             
-            // opts
+            // opts (empty string)
             raw.appendSized(Z(UInt8(0)))
             
             // credentials
@@ -107,7 +107,7 @@ extension SessionProxy {
             }
 
             // peer info
-            raw.appendSized(Z(CoreConfiguration.peerInfo))
+            raw.appendSized(Z(CoreConfiguration.peerInfo, nullTerminated: true))
 
             if CoreConfiguration.logsSensitiveData {
                 log.debug("TLS.auth: Put plaintext (\(raw.count) bytes): \(raw.toHex())")

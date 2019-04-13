@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Make `hostname` optional and pick `resolvedAddresses` if nil.
 
+### Fixed
+
+- Negotiation times out with SoftEther. [#67](https://github.com/keeshux/tunnelkit/issues/67)
+
 ## 1.6.1 (2019-04-07)
 
 ### Fixed
