@@ -85,6 +85,20 @@ extension SessionProxy {
         /// AES encryption with 256-bit key size and GCM.
         case aes256gcm = "AES-256-GCM"
         
+        /// Returns the key size for this cipher.
+        public var keySize: Int {
+            switch self {
+            case .aes128cbc, .aes128gcm:
+                return 128
+                
+            case .aes192cbc, .aes192gcm:
+                return 192
+                
+            case .aes256cbc, .aes256gcm:
+                return 256
+            }
+        }
+        
         /// Digest should be ignored when this is `true`.
         public var embedsDigest: Bool {
             return rawValue.hasSuffix("-GCM")
