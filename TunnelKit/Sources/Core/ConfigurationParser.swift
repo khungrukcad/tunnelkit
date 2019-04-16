@@ -199,7 +199,7 @@ public class ConfigurationParser {
         var optGateway4Arguments: [String]?
         var optRoutes4: [(String, String, String?)] = [] // address, netmask, gateway
         var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
-        var optDNSServers: [String] = []
+        var optDNSServers: [String]?
         var optSearchDomain: String?
         var optHTTPProxy: Proxy?
         var optHTTPSProxy: Proxy?
@@ -482,7 +482,10 @@ public class ConfigurationParser {
                 guard $0.count == 2 else {
                     return
                 }
-                optDNSServers.append($0[1])
+                if optDNSServers == nil {
+                    optDNSServers = []
+                }
+                optDNSServers?.append($0[1])
             }
             Regex.domain.enumerateArguments(in: line) {
                 guard $0.count == 2 else {
