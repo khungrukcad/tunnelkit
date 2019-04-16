@@ -106,6 +106,10 @@ public class ConfigurationParser {
         static let externalFiles = NSRegularExpression("^(ca|cert|key|tls-auth|tls-crypt) ")
         
         static let connection = NSRegularExpression("^<connection>")
+        
+        // MARK: Continuation
+        
+        static let continuation = NSRegularExpression("^push-continuation [12]")
     }
     
     private enum Topology: String {
@@ -232,6 +236,16 @@ public class ConfigurationParser {
                 isHandled = true
             }
             
+            // MARK: Continuation
+
+            var isContinuation = false
+            Regex.continuation.enumerateArguments(in: line) {
+                isContinuation = ($0.first == "2")
+            }
+            guard !isContinuation else {
+                throw SessionError.continuationPushReply
+            }
+
             // MARK: Inline content
             
             if unsupportedError == nil {

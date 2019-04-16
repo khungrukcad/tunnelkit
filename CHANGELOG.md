@@ -18,6 +18,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Negotiation times out with SoftEther. [#67](https://github.com/keeshux/tunnelkit/issues/67)
+- Unable to handle continuated PUSH_REPLY. [#71](https://github.com/keeshux/tunnelkit/issues/71)
+- TCP requiring multiple PUSH_REQUEST. [#73](https://github.com/keeshux/tunnelkit/issues/73)
 
 ## 1.6.1 (2019-04-07)
 
