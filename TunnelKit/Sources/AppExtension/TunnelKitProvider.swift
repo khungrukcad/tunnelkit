@@ -564,10 +564,9 @@ extension TunnelKitProvider: SessionProxyDelegate {
         if dnsServers?.isEmpty ?? true {
             dnsServers = reply.options.dnsServers
         }
-        let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain
         let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
-        dnsSettings.domainName = searchDomain
-        if let searchDomain = searchDomain {
+        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
+            dnsSettings.domainName = searchDomain
             dnsSettings.searchDomains = [searchDomain]
         }
         
