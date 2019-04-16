@@ -403,12 +403,10 @@ public class SessionProxy {
             return
         }
             
-        if !isReliableLink {
-            pushRequest()
-            flushControlQueue()
-        }
+        pushRequest()
+        flushControlQueue()
         
-        guard (negotiationKey.controlState == .connected) else {
+        guard negotiationKey.controlState == .connected else {
             queue.asyncAfter(deadline: .now() + CoreConfiguration.tickInterval) { [weak self] in
                 self?.loopNegotiation()
             }
@@ -696,13 +694,11 @@ public class SessionProxy {
     
     // Ruby: push_request
     private func pushRequest() {
-        guard (negotiationKey.controlState == .preIfConfig) else {
+        guard negotiationKey.controlState == .preIfConfig else {
             return
         }
-        if !isReliableLink {
-            guard let targetDate = nextPushRequestDate, (Date() > targetDate) else {
-                return
-            }
+        guard let targetDate = nextPushRequestDate, Date() > targetDate else {
+            return
         }
         
         log.debug("TLS.ifconfig: Put plaintext (PUSH_REQUEST)")
@@ -727,7 +723,7 @@ public class SessionProxy {
         if negotiationKey.softReset {
             completeConnection()
         }
-        nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.retransmissionLimit)
+        nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.pushRequestInterval)
     }
     
     private func maybeRenegotiate() {
@@ -1143,11 +1139,6 @@ public class SessionProxy {
     // MARK: Acks
     
     private func handleAcks() {
-
-        // retry PUSH_REQUEST if ack queue is empty (all sent packets were ack'ed)
-        if isReliableLink && !controlChannel.hasPendingAcks() {
-            pushRequest()
-        }
     }
     
     // Ruby: send_ack
