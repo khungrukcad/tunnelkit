@@ -854,8 +854,10 @@ public class SessionProxy {
             }
 
             do {
-                let controlData = try controlChannel.currentControlData(withTLS: negotiationKey.tls)
-                handleControlData(controlData)
+                while true {
+                    let controlData = try controlChannel.currentControlData(withTLS: negotiationKey.tls)
+                    handleControlData(controlData)
+                }
             } catch _ {
             }
         }
