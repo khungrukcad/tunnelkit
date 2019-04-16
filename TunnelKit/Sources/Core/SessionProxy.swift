@@ -135,6 +135,8 @@ public class SessionProxy {
         return link?.isReliable ?? false
     }
 
+    private var continuatedPushReplyMessage: String?
+
     private var pushReply: SessionReply?
     
     private var nextPushRequestDate: Date?
@@ -368,6 +370,7 @@ public class SessionProxy {
         nextPushRequestDate = nil
         connectedDate = nil
         authenticator = nil
+        continuatedPushReplyMessage = nil
         pushReply = nil
         link = nil
         if !(tunnel?.isPersistent ?? false) {
@@ -605,6 +608,7 @@ public class SessionProxy {
         log.debug("Send hard reset")
 
         resetControlChannel(forNewSession: true)
+        continuatedPushReplyMessage = nil
         pushReply = nil
         negotiationKeyIdx = 0
         let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
@@ -911,9 +915,15 @@ public class SessionProxy {
             log.debug("Received control message: \"\(message)\"")
         }
         
+        let completeMessage: String
+        if let continuated = continuatedPushReplyMessage {
+            completeMessage = "\(continuated),\(message)"
+        } else {
+            completeMessage = message
+        }
         let reply: PushReply
         do {
-            guard let optionalReply = try PushReply(message: message) else {
+            guard let optionalReply = try PushReply(message: completeMessage) else {
                 return
             }
             reply = optionalReply
@@ -935,6 +945,10 @@ public class SessionProxy {
                     throw SessionError.serverCompression
                 }
             }
+        } catch SessionError.continuationPushReply {
+            continuatedPushReplyMessage = completeMessage.replacingOccurrences(of: "push-continuation", with: "")
+            // FIXME: strip "PUSH_REPLY" and "push-continuation 2"
+            return
         } catch let e {
             deferStop(.shutdown, e)
             return
