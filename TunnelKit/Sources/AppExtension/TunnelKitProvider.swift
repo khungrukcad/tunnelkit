@@ -564,6 +564,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         if dnsServers?.isEmpty ?? true {
             dnsServers = reply.options.dnsServers
         }
+        // FIXME: default to DNS servers from current network instead
         let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
         if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
             dnsSettings.domainName = searchDomain
