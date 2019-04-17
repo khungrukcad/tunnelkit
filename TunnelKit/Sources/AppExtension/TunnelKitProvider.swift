@@ -560,11 +560,14 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.excludedRoutes = []
         }
         
-        let dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers
-        let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain
+        var dnsServers = cfg.sessionConfiguration.dnsServers
+        if dnsServers?.isEmpty ?? true {
+            dnsServers = reply.options.dnsServers
+        }
+        // FIXME: default to DNS servers from current network instead
         let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
-        dnsSettings.domainName = searchDomain
-        if let searchDomain = searchDomain {
+        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
+            dnsSettings.domainName = searchDomain
             dnsSettings.searchDomains = [searchDomain]
         }
         
