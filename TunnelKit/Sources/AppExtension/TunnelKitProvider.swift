@@ -573,12 +573,12 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
 
         var dnsSettings: NEDNSSettings?
-        var cfgDNSServers = cfg.sessionConfiguration.dnsServers
-        if cfgDNSServers?.isEmpty ?? true {
-            cfgDNSServers = reply.options.dnsServers
+        var dnsServers = cfg.sessionConfiguration.dnsServers ?? []
+        if let replyDNSServers = reply.options.dnsServers {
+            dnsServers.append(contentsOf: replyDNSServers)
         }
         // FIXME: default to DNS servers from current network instead
-        if let dnsServers = cfgDNSServers, !dnsServers.isEmpty {
+        if !dnsServers.isEmpty {
             dnsSettings = NEDNSSettings(servers: dnsServers)
             if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
                 dnsSettings?.domainName = searchDomain
