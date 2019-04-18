@@ -475,7 +475,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         if let dnsServers = reply.options.dnsServers {
             log.info("\tDNS: \(dnsServers.map { $0.maskedDescription })")
         } else {
-            log.info("\tDNS: not configured)")
+            log.info("\tDNS: not configured")
         }
         log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
 
