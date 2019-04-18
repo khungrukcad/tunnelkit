@@ -97,9 +97,12 @@ extension SessionProxy {
             // options string
             var opts = [
                 "V4",
+                "dev-type tun",
                 "cipher \(options.fallbackCipher.rawValue)",
                 "auth \(options.fallbackDigest.rawValue)",
-                "keysize \(options.fallbackCipher.keySize)"
+                "keysize \(options.fallbackCipher.keySize)",
+                "key-method 2",
+                "tls-client"
             ]
             if let comp = options.compressionFraming {
                 switch comp {
