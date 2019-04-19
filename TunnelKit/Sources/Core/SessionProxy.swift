@@ -957,6 +957,11 @@ public class SessionProxy {
         }
         
         pushReply = reply
+        guard reply.options.ipv4 != nil || reply.options.ipv6 != nil else {
+            deferStop(.shutdown, SessionError.noRouting)
+            return
+        }
+        
         completeConnection()
 
         guard let remoteAddress = link?.remoteAddress else {

@@ -696,6 +696,9 @@ extension TunnelKitProvider {
                 
             case .failedLinkWrite:
                 return .linkError
+                
+            case .noRouting:
+                return .routing
 
             default:
                 return .unexpectedReply
