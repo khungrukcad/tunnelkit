@@ -116,14 +116,8 @@ extension SessionProxy {
                     break
                 }
             }
-            if let strategy = options.tlsWrap?.strategy {
-                switch strategy {
-                case .auth:
-                    opts.append("tls-auth")
-                    
-                case .crypt:
-                    opts.append("tls-crypt")
-                }
+            if let direction = options.tlsWrap?.key.direction?.rawValue {
+                opts.append("keydir \(direction)")
             }
             let optsString = opts.joined(separator: ",")
             log.debug("TLS.auth: Local options: \(optsString)")
