@@ -407,7 +407,9 @@ public class SessionProxy {
         }
             
         pushRequest()
-        flushControlQueue()
+        if !isReliableLink {
+            flushControlQueue()
+        }
         
         guard negotiationKey.controlState == .connected else {
             queue.asyncAfter(deadline: .now() + CoreConfiguration.tickInterval) { [weak self] in
