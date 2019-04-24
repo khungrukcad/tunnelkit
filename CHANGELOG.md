@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - SoftEther sends an incomplete PUSH_REPLY. [#86](https://github.com/keeshux/tunnelkit/issues/86)
+- Authentication/Decrypt errors with TLS wrapping. [#88](https://github.com/keeshux/tunnelkit/issues/88), [#61](https://github.com/keeshux/tunnelkit/issues/61)
 
 ## 1.6.2 (2019-04-17)
 
