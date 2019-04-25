@@ -67,6 +67,10 @@
 		0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
+		0E48AC642271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
+		0E48AC652271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
+		0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E48AC632271ADA9009B1A98 /* PacketStream.m */; };
+		0E48AC672271ADA9009B1A98 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E48AC632271ADA9009B1A98 /* PacketStream.m */; };
 		0E500EA622493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E500EA722493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E50D57521634E0A00FC87A8 /* ControlChannelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */; };
@@ -307,6 +311,8 @@
 		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.1.ovpn; sourceTree = "<group>"; };
 		0E3B65712249247E00EFF4DA /* tunnelbear.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.key; sourceTree = "<group>"; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+SessionReply.swift"; sourceTree = "<group>"; };
+		0E48AC622271ADA8009B1A98 /* PacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketStream.h; sourceTree = "<group>"; };
+		0E48AC632271ADA9009B1A98 /* PacketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketStream.m; sourceTree = "<group>"; };
 		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
 		0E50D57421634E0A00FC87A8 /* ControlChannelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannelTests.swift; sourceTree = "<group>"; };
 		0E58BF2F22405410006FB157 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
@@ -653,6 +659,8 @@
 				0EFEB43E2006D3C800F81029 /* Packet.swift */,
 				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
 				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
+				0E48AC622271ADA8009B1A98 /* PacketStream.h */,
+				0E48AC632271ADA9009B1A98 /* PacketStream.m */,
 				0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */,
 				0EFEB4392006D3C800F81029 /* ReplayProtector.h */,
 				0EFEB4482006D3C800F81029 /* ReplayProtector.m */,
@@ -736,6 +744,7 @@
 				0EF5CF262141E142004FF1BD /* PacketMacros.h in Headers */,
 				0EFEB4642006D3C800F81029 /* ReplayProtector.h in Headers */,
 				0EFEB4612006D3C800F81029 /* Errors.h in Headers */,
+				0E48AC642271ADA9009B1A98 /* PacketStream.h in Headers */,
 				0E58BF3722405410006FB157 /* minilzo.h in Headers */,
 				0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3522405410006FB157 /* lzodefs.h in Headers */,
@@ -764,6 +773,7 @@
 				0EF5CF272141E15B004FF1BD /* PacketMacros.h in Headers */,
 				0EEC49E620B5F7F6008FEB91 /* MSS.h in Headers */,
 				0EEC49E520B5F7F6008FEB91 /* Errors.h in Headers */,
+				0E48AC652271ADA9009B1A98 /* PacketStream.h in Headers */,
 				0E58BF3822405410006FB157 /* minilzo.h in Headers */,
 				0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3622405410006FB157 /* lzodefs.h in Headers */,
@@ -1219,6 +1229,7 @@
 				0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */,
 				0EBBF2F3208505D300E36B40 /* NEUDPInterface.swift in Sources */,
 				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
+				0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */,
 				0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */,
 				0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0E58BF3922405410006FB157 /* minilzo.c in Sources */,
@@ -1287,6 +1298,7 @@
 				0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
 				0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */,
 				0EBBF2F4208505D400E36B40 /* NEUDPInterface.swift in Sources */,
+				0E48AC672271ADA9009B1A98 /* PacketStream.m in Sources */,
 				0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */,
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
 				0E58BF3A22405410006FB157 /* minilzo.c in Sources */,

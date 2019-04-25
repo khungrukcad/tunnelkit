@@ -17,7 +17,6 @@ custom_categories:
         - IOInterface
         - LinkInterface
         - TunnelInterface
-        - PacketStream
         - BidirectionalState
         - StaticKey
         - SessionProxy
