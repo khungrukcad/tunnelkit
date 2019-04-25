@@ -25,6 +25,7 @@
 
 import XCTest
 import TunnelKit
+import __TunnelKitNative
 
 class DNSTests: XCTestCase {
 
@@ -45,5 +46,9 @@ class DNSTests: XCTestCase {
 
         XCTAssertEqual(DNSResolver.string(fromIPv4: DNSResolver.ipv4(fromString: addr)!), addr)
         XCTAssertEqual(DNSResolver.ipv4(fromString: DNSResolver.string(fromIPv4: ip)), ip)
+    }
+    
+    func testSystem() {
+        print("DNS: \(DNS().systemServers())")
     }
 }
