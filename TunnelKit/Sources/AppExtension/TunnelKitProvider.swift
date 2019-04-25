@@ -477,6 +477,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         } else {
             log.info("\tDNS: not configured")
         }
+        log.info("\tRouting policies: \(reply.options.routingPolicies?.maskedDescription ?? "not configured")")
         log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
 
         if reply.options.httpProxy != nil || reply.options.httpsProxy != nil {
@@ -524,12 +525,14 @@ extension TunnelKitProvider: SessionProxyDelegate {
     }
     
     private func bringNetworkUp(remoteAddress: String, configuration: SessionProxy.Configuration, reply: SessionReply, completionHandler: @escaping (Error?) -> Void) {
+        let routingPolicies = configuration.routingPolicies ?? reply.options.routingPolicies
+        
         var ipv4Settings: NEIPv4Settings?
         if let ipv4 = reply.options.ipv4 {
             var routes: [NEIPv4Route] = []
 
             // route all traffic to VPN?
-            if configuration.routingPolicies?.contains(.IPv4) ?? false {
+            if routingPolicies?.contains(.IPv4) ?? false {
                 let defaultRoute = NEIPv4Route.default()
                 defaultRoute.gatewayAddress = ipv4.defaultGateway
                 routes.append(defaultRoute)
@@ -551,7 +554,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             var routes: [NEIPv6Route] = []
 
             // route all traffic to VPN?
-            if configuration.routingPolicies?.contains(.IPv6) ?? false {
+            if routingPolicies?.contains(.IPv6) ?? false {
                 let defaultRoute = NEIPv6Route.default()
                 defaultRoute.gatewayAddress = ipv6.defaultGateway
                 routes.append(defaultRoute)
