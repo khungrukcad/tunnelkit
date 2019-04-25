@@ -1143,6 +1143,13 @@ public class SessionProxy {
             controlChannel.addSentDataCount(encryptedPackets.flatCount)
             link?.writePackets(encryptedPackets) { [weak self] (error) in
                 if let error = error {
+                    
+                    // try mitigating "No buffer space available"
+                    if let posixError = error as? POSIXError, posixError.code == POSIXErrorCode.ENOBUFS {
+                        log.warning("Data: Packets dropped, no buffer space available")
+                        return
+                    }
+                    
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
                         self?.deferStop(.shutdown, SessionError.failedLinkWrite)
