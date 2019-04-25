@@ -79,7 +79,8 @@ public class SessionProxy {
     
     // MARK: Configuration
     
-    private let configuration: Configuration
+    /// The session base configuration.
+    public let configuration: Configuration
     
     /// The optional credentials.
     public var credentials: Credentials?

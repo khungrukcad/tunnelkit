@@ -27,8 +27,6 @@ import XCTest
 import TunnelKit
 
 class ConfigurationParserTests: XCTestCase {
-    let base: [String] = ["<ca>", "</ca>", "remote 1.2.3.4"]
-
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -42,18 +40,18 @@ class ConfigurationParserTests: XCTestCase {
     // from lines
     
     func testCompression() throws {
-//        XCTAssertNotNil(try OptionsBundle.parsed(fromLines: base + ["comp-lzo"]).warning)
-        XCTAssertNil(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo"]).warning)
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo no"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
-//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: base + ["comp-lzo yes"]))
+//        XCTAssertNotNil(try OptionsBundle.parsed(fromLines: ["comp-lzo"]).warning)
+        XCTAssertNil(try ConfigurationParser.parsed(fromLines: ["comp-lzo"]).warning)
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo no"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
+//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
         
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: base + ["compress lzo"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress"]))
+        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress lzo"]))
     }
     
     func testDHCPOption() throws {
-        let lines = base + [
+        let lines = [
             "dhcp-option DNS 8.8.8.8",
             "dhcp-option DNS6 ffff::1",
             "dhcp-option DOMAIN example.com",
@@ -73,8 +71,18 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertEqual(parsed.proxyBypassDomains, ["foo.com", "bar.org", "net.chat"])
     }
     
+    func testRedirectGateway() throws {
+        var parsed: SessionProxy.Configuration
+
+        parsed = try! ConfigurationParser.parsed(fromLines: []).configuration
+        XCTAssertEqual(parsed.routingPolicies, nil)
+        XCTAssertNotEqual(parsed.routingPolicies, [])
+        parsed = try! ConfigurationParser.parsed(fromLines: ["redirect-gateway   ipv4   block-local"]).configuration
+        XCTAssertEqual(parsed.routingPolicies, [.IPv4, .IPv6])
+    }
+
     func testConnectionBlock() throws {
-        let lines = base + ["<connection>", "</connection>"]
+        let lines = ["<connection>", "</connection>"]
         XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
     }
 

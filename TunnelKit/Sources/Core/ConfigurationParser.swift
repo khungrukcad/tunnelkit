@@ -96,6 +96,8 @@ public class ConfigurationParser {
         
         static let proxyBypass = NSRegularExpression("^dhcp-option +PROXY_BYPASS +.+")
         
+        static let redirectGateway = NSRegularExpression("^redirect-gateway.*")
+
         // MARK: Unsupported
         
 //        static let fragment = NSRegularExpression("^fragment +\\d+")
@@ -118,6 +120,26 @@ public class ConfigurationParser {
         case p2p
         
         case subnet
+    }
+    
+    private enum RedirectGateway: String {
+        case local
+
+        case autolocal
+        
+        case def1
+        
+        case bypassDHCP = "bypass-dhcp"
+        
+        case bypassDNS = "bypass-dns"
+        
+        case blockLocal = "block-local"
+
+        case ipv4
+
+        case noIPv4 = "!ipv4"
+        
+        case ipv6
     }
     
     /// Result of the parser.
@@ -204,6 +226,7 @@ public class ConfigurationParser {
         var optHTTPProxy: Proxy?
         var optHTTPSProxy: Proxy?
         var optProxyBypass: [String]?
+        var optRedirectGateway: Set<RedirectGateway>?
 
         log.verbose("Configuration file:")
         for line in lines {
@@ -515,6 +538,22 @@ public class ConfigurationParser {
                 optProxyBypass = $0
                 optProxyBypass?.removeFirst()
             }
+            Regex.redirectGateway.enumerateArguments(in: line) {
+
+                // redirect IPv4 by default
+                optRedirectGateway = [.ipv4]
+
+                for arg in $0 {
+                    guard let opt = RedirectGateway(rawValue: arg) else {
+                        continue
+                    }
+                    if opt == .noIPv4 {
+                        optRedirectGateway?.remove(.ipv4)
+                    } else {
+                        optRedirectGateway?.insert(opt)
+                    }
+                }
+            }
 
             //
             
@@ -680,6 +719,11 @@ public class ConfigurationParser {
         sessionBuilder.httpProxy = optHTTPProxy
         sessionBuilder.httpsProxy = optHTTPSProxy
         sessionBuilder.proxyBypassDomains = optProxyBypass
+
+        // FIXME: only redirects all traffic until --redirect-gateway is properly interpreted
+        if let _ = optRedirectGateway {
+            sessionBuilder.routingPolicies = [.IPv4, .IPv6]
+        }
 
         //
         
