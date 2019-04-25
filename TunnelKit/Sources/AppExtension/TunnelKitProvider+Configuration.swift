@@ -578,8 +578,10 @@ extension TunnelKitProvider {
             } else {
                 log.info("\tDefault gateway: no")
             }
-            if let dnsServers = sessionConfiguration.dnsServers {
-                log.info("\tDNS servers: \(dnsServers.maskedDescription)")
+            if let dnsServers = sessionConfiguration.dnsServers, !dnsServers.isEmpty {
+                log.info("\tDNS: \(dnsServers.maskedDescription)")
+            } else {
+                log.info("\tDNS: default")
             }
             if let searchDomain = sessionConfiguration.searchDomain {
                 log.info("\tSearch domain: \(searchDomain.maskedDescription)")

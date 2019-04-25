@@ -49,6 +49,7 @@ module __TunnelKitNative {
     header "CompressionAlgorithmNative.h"
     header "DataPath.h"
     header "DataPathCrypto.h"
+    header "DNS.h"
     header "LZO.h"
     export *
 }

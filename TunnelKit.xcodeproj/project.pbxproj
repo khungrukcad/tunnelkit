@@ -67,6 +67,12 @@
 		0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3E0F212108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
 		0E3E0F222108A8CC00B371C1 /* SessionProxy+SessionReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */; };
+		0E411B9B2271F90700E0852C /* DNS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E411B992271F90700E0852C /* DNS.h */; };
+		0E411B9C2271F90700E0852C /* DNS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E411B992271F90700E0852C /* DNS.h */; };
+		0E411B9D2271F90700E0852C /* DNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E411B9A2271F90700E0852C /* DNS.m */; };
+		0E411B9E2271F90700E0852C /* DNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E411B9A2271F90700E0852C /* DNS.m */; };
+		0E411BA02271FA3300E0852C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E411B9F2271FA3300E0852C /* libresolv.tbd */; };
+		0E411BA22271FA3C00E0852C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E411BA12271FA3C00E0852C /* libresolv.tbd */; };
 		0E48AC642271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
 		0E48AC652271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
 		0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E48AC632271ADA9009B1A98 /* PacketStream.m */; };
@@ -311,6 +317,10 @@
 		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.1.ovpn; sourceTree = "<group>"; };
 		0E3B65712249247E00EFF4DA /* tunnelbear.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.key; sourceTree = "<group>"; };
 		0E3E0F202108A8CC00B371C1 /* SessionProxy+SessionReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+SessionReply.swift"; sourceTree = "<group>"; };
+		0E411B992271F90700E0852C /* DNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DNS.h; sourceTree = "<group>"; };
+		0E411B9A2271F90700E0852C /* DNS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DNS.m; sourceTree = "<group>"; };
+		0E411B9F2271FA3300E0852C /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
+		0E411BA12271FA3C00E0852C /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		0E48AC622271ADA8009B1A98 /* PacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketStream.h; sourceTree = "<group>"; };
 		0E48AC632271ADA9009B1A98 /* PacketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketStream.m; sourceTree = "<group>"; };
 		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
@@ -435,6 +445,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E411BA22271FA3C00E0852C /* libresolv.tbd in Frameworks */,
 				B4C2A996F52241B77E7762BD /* Pods_TunnelKit_TunnelKit_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -443,6 +454,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E411BA02271FA3300E0852C /* libresolv.tbd in Frameworks */,
 				C20E3DDE8043C59193100CD3 /* Pods_TunnelKit_TunnelKit_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -645,6 +657,8 @@
 				0EFEB4352006D3C800F81029 /* DataPath.h */,
 				0EFEB44C2006D3C800F81029 /* DataPath.m */,
 				0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */,
+				0E411B992271F90700E0852C /* DNS.h */,
+				0E411B9A2271F90700E0852C /* DNS.m */,
 				0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
@@ -709,6 +723,8 @@
 		1B27D1F0B446D5907FAF40E1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0E411B9F2271FA3300E0852C /* libresolv.tbd */,
+				0E411BA12271FA3C00E0852C /* libresolv.tbd */,
 				276657B3FED3840178C53D6B /* Pods_TunnelKit_TunnelKit_iOS.framework */,
 				A23792F839E9B80C5EEB9D11 /* Pods_TunnelKit_TunnelKit_macOS.framework */,
 				BF76B5FEAAFD5056FFCC5DA2 /* Pods_TunnelKit_TunnelKitHost.framework */,
@@ -751,6 +767,7 @@
 				0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
 				0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */,
+				0E411B9B2271F90700E0852C /* DNS.h in Headers */,
 				0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
@@ -780,6 +797,7 @@
 				0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
 				0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */,
+				0E411B9C2271F90700E0852C /* DNS.h in Headers */,
 				0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EEC49E120B5F7EA008FEB91 /* Allocation.h in Headers */,
 				0EEC49E320B5F7F6008FEB91 /* DataPath.h in Headers */,
@@ -1230,6 +1248,7 @@
 				0EBBF2F3208505D300E36B40 /* NEUDPInterface.swift in Sources */,
 				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
 				0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */,
+				0E411B9D2271F90700E0852C /* DNS.m in Sources */,
 				0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */,
 				0EFEB4792006D3C800F81029 /* TunnelKitProvider+Interaction.swift in Sources */,
 				0E58BF3922405410006FB157 /* minilzo.c in Sources */,
@@ -1299,6 +1318,7 @@
 				0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */,
 				0EBBF2F4208505D400E36B40 /* NEUDPInterface.swift in Sources */,
 				0E48AC672271ADA9009B1A98 /* PacketStream.m in Sources */,
+				0E411B9E2271F90700E0852C /* DNS.m in Sources */,
 				0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */,
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
 				0E58BF3A22405410006FB157 /* minilzo.c in Sources */,

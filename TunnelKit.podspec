@@ -23,6 +23,7 @@ Pod::Spec.new do |s|
                                     "APPLICATION_EXTENSION_API_ONLY" => "YES" }
         p.dependency "SwiftyBeaver"
         p.dependency "OpenSSL-Apple", "~> 1.1.0i.2"
+        p.libraries = "resolv"
     end
 
     s.subspec "AppExtension" do |p|

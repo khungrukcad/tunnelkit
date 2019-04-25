@@ -37,6 +37,7 @@
 
 import NetworkExtension
 import SwiftyBeaver
+import __TunnelKitNative
 
 private let log = SwiftyBeaver.self
 
@@ -74,6 +75,9 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
     /// The number of milliseconds between data count updates. Set to 0 to disable updates (default).
     public var dataCountInterval = 0
+    
+    /// A list of fallback DNS servers when none provided (defaults to "1.1.1.1").
+    public var fallbackDNSServers = ["1.1.1.1"]
     
     // MARK: Constants
     
@@ -472,12 +476,13 @@ extension TunnelKitProvider: SessionProxyDelegate {
         log.info("\tRemote: \(remoteAddress.maskedDescription)")
         log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
         log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
-        if let dnsServers = reply.options.dnsServers {
+        // FIXME: refine logging of other routing policies
+        log.info("\tDefault gateway: \(reply.options.routingPolicies?.maskedDescription ?? "not configured")")
+        if let dnsServers = reply.options.dnsServers, !dnsServers.isEmpty {
             log.info("\tDNS: \(dnsServers.map { $0.maskedDescription })")
         } else {
             log.info("\tDNS: not configured")
         }
-        log.info("\tRouting policies: \(reply.options.routingPolicies?.maskedDescription ?? "not configured")")
         log.info("\tDomain: \(reply.options.searchDomain?.maskedDescription ?? "not configured")")
 
         if reply.options.httpProxy != nil || reply.options.httpsProxy != nil {
@@ -570,16 +575,37 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.includedRoutes = routes
             ipv6Settings?.excludedRoutes = []
         }
-        
-        var dnsServers = cfg.sessionConfiguration.dnsServers
-        if dnsServers?.isEmpty ?? true {
-            dnsServers = reply.options.dnsServers
+
+        var dnsSettings: NEDNSSettings?
+        var dnsServers = cfg.sessionConfiguration.dnsServers ?? []
+        if let replyDNSServers = reply.options.dnsServers {
+            dnsServers.append(contentsOf: replyDNSServers)
         }
-        // FIXME: default to DNS servers from current network instead
-        let dnsSettings = NEDNSSettings(servers: dnsServers ?? [])
+
+        // fall back to system-wide DNS servers
+        if dnsServers.isEmpty {
+            log.warning("DNS: No servers provided, falling back to \(fallbackDNSServers)")
+            dnsServers = fallbackDNSServers
+
+            // XXX: no quick way to make this work on Safari, even if ping and lookup work in iNetTools
+//            let systemServers = DNS().systemServers()
+//            log.warning("DNS: No servers provided, falling back to system settings: \(systemServers)")
+//            dnsServers = systemServers
+//
+//            // make DNS reachable outside VPN (yes, a controlled leak to keep things operational)
+//            for address in dnsServers {
+//                if address.contains(":") {
+//                    ipv6Settings?.excludedRoutes?.append(NEIPv6Route(destinationAddress: address, networkPrefixLength: 128))
+//                } else {
+//                    ipv4Settings?.excludedRoutes?.append(NEIPv4Route(destinationAddress: address, subnetMask: "255.255.255.255"))
+//                }
+//            }
+        }
+
+        dnsSettings = NEDNSSettings(servers: dnsServers)
         if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
-            dnsSettings.domainName = searchDomain
-            dnsSettings.searchDomains = [searchDomain]
+            dnsSettings?.domainName = searchDomain
+            dnsSettings?.searchDomains = [searchDomain]
         }
         
         var proxySettings: NEProxySettings?
