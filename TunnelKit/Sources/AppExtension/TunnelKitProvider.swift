@@ -76,7 +76,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     /// The number of milliseconds between data count updates. Set to 0 to disable updates (default).
     public var dataCountInterval = 0
     
-    /// A list of fallback DNS servers when none provided (defaults to "1.1.1.1").
+    /// A list of public DNS servers to use as fallback when none are provided (defaults to "1.1.1.1").
     public var fallbackDNSServers = ["1.1.1.1"]
     
     // MARK: Constants
@@ -595,24 +595,10 @@ extension TunnelKitProvider: SessionProxyDelegate {
         var dnsSettings: NEDNSSettings?
         var dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers ?? []
 
-        // fall back to system-wide DNS servers
+        // fall back
         if dnsServers.isEmpty {
-            log.warning("DNS: No servers provided, falling back to \(fallbackDNSServers)")
+            log.warning("DNS: No servers provided, using fall-back servers: \(fallbackDNSServers.maskedDescription)")
             dnsServers = fallbackDNSServers
-
-            // XXX: no quick way to make this work on Safari, even if ping and lookup work in iNetTools
-//            let systemServers = DNS().systemServers()
-//            log.warning("DNS: No servers provided, falling back to system settings: \(systemServers)")
-//            dnsServers = systemServers
-//
-//            // make DNS reachable outside VPN (yes, a controlled leak to keep things operational)
-//            for address in dnsServers {
-//                if address.contains(":") {
-//                    ipv6Settings?.excludedRoutes?.append(NEIPv6Route(destinationAddress: address, networkPrefixLength: 128))
-//                } else {
-//                    ipv4Settings?.excludedRoutes?.append(NEIPv4Route(destinationAddress: address, subnetMask: "255.255.255.255"))
-//                }
-//            }
         }
 
         dnsSettings = NEDNSSettings(servers: dnsServers)
