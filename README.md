@@ -56,7 +56,6 @@ Ignored:
     - `--*-mtu` and variants
     - `--mssfix`
 - Multiple `--remote` with different `host` values (first wins)
-- Custom `--redirect-gateway`, VPN is always default gateway (no [split tunnelling][issue-55] yet)
 
 Many other flags are ignored too but it's normally not an issue.
 
@@ -201,7 +200,6 @@ Website: [davidederosa.com][about-website]
 [dep-brew]: https://brew.sh/
 [dep-openssl]: https://www.openssl.org/
 [issue-51]: https://github.com/keeshux/tunnelkit/issues/51
-[issue-55]: https://github.com/keeshux/tunnelkit/issues/55
 
 [ne-home]: https://developer.apple.com/documentation/networkextension
 [ne-ptp]: https://developer.apple.com/documentation/networkextension/nepackettunnelprovider
