@@ -577,10 +577,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
 
         var dnsSettings: NEDNSSettings?
-        var dnsServers = cfg.sessionConfiguration.dnsServers ?? []
-        if let replyDNSServers = reply.options.dnsServers {
-            dnsServers.append(contentsOf: replyDNSServers)
-        }
+        var dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers ?? []
 
         // fall back to system-wide DNS servers
         if dnsServers.isEmpty {
