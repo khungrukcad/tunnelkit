@@ -531,21 +531,23 @@ extension TunnelKitProvider: SessionProxyDelegate {
     
     private func bringNetworkUp(remoteAddress: String, configuration: SessionProxy.Configuration, reply: SessionReply, completionHandler: @escaping (Error?) -> Void) {
         let routingPolicies = configuration.routingPolicies ?? reply.options.routingPolicies
-        
+        let isIPv4Gateway = routingPolicies?.contains(.IPv4) ?? false
+        let isIPv6Gateway = routingPolicies?.contains(.IPv6) ?? false
+
         var ipv4Settings: NEIPv4Settings?
         if let ipv4 = reply.options.ipv4 {
             var routes: [NEIPv4Route] = []
 
             // route all traffic to VPN?
-            if routingPolicies?.contains(.IPv4) ?? false {
-//                let defaultRoute = NEIPv4Route.default()
-//                defaultRoute.gatewayAddress = ipv4.defaultGateway
-//                routes.append(defaultRoute)
-                for network in ["0.0.0.0", "128.0.0.0"] {
-                    let route = NEIPv4Route(destinationAddress: network, subnetMask: "128.0.0.0")
-                    route.gatewayAddress = ipv4.defaultGateway
-                    routes.append(route)
-                }
+            if isIPv4Gateway {
+                let defaultRoute = NEIPv4Route.default()
+                defaultRoute.gatewayAddress = ipv4.defaultGateway
+                routes.append(defaultRoute)
+//                for network in ["0.0.0.0", "128.0.0.0"] {
+//                    let route = NEIPv4Route(destinationAddress: network, subnetMask: "128.0.0.0")
+//                    route.gatewayAddress = ipv4.defaultGateway
+//                    routes.append(route)
+//                }
             }
             
             for r in ipv4.routes {
@@ -564,15 +566,15 @@ extension TunnelKitProvider: SessionProxyDelegate {
             var routes: [NEIPv6Route] = []
 
             // route all traffic to VPN?
-            if routingPolicies?.contains(.IPv6) ?? false {
-//                let defaultRoute = NEIPv6Route.default()
-//                defaultRoute.gatewayAddress = ipv6.defaultGateway
-//                routes.append(defaultRoute)
-                for network in ["2000::", "3000::"] {
-                    let route = NEIPv6Route(destinationAddress: network, networkPrefixLength: 4)
-                    route.gatewayAddress = ipv6.defaultGateway
-                    routes.append(route)
-                }
+            if isIPv6Gateway {
+                let defaultRoute = NEIPv6Route.default()
+                defaultRoute.gatewayAddress = ipv6.defaultGateway
+                routes.append(defaultRoute)
+//                for network in ["2000::", "3000::"] {
+//                    let route = NEIPv6Route(destinationAddress: network, networkPrefixLength: 4)
+//                    route.gatewayAddress = ipv6.defaultGateway
+//                    routes.append(route)
+//                }
             }
 
             for r in ipv6.routes {
