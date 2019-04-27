@@ -537,6 +537,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         let routingPolicies = configuration.routingPolicies ?? reply.options.routingPolicies
         let isIPv4Gateway = routingPolicies?.contains(.IPv4) ?? false
         let isIPv6Gateway = routingPolicies?.contains(.IPv6) ?? false
+        let isGateway = isIPv4Gateway || isIPv6Gateway
 
         var ipv4Settings: NEIPv4Settings?
         if let ipv4 = reply.options.ipv4 {
@@ -592,7 +593,6 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.excludedRoutes = []
         }
 
-        var dnsSettings: NEDNSSettings?
         var dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers ?? []
 
         // fall back
@@ -601,10 +601,16 @@ extension TunnelKitProvider: SessionProxyDelegate {
             dnsServers = fallbackDNSServers
         }
 
-        dnsSettings = NEDNSSettings(servers: dnsServers)
+        let dnsSettings = NEDNSSettings(servers: dnsServers)
+        if !isGateway {
+            dnsSettings.matchDomains = [""]
+        }
         if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
-            dnsSettings?.domainName = searchDomain
-            dnsSettings?.searchDomains = [searchDomain]
+            dnsSettings.domainName = searchDomain
+            dnsSettings.searchDomains = [searchDomain]
+            if !isGateway {
+                dnsSettings.matchDomains = dnsSettings.searchDomains
+            }
         }
         
         var proxySettings: NEProxySettings?

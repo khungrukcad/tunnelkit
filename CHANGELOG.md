@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Broken DNS when no servers provided. [#84](https://github.com/keeshux/tunnelkit/issues/84)
 - UDP may disconnect on high-speed upload link. [#87](https://github.com/keeshux/tunnelkit/issues/87)
 - Client certificate may fail when private key in .ovpn is encrypted. [#91](https://github.com/keeshux/tunnelkit/issues/91)
+- DNS is unreachable when VPN is not default gateway. [#94](https://github.com/keeshux/tunnelkit/issues/94)
 
 ## 1.6.2 (2019-04-17)
 
