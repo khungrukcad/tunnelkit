@@ -22,7 +22,7 @@ Pod::Spec.new do |s|
                                     "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Core",
                                     "APPLICATION_EXTENSION_API_ONLY" => "YES" }
         p.dependency "SwiftyBeaver"
-        p.dependency "OpenSSL-Apple", "~> 1.1.0i.2"
+        p.dependency "OpenSSL-Apple", "~> 1.1.0j.2"
         p.libraries = "resolv"
     end
 

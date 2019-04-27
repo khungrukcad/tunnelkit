@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Do not redirect all traffic to VPN unless `--redirect-gateway` specified. [#90](https://github.com/keeshux/tunnelkit/issues/90)
+- Upgraded OpenSSL to 1.1.0j.
 
 ### Fixed
 
