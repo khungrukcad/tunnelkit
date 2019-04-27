@@ -219,7 +219,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
             return
         }
         try? vpn.sendProviderMessage(TunnelKitProvider.Message.requestLog.data) { (data) in
-            guard let log = String(data: data!, encoding: .utf8) else {
+            guard let data = data, let log = String(data: data, encoding: .utf8) else {
                 return
             }
             self.textLog.text = log
