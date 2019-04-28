@@ -618,6 +618,17 @@ extension TunnelKitProvider: SessionProxyDelegate {
             }
         }
         
+        // add direct routes to DNS servers
+        if !isGateway {
+            for server in dnsServers {
+                if server.contains(":") {
+                    ipv6Settings?.includedRoutes?.insert(NEIPv6Route(destinationAddress: server, networkPrefixLength: 128), at: 0)
+                } else {
+                    ipv4Settings?.includedRoutes?.insert(NEIPv4Route(destinationAddress: server, subnetMask: "255.255.255.255"), at: 0)
+                }
+            }
+        }
+        
         var proxySettings: NEProxySettings?
         if let httpsProxy = cfg.sessionConfiguration.httpsProxy ?? reply.options.httpsProxy {
             proxySettings = NEProxySettings()
@@ -633,7 +644,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
         // only set if there is a proxy (proxySettings set to non-nil above)
         proxySettings?.exceptionList = cfg.sessionConfiguration.proxyBypassDomains ?? reply.options.proxyBypassDomains
-
+        
         let newSettings = NEPacketTunnelNetworkSettings(tunnelRemoteAddress: remoteAddress)
         newSettings.ipv4Settings = ipv4Settings
         newSettings.ipv6Settings = ipv6Settings
