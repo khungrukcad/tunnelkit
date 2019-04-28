@@ -333,7 +333,7 @@ extension SessionProxy {
         public let clientKey: CryptoContainer?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
-        public var tlsWrap: TLSWrap?
+        public let tlsWrap: TLSWrap?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?
@@ -342,10 +342,10 @@ extension SessionProxy {
         public let renegotiatesAfter: TimeInterval?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.hostname`
-        public var hostname: String?
+        public let hostname: String?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.endpointProtocols`
-        public var endpointProtocols: [EndpointProtocol]?
+        public let endpointProtocols: [EndpointProtocol]?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
         public let checksEKU: Bool?
@@ -375,16 +375,16 @@ extension SessionProxy {
         public let searchDomain: String?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.httpProxy`
-        public var httpProxy: Proxy?
+        public let httpProxy: Proxy?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.httpsProxy`
-        public var httpsProxy: Proxy?
+        public let httpsProxy: Proxy?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.proxyBypassDomains`
-        public var proxyBypassDomains: [String]?
+        public let proxyBypassDomains: [String]?
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.routingPolicies`
-        public var routingPolicies: [RoutingPolicy]?
+        public let routingPolicies: [RoutingPolicy]?
         
         // MARK: Shortcuts
         
@@ -426,6 +426,7 @@ extension SessionProxy.Configuration {
         builder.tlsWrap = tlsWrap
         builder.keepAliveInterval = keepAliveInterval
         builder.renegotiatesAfter = renegotiatesAfter
+        builder.hostname = hostname
         builder.endpointProtocols = endpointProtocols
         builder.checksEKU = checksEKU
         builder.randomizeEndpoint = randomizeEndpoint
