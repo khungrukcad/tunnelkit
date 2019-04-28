@@ -76,8 +76,13 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     /// The number of milliseconds between data count updates. Set to 0 to disable updates (default).
     public var dataCountInterval = 0
     
-    /// A list of public DNS servers to use as fallback when none are provided (defaults to "1.1.1.1").
-    public var fallbackDNSServers = ["1.1.1.1"]
+    /// A list of public DNS servers to use as fallback when none are provided (defaults to CloudFlare).
+    public var fallbackDNSServers = [
+        "1.1.1.1",
+        "1.0.0.1",
+        "2606:4700:4700::1111",
+        "2606:4700:4700::1001"
+    ]
     
     // MARK: Constants
     
