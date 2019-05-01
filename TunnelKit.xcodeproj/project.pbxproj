@@ -32,6 +32,12 @@
 		0E07597F20F0060E00F38FD8 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */; };
 		0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
 		0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
+		0E0B203C227886AD007A3CB9 /* RoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203B227886AD007A3CB9 /* RoutingTests.swift */; };
+		0E0B203D227886AD007A3CB9 /* RoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203B227886AD007A3CB9 /* RoutingTests.swift */; };
+		0E0B20402278A85C007A3CB9 /* RoutingTableEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */; };
+		0E0B20412278A85C007A3CB9 /* RoutingTableEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */; };
+		0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
+		0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
 		0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
 		0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
 		0E0C2127212ED29D008AB282 /* SessionProxy+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */; };
@@ -177,6 +183,10 @@
 		0EF5CF262141E142004FF1BD /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EF5CF272141E15B004FF1BD /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
 		0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
+		0EFB902922788511006405E4 /* RoutingTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFB902722788511006405E4 /* RoutingTable.h */; };
+		0EFB902A22788511006405E4 /* RoutingTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFB902722788511006405E4 /* RoutingTable.h */; };
+		0EFB902B22788512006405E4 /* RoutingTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFB902822788511006405E4 /* RoutingTable.m */; };
+		0EFB902C22788512006405E4 /* RoutingTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFB902822788511006405E4 /* RoutingTable.m */; };
 		0EFEB4552006D3C800F81029 /* SessionProxy+EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */; };
 		0EFEB4562006D3C800F81029 /* SessionProxy+SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */; };
 		0EFEB4582006D3C800F81029 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42D2006D3C800F81029 /* MSS.h */; };
@@ -290,6 +300,9 @@
 		0E07596D20EF79B400F38FD8 /* CryptoCBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCBC.h; sourceTree = "<group>"; };
 		0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoAEAD.h; sourceTree = "<group>"; };
 		0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
+		0E0B203B227886AD007A3CB9 /* RoutingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoutingTests.swift; sourceTree = "<group>"; };
+		0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutingTableEntry.h; sourceTree = "<group>"; };
+		0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTableEntry.m; sourceTree = "<group>"; };
 		0E0C2123212ED29D008AB282 /* SessionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionError.swift; sourceTree = "<group>"; };
 		0E0C2124212ED29D008AB282 /* SessionProxy+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+Configuration.swift"; sourceTree = "<group>"; };
 		0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -372,6 +385,8 @@
 		0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathCrypto.h; sourceTree = "<group>"; };
 		0EE7A7A020F664AB00B42E6A /* DataPathEncryptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPathEncryptionTests.swift; sourceTree = "<group>"; };
 		0EEC49DB20B5E732008FEB91 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		0EFB902722788511006405E4 /* RoutingTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutingTable.h; sourceTree = "<group>"; };
+		0EFB902822788511006405E4 /* RoutingTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTable.m; sourceTree = "<group>"; };
 		0EFEB42A2006D3C800F81029 /* SessionProxy+EncryptionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+EncryptionBridge.swift"; sourceTree = "<group>"; };
 		0EFEB42B2006D3C800F81029 /* SessionProxy+SessionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "SessionProxy+SessionKey.swift"; sourceTree = "<group>"; };
 		0EFEB42D2006D3C800F81029 /* MSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSS.h; sourceTree = "<group>"; };
@@ -489,6 +504,7 @@
 				0E245D682135972800B012A2 /* PushTests.swift */,
 				0EB2B45620F0BD16004233D7 /* RandomTests.swift */,
 				0EB2B45C20F0BF41004233D7 /* RawPerformanceTests.swift */,
+				0E0B203B227886AD007A3CB9 /* RoutingTests.swift */,
 				0E041D0B2152E80A0025FE3C /* StaticKeyTests.swift */,
 				0EB2B45A20F0BE4C004233D7 /* TestUtils.swift */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
@@ -678,6 +694,10 @@
 				0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */,
 				0EFEB4392006D3C800F81029 /* ReplayProtector.h */,
 				0EFEB4482006D3C800F81029 /* ReplayProtector.m */,
+				0EFB902722788511006405E4 /* RoutingTable.h */,
+				0EFB902822788511006405E4 /* RoutingTable.m */,
+				0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */,
+				0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */,
 				0EFEB4372006D3C800F81029 /* SecureRandom.swift */,
 				0E0C2123212ED29D008AB282 /* SessionError.swift */,
 				0EFEB43C2006D3C800F81029 /* SessionProxy.swift */,
@@ -765,12 +785,14 @@
 				0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3522405410006FB157 /* lzodefs.h in Headers */,
 				0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
+				0E0B20402278A85C007A3CB9 /* RoutingTableEntry.h in Headers */,
 				0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */,
 				0E411B9B2271F90700E0852C /* DNS.h in Headers */,
 				0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
+				0EFB902922788511006405E4 /* RoutingTable.h in Headers */,
 				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
 				0E58BF3322405410006FB157 /* lzoconf.h in Headers */,
 				0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */,
@@ -795,12 +817,14 @@
 				0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
 				0E58BF3622405410006FB157 /* lzodefs.h in Headers */,
 				0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
+				0E0B20412278A85C007A3CB9 /* RoutingTableEntry.h in Headers */,
 				0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */,
 				0E411B9C2271F90700E0852C /* DNS.h in Headers */,
 				0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */,
 				0EEC49E120B5F7EA008FEB91 /* Allocation.h in Headers */,
 				0EEC49E320B5F7F6008FEB91 /* DataPath.h in Headers */,
+				0EFB902A22788511006405E4 /* RoutingTable.h in Headers */,
 				0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */,
 				0E58BF3422405410006FB157 /* lzoconf.h in Headers */,
 				0EEC49E820B5F7F6008FEB91 /* ReplayProtector.h in Headers */,
@@ -1185,6 +1209,7 @@
 				0E041D0C2152E80A0025FE3C /* StaticKeyTests.swift in Sources */,
 				0E245D692135972800B012A2 /* PushTests.swift in Sources */,
 				0EB2B46120F0C0A4004233D7 /* DataPathPerformanceTests.swift in Sources */,
+				0E0B203C227886AD007A3CB9 /* RoutingTests.swift in Sources */,
 				0EB2B45F20F0C098004233D7 /* EncryptionPerformanceTests.swift in Sources */,
 				0EE7A7A120F664AC00B42E6A /* DataPathEncryptionTests.swift in Sources */,
 				0EB2B45D20F0BF41004233D7 /* RawPerformanceTests.swift in Sources */,
@@ -1215,6 +1240,7 @@
 				0EEC49DC20B5E732008FEB91 /* Utils.swift in Sources */,
 				0EFEB4562006D3C800F81029 /* SessionProxy+SessionKey.swift in Sources */,
 				0EC1BBA520D71190007C4C7B /* DNSResolver.swift in Sources */,
+				0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */,
 				0E58BF5922411FEF006FB157 /* LZO.m in Sources */,
 				0EFEB4AB200760EC00F81029 /* MemoryDestination.swift in Sources */,
 				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
@@ -1233,6 +1259,7 @@
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
 				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
 				0EFEB4AC200760EC00F81029 /* InterfaceObserver.swift in Sources */,
+				0EFB902B22788512006405E4 /* RoutingTable.m in Sources */,
 				0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */,
 				0EFEB47B2006D3C800F81029 /* TunnelKitProvider.swift in Sources */,
 				0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */,
@@ -1285,6 +1312,7 @@
 				0EE7A79920F6296F00B42E6A /* PacketMacros.m in Sources */,
 				0EEC49DD20B5E732008FEB91 /* Utils.swift in Sources */,
 				0EFEB4B12007627700F81029 /* MemoryDestination.swift in Sources */,
+				0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */,
 				0E58BF5A22411FEF006FB157 /* LZO.m in Sources */,
 				0EC1BBA620D712DE007C4C7B /* DNSResolver.swift in Sources */,
 				0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
@@ -1303,6 +1331,7 @@
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,
 				0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */,
+				0EFB902C22788512006405E4 /* RoutingTable.m in Sources */,
 				0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */,
 				0EFEB49A2006D7F300F81029 /* MSS.m in Sources */,
 				0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */,
@@ -1358,6 +1387,7 @@
 				0EA82A302190B2B9007960EB /* ControlChannelTests.swift in Sources */,
 				0EA82A312190B2B9007960EB /* DataManipulationTests.swift in Sources */,
 				0EA82A382190B2B9007960EB /* PacketTests.swift in Sources */,
+				0E0B203D227886AD007A3CB9 /* RoutingTests.swift in Sources */,
 				0EA82A3B2190B2B9007960EB /* RawPerformanceTests.swift in Sources */,
 				0EA82A362190B2B9007960EB /* EncryptionTests.swift in Sources */,
 				0EA82A3D2190B2B9007960EB /* TestUtils.swift in Sources */,
