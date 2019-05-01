@@ -105,6 +105,8 @@ public class SessionProxy {
     private let queue: DispatchQueue
 
     private var tlsObserver: NSObjectProtocol?
+    
+    private var withLocalOptions: Bool
 
     private var keys: [UInt8: SessionKey]
 
@@ -190,6 +192,7 @@ public class SessionProxy {
         self.configuration = configuration
         self.cachesURL = cachesURL
 
+        withLocalOptions = true
         keys = [:]
         oldKeys = []
         negotiationKeyIdx = 0
@@ -676,6 +679,7 @@ public class SessionProxy {
         
         do {
             authenticator = try Authenticator(credentials?.username, pushReply?.options.authToken ?? credentials?.password)
+            authenticator?.withLocalOptions = withLocalOptions
             try authenticator?.putAuth(into: negotiationKey.tls, options: configuration)
         } catch let e {
             deferStop(.shutdown, e)
@@ -908,6 +912,15 @@ public class SessionProxy {
     // Ruby: handle_ctrl_msg
     private func handleControlMessage(_ message: String) {
         guard !message.hasPrefix("AUTH_FAILED") else {
+
+            // XXX: retry without client options
+            if authenticator?.withLocalOptions ?? false {
+                log.warning("Authentication failure, retrying without local options")
+                withLocalOptions = false
+                deferStop(.reconnect, SessionError.badCredentials)
+                return
+            }
+
             deferStop(.shutdown, SessionError.badCredentials)
             return
         }
