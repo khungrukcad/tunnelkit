@@ -38,6 +38,7 @@ class RoutingTests: XCTestCase {
     
     func testEntryMatch4() {
         let entry24 = RoutingTableEntry(iPv4Network: "192.168.1.0/24", gateway: nil, networkInterface: "en0")
+        print(entry24.networkMask()!)
         for i in 0x0...0xff {
             XCTAssertTrue(entry24.matchesDestination("192.168.1.\(i)"))
         }
@@ -46,6 +47,7 @@ class RoutingTests: XCTestCase {
         }
 
         let entry28 = RoutingTableEntry(iPv4Network: "192.168.1.0/28", gateway: nil, networkInterface: "en0")
+        print(entry28.networkMask()!)
         for i in 0x0...0xf {
             XCTAssertTrue(entry28.matchesDestination("192.168.1.\(i)"))
         }

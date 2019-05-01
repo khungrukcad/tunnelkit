@@ -35,6 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)isIPv6;
 - (NSString *)network;
 - (NSInteger)prefix;
+- (nullable NSString *)networkMask; // nil if IPv6
 - (nullable NSString *)gateway;
 - (NSString *)networkInterface;
 

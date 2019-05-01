@@ -176,6 +176,14 @@ static NSString *RoutingTableEntryName(struct sockaddr *sa, struct sockaddr *mas
     }
 }
 
+- (NSString *)networkMask
+{
+    struct in_addr mask;
+    mask.s_addr = htonl(~((1 << (32 - self.prefix)) - 1));
+    const char *address = inet_ntoa(mask);
+    return [NSString stringWithCString:address encoding:NSASCIIStringEncoding];
+}
+
 - (BOOL)isDefault
 {
     return [self.network isEqualToString:@"default"];
