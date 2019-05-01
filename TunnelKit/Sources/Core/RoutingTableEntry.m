@@ -26,7 +26,7 @@
 #import <arpa/inet.h>
 #import <netdb.h>
 #import <net/if.h>
-#import <net/route.h>
+#import "route.h"
 
 #import "RoutingTableEntry.h"
 
