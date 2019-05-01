@@ -120,7 +120,7 @@ extension SessionProxy {
                 if let direction = options.tlsWrap?.key.direction?.rawValue {
                     opts.append("keydir \(direction)")
                 }
-                opts.append("cipher \(options.cipher?.rawValue ?? "BF-CBC")")
+                opts.append("cipher \(options.fallbackCipher.rawValue)")
                 opts.append("auth \(options.fallbackDigest.rawValue)")
                 opts.append("keysize \(options.fallbackCipher.keySize)")
                 if let strategy = options.tlsWrap?.strategy {
