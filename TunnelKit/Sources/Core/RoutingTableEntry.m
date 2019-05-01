@@ -40,8 +40,8 @@ typedef union {
     u_short u_data[128];
 } sa_u;
 
-static inline uint32_t RoutingTableEntryAddress4(NSString *string);
-static inline NSData *RoutingTableEntryAddress6(NSString *string);
+static uint32_t RoutingTableEntryAddress4(NSString *string);
+static NSData *RoutingTableEntryAddress6(NSString *string);
 static NSString *RoutingTableEntryName(struct sockaddr *sa, struct sockaddr *mask, int flags);
 
 #pragma mark -
@@ -236,6 +236,48 @@ static NSString *RoutingTableEntryName(struct sockaddr *sa, struct sockaddr *mas
         
         return ((networkAddress ^ destinationAddress) & networkMask) == 0;
     }
+}
+
+- (NSArray<RoutingTableEntry *> *)partitioned
+{
+    NSMutableArray<RoutingTableEntry *> *segments = [[NSMutableArray alloc] init];
+    const int halfPrefix = (int)(self.prefix + 1);
+    if (self.isIPv6) {
+        struct in6_addr saddr1, saddr2;
+        char addr[INET6_ADDRSTRLEN];
+        NSData *addressData = RoutingTableEntryAddress6(self.network);
+        memcpy(&saddr1, addressData.bytes, addressData.length);
+        NSMutableData *addressData2 = [addressData mutableCopy];
+
+        uint8_t *addressBytes2 = (uint8_t *)addressData2.bytes;
+        const uint8_t mask2 = 1 << (8 - halfPrefix % 8);
+        addressBytes2[halfPrefix / 8] |= mask2;
+
+        memcpy(&saddr2, addressData2.bytes, addressData2.length);
+
+        inet_ntop(AF_INET6, &saddr1, addr, INET6_ADDRSTRLEN);
+        NSString *network1 = [NSString stringWithFormat:@"%s/%d", addr, halfPrefix];
+        inet_ntop(AF_INET6, &saddr2, addr, INET6_ADDRSTRLEN);
+        NSString *network2 = [NSString stringWithFormat:@"%s/%d", addr, halfPrefix];
+
+        [segments addObject:[[RoutingTableEntry alloc] initWithIPv6Network:network1 gateway:self.gateway networkInterface:self.networkInterface]];
+        [segments addObject:[[RoutingTableEntry alloc] initWithIPv6Network:network2 gateway:self.gateway networkInterface:self.networkInterface]];
+    } else {
+        struct in_addr saddr1, saddr2;
+        const uint32_t address = RoutingTableEntryAddress4(self.network);
+        saddr1.s_addr = htonl(address);
+        saddr2.s_addr = htonl(address | (1 << (32 - halfPrefix)));
+
+        // XXX: inet_ntoa returns pointer to static variable, copy before next call
+        const char *address1 = inet_ntoa(saddr1);
+        NSString *network1 = [NSString stringWithFormat:@"%s/%d", address1, halfPrefix];
+        const char *address2 = inet_ntoa(saddr2);
+        NSString *network2 = [NSString stringWithFormat:@"%s/%d", address2, halfPrefix];
+
+        [segments addObject:[[RoutingTableEntry alloc] initWithIPv4Network:network1 gateway:self.gateway networkInterface:self.networkInterface]];
+        [segments addObject:[[RoutingTableEntry alloc] initWithIPv4Network:network2 gateway:self.gateway networkInterface:self.networkInterface]];
+    }
+    return segments;
 }
 
 - (NSString *)description

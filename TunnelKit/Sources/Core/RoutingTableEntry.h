@@ -41,6 +41,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)isDefault;
 - (BOOL)matchesDestination:(NSString *)destination;
+- (NSArray<RoutingTableEntry *> *)partitioned;
 
 @end
 

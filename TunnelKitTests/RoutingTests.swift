@@ -95,4 +95,25 @@ class RoutingTests: XCTestCase {
             }
         }
     }
+    
+    func testPartitioning() {
+        let v4 = RoutingTableEntry(iPv4Network: "192.168.1.0/24", gateway: nil, networkInterface: "en0")
+        let v6 = RoutingTableEntry(iPv6Network: "abcd:efef:120::/46", gateway: nil, networkInterface: "en0")
+        
+        let v4parts = v4.partitioned()
+        let v4parts1 = v4parts[0]
+        let v4parts2 = v4parts[1]
+        XCTAssertEqual(v4parts1.network(), "192.168.1.0")
+        XCTAssertEqual(v4parts1.prefix(), 25)
+        XCTAssertEqual(v4parts2.network(), "192.168.1.128")
+        XCTAssertEqual(v4parts2.prefix(), 25)
+
+        let v6parts = v6.partitioned()
+        let v6parts1 = v6parts[0]
+        let v6parts2 = v6parts[1]
+        XCTAssertEqual(v6parts1.network(), "abcd:efef:120::")
+        XCTAssertEqual(v6parts1.prefix(), 47)
+        XCTAssertEqual(v6parts2.network(), "abcd:efef:122::")
+        XCTAssertEqual(v6parts2.prefix(), 47)
+    }
 }
