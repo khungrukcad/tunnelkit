@@ -46,7 +46,7 @@ Unsupported:
 
 - UDP fragmentation, i.e. `--fragment`
 - Compression via `--compress` other than empty or `lzo`
-- Proxy
+- Connecting via proxy
 - External file references (inline `<block>` only)
 - `<connection>` blocks
 
