@@ -245,12 +245,15 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         }
 
         pendingStopHandler = completionHandler
-        tunnelQueue.schedule(after: .milliseconds(shutdownTimeout)) {
-            guard let pendingHandler = self.pendingStopHandler else {
+        tunnelQueue.schedule(after: .milliseconds(shutdownTimeout)) { [weak self] in
+            guard let weakSelf = self else {
                 return
             }
-            log.warning("Tunnel not responding after \(self.shutdownTimeout) milliseconds, forcing stop")
-            self.flushLog()
+            guard let pendingHandler = weakSelf.pendingStopHandler else {
+                return
+            }
+            log.warning("Tunnel not responding after \(weakSelf.shutdownTimeout) milliseconds, forcing stop")
+            weakSelf.flushLog()
             pendingHandler()
         }
         tunnelQueue.sync {
