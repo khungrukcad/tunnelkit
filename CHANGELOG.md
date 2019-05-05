@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Authentication failure due to local options. [#95](https://github.com/keeshux/tunnelkit/issues/95)
+- Tolerate weak certificates. [#97](https://github.com/keeshux/tunnelkit/issues/97)
 
 ## 1.7.0 (2019-04-28)
 
