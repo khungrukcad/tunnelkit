@@ -154,6 +154,9 @@ extension SessionProxy {
 
         /// All IPv6 traffic goes through the VPN.
         case IPv6
+        
+        /// Block LAN while connected.
+        case blockLocal
     }
     
     /// :nodoc:
