@@ -792,12 +792,16 @@ public class SessionProxy {
 
             log.debug("Start TLS handshake")
 
-            negotiationKey.tlsOptional = TLSBox(
+            let tls = TLSBox(
                 caPath: caURL.path,
                 clientCertificatePath: (configuration.clientCertificate != nil) ? clientCertificateURL.path : nil,
                 clientKeyPath: (configuration.clientKey != nil) ? clientKeyURL.path : nil,
                 checksEKU: configuration.checksEKU ?? false
             )
+            if let tlsSecurityLevel = configuration.tlsSecurityLevel {
+                tls.securityLevel = tlsSecurityLevel
+            }
+            negotiationKey.tlsOptional = tls
             do {
                 try negotiationKey.tls.start()
             } catch let e {
