@@ -197,6 +197,9 @@ extension SessionProxy {
         /// The optional TLS wrapping.
         public var tlsWrap: SessionProxy.TLSWrap?
         
+        /// If set, overrides TLS security level (0 = lowest).
+        public var tlsSecurityLevel: Int?
+        
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
@@ -273,6 +276,7 @@ extension SessionProxy {
                 clientCertificate: clientCertificate,
                 clientKey: clientKey,
                 tlsWrap: tlsWrap,
+                tlsSecurityLevel: tlsSecurityLevel,
                 keepAliveInterval: keepAliveInterval,
                 renegotiatesAfter: renegotiatesAfter,
                 hostname: hostname,
@@ -337,6 +341,9 @@ extension SessionProxy {
         
         /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
         public let tlsWrap: TLSWrap?
+
+        /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsSecurityLevel`
+        public let tlsSecurityLevel: Int?
 
         /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?
@@ -427,6 +434,7 @@ extension SessionProxy.Configuration {
         builder.clientCertificate = clientCertificate
         builder.clientKey = clientKey
         builder.tlsWrap = tlsWrap
+        builder.tlsSecurityLevel = tlsSecurityLevel
         builder.keepAliveInterval = keepAliveInterval
         builder.renegotiatesAfter = renegotiatesAfter
         builder.hostname = hostname
