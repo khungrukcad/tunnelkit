@@ -583,18 +583,17 @@ extension TunnelKitProvider {
             if sessionConfiguration.randomizeEndpoint ?? false {
                 log.info("\tRandomize endpoint: true")
             }
-            // FIXME: refine logging of other routing policies
             if let routingPolicies = sessionConfiguration.routingPolicies {
-                log.info("\tDefault gateway: \(routingPolicies.map { $0.rawValue })")
+                log.info("\tGateway: \(routingPolicies.map { $0.rawValue })")
             } else {
-                log.info("\tDefault gateway: no")
+                log.info("\tGateway: not configured")
             }
             if let dnsServers = sessionConfiguration.dnsServers, !dnsServers.isEmpty {
                 log.info("\tDNS: \(dnsServers.maskedDescription)")
             } else {
-                log.info("\tDNS: default")
+                log.info("\tDNS: not configured")
             }
-            if let searchDomain = sessionConfiguration.searchDomain {
+            if let searchDomain = sessionConfiguration.searchDomain, !searchDomain.isEmpty {
                 log.info("\tSearch domain: \(searchDomain.maskedDescription)")
             }
             if let httpProxy = sessionConfiguration.httpProxy {
