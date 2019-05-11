@@ -135,6 +135,9 @@ extension TunnelKitProvider {
         /// The current network changed (e.g. switched from WiFi to data connection).
         case networkChanged
         
+        /// Default gateway could not be attained.
+        case gatewayUnattainable
+        
         /// The server replied in an unexpected way.
         case unexpectedReply
     }

@@ -608,6 +608,19 @@ extension TunnelKitProvider: SessionProxyDelegate {
             ipv6Settings?.excludedRoutes = []
         }
 
+        // shut down if default gateway is not attainable
+        var hasGateway = false
+        if isIPv4Gateway && (ipv4Settings != nil) {
+            hasGateway = true
+        }
+        if isIPv6Gateway && (ipv6Settings != nil) {
+            hasGateway = true
+        }
+        guard !isGateway || hasGateway else {
+            proxy?.shutdown(error: ProviderError.gatewayUnattainable)
+            return
+        }
+        
         var dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers ?? []
 
         // fall back
