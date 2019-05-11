@@ -177,7 +177,7 @@ extension TunnelKitProvider {
                 sessionConfigurationBuilder.httpsProxy = proxy
             }
             sessionConfigurationBuilder.proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String]
-            if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String], !routingPoliciesStrings.isEmpty {
+            if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String] {
                 sessionConfigurationBuilder.routingPolicies = try routingPoliciesStrings.map {
                     guard let policy = SessionProxy.RoutingPolicy(rawValue: $0) else {
                         throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.routingPolicies)] has a badly formed element")
