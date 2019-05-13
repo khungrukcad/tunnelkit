@@ -528,7 +528,7 @@ public class SessionProxy {
             if (code == .hardResetServerV2) && (negotiationKey.controlState == .connected) {
                 deferStop(.shutdown, SessionError.staleSession)
                 return
-            } else if (code == .softResetV1) && (negotiationKey.state != .softReset) {
+            } else if (code == .softResetV1) && !negotiationKey.softReset {
                 softReset(isServerInitiated: true)
             }
 
