@@ -192,7 +192,7 @@ This product includes software developed by the OpenSSL Project for use in the O
 
 Twitter: [@keeshux][about-twitter]
 
-Website: [davidederosa.com][about-website]
+Website: [passepartoutvpn.app][about-website]
 
 [openvpn]: https://openvpn.net/index.php/open-source/overview.html
 
@@ -218,5 +218,5 @@ Website: [davidederosa.com][about-website]
 [dep-lzo-website]: http://www.oberhumer.com/opensource/lzo/
 
 [about-twitter]: https://twitter.com/keeshux
-[about-website]: https://davidederosa.com
+[about-website]: https://passepartoutvpn.app
 [about-patreon]: https://www.patreon.com/keeshux
