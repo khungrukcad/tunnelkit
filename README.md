@@ -180,9 +180,9 @@ For more details please see [CONTRIBUTING][contrib-readme].
 
 ## Credits
 
-- [PIATunnel][dep-piatunnel-repo] - Copyright (c) 2018-Present Private Internet Access
-- [SwiftyBeaver][dep-swiftybeaver-repo] - Copyright (c) 2015 Sebastian Kreutzberger
-- [lzo][dep-lzo-website] - Copyright (c) 1996 - 2017 Markus F.X.J. Oberhumer
+- [lzo][dep-lzo-website] - © 1996 - 2017 Markus F.X.J. Oberhumer
+- [PIATunnel][dep-piatunnel-repo] - © 2018-Present Private Internet Access
+- [SwiftyBeaver][dep-swiftybeaver-repo] - © 2015 Sebastian Kreutzberger
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. ([https://www.openssl.org/][dep-openssl])
 
