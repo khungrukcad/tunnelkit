@@ -36,7 +36,6 @@
 
 import Foundation
 import __TunnelKitNative
-import CommonCrypto
 
 struct CoreConfiguration {
     static let identifier = "com.algoritmico.TunnelKit"
@@ -116,12 +115,13 @@ extension CustomStringConvertible {
         guard CoreConfiguration.masksPrivateData else {
             return description
         }
-        var data = description.data(using: .utf8)!
-        let dataCount = CC_LONG(data.count)
-        var md = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
-        md.withUnsafeMutableBytes {
-            _ = CC_SHA1(&data, dataCount, $0.bytePointer)
-        }
-        return "#\(md.toHex().prefix(16))#"
+//        var data = description.data(using: .utf8)!
+//        let dataCount = CC_LONG(data.count)
+//        var md = Data(count: Int(CC_SHA1_DIGEST_LENGTH))
+//        md.withUnsafeMutableBytes {
+//            _ = CC_SHA1(&data, dataCount, $0.bytePointer)
+//        }
+//        return "#\(md.toHex().prefix(16))#"
+        return "<masked>"
     }
 }
