@@ -1,5 +1,5 @@
 //
-//  SessionProxy.swift
+//  OpenVPNSession.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/3/17.
@@ -41,8 +41,8 @@ import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
-/// Observes major events notified by a `SessionProxy`.
-public protocol SessionProxyDelegate: class {
+/// Observes major events notified by a `OpenVPNSession`.
+public protocol OpenVPNSessionDelegate: class {
     
     /**
      Called after starting a session.
@@ -50,19 +50,19 @@ public protocol SessionProxyDelegate: class {
      - Parameter remoteAddress: The address of the VPN server.
      - Parameter options: The pulled tunnel settings.
      */
-    func sessionDidStart(_: SessionProxy, remoteAddress: String, options: OpenVPN.PushReply)
+    func sessionDidStart(_: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration)
     
     /**
      Called after stopping a session.
      
      - Parameter shouldReconnect: When `true`, the session can/should be restarted. Usually because the stop reason was recoverable.
-     - Seealso: `SessionProxy.reconnect(...)`
+     - Seealso: `OpenVPNSession.reconnect(...)`
      */
-    func sessionDidStop(_: SessionProxy, shouldReconnect: Bool)
+    func sessionDidStop(_: OpenVPNSession, shouldReconnect: Bool)
 }
 
 /// Provides methods to set up and maintain an OpenVPN session.
-public class SessionProxy {
+public class OpenVPNSession {
     private enum StopMethod {
         case shutdown
         
@@ -97,8 +97,8 @@ public class SessionProxy {
         return interval
     }
     
-    /// An optional `SessionProxyDelegate` for receiving session events.
-    public weak var delegate: SessionProxyDelegate?
+    /// An optional `OpenVPNSessionDelegate` for receiving session events.
+    public weak var delegate: OpenVPNSessionDelegate?
     
     // MARK: State
 
@@ -341,10 +341,10 @@ public class SessionProxy {
     }
     
     /**
-     Shuts down the session with an optional `Error` reason and signals a reconnect flag to `SessionProxyDelegate.sessionDidStop(...)`. Does nothing if the session is already stopped or about to stop.
+     Shuts down the session with an optional `Error` reason and signals a reconnect flag to `OpenVPNSessionDelegate.sessionDidStop(...)`. Does nothing if the session is already stopped or about to stop.
      
      - Parameter error: An optional `Error` being the reason of the shutdown.
-     - Seealso: `SessionProxyDelegate.sessionDidStop(...)`
+     - Seealso: `OpenVPNSessionDelegate.sessionDidStop(...)`
      */
     public func reconnect(error: Error?) {
         guard !isStopping else {
@@ -402,11 +402,11 @@ public class SessionProxy {
         }
 
         guard !negotiationKey.didHardResetTimeOut(link: link) else {
-            doReconnect(error: SessionError.negotiationTimeout)
+            doReconnect(error: OpenVPNError.negotiationTimeout)
             return
         }
         guard !negotiationKey.didNegotiationTimeOut(link: link) else {
-            doShutdown(error: SessionError.negotiationTimeout)
+            doShutdown(error: OpenVPNError.negotiationTimeout)
             return
         }
         
@@ -499,7 +499,7 @@ public class SessionProxy {
                 let key = firstByte & 0b111
                 guard let _ = keys[key] else {
                     log.error("Key with id \(key) not found")
-                    deferStop(.shutdown, SessionError.badKey)
+                    deferStop(.shutdown, OpenVPNError.badKey)
                     return
                 }
 
@@ -526,7 +526,7 @@ public class SessionProxy {
 //                return
             }
             if (code == .hardResetServerV2) && (negotiationKey.controlState == .connected) {
-                deferStop(.shutdown, SessionError.staleSession)
+                deferStop(.shutdown, OpenVPNError.staleSession)
                 return
             } else if (code == .softResetV1) && !negotiationKey.softReset {
                 softReset(isServerInitiated: true)
@@ -567,7 +567,7 @@ public class SessionProxy {
         
         let now = Date()
         guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.OpenVPN.pingTimeout) else {
-            deferStop(.shutdown, SessionError.pingTimeout)
+            deferStop(.shutdown, OpenVPNError.pingTimeout)
             return
         }
 
@@ -766,7 +766,7 @@ public class SessionProxy {
     private func handleControlPacket(_ packet: ControlPacket) {
         guard packet.key == negotiationKey.id else {
             log.error("Bad key in control packet (\(packet.key) != \(negotiationKey.id))")
-//            deferStop(.shutdown, SessionError.badKey)
+//            deferStop(.shutdown, OpenVPNError.badKey)
             return
         }
         
@@ -779,12 +779,12 @@ public class SessionProxy {
             }
             guard let remoteSessionId = controlChannel.remoteSessionId else {
                 log.error("No remote sessionId (never set)")
-                deferStop(.shutdown, SessionError.missingSessionId)
+                deferStop(.shutdown, OpenVPNError.missingSessionId)
                 return
             }
             guard packet.sessionId == remoteSessionId else {
                 log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
-                deferStop(.shutdown, SessionError.sessionMismatch)
+                deferStop(.shutdown, OpenVPNError.sessionMismatch)
                 return
             }
 
@@ -829,12 +829,12 @@ public class SessionProxy {
         else if ((packet.code == .controlV1) && (negotiationKey.state == .tls)) {
             guard let remoteSessionId = controlChannel.remoteSessionId else {
                 log.error("No remote sessionId found in packet (control packets before server HARD_RESET)")
-                deferStop(.shutdown, SessionError.missingSessionId)
+                deferStop(.shutdown, OpenVPNError.missingSessionId)
                 return
             }
             guard packet.sessionId == remoteSessionId else {
                 log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
-                deferStop(.shutdown, SessionError.sessionMismatch)
+                deferStop(.shutdown, OpenVPNError.sessionMismatch)
                 return
             }
             
@@ -921,11 +921,11 @@ public class SessionProxy {
             if authenticator?.withLocalOptions ?? false {
                 log.warning("Authentication failure, retrying without local options")
                 withLocalOptions = false
-                deferStop(.reconnect, SessionError.badCredentials)
+                deferStop(.reconnect, OpenVPNError.badCredentials)
                 return
             }
 
-            deferStop(.shutdown, SessionError.badCredentials)
+            deferStop(.shutdown, OpenVPNError.badCredentials)
             return
         }
         
@@ -959,15 +959,15 @@ public class SessionProxy {
                 case .LZO:
                     if !LZOIsSupported() {
                         log.error("Server has LZO compression enabled and this was not built into the library (framing=\(framing))")
-                        throw SessionError.serverCompression
+                        throw OpenVPNError.serverCompression
                     }
 
                 case .other:
                     log.error("Server has non-LZO compression enabled and this is currently unsupported (framing=\(framing))")
-                    throw SessionError.serverCompression
+                    throw OpenVPNError.serverCompression
                 }
             }
-        } catch SessionError.continuationPushReply {
+        } catch OpenVPNError.continuationPushReply {
             continuatedPushReplyMessage = completeMessage.replacingOccurrences(of: "push-continuation", with: "")
             // FIXME: strip "PUSH_REPLY" and "push-continuation 2"
             return
@@ -978,7 +978,7 @@ public class SessionProxy {
         
         pushReply = reply
         guard reply.options.ipv4 != nil || reply.options.ipv6 != nil else {
-            deferStop(.shutdown, SessionError.noRouting)
+            deferStop(.shutdown, OpenVPNError.noRouting)
             return
         }
         
@@ -987,7 +987,7 @@ public class SessionProxy {
         guard let remoteAddress = link?.remoteAddress else {
             fatalError("Could not resolve link remote address")
         }
-        delegate?.sessionDidStart(self, remoteAddress: remoteAddress, options: reply)
+        delegate?.sessionDidStart(self, remoteAddress: remoteAddress, options: reply.options)
 
         scheduleNextPing()
     }
@@ -1039,7 +1039,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
-                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                 }
                 return
             }
@@ -1169,7 +1169,7 @@ public class SessionProxy {
                     
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
-                        self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                        self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                     }
                     return
                 }
@@ -1210,7 +1210,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
-                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                 }
                 return
             }

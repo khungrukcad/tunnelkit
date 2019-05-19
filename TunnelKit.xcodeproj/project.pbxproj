@@ -33,8 +33,8 @@
 		0E0B20412278A85C007A3CB9 /* RoutingTableEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */; };
 		0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
 		0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
-		0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
-		0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* SessionError.swift */; };
+		0E0C2125212ED29D008AB282 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* OpenVPNError.swift */; };
+		0E0C2126212ED29D008AB282 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* OpenVPNError.swift */; };
 		0E0C2127212ED29D008AB282 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* Configuration.swift */; };
 		0E0C2128212ED29D008AB282 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* Configuration.swift */; };
 		0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
@@ -96,8 +96,8 @@
 		0E58BF5722411F3E006FB157 /* LZO.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF5522411F37006FB157 /* LZO.h */; };
 		0E58BF5922411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E58BF5A22411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
-		0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
-		0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */; };
+		0E749F5F2178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */; };
+		0E749F602178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
@@ -158,7 +158,7 @@
 		0EFEB4642006D3C800F81029 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4392006D3C800F81029 /* ReplayProtector.h */; };
 		0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
 		0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
-		0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* SessionProxy.swift */; };
+		0EFEB4672006D3C800F81029 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */; };
 		0EFEB4682006D3C800F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
 		0EFEB4692006D3C800F81029 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43E2006D3C800F81029 /* Packet.swift */; };
 		0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4402006D3C800F81029 /* CryptoBox.h */; };
@@ -182,7 +182,7 @@
 		0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */; };
 		0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
 		0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
-		0EFEB4992006D7F300F81029 /* SessionProxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* SessionProxy.swift */; };
+		0EFEB4992006D7F300F81029 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */; };
 		0EFEB49A2006D7F300F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
 		0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43E2006D3C800F81029 /* Packet.swift */; };
 		0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */; };
@@ -244,7 +244,7 @@
 		0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
 		0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutingTableEntry.h; sourceTree = "<group>"; };
 		0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTableEntry.m; sourceTree = "<group>"; };
-		0E0C2123212ED29D008AB282 /* SessionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionError.swift; sourceTree = "<group>"; };
+		0E0C2123212ED29D008AB282 /* OpenVPNError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNError.swift; sourceTree = "<group>"; };
 		0E0C2124212ED29D008AB282 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E11089E1F77B9E800A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -287,7 +287,7 @@
 		0E58BF5822411FEF006FB157 /* LZO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LZO.m; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionProxy+PIA.swift"; sourceTree = "<group>"; };
+		0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenVPNSession+PIA.swift"; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -326,7 +326,7 @@
 		0EFEB4392006D3C800F81029 /* ReplayProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayProtector.h; sourceTree = "<group>"; };
 		0EFEB43A2006D3C800F81029 /* Authenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		0EFEB43B2006D3C800F81029 /* ZeroingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZeroingData.swift; sourceTree = "<group>"; };
-		0EFEB43C2006D3C800F81029 /* SessionProxy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionProxy.swift; sourceTree = "<group>"; };
+		0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNSession.swift; sourceTree = "<group>"; };
 		0EFEB43D2006D3C800F81029 /* MSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSS.m; sourceTree = "<group>"; };
 		0EFEB43E2006D3C800F81029 /* Packet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Packet.swift; sourceTree = "<group>"; };
 		0EFEB4402006D3C800F81029 /* CryptoBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoBox.h; sourceTree = "<group>"; };
@@ -564,6 +564,9 @@
 				0EFEB42D2006D3C800F81029 /* MSS.h */,
 				0EFEB43D2006D3C800F81029 /* MSS.m */,
 				0EE2F97622916A5D00F56F49 /* OpenVPN.swift */,
+				0E0C2123212ED29D008AB282 /* OpenVPNError.swift */,
+				0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */,
+				0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */,
 				0EFEB43E2006D3C800F81029 /* Packet.swift */,
 				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
 				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
@@ -573,10 +576,7 @@
 				0E3E0F202108A8CC00B371C1 /* PushReply.swift */,
 				0EFEB4392006D3C800F81029 /* ReplayProtector.h */,
 				0EFEB4482006D3C800F81029 /* ReplayProtector.m */,
-				0E0C2123212ED29D008AB282 /* SessionError.swift */,
 				0EFEB42B2006D3C800F81029 /* SessionKey.swift */,
-				0EFEB43C2006D3C800F81029 /* SessionProxy.swift */,
-				0E749F5E2178885500BB2701 /* SessionProxy+PIA.swift */,
 				0EE3B3E321471C3A0027AB17 /* StaticKey.swift */,
 				0EFEB4442006D3C800F81029 /* TLSBox.h */,
 				0EFEB4302006D3C800F81029 /* TLSBox.m */,
@@ -1104,13 +1104,13 @@
 				0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */,
 				0E58BF5922411FEF006FB157 /* LZO.m in Sources */,
 				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
-				0E749F5F2178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
+				0E749F5F2178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
 				0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */,
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
 				0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */,
 				0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
-				0E0C2125212ED29D008AB282 /* SessionError.swift in Sources */,
+				0E0C2125212ED29D008AB282 /* OpenVPNError.swift in Sources */,
 				0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */,
 				0EFEB4552006D3C800F81029 /* EncryptionBridge.swift in Sources */,
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
@@ -1136,7 +1136,7 @@
 				0E58BF3922405410006FB157 /* minilzo.c in Sources */,
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
 				0E041D092152E6FE0025FE3C /* TLSWrap.swift in Sources */,
-				0EFEB4672006D3C800F81029 /* SessionProxy.swift in Sources */,
+				0EFEB4672006D3C800F81029 /* OpenVPNSession.swift in Sources */,
 				0ED9C8642138139000621BA3 /* CompressionFraming.swift in Sources */,
 				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
 				0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */,
@@ -1165,13 +1165,13 @@
 				0E58BF5A22411FEF006FB157 /* LZO.m in Sources */,
 				0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */,
-				0E749F602178885500BB2701 /* SessionProxy+PIA.swift in Sources */,
-				0EFEB4992006D7F300F81029 /* SessionProxy.swift in Sources */,
+				0E749F602178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
+				0EFEB4992006D7F300F81029 /* OpenVPNSession.swift in Sources */,
 				0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */,
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */,
 				0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
-				0E0C2126212ED29D008AB282 /* SessionError.swift in Sources */,
+				0E0C2126212ED29D008AB282 /* OpenVPNError.swift in Sources */,
 				0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */,
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,

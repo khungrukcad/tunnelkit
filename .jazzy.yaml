@@ -27,9 +27,9 @@ custom_categories:
     - name: OpenVPN
       children:
         - OpenVPN
-        - SessionError
-        - SessionProxy
-        - SessionProxyDelegate
+        - OpenVPNError
+        - OpenVPNSession
+        - OpenVPNSessionDelegate
     - name: AppExtension
       children:
         - TunnelKitProvider

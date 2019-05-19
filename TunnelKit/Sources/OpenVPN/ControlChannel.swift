@@ -191,11 +191,11 @@ extension OpenVPN {
         // Ruby: handle_acks
         private func readAcks(_ packetIds: [UInt32], acksRemoteSessionId: Data) throws {
             guard let sessionId = sessionId else {
-                throw SessionError.missingSessionId
+                throw OpenVPNError.missingSessionId
             }
             guard acksRemoteSessionId == sessionId else {
                 log.error("Control: Ack session mismatch (\(acksRemoteSessionId.toHex()) != \(sessionId.toHex()))")
-                throw SessionError.sessionMismatch
+                throw OpenVPNError.sessionMismatch
             }
             
             // drop queued out packets if ack-ed
@@ -213,7 +213,7 @@ extension OpenVPN {
         
         func writeAcks(withKey key: UInt8, ackPacketIds: [UInt32], ackRemoteSessionId: Data) throws -> Data {
             guard let sessionId = sessionId else {
-                throw SessionError.missingSessionId
+                throw OpenVPNError.missingSessionId
             }
             let packet = ControlPacket(key: key, sessionId: sessionId, ackIds: ackPacketIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
             log.debug("Control: Write ack packet \(packet)")

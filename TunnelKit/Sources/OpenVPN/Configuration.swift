@@ -167,7 +167,7 @@ extension OpenVPN {
         static let compressionFraming: CompressionFraming = .disabled
     }
     
-    /// The way to create a `Configuration` object for a `SessionProxy`.
+    /// The way to create a `Configuration` object for a `OpenVPNSession`.
     public struct ConfigurationBuilder {
 
         // MARK: General
@@ -232,10 +232,10 @@ extension OpenVPN {
         
         // MARK: Routing
         
-        /// The settings for IPv4. `SessionProxy` only evaluates this server-side.
+        /// The settings for IPv4. `OpenVPNSession` only evaluates this server-side.
         public var ipv4: IPv4Settings?
         
-        /// The settings for IPv6. `SessionProxy` only evaluates this server-side.
+        /// The settings for IPv6. `OpenVPNSession` only evaluates this server-side.
         public var ipv6: IPv6Settings?
         
         /// The DNS servers.
@@ -314,7 +314,7 @@ extension OpenVPN {
         }
     }
     
-    /// The immutable configuration for `SessionProxy`.
+    /// The immutable configuration for `OpenVPNSession`.
     public struct Configuration: Codable {
 
         /// - Seealso: `ConfigurationBuilder.cipher`

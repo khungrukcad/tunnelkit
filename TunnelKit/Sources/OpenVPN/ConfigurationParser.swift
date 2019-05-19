@@ -266,7 +266,7 @@ extension OpenVPN {
                     isContinuation = ($0.first == "2")
                 }
                 guard !isContinuation else {
-                    throw SessionError.continuationPushReply
+                    throw OpenVPNError.continuationPushReply
                 }
 
                 // MARK: Inline content

@@ -37,15 +37,12 @@
 import Foundation
 
 extension OpenVPN {
-
-    /// Groups the parsed reply of a successfully started session.
-    public struct PushReply: CustomStringConvertible {
+    struct PushReply: CustomStringConvertible {
         private static let prefix = "PUSH_REPLY,"
         
         private let original: String
 
-        /// The pushed options as a `Configuration` object.
-        public let options: Configuration
+        let options: Configuration
         
         init?(message: String) throws {
             guard message.hasPrefix(PushReply.prefix) else {
@@ -63,7 +60,7 @@ extension OpenVPN {
         // MARK: CustomStringConvertible
         
         /// :nodoc:
-        public var description: String {
+        var description: String {
             let stripped = NSMutableString(string: original)
             ConfigurationParser.Regex.authToken.replaceMatches(
                 in: stripped,

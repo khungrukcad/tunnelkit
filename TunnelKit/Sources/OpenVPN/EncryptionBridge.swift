@@ -47,7 +47,7 @@ extension OpenVPN {
         private let box: CryptoBox
         
         /**
-         Initializes the PRNG. Must be issued before using `SessionProxy`.
+         Initializes the PRNG. Must be issued before using `OpenVPNSession`.
      
          - Parameter seedLength: The length in bytes of the pseudorandom seed that will feed the PRNG.
          */
