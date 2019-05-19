@@ -115,7 +115,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     // MARK: Internal state
 
-    private var proxy: OpenVPNSession?
+    private var session: OpenVPNSession?
     
     private var socket: GenericSocket?
 
@@ -212,17 +212,17 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
         cfg.print(appVersion: appVersion)
         
-        let proxy: OpenVPNSession
+        let session: OpenVPNSession
         do {
-            proxy = try OpenVPNSession(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
+            session = try OpenVPNSession(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
             refreshDataCount()
         } catch let e {
             completionHandler(e)
             return
         }
-        proxy.credentials = credentials
-        proxy.delegate = self
-        self.proxy = proxy
+        session.credentials = credentials
+        session.delegate = self
+        self.session = session
 
         logCurrentSSID()
 
@@ -238,7 +238,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         log.info("Stopping tunnel...")
         cfg.clearLastError(in: appGroup)
 
-        guard let proxy = proxy else {
+        guard let session = session else {
             flushLog()
             completionHandler()
             return
@@ -257,7 +257,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             pendingHandler()
         }
         tunnelQueue.sync {
-            proxy.shutdown(error: nil)
+            session.shutdown(error: nil)
         }
     }
     
@@ -269,7 +269,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             response = memoryLog.description.data(using: .utf8)
 
         case .dataCount:
-            if let proxy = proxy, let dataCount = proxy.dataCount() {
+            if let session = session, let dataCount = session.dataCount() {
                 response = Data()
                 response?.append(UInt64(dataCount.0)) // inbound
                 response?.append(UInt64(dataCount.1)) // outbound
@@ -313,8 +313,8 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     }
     
     private func finishTunnelDisconnection(error: Error?) {
-        if let proxy = proxy, !(reasserting && proxy.canRebindLink()) {
-            proxy.cleanup()
+        if let session = session, !(reasserting && session.canRebindLink()) {
+            session.cleanup()
         }
         
         socket?.delegate = nil
@@ -374,7 +374,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         tunnelQueue.schedule(after: .milliseconds(dataCountInterval)) { [weak self] in
             self?.refreshDataCount()
         }
-        guard isCountingData, let proxy = proxy, let dataCount = proxy.dataCount() else {
+        guard isCountingData, let session = session, let dataCount = session.dataCount() else {
             defaults?.removeDataCountArray()
             return
         }
@@ -401,19 +401,19 @@ extension TunnelKitProvider: GenericSocketDelegate {
     }
     
     func socketDidBecomeActive(_ socket: GenericSocket) {
-        guard let proxy = proxy else {
+        guard let session = session else {
             return
         }
-        if proxy.canRebindLink() {
-            proxy.rebindLink(socket.link(withMTU: cfg.mtu))
+        if session.canRebindLink() {
+            session.rebindLink(socket.link(withMTU: cfg.mtu))
             reasserting = false
         } else {
-            proxy.setLink(socket.link(withMTU: cfg.mtu))
+            session.setLink(socket.link(withMTU: cfg.mtu))
         }
     }
     
     func socket(_ socket: GenericSocket, didShutdownWithFailure failure: Bool) {
-        guard let proxy = proxy else {
+        guard let session = session else {
             return
         }
         
@@ -422,7 +422,7 @@ extension TunnelKitProvider: GenericSocketDelegate {
         var upgradedSocket: GenericSocket?
 
         // look for error causing shutdown
-        shutdownError = proxy.stopError
+        shutdownError = session.stopError
         if failure && (shutdownError == nil) {
             shutdownError = ProviderError.linkError
         }
@@ -466,7 +466,7 @@ extension TunnelKitProvider: GenericSocketDelegate {
     func socketHasBetterPath(_ socket: GenericSocket) {
         log.debug("Stopping tunnel due to a new better path")
         logCurrentSSID()
-        proxy?.reconnect(error: ProviderError.networkChanged)
+        session?.reconnect(error: ProviderError.networkChanged)
     }
 }
 
@@ -475,7 +475,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
     // MARK: OpenVPNSessionDelegate (tunnel queue)
     
     /// :nodoc:
-    public func sessionDidStart(_ proxy: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration) {
+    public func sessionDidStart(_ session: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration) {
         reasserting = false
         
         log.info("Session did start")
@@ -513,7 +513,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
             }
         }
 
-        bringNetworkUp(remoteAddress: remoteAddress, localOptions: proxy.configuration, options: options) { (error) in
+        bringNetworkUp(remoteAddress: remoteAddress, localOptions: session.configuration, options: options) { (error) in
             if let error = error {
                 log.error("Failed to configure tunnel: \(error)")
                 self.pendingStartHandler?(error)
@@ -523,7 +523,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
             
             log.info("Tunnel interface is now UP")
             
-            proxy.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow, isIPv6: options.ipv6 != nil))
+            session.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow, isIPv6: options.ipv6 != nil))
 
             self.pendingStartHandler?(nil)
             self.pendingStartHandler = nil
@@ -617,7 +617,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
             hasGateway = true
         }
         guard !isGateway || hasGateway else {
-            proxy?.shutdown(error: ProviderError.gatewayUnattainable)
+            session?.shutdown(error: ProviderError.gatewayUnattainable)
             return
         }
         
