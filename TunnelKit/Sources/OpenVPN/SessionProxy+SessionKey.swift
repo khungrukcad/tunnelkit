@@ -85,12 +85,12 @@ extension SessionProxy {
 
         // Ruby: Key.hard_reset_timeout
         func didHardResetTimeOut(link: LinkInterface) -> Bool {
-            return ((state == .hardReset) && (-startTime.timeIntervalSinceNow > link.hardResetTimeout))
+            return ((state == .hardReset) && (-startTime.timeIntervalSinceNow > CoreConfiguration.OpenVPN.hardResetTimeout))
         }
         
         // Ruby: Key.negotiate_timeout
         func didNegotiationTimeOut(link: LinkInterface) -> Bool {
-            let timeout = (softReset ? CoreConfiguration.OpenVPN.softNegotiationTimeout : link.negotiationTimeout)
+            let timeout = (softReset ? CoreConfiguration.OpenVPN.softNegotiationTimeout : CoreConfiguration.OpenVPN.negotiationTimeout)
             
             return ((controlState != .connected) && (-startTime.timeIntervalSinceNow > timeout))
         }

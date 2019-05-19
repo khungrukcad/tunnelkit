@@ -200,10 +200,6 @@ class NETCPLink: LinkInterface {
         return maxPacketSize
     }
     
-    let negotiationTimeout: TimeInterval = 60.0
-    
-    let hardResetTimeout: TimeInterval = 20.0
-    
     func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
         loopReadPackets(queue, Data(), handler)
     }

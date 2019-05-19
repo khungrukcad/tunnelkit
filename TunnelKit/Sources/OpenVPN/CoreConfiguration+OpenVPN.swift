@@ -44,7 +44,11 @@ extension CoreConfiguration {
         // MARK: Session
         
         static let usesReplayProtection = true
+
+        static let negotiationTimeout = 30.0
         
+        static let hardResetTimeout = 10.0
+
         static let tickInterval = 0.2
         
         static let pushRequestInterval = 2.0

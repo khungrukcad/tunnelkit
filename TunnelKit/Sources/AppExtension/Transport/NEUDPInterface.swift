@@ -202,10 +202,6 @@ class NEUDPLink: LinkInterface {
         return maxDatagrams
     }
 
-    let negotiationTimeout: TimeInterval = 10.0
-    
-    let hardResetTimeout: TimeInterval = 5.0
-    
     func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
 
         // WARNING: runs in Network.framework queue

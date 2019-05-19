@@ -50,10 +50,4 @@ public protocol LinkInterface: IOInterface {
     
     /// The number of packets that this interface is able to bufferize.
     var packetBufferSize: Int { get }
-
-    /// Timeout in seconds for negotiation start.
-    var negotiationTimeout: TimeInterval { get }
-
-    /// Timeout in seconds for HARD_RESET response.
-    var hardResetTimeout: TimeInterval { get }
 }
