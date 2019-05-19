@@ -39,27 +39,10 @@ import __TunnelKitCore
 import __TunnelKitOpenVPN
 
 extension OpenVPN {
-
-    /// Bridges native encryption for high-level operations.
-    public class EncryptionBridge {
+    class EncryptionBridge {
         private static let maxHmacLength = 100
         
         private let box: CryptoBox
-        
-        /**
-         Initializes the PRNG. Must be issued before using `OpenVPNSession`.
-     
-         - Parameter seedLength: The length in bytes of the pseudorandom seed that will feed the PRNG.
-         */
-        public static func prepareRandomNumberGenerator(seedLength: Int) -> Bool {
-            let seed: ZeroingData
-            do {
-                seed = try SecureRandom.safeData(length: seedLength)
-            } catch {
-                return false
-            }
-            return CryptoBox.preparePRNG(withSeed: seed.bytes, length: seed.count)
-        }
         
         // Ruby: keys_prf
         private static func keysPRF(

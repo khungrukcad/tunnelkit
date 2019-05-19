@@ -205,7 +205,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         log.info("Starting tunnel...")
         cfg.clearLastError(in: appGroup)
         
-        guard OpenVPN.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
+        guard OpenVPN.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderConfigurationError.prngInitialization)
             return
         }
