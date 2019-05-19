@@ -57,10 +57,10 @@ class AppExtensionTests: XCTestCase {
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
         let hostname = "example.com"
-        let credentials = Credentials("foo", "bar")
+        let credentials = OpenVPN.Credentials("foo", "bar")
 
-        var sessionBuilder = ConfigurationBuilder()
-        sessionBuilder.ca = CryptoContainer(pem: "abcdef")
+        var sessionBuilder = OpenVPN.ConfigurationBuilder()
+        sessionBuilder.ca = OpenVPN.CryptoContainer(pem: "abcdef")
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha256
         sessionBuilder.hostname = hostname

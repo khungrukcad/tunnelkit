@@ -49,7 +49,7 @@ class DataPathPerformanceTests: XCTestCase {
         let ck = try! SecureRandom.safeData(length: 32)
         let hk = try! SecureRandom.safeData(length: 32)
         
-        let crypto = try! EncryptionBridge(.aes128cbc, .sha1, ck, ck, hk, hk)
+        let crypto = try! OpenVPN.EncryptionBridge(.aes128cbc, .sha1, ck, ck, hk, hk)
         encrypter = crypto.encrypter()
         decrypter = crypto.decrypter()
         
