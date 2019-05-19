@@ -37,11 +37,11 @@
 import Foundation
 import __TunnelKitNative
 
-struct CoreConfiguration {
+class CoreConfiguration {
     static let identifier = "com.algoritmico.TunnelKit"
     
     static let version: String = {
-        let bundle = Bundle(for: SessionProxy.self)
+        let bundle = Bundle(for: CoreConfiguration.self)
         guard let info = bundle.infoDictionary else {
             return ""
         }
