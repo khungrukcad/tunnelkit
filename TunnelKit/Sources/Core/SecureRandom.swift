@@ -48,7 +48,7 @@ class SecureRandom {
     static func uint32FromBuffer() throws -> UInt32 {
         var randomBuffer = [UInt8](repeating: 0, count: 4)
 
-        if (SecRandomCopyBytes(kSecRandomDefault, 4, &randomBuffer) != 0) {
+        guard SecRandomCopyBytes(kSecRandomDefault, 4, &randomBuffer) == 0 else {
             throw SecureRandomError.randomGenerator
         }
 
@@ -65,7 +65,7 @@ class SecureRandom {
         
         try withUnsafeMutablePointer(to: &randomNumber) {
             try $0.withMemoryRebound(to: UInt8.self, capacity: 4) { (randomBytes: UnsafeMutablePointer<UInt8>) -> Void in
-                guard (SecRandomCopyBytes(kSecRandomDefault, 4, randomBytes) == 0) else {
+                guard SecRandomCopyBytes(kSecRandomDefault, 4, randomBytes) == 0 else {
                     throw SecureRandomError.randomGenerator
                 }
             }
@@ -95,7 +95,7 @@ class SecureRandom {
             randomBytes.deallocate()
         }
         
-        guard (SecRandomCopyBytes(kSecRandomDefault, length, randomBytes) == 0) else {
+        guard SecRandomCopyBytes(kSecRandomDefault, length, randomBytes) == 0 else {
             throw SecureRandomError.randomGenerator
         }
 
