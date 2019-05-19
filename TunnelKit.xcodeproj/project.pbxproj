@@ -124,6 +124,8 @@
 		0EE2F975229163C900F56F49 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F973229163C900F56F49 /* Proxy.swift */; };
 		0EE2F97722916A5D00F56F49 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F97622916A5D00F56F49 /* OpenVPN.swift */; };
 		0EE2F97822916A5D00F56F49 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F97622916A5D00F56F49 /* OpenVPN.swift */; };
+		0EE2F97A2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
+		0EE2F97B2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
 		0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
 		0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
 		0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
@@ -305,6 +307,7 @@
 		0EE2F9702291638600F56F49 /* IPv6Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPv6Settings.swift; sourceTree = "<group>"; };
 		0EE2F973229163C900F56F49 /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		0EE2F97622916A5D00F56F49 /* OpenVPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPN.swift; sourceTree = "<group>"; };
+		0EE2F9792291817300F56F49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		0EE3B3E321471C3A0027AB17 /* StaticKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticKey.swift; sourceTree = "<group>"; };
 		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
 		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
@@ -599,6 +602,7 @@
 				0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
+				0EE2F9792291817300F56F49 /* Errors.swift */,
 				0EFEB4452006D3C800F81029 /* IOInterface.swift */,
 				0EE2F96D2291636B00F56F49 /* IPv4Settings.swift */,
 				0EE2F9702291638600F56F49 /* IPv6Settings.swift */,
@@ -1115,6 +1119,7 @@
 				0EFEB4552006D3C800F81029 /* EncryptionBridge.swift in Sources */,
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
 				0EE2F9712291638600F56F49 /* IPv6Settings.swift in Sources */,
+				0EE2F97A2291817300F56F49 /* Errors.swift in Sources */,
 				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
 				0EFB902B22788512006405E4 /* RoutingTable.m in Sources */,
 				0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */,
@@ -1177,6 +1182,7 @@
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,
 				0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */,
 				0EE2F9722291638600F56F49 /* IPv6Settings.swift in Sources */,
+				0EE2F97B2291817300F56F49 /* Errors.swift in Sources */,
 				0EFB902C22788512006405E4 /* RoutingTable.m in Sources */,
 				0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */,
 				0EFEB49A2006D7F300F81029 /* MSS.m in Sources */,

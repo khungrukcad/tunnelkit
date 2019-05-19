@@ -35,7 +35,6 @@
 //
 
 import Foundation
-import __TunnelKitCore
 
 /// The possible errors raised/thrown during `OpenVPNSession` operation.
 public enum OpenVPNError: String, Error {
@@ -78,19 +77,4 @@ public enum OpenVPNError: String, Error {
 
     /// Missing routing information.
     case noRouting
-}
-
-extension Error {
-    func isTunnelKitError() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain
-    }
-    
-    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
-        let te = self as NSError
-        guard te.domain == TunnelKitErrorDomain else {
-            return nil
-        }
-        return TunnelKitErrorCode(rawValue: te.code)
-    }
 }
