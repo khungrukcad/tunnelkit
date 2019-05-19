@@ -126,6 +126,8 @@
 		0EE2F97822916A5D00F56F49 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F97622916A5D00F56F49 /* OpenVPN.swift */; };
 		0EE2F97A2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
 		0EE2F97B2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
+		0EE2F9AC2291853D00F56F49 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9AB2291853D00F56F49 /* Session.swift */; };
+		0EE2F9AD2291853D00F56F49 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9AB2291853D00F56F49 /* Session.swift */; };
 		0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
 		0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
 		0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
@@ -308,6 +310,7 @@
 		0EE2F973229163C900F56F49 /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
 		0EE2F97622916A5D00F56F49 /* OpenVPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPN.swift; sourceTree = "<group>"; };
 		0EE2F9792291817300F56F49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
+		0EE2F9AB2291853D00F56F49 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
 		0EE3B3E321471C3A0027AB17 /* StaticKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticKey.swift; sourceTree = "<group>"; };
 		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
 		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
@@ -617,6 +620,7 @@
 				0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */,
 				0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */,
 				0EFEB4372006D3C800F81029 /* SecureRandom.swift */,
+				0EE2F9AB2291853D00F56F49 /* Session.swift */,
 				0E011F792196D93600BA59EE /* SocketType.swift */,
 				0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */,
 				0EFEB4412006D3C800F81029 /* ZeroingData.h */,
@@ -1110,6 +1114,7 @@
 				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0E749F5F2178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
 				0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */,
+				0EE2F9AC2291853D00F56F49 /* Session.swift in Sources */,
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
 				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
 				0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */,
@@ -1173,6 +1178,7 @@
 				0E749F602178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
 				0EFEB4992006D7F300F81029 /* OpenVPNSession.swift in Sources */,
 				0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */,
+				0EE2F9AD2291853D00F56F49 /* Session.swift in Sources */,
 				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
 				0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */,
 				0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */,

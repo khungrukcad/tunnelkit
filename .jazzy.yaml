@@ -22,8 +22,9 @@ custom_categories:
         - IPv6Settings
         - LinkInterface
         - Proxy
-        - TunnelInterface
+        - Session
         - SocketType
+        - TunnelInterface
     - name: OpenVPN
       children:
         - OpenVPN

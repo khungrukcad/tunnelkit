@@ -62,7 +62,7 @@ public protocol OpenVPNSessionDelegate: class {
 }
 
 /// Provides methods to set up and maintain an OpenVPN session.
-public class OpenVPNSession {
+public class OpenVPNSession: Session {
     private enum StopMethod {
         case shutdown
         
@@ -236,15 +236,8 @@ public class OpenVPNSession {
         }
     }
     
-    // MARK: Public interface
+    // MARK: Session
 
-    /**
-     Establishes the link interface for this session. The interface must be up and running for sending and receiving packets.
-     
-     - Precondition: `link` is an active network interface.
-     - Postcondition: The VPN negotiation is started.
-     - Parameter link: The `LinkInterface` on which to establish the VPN session.
-     */
     public func setLink(_ link: LinkInterface) {
         guard (self.link == nil) else {
             log.warning("Link interface already set!")
@@ -265,11 +258,6 @@ public class OpenVPNSession {
         start()
     }
     
-    /**
-     Returns `true` if the current session can rebind to a new link with `rebindLink(...)`.
-
-     - Returns: `true` if supports link rebinding.
-     */
     public func canRebindLink() -> Bool {
 //        return (pushReply?.peerId != nil)
 
@@ -277,14 +265,6 @@ public class OpenVPNSession {
         return false
     }
     
-    /**
-     Rebinds the session to a new link if supported.
-     
-     - Precondition: `link` is an active network interface.
-     - Postcondition: The VPN session is active.
-     - Parameter link: The `LinkInterface` on which to establish the VPN session.
-     - Seealso: `canRebindLink()`.
-     */
     public func rebindLink(_ link: LinkInterface) {
         guard let _ = pushReply?.options.peerId else {
             log.warning("Session doesn't support link rebinding!")
@@ -299,13 +279,6 @@ public class OpenVPNSession {
         loopLink()
     }
 
-    /**
-     Establishes the tunnel interface for this session. The interface must be up and running for sending and receiving packets.
-     
-     - Precondition: `tunnel` is an active network interface.
-     - Postcondition: The VPN data channel is open.
-     - Parameter tunnel: The `TunnelInterface` on which to exchange the VPN data traffic.
-     */
     public func setTunnel(tunnel: TunnelInterface) {
         guard (self.tunnel == nil) else {
             log.warning("Tunnel interface already set!")
@@ -315,11 +288,6 @@ public class OpenVPNSession {
         loopTunnel()
     }
 
-    /**
-     Returns the current data bytes count.
- 
-     - Returns: The current data bytes count as a pair, inbound first.
-     */
     public func dataCount() -> (Int, Int)? {
         guard let _ = link else {
             return nil
@@ -327,11 +295,6 @@ public class OpenVPNSession {
         return controlChannel.currentDataCount()
     }
     
-    /**
-     Shuts down the session with an optional `Error` reason. Does nothing if the session is already stopped or about to stop.
-     
-     - Parameter error: An optional `Error` being the reason of the shutdown.
-     */
     public func shutdown(error: Error?) {
         guard !isStopping else {
             log.warning("Ignore stop request, already stopping!")
@@ -340,12 +303,6 @@ public class OpenVPNSession {
         deferStop(.shutdown, error)
     }
     
-    /**
-     Shuts down the session with an optional `Error` reason and signals a reconnect flag to `OpenVPNSessionDelegate.sessionDidStop(...)`. Does nothing if the session is already stopped or about to stop.
-     
-     - Parameter error: An optional `Error` being the reason of the shutdown.
-     - Seealso: `OpenVPNSessionDelegate.sessionDidStop(...)`
-     */
     public func reconnect(error: Error?) {
         guard !isStopping else {
             log.warning("Ignore stop request, already stopping!")
@@ -355,9 +312,6 @@ public class OpenVPNSession {
     }
     
     // Ruby: cleanup
-    /**
-     Cleans up the session resources.
-     */
     public func cleanup() {
         log.info("Cleaning up...")
 

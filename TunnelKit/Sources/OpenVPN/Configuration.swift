@@ -61,7 +61,7 @@ extension OpenVPN {
         }
     }
 
-    /// The available encryption algorithms.
+    /// Encryption algorithm.
     public enum Cipher: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
@@ -114,7 +114,7 @@ extension OpenVPN {
         }
     }
     
-    /// The available message digest algorithms.
+    /// Message digest algorithm.
     public enum Digest: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
