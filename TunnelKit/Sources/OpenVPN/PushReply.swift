@@ -1,5 +1,5 @@
 //
-//  SessionReply.swift
+//  PushReply.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 7/25/18.
@@ -36,20 +36,16 @@
 
 import Foundation
 
-/// Groups the parsed reply of a successfully started session.
-public protocol SessionReply {
-
-    /// The returned options.
-    var options: OpenVPN.Configuration { get }
-}
-
 extension OpenVPN {
-    struct PushReply: SessionReply, CustomStringConvertible {
+
+    /// Groups the parsed reply of a successfully started session.
+    public struct PushReply: CustomStringConvertible {
         private static let prefix = "PUSH_REPLY,"
         
         private let original: String
 
-        let options: Configuration
+        /// The pushed options as a `Configuration` object.
+        public let options: Configuration
         
         init?(message: String) throws {
             guard message.hasPrefix(PushReply.prefix) else {
@@ -66,7 +62,8 @@ extension OpenVPN {
         
         // MARK: CustomStringConvertible
         
-        var description: String {
+        /// :nodoc:
+        public var description: String {
             let stripped = NSMutableString(string: original)
             ConfigurationParser.Regex.authToken.replaceMatches(
                 in: stripped,

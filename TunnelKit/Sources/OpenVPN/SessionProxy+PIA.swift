@@ -36,7 +36,7 @@
 
 import Foundation
 
-extension OpenVPN.SessionProxy {
+extension SessionProxy {
     struct PIAHardReset {
         private static let obfuscationKeyLength = 3
         
