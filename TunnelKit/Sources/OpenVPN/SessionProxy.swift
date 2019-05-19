@@ -36,7 +36,8 @@
 
 import Foundation
 import SwiftyBeaver
-import __TunnelKitNative
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
@@ -415,7 +416,7 @@ public class SessionProxy {
         }
         
         guard negotiationKey.controlState == .connected else {
-            queue.asyncAfter(deadline: .now() + CoreConfiguration.tickInterval) { [weak self] in
+            queue.asyncAfter(deadline: .now() + CoreConfiguration.OpenVPN.tickInterval) { [weak self] in
                 self?.loopNegotiation()
             }
             return
@@ -565,7 +566,7 @@ public class SessionProxy {
         }
         
         let now = Date()
-        guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.pingTimeout) else {
+        guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.OpenVPN.pingTimeout) else {
             deferStop(.shutdown, SessionError.pingTimeout)
             return
         }
@@ -733,7 +734,7 @@ public class SessionProxy {
         if negotiationKey.softReset {
             completeConnection()
         }
-        nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.pushRequestInterval)
+        nextPushRequestDate = Date().addingTimeInterval(CoreConfiguration.OpenVPN.pushRequestInterval)
     }
     
     private func maybeRenegotiate() {
@@ -898,7 +899,7 @@ public class SessionProxy {
             }
             
             negotiationKey.controlState = .preIfConfig
-            nextPushRequestDate = Date().addingTimeInterval(negotiationKey.softReset ? CoreConfiguration.softResetDelay : CoreConfiguration.retransmissionLimit)
+            nextPushRequestDate = Date().addingTimeInterval(negotiationKey.softReset ? CoreConfiguration.OpenVPN.softResetDelay : CoreConfiguration.OpenVPN.retransmissionLimit)
             pushRequest()
         }
         
@@ -1113,7 +1114,7 @@ public class SessionProxy {
             compressionFraming: (pushedFraming ?? configuration.fallbackCompressionFraming).native,
             compressionAlgorithm: (pushedCompression ?? configuration.compressionAlgorithm ?? .disabled).native,
             maxPackets: link?.packetBufferSize ?? 200,
-            usesReplayProtection: CoreConfiguration.usesReplayProtection
+            usesReplayProtection: CoreConfiguration.OpenVPN.usesReplayProtection
         )
     }
     

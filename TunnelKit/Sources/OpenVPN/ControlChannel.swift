@@ -24,8 +24,9 @@
 //
 
 import Foundation
-import __TunnelKitNative
 import SwiftyBeaver
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
@@ -163,7 +164,7 @@ class ControlChannel {
         for packet in queue.outbound {
             if let sentDate = packet.sentDate {
                 let timeAgo = -sentDate.timeIntervalSinceNow
-                guard (timeAgo >= CoreConfiguration.retransmissionLimit) else {
+                guard (timeAgo >= CoreConfiguration.OpenVPN.retransmissionLimit) else {
                     log.debug("Control: Skip writing packet with packetId \(packet.packetId) (sent on \(sentDate), \(timeAgo) seconds ago)")
                     continue
                 }

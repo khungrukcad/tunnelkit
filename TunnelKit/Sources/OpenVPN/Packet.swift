@@ -35,9 +35,7 @@
 //
 
 import Foundation
-import __TunnelKitNative
-
-// TODO: convert to C for efficiency
+import __TunnelKitOpenVPN
 
 ///// Reads and writes packets as a stream. Useful for stream-oriented links (e.g TCP/IP).
 //public class PacketStream {

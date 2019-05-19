@@ -36,7 +36,8 @@
 
 import Foundation
 @testable import TunnelKit
-@testable import __TunnelKitNative
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 class TestUtils {
     static func uniqArray(_ v: [Int]) -> [Int] {

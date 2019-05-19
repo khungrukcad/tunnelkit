@@ -36,7 +36,7 @@
 
 import NetworkExtension
 import SwiftyBeaver
-import __TunnelKitNative
+import __TunnelKitCore
 
 private let log = SwiftyBeaver.self
 

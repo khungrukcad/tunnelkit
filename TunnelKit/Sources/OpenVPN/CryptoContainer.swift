@@ -1,8 +1,8 @@
 //
-//  CryptoBox.h
+//  CryptoContainer.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 2/4/17.
+//  Created by Davide De Rosa on 8/22/18.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -34,47 +34,61 @@
 //      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+import Foundation
+import __TunnelKitOpenVPN
 
-#import "ZeroingData.h"
+/// Represents a cryptographic container in PEM format.
+public struct CryptoContainer: Equatable {
+    private static let begin = "-----BEGIN "
 
-NS_ASSUME_NONNULL_BEGIN
+    private static let end = "-----END "
+    
+    /// The content in PEM format (ASCII).
+    public let pem: String
+    
+    /// :nodoc:
+    public init(pem: String) {
+        guard let beginRange = pem.range(of: CryptoContainer.begin) else {
+            self.pem = ""
+            return
+        }
+        self.pem = String(pem[beginRange.lowerBound...])
+    }
+    
+    func write(to url: URL) throws {
+        try pem.write(to: url, atomically: true, encoding: .ascii)
+    }
 
-@protocol Encrypter;
-@protocol Decrypter;
+    // MARK: Equatable
+    
+    /// :nodoc:
+    public static func ==(lhs: CryptoContainer, rhs: CryptoContainer) -> Bool {
+        return lhs.pem == rhs.pem
+    }
+}
 
-@interface CryptoBox : NSObject
+/// :nodoc:
+extension CryptoContainer: Codable {
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.singleValueContainer()
+        let pem = try container.decode(String.self)
+        self.init(pem: pem)
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.singleValueContainer()
+        try container.encode(pem)
+    }
+}
 
-+ (NSString *)version;
-+ (BOOL)preparePRNGWithSeed:(const uint8_t *)seed length:(NSInteger)length;
-
-- (instancetype)initWithCipherAlgorithm:(nullable NSString *)cipherAlgorithm
-                                digestAlgorithm:(nullable NSString *)digestAlgorithm;
-
-- (BOOL)configureWithCipherEncKey:(nullable ZeroingData *)cipherEncKey
-                     cipherDecKey:(nullable ZeroingData *)cipherDecKey
-                       hmacEncKey:(nullable ZeroingData *)hmacEncKey
-                       hmacDecKey:(nullable ZeroingData *)hmacDecKey
-                            error:(NSError **)error;
-
-// WARNING: hmac must be able to hold HMAC result
-+ (BOOL)hmacWithDigestName:(NSString *)digestName
-                    secret:(const uint8_t *)secret
-              secretLength:(NSInteger)secretLength
-                      data:(const uint8_t *)data
-                dataLength:(NSInteger)dataLength
-                      hmac:(uint8_t *)hmac
-                hmacLength:(NSInteger *)hmacLength
-                     error:(NSError **)error;
-
-
-// encrypt/decrypt are mutually thread-safe
-- (id<Encrypter>)encrypter;
-- (id<Decrypter>)decrypter;
-
-- (NSInteger)digestLength;
-- (NSInteger)tagLength;
-
-@end
-
-NS_ASSUME_NONNULL_END
+/// :nodoc:
+public extension CryptoContainer {
+    var isEncrypted: Bool {
+        return pem.contains("ENCRYPTED")
+    }
+    
+    func decrypted(with passphrase: String) throws -> CryptoContainer {
+        let decryptedPEM = try TLSBox.decryptedPrivateKey(fromPEM: pem, passphrase: passphrase)
+        return CryptoContainer(pem: decryptedPEM)
+    }
+}

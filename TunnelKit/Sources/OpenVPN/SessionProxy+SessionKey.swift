@@ -35,8 +35,9 @@
 //
 
 import Foundation
-import __TunnelKitNative
 import SwiftyBeaver
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
@@ -89,7 +90,7 @@ extension SessionProxy {
         
         // Ruby: Key.negotiate_timeout
         func didNegotiationTimeOut(link: LinkInterface) -> Bool {
-            let timeout = (softReset ? CoreConfiguration.softNegotiationTimeout : link.negotiationTimeout)
+            let timeout = (softReset ? CoreConfiguration.OpenVPN.softNegotiationTimeout : link.negotiationTimeout)
             
             return ((controlState != .connected) && (-startTime.timeIntervalSinceNow > timeout))
         }

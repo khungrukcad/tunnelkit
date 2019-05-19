@@ -38,6 +38,7 @@
 
 #import "DataPath.h"
 #import "DataPathCrypto.h"
+#import "PacketMacros.h"
 #import "MSS.h"
 #import "ReplayProtector.h"
 #import "LZO.h"

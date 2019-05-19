@@ -35,7 +35,8 @@
 //
 
 import Foundation
-import __TunnelKitNative
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 extension SessionProxy {
 
@@ -134,21 +135,21 @@ extension SessionProxy {
             }
             
             let masterData = try EncryptionBridge.keysPRF(
-                CoreConfiguration.label1, auth.preMaster, auth.random1,
+                CoreConfiguration.OpenVPN.label1, auth.preMaster, auth.random1,
                 serverRandom1, nil, nil,
-                CoreConfiguration.preMasterLength
+                CoreConfiguration.OpenVPN.preMasterLength
             )
             
             let keysData = try EncryptionBridge.keysPRF(
-                CoreConfiguration.label2, masterData, auth.random2,
+                CoreConfiguration.OpenVPN.label2, masterData, auth.random2,
                 serverRandom2, sessionId, remoteSessionId,
-                CoreConfiguration.keysCount * CoreConfiguration.keyLength
+                CoreConfiguration.OpenVPN.keysCount * CoreConfiguration.OpenVPN.keyLength
             )
             
             var keysArray = [ZeroingData]()
-            for i in 0..<CoreConfiguration.keysCount {
-                let offset = i * CoreConfiguration.keyLength
-                let zbuf = keysData.withOffset(offset, count: CoreConfiguration.keyLength)
+            for i in 0..<CoreConfiguration.OpenVPN.keysCount {
+                let offset = i * CoreConfiguration.OpenVPN.keyLength
+                let zbuf = keysData.withOffset(offset, count: CoreConfiguration.OpenVPN.keyLength)
                 keysArray.append(zbuf)
             }
             

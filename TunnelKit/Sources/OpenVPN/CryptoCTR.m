@@ -30,6 +30,7 @@
 #import "CryptoCTR.h"
 #import "CryptoMacros.h"
 #import "PacketMacros.h"
+#import "ZeroingData.h"
 #import "Allocation.h"
 #import "Errors.h"
 

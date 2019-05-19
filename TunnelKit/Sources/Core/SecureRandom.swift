@@ -36,7 +36,7 @@
 
 import Foundation
 import Security.SecRandom
-import __TunnelKitNative
+import __TunnelKitCore
 
 enum SecureRandomError: Error {
     case randomGenerator

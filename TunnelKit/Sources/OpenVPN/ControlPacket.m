@@ -24,6 +24,7 @@
 //
 
 #import "ControlPacket.h"
+#import "Crypto.h"
 
 @implementation ControlPacket
 

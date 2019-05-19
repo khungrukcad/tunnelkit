@@ -24,8 +24,9 @@
 //
 
 import Foundation
-import __TunnelKitNative
 import SwiftyBeaver
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 

@@ -36,7 +36,8 @@
 
 import Foundation
 import SwiftyBeaver
-import __TunnelKitNative
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
@@ -68,9 +69,9 @@ extension SessionProxy {
         var withLocalOptions: Bool
         
         init(_ username: String?, _ password: String?) throws {
-            preMaster = try SecureRandom.safeData(length: CoreConfiguration.preMasterLength)
-            random1 = try SecureRandom.safeData(length: CoreConfiguration.randomLength)
-            random2 = try SecureRandom.safeData(length: CoreConfiguration.randomLength)
+            preMaster = try SecureRandom.safeData(length: CoreConfiguration.OpenVPN.preMasterLength)
+            random1 = try SecureRandom.safeData(length: CoreConfiguration.OpenVPN.randomLength)
+            random2 = try SecureRandom.safeData(length: CoreConfiguration.OpenVPN.randomLength)
             
             // XXX: not 100% secure, can't erase input username/password
             if let username = username, let password = password {
@@ -144,7 +145,7 @@ extension SessionProxy {
             }
 
             // peer info
-            raw.appendSized(Z(CoreConfiguration.peerInfo, nullTerminated: true))
+            raw.appendSized(Z(CoreConfiguration.OpenVPN.peerInfo, nullTerminated: true))
 
             if CoreConfiguration.logsSensitiveData {
                 log.debug("TLS.auth: Put plaintext (\(raw.count) bytes): \(raw.toHex())")
@@ -165,7 +166,7 @@ extension SessionProxy {
             let prefixLength = ProtocolMacros.tlsPrefix.count
 
             // TLS prefix + random (x2) + opts length [+ opts]
-            guard (controlBuffer.count >= prefixLength + 2 * CoreConfiguration.randomLength + 2) else {
+            guard (controlBuffer.count >= prefixLength + 2 * CoreConfiguration.OpenVPN.randomLength + 2) else {
                 return false
             }
             
@@ -176,11 +177,11 @@ extension SessionProxy {
             
             var offset = ProtocolMacros.tlsPrefix.count
             
-            let serverRandom1 = controlBuffer.withOffset(offset, count: CoreConfiguration.randomLength)
-            offset += CoreConfiguration.randomLength
+            let serverRandom1 = controlBuffer.withOffset(offset, count: CoreConfiguration.OpenVPN.randomLength)
+            offset += CoreConfiguration.OpenVPN.randomLength
             
-            let serverRandom2 = controlBuffer.withOffset(offset, count: CoreConfiguration.randomLength)
-            offset += CoreConfiguration.randomLength
+            let serverRandom2 = controlBuffer.withOffset(offset, count: CoreConfiguration.OpenVPN.randomLength)
+            offset += CoreConfiguration.OpenVPN.randomLength
             
             let serverOptsLength = Int(controlBuffer.networkUInt16Value(fromOffset: offset))
             offset += 2

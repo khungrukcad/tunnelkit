@@ -1,8 +1,8 @@
 //
-//  SessionError.swift
+//  CoreConfiguration+OpenVPN.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 8/23/18.
+//  Created by Davide De Rosa on 5/19/19.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -35,62 +35,59 @@
 //
 
 import Foundation
-import __TunnelKitNative
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
-/// The possible errors raised/thrown during `SessionProxy` operation.
-public enum SessionError: String, Error {
+extension CoreConfiguration {
+    struct OpenVPN {
     
-    /// The negotiation timed out.
-    case negotiationTimeout
-    
-    /// The VPN session id is missing.
-    case missingSessionId
-    
-    /// The VPN session id doesn't match.
-    case sessionMismatch
-    
-    /// The connection key is wrong or wasn't expected.
-    case badKey
-    
-    /// The control packet has an incorrect prefix payload.
-    case wrongControlDataPrefix
-    
-    /// The provided credentials failed authentication.
-    case badCredentials
-    
-    /// The PUSH_REPLY is multipart.
-    case continuationPushReply
-    
-    /// The reply to PUSH_REQUEST is malformed.
-    case malformedPushReply
-    
-    /// A write operation failed at the link layer (e.g. network unreachable).
-    case failedLinkWrite
-    
-    /// The server couldn't ping back before timeout.
-    case pingTimeout
-    
-    /// The session reached a stale state and can't be recovered.
-    case staleSession
-
-    /// Server uses compression.
-    case serverCompression
-
-    /// Missing routing information.
-    case noRouting
-}
-
-extension Error {
-    func isTunnelKitError() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain
-    }
-    
-    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
-        let te = self as NSError
-        guard te.domain == TunnelKitErrorDomain else {
-            return nil
-        }
-        return TunnelKitErrorCode(rawValue: te.code)
+        // MARK: Session
+        
+        static let usesReplayProtection = true
+        
+        static let tickInterval = 0.2
+        
+        static let pushRequestInterval = 2.0
+        
+        static let pingTimeout = 120.0
+        
+        static let retransmissionLimit = 0.1
+        
+        static let softResetDelay = 5.0
+        
+        static let softNegotiationTimeout = 120.0
+        
+        // MARK: Authentication
+        
+        static let peerInfo: String = {
+            var info = [
+                "IV_VER=2.4",
+                "IV_PLAT=mac",
+                "IV_UI_VER=\(identifier) \(version)",
+                "IV_PROTO=2",
+                "IV_NCP=2",
+                "IV_SSL=\(CryptoBox.version())",
+                "IV_LZO_STUB=1",
+            ]
+            if LZOIsSupported() {
+                info.append("IV_LZO=1")
+            }
+            info.append("")
+            return info.joined(separator: "\n")
+        }()
+        
+        static let randomLength = 32
+        
+        // MARK: Keys
+        
+        static let label1 = "OpenVPN master secret"
+        
+        static let label2 = "OpenVPN key expansion"
+        
+        static let preMasterLength = 48
+        
+        static let keyLength = 64
+        
+        static let keysCount = 4
     }
 }

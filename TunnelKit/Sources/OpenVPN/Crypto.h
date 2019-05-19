@@ -36,10 +36,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "ZeroingData.h"
-
 NS_ASSUME_NONNULL_BEGIN
 
+@class ZeroingData;
 @protocol DataPathEncrypter;
 @protocol DataPathDecrypter;
 

@@ -37,7 +37,7 @@
 import Foundation
 import NetworkExtension
 import SwiftyBeaver
-import __TunnelKitNative
+import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
