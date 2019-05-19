@@ -41,6 +41,7 @@
 #import "CryptoCBC.h"
 #import "CryptoMacros.h"
 #import "PacketMacros.h"
+#import "ZeroingData.h"
 #import "Allocation.h"
 #import "Errors.h"
 
@@ -152,7 +153,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     if (self.cipher) {
         if (RAND_bytes(outIV, self.cipherIVLength) != 1) {
             if (error) {
-                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxRandomGenerator);
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoRandomGenerator);
             }
             return NO;
         }
@@ -215,7 +216,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     
     if (TUNNEL_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, self.digestLength) != 0) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxHMAC);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoHMAC);
         }
         return NO;
     }
@@ -240,7 +241,7 @@ const NSInteger CryptoCBCMaxHMACLength = 100;
     
     if (TUNNEL_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, self.digestLength) != 0) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxHMAC);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoHMAC);
         }
         return NO;
     }

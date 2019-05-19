@@ -53,7 +53,7 @@ static const char *const TLSBoxServerEKU = "TLS Web Server Authentication";
 
 int TLSBoxVerifyPeer(int ok, X509_STORE_CTX *ctx) {
     if (!ok) {
-        NSError *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
+        NSError *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSCertificateAuthority);
         [[NSNotificationCenter defaultCenter] postNotificationName:TLSBoxPeerVerificationErrorNotification
                                                             object:nil
                                                           userInfo:@{TunnelKitErrorKey: error}];
@@ -213,7 +213,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     if (!SSL_CTX_load_verify_locations(self.ctx, [self.caPath cStringUsingEncoding:NSASCIIStringEncoding], NULL)) {
         ERR_print_errors_fp(stdout);
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxCA);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSCertificateAuthority);
         }
         return NO;
     }
@@ -222,7 +222,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
         if (!SSL_CTX_use_certificate_file(self.ctx, [self.clientCertificatePath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
             ERR_print_errors_fp(stdout);
             if (error) {
-                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientCertificate);
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSClientCertificate);
             }
             return NO;
         }
@@ -231,7 +231,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
             if (!SSL_CTX_use_PrivateKey_file(self.ctx, [self.clientKeyPath cStringUsingEncoding:NSASCIIStringEncoding], SSL_FILETYPE_PEM)) {
                 ERR_print_errors_fp(stdout);
                 if (error) {
-                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxClientKey);
+                    *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSClientKey);
                 }
                 return NO;
             }
@@ -251,7 +251,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     
     if (!SSL_do_handshake(self.ssl)) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSHandshake);
         }
         return NO;
     }
@@ -271,7 +271,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
 
         if (self.checksEKU && ![self verifyEKUWithSSL:self.ssl]) {
             if (error) {
-                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxServerEKU);
+                *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSServerEKU);
             }
             return nil;
         }
@@ -281,7 +281,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     }
     if ((ret < 0) && !BIO_should_retry(self.bioCipherTextOut)) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSHandshake);
         }
     }
     return nil;
@@ -299,7 +299,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     }
     if ((ret < 0) && !BIO_should_retry(self.bioPlainText)) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSHandshake);
         }
     }
     return NO;
@@ -321,7 +321,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     const int ret = BIO_write(self.bioCipherTextIn, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSHandshake);
         }
         return NO;
     }
@@ -342,7 +342,7 @@ const NSInteger TLSBoxDefaultSecurityLevel = -1;
     const int ret = BIO_write(self.bioPlainText, text, (int)length);
     if (ret != length) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSBoxHandshake);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeTLSHandshake);
         }
         return NO;
     }

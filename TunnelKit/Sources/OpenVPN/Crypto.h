@@ -1,8 +1,8 @@
 //
-//  DataPath.h
+//  Crypto.h
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 3/2/17.
+//  Created by Davide De Rosa on 3/3/17.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -38,25 +38,43 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class ZeroingData;
 @protocol DataPathEncrypter;
 @protocol DataPathDecrypter;
 
-// send/receive should be mutually thread-safe
+typedef struct {
+    const uint8_t *_Nullable iv;
+    NSInteger ivLength;
+    const uint8_t *_Nullable ad;
+    NSInteger adLength;
+} CryptoFlags;
 
-@interface DataPath : NSObject
+// WARNING: dest must be able to hold ciphertext
+@protocol Encrypter
 
-@property (nonatomic, assign) uint32_t maxPacketId;
+- (void)configureEncryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
+- (int)digestLength;
+- (int)tagLength;
 
-- (instancetype)initWithEncrypter:(id<DataPathEncrypter>)encrypter
-                                decrypter:(id<DataPathDecrypter>)decrypter
-                                   peerId:(uint32_t)peerId // 24-bit, discard most significant byte
-                       compressionFraming:(CompressionFramingNative)compressionFraming
-                     compressionAlgorithm:(CompressionAlgorithmNative)compressionAlgorithm
-                               maxPackets:(NSInteger)maxPackets
-                     usesReplayProtection:(BOOL)usesReplayProtection;
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
+- (BOOL)encryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
 
-- (nullable NSArray<NSData *> *)encryptPackets:(NSArray<NSData *> *)packets key:(uint8_t)key error:(NSError **)error;
-- (nullable NSArray<NSData *> *)decryptPackets:(NSArray<NSData *> *)packets keepAlive:(nullable bool *)keepAlive error:(NSError **)error;
+- (id<DataPathEncrypter>)dataPathEncrypter;
+
+@end
+
+// WARNING: dest must be able to hold plaintext
+@protocol Decrypter
+
+- (void)configureDecryptionWithCipherKey:(nullable ZeroingData *)cipherKey hmacKey:(nullable ZeroingData *)hmacKey;
+- (int)digestLength;
+- (int)tagLength;
+
+- (NSInteger)encryptionCapacityWithLength:(NSInteger)length;
+- (BOOL)decryptBytes:(const uint8_t *)bytes length:(NSInteger)length dest:(uint8_t *)dest destLength:(NSInteger *)destLength flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
+- (BOOL)verifyBytes:(const uint8_t *)bytes length:(NSInteger)length flags:(const CryptoFlags *_Nullable)flags error:(NSError **)error;
+
+- (id<DataPathDecrypter>)dataPathDecrypter;
 
 @end
 

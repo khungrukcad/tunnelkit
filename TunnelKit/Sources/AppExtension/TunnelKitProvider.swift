@@ -36,7 +36,7 @@
 
 import NetworkExtension
 import SwiftyBeaver
-import __TunnelKitNative
+import __TunnelKitCore
 
 private let log = SwiftyBeaver.self
 
@@ -779,19 +779,19 @@ extension TunnelKitProvider {
     private func unifiedError(from error: Error) -> ProviderError {
         if let te = error.tunnelKitErrorCode() {
             switch te {
-            case .cryptoBoxRandomGenerator, .cryptoBoxAlgorithm:
+            case .cryptoRandomGenerator, .cryptoAlgorithm:
                 return .encryptionInitialization
                 
-            case .cryptoBoxEncryption, .cryptoBoxHMAC:
+            case .cryptoEncryption, .cryptoHMAC:
                 return .encryptionData
                 
-            case .tlsBoxCA, .tlsBoxClientCertificate, .tlsBoxClientKey:
+            case .tlsCertificateAuthority, .tlsClientCertificate, .tlsClientKey:
                 return .tlsInitialization
                 
-            case .tlsBoxServerCertificate, .tlsBoxServerEKU:
+            case .tlsServerCertificate, .tlsServerEKU:
                 return .tlsServerVerification
                 
-            case .tlsBoxHandshake:
+            case .tlsHandshake:
                 return .tlsHandshake
                 
             case .dataPathOverflow, .dataPathPeerIdMismatch:

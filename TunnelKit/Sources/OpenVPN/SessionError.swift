@@ -1,8 +1,8 @@
 //
-//  CryptoContainer.swift
+//  SessionError.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 8/22/18.
+//  Created by Davide De Rosa on 8/23/18.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -35,60 +35,62 @@
 //
 
 import Foundation
-import __TunnelKitNative
+import __TunnelKitCore
 
-/// Represents a cryptographic container in PEM format.
-public struct CryptoContainer: Equatable {
-    private static let begin = "-----BEGIN "
+/// The possible errors raised/thrown during `SessionProxy` operation.
+public enum SessionError: String, Error {
+    
+    /// The negotiation timed out.
+    case negotiationTimeout
+    
+    /// The VPN session id is missing.
+    case missingSessionId
+    
+    /// The VPN session id doesn't match.
+    case sessionMismatch
+    
+    /// The connection key is wrong or wasn't expected.
+    case badKey
+    
+    /// The control packet has an incorrect prefix payload.
+    case wrongControlDataPrefix
+    
+    /// The provided credentials failed authentication.
+    case badCredentials
+    
+    /// The PUSH_REPLY is multipart.
+    case continuationPushReply
+    
+    /// The reply to PUSH_REQUEST is malformed.
+    case malformedPushReply
+    
+    /// A write operation failed at the link layer (e.g. network unreachable).
+    case failedLinkWrite
+    
+    /// The server couldn't ping back before timeout.
+    case pingTimeout
+    
+    /// The session reached a stale state and can't be recovered.
+    case staleSession
 
-    private static let end = "-----END "
+    /// Server uses compression.
+    case serverCompression
+
+    /// Missing routing information.
+    case noRouting
+}
+
+extension Error {
+    func isTunnelKitError() -> Bool {
+        let te = self as NSError
+        return te.domain == TunnelKitErrorDomain
+    }
     
-    /// The content in PEM format (ASCII).
-    public let pem: String
-    
-    /// :nodoc:
-    public init(pem: String) {
-        guard let beginRange = pem.range(of: CryptoContainer.begin) else {
-            self.pem = ""
-            return
+    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
+        let te = self as NSError
+        guard te.domain == TunnelKitErrorDomain else {
+            return nil
         }
-        self.pem = String(pem[beginRange.lowerBound...])
-    }
-    
-    func write(to url: URL) throws {
-        try pem.write(to: url, atomically: true, encoding: .ascii)
-    }
-
-    // MARK: Equatable
-    
-    /// :nodoc:
-    public static func ==(lhs: CryptoContainer, rhs: CryptoContainer) -> Bool {
-        return lhs.pem == rhs.pem
-    }
-}
-
-/// :nodoc:
-extension CryptoContainer: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let pem = try container.decode(String.self)
-        self.init(pem: pem)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(pem)
-    }
-}
-
-/// :nodoc:
-public extension CryptoContainer {
-    var isEncrypted: Bool {
-        return pem.contains("ENCRYPTED")
-    }
-    
-    func decrypted(with passphrase: String) throws -> CryptoContainer {
-        let decryptedPEM = try TLSBox.decryptedPrivateKey(fromPEM: pem, passphrase: passphrase)
-        return CryptoContainer(pem: decryptedPEM)
+        return TunnelKitErrorCode(rawValue: te.code)
     }
 }

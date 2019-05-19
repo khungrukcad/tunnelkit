@@ -25,7 +25,7 @@
 
 import XCTest
 import TunnelKit
-import __TunnelKitNative
+import __TunnelKitCore
 
 class DNSTests: XCTestCase {
 

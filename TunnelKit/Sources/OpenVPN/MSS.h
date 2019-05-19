@@ -1,8 +1,8 @@
 //
-//  SessionError.swift
+//  MSS.h
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 8/23/18.
+//  Created by Davide De Rosa on 2/7/17.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -34,63 +34,7 @@
 //      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import Foundation
-import __TunnelKitNative
+#import <stdint.h>
+#import <Foundation/Foundation.h>
 
-/// The possible errors raised/thrown during `SessionProxy` operation.
-public enum SessionError: String, Error {
-    
-    /// The negotiation timed out.
-    case negotiationTimeout
-    
-    /// The VPN session id is missing.
-    case missingSessionId
-    
-    /// The VPN session id doesn't match.
-    case sessionMismatch
-    
-    /// The connection key is wrong or wasn't expected.
-    case badKey
-    
-    /// The control packet has an incorrect prefix payload.
-    case wrongControlDataPrefix
-    
-    /// The provided credentials failed authentication.
-    case badCredentials
-    
-    /// The PUSH_REPLY is multipart.
-    case continuationPushReply
-    
-    /// The reply to PUSH_REQUEST is malformed.
-    case malformedPushReply
-    
-    /// A write operation failed at the link layer (e.g. network unreachable).
-    case failedLinkWrite
-    
-    /// The server couldn't ping back before timeout.
-    case pingTimeout
-    
-    /// The session reached a stale state and can't be recovered.
-    case staleSession
-
-    /// Server uses compression.
-    case serverCompression
-
-    /// Missing routing information.
-    case noRouting
-}
-
-extension Error {
-    func isTunnelKitError() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain
-    }
-    
-    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
-        let te = self as NSError
-        guard te.domain == TunnelKitErrorDomain else {
-            return nil
-        }
-        return TunnelKitErrorCode(rawValue: te.code)
-    }
-}
+void MSSFix(uint8_t *data, NSInteger data_len);

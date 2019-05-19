@@ -1,8 +1,8 @@
 //
-//  EncryptionPerformanceTests.swift
-//  TunnelKitTests
+//  CryptoBox.h
+//  TunnelKit
 //
-//  Created by Davide De Rosa on 7/7/18.
+//  Created by Davide De Rosa on 2/4/17.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -34,58 +34,46 @@
 //      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-import XCTest
-@testable import TunnelKit
-import __TunnelKitCore
-import __TunnelKitOpenVPN
+#import <Foundation/Foundation.h>
 
-class EncryptionPerformanceTests: XCTestCase {
-    private var cbcEncrypter: Encrypter!
-    
-    private var cbcDecrypter: Decrypter!
-    
-    private var gcmEncrypter: Encrypter!
-    
-    private var gcmDecrypter: Decrypter!
-    
-    override func setUp() {
-        let cipherKey = try! SecureRandom.safeData(length: 32)
-        let hmacKey = try! SecureRandom.safeData(length: 32)
-        
-        let cbc = CryptoBox(cipherAlgorithm: "aes-128-cbc", digestAlgorithm: "sha1")
-        try! cbc.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        cbcEncrypter = cbc.encrypter()
-        cbcDecrypter = cbc.decrypter()
+NS_ASSUME_NONNULL_BEGIN
 
-        let gcm = CryptoBox(cipherAlgorithm: "aes-128-gcm", digestAlgorithm: nil)
-        try! gcm.configure(withCipherEncKey: cipherKey, cipherDecKey: cipherKey, hmacEncKey: hmacKey, hmacDecKey: hmacKey)
-        gcmEncrypter = gcm.encrypter()
-        gcmDecrypter = gcm.decrypter()
-    }
+@class ZeroingData;
+@protocol Encrypter;
+@protocol Decrypter;
 
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-    }
+@interface CryptoBox : NSObject
 
-    // 1.150s
-    func testCBCEncryption() {
-        let suite = TestUtils.generateDataSuite(1000, 100000)
-        measure {
-            for data in suite {
-                let _ = try! self.cbcEncrypter.encryptData(data, flags: nil)
-            }
-        }
-    }
++ (NSString *)version;
++ (BOOL)preparePRNGWithSeed:(const uint8_t *)seed length:(NSInteger)length;
 
-    // 0.684s
-    func testGCMEncryption() {
-        let suite = TestUtils.generateDataSuite(1000, 100000)
-        let ad: [UInt8] = [0x11, 0x22, 0x33, 0x44]
-        var flags = CryptoFlags(iv: nil, ivLength: 0, ad: ad, adLength: ad.count)
-        measure {
-            for data in suite {
-                let _ = try! self.gcmEncrypter.encryptData(data, flags: &flags)
-            }
-        }
-    }
-}
+- (instancetype)initWithCipherAlgorithm:(nullable NSString *)cipherAlgorithm
+                                digestAlgorithm:(nullable NSString *)digestAlgorithm;
+
+- (BOOL)configureWithCipherEncKey:(nullable ZeroingData *)cipherEncKey
+                     cipherDecKey:(nullable ZeroingData *)cipherDecKey
+                       hmacEncKey:(nullable ZeroingData *)hmacEncKey
+                       hmacDecKey:(nullable ZeroingData *)hmacDecKey
+                            error:(NSError **)error;
+
+// WARNING: hmac must be able to hold HMAC result
++ (BOOL)hmacWithDigestName:(NSString *)digestName
+                    secret:(const uint8_t *)secret
+              secretLength:(NSInteger)secretLength
+                      data:(const uint8_t *)data
+                dataLength:(NSInteger)dataLength
+                      hmac:(uint8_t *)hmac
+                hmacLength:(NSInteger *)hmacLength
+                     error:(NSError **)error;
+
+
+// encrypt/decrypt are mutually thread-safe
+- (id<Encrypter>)encrypter;
+- (id<Decrypter>)decrypter;
+
+- (NSInteger)digestLength;
+- (NSInteger)tagLength;
+
+@end
+
+NS_ASSUME_NONNULL_END

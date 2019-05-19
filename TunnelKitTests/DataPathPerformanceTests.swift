@@ -36,7 +36,7 @@
 
 import XCTest
 @testable import TunnelKit
-@testable import __TunnelKitNative
+import __TunnelKitOpenVPN
 
 class DataPathPerformanceTests: XCTestCase {
     private var dataPath: DataPath!

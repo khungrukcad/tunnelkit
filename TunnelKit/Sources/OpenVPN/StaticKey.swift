@@ -24,7 +24,7 @@
 //
 
 import Foundation
-import __TunnelKitNative
+import __TunnelKitCore
 
 /// Represents an OpenVPN static key file (as generated with --genkey)
 public class StaticKey: Codable {

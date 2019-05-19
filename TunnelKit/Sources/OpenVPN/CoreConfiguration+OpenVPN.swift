@@ -1,8 +1,8 @@
 //
-//  CryptoMacros.h
+//  CoreConfiguration+OpenVPN.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 7/6/18.
+//  Created by Davide De Rosa on 5/19/19.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -34,15 +34,64 @@
 //      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
+import Foundation
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
-#define TUNNEL_CRYPTO_SUCCESS(ret) (ret > 0)
-#define TUNNEL_CRYPTO_TRACK_STATUS(ret) if (ret > 0) ret =
-#define TUNNEL_CRYPTO_RETURN_STATUS(ret)\
-if (ret <= 0) {\
-    if (error) {\
-        *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxEncryption);\
-    }\
-    return NO;\
-}\
-return YES;
+extension CoreConfiguration {
+    struct OpenVPN {
+    
+        // MARK: Session
+        
+        static let usesReplayProtection = true
+
+        static let negotiationTimeout = 30.0
+        
+        static let hardResetTimeout = 10.0
+
+        static let tickInterval = 0.2
+        
+        static let pushRequestInterval = 2.0
+        
+        static let pingTimeout = 120.0
+        
+        static let retransmissionLimit = 0.1
+        
+        static let softResetDelay = 5.0
+        
+        static let softNegotiationTimeout = 120.0
+        
+        // MARK: Authentication
+        
+        static let peerInfo: String = {
+            var info = [
+                "IV_VER=2.4",
+                "IV_PLAT=mac",
+                "IV_UI_VER=\(identifier) \(version)",
+                "IV_PROTO=2",
+                "IV_NCP=2",
+                "IV_SSL=\(CryptoBox.version())",
+                "IV_LZO_STUB=1",
+            ]
+            if LZOIsSupported() {
+                info.append("IV_LZO=1")
+            }
+            info.append("")
+            return info.joined(separator: "\n")
+        }()
+        
+        static let randomLength = 32
+        
+        // MARK: Keys
+        
+        static let label1 = "OpenVPN master secret"
+        
+        static let label2 = "OpenVPN key expansion"
+        
+        static let preMasterLength = 48
+        
+        static let keyLength = 64
+        
+        static let keysCount = 4
+    }
+}
