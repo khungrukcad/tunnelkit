@@ -1,7 +1,7 @@
 clean:
 module: "TunnelKit"
 author: "Davide De Rosa"
-author_url: "https://github.com/keeshux/TunnelKit"
+author_url: "https://github.com/passepartoutvpn/tunnelkit"
 
 theme: fullwidth
 
@@ -14,22 +14,25 @@ xcodebuild_arguments:
 custom_categories:
     - name: Core
       children:
-        - IOInterface
-        - LinkInterface
-        - TunnelInterface
         - BidirectionalState
-        - StaticKey
-        - SessionProxy
-        - SessionProxyDelegate
         - ConfigurationError
-        - SessionReply
+        - EndpointProtocol
+        - IOInterface
         - IPv4Settings
         - IPv6Settings
-        - SessionError
+        - LinkInterface
+        - Proxy
+        - TunnelInterface
         - SocketType
-        - EndpointProtocol
+    - name: OpenVPN
+      children:
         - ConfigurationParser
+        - CryptoContainer
+        - SessionError
+        - SessionProxy
+        - SessionProxyDelegate
+        - SessionReply
+        - StaticKey
     - name: AppExtension
       children:
-        - CryptoContainer
         - TunnelKitProvider
