@@ -115,7 +115,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     
     // MARK: Internal state
 
-    private var proxy: SessionProxy?
+    private var proxy: OpenVPNSession?
     
     private var socket: GenericSocket?
 
@@ -169,10 +169,11 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         }
 
         // optional credentials
-        let credentials: SessionProxy.Credentials?
+        let credentials: OpenVPN.Credentials?
         if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference,
             let password = try? Keychain.password(for: username, reference: passwordReference) {
-            credentials = SessionProxy.Credentials(username, password)
+
+            credentials = OpenVPN.Credentials(username, password)
         } else {
             credentials = nil
         }
@@ -204,16 +205,16 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
         log.info("Starting tunnel...")
         cfg.clearLastError(in: appGroup)
         
-        guard SessionProxy.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
+        guard OpenVPN.EncryptionBridge.prepareRandomNumberGenerator(seedLength: prngSeedLength) else {
             completionHandler(ProviderConfigurationError.prngInitialization)
             return
         }
 
         cfg.print(appVersion: appVersion)
         
-        let proxy: SessionProxy
+        let proxy: OpenVPNSession
         do {
-            proxy = try SessionProxy(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
+            proxy = try OpenVPNSession(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
             refreshDataCount()
         } catch let e {
             completionHandler(e)
@@ -346,7 +347,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
             // provided, so we do this with optional fallback to .socketActivity
             //
             // socketActivity makes sense, given that any other error would normally come
-            // from SessionProxy.stopError. other paths to disposeTunnel() are only coming
+            // from OpenVPN.stopError. other paths to disposeTunnel() are only coming
             // from stopTunnel(), in which case we don't need to feed an error parameter to
             // the stop completion handler
             //
@@ -425,10 +426,10 @@ extension TunnelKitProvider: GenericSocketDelegate {
         if failure && (shutdownError == nil) {
             shutdownError = ProviderError.linkError
         }
-        didTimeoutNegotiation = (shutdownError as? SessionError == .negotiationTimeout)
+        didTimeoutNegotiation = (shutdownError as? OpenVPNError == .negotiationTimeout)
         
         // only try upgrade on network errors
-        if shutdownError as? SessionError == nil {
+        if shutdownError as? OpenVPNError == nil {
             upgradedSocket = socket.upgraded()
         }
 
@@ -469,50 +470,50 @@ extension TunnelKitProvider: GenericSocketDelegate {
     }
 }
 
-extension TunnelKitProvider: SessionProxyDelegate {
+extension TunnelKitProvider: OpenVPNSessionDelegate {
     
-    // MARK: SessionProxyDelegate (tunnel queue)
+    // MARK: OpenVPNSessionDelegate (tunnel queue)
     
     /// :nodoc:
-    public func sessionDidStart(_ proxy: SessionProxy, remoteAddress: String, reply: SessionReply) {
+    public func sessionDidStart(_ proxy: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration) {
         reasserting = false
         
         log.info("Session did start")
         
         log.info("Returned ifconfig parameters:")
         log.info("\tRemote: \(remoteAddress.maskedDescription)")
-        log.info("\tIPv4: \(reply.options.ipv4?.description ?? "not configured")")
-        log.info("\tIPv6: \(reply.options.ipv6?.description ?? "not configured")")
-        if let routingPolicies = reply.options.routingPolicies {
+        log.info("\tIPv4: \(options.ipv4?.description ?? "not configured")")
+        log.info("\tIPv6: \(options.ipv6?.description ?? "not configured")")
+        if let routingPolicies = options.routingPolicies {
             log.info("\tGateway: \(routingPolicies.map { $0.rawValue })")
         } else {
             log.info("\tGateway: not configured")
         }
-        if let dnsServers = reply.options.dnsServers, !dnsServers.isEmpty {
+        if let dnsServers = options.dnsServers, !dnsServers.isEmpty {
             log.info("\tDNS: \(dnsServers.map { $0.maskedDescription })")
         } else {
             log.info("\tDNS: not configured")
         }
-        if let searchDomain = reply.options.searchDomain, !searchDomain.isEmpty {
+        if let searchDomain = options.searchDomain, !searchDomain.isEmpty {
             log.info("\tDomain: \(searchDomain.maskedDescription)")
         } else {
             log.info("\tDomain: not configured")
         }
 
-        if reply.options.httpProxy != nil || reply.options.httpsProxy != nil {
+        if options.httpProxy != nil || options.httpsProxy != nil {
             log.info("\tProxy:")
-            if let proxy = reply.options.httpProxy {
+            if let proxy = options.httpProxy {
                 log.info("\t\tHTTP: \(proxy.maskedDescription)")
             }
-            if let proxy = reply.options.httpsProxy {
+            if let proxy = options.httpsProxy {
                 log.info("\t\tHTTPS: \(proxy.maskedDescription)")
             }
-            if let bypass = reply.options.proxyBypassDomains {
+            if let bypass = options.proxyBypassDomains {
                 log.info("\t\tBypass domains: \(bypass.maskedDescription)")
             }
         }
 
-        bringNetworkUp(remoteAddress: remoteAddress, configuration: proxy.configuration, reply: reply) { (error) in
+        bringNetworkUp(remoteAddress: remoteAddress, localOptions: proxy.configuration, options: options) { (error) in
             if let error = error {
                 log.error("Failed to configure tunnel: \(error)")
                 self.pendingStartHandler?(error)
@@ -522,7 +523,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             
             log.info("Tunnel interface is now UP")
             
-            proxy.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow, isIPv6: reply.options.ipv6 != nil))
+            proxy.setTunnel(tunnel: NETunnelInterface(impl: self.packetFlow, isIPv6: options.ipv6 != nil))
 
             self.pendingStartHandler?(nil)
             self.pendingStartHandler = nil
@@ -533,7 +534,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
     }
     
     /// :nodoc:
-    public func sessionDidStop(_: SessionProxy, shouldReconnect: Bool) {
+    public func sessionDidStop(_: OpenVPNSession, shouldReconnect: Bool) {
         log.info("Session did stop")
 
         isCountingData = false
@@ -543,14 +544,14 @@ extension TunnelKitProvider: SessionProxyDelegate {
         socket?.shutdown()
     }
     
-    private func bringNetworkUp(remoteAddress: String, configuration: SessionProxy.Configuration, reply: SessionReply, completionHandler: @escaping (Error?) -> Void) {
-        let routingPolicies = configuration.routingPolicies ?? reply.options.routingPolicies
+    private func bringNetworkUp(remoteAddress: String, localOptions: OpenVPN.Configuration, options: OpenVPN.Configuration, completionHandler: @escaping (Error?) -> Void) {
+        let routingPolicies = localOptions.routingPolicies ?? options.routingPolicies
         let isIPv4Gateway = routingPolicies?.contains(.IPv4) ?? false
         let isIPv6Gateway = routingPolicies?.contains(.IPv6) ?? false
         let isGateway = isIPv4Gateway || isIPv6Gateway
 
         var ipv4Settings: NEIPv4Settings?
-        if let ipv4 = reply.options.ipv4 {
+        if let ipv4 = options.ipv4 {
             var routes: [NEIPv4Route] = []
 
             // route all traffic to VPN?
@@ -579,7 +580,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
 
         var ipv6Settings: NEIPv6Settings?
-        if let ipv6 = reply.options.ipv6 {
+        if let ipv6 = options.ipv6 {
             var routes: [NEIPv6Route] = []
 
             // route all traffic to VPN?
@@ -620,7 +621,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
             return
         }
         
-        var dnsServers = cfg.sessionConfiguration.dnsServers ?? reply.options.dnsServers ?? []
+        var dnsServers = cfg.sessionConfiguration.dnsServers ?? options.dnsServers ?? []
 
         // fall back
         if dnsServers.isEmpty {
@@ -632,7 +633,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         if !isGateway {
             dnsSettings.matchDomains = [""]
         }
-        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? reply.options.searchDomain {
+        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? options.searchDomain {
             dnsSettings.domainName = searchDomain
             dnsSettings.searchDomains = [searchDomain]
             if !isGateway {
@@ -652,13 +653,13 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
         
         var proxySettings: NEProxySettings?
-        if let httpsProxy = cfg.sessionConfiguration.httpsProxy ?? reply.options.httpsProxy {
+        if let httpsProxy = cfg.sessionConfiguration.httpsProxy ?? options.httpsProxy {
             proxySettings = NEProxySettings()
             proxySettings?.httpsServer = httpsProxy.neProxy()
             proxySettings?.httpsEnabled = true
             log.info("Routing: Setting HTTPS proxy \(httpsProxy.address.maskedDescription):\(httpsProxy.port)")
         }
-        if let httpProxy = cfg.sessionConfiguration.httpProxy ?? reply.options.httpProxy {
+        if let httpProxy = cfg.sessionConfiguration.httpProxy ?? options.httpProxy {
             if proxySettings == nil {
                 proxySettings = NEProxySettings()
             }
@@ -668,7 +669,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
         }
 
         // only set if there is a proxy (proxySettings set to non-nil above)
-        if let bypass = cfg.sessionConfiguration.proxyBypassDomains ?? reply.options.proxyBypassDomains {
+        if let bypass = cfg.sessionConfiguration.proxyBypassDomains ?? options.proxyBypassDomains {
             proxySettings?.exceptionList = bypass
             log.info("Routing: Setting proxy by-pass list: \(bypass.maskedDescription)")
         }
@@ -689,7 +690,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
                     log.info("Block local: Suppressing IPv4 route \(destination)/\($0.prefix())")
                     
                     let included = NEIPv4Route(destinationAddress: destination, subnetMask: netmask)
-                    included.gatewayAddress = reply.options.ipv4?.defaultGateway
+                    included.gatewayAddress = options.ipv4?.defaultGateway
                     ipv4Settings?.includedRoutes?.append(included)
                 }
             }
@@ -704,7 +705,7 @@ extension TunnelKitProvider: SessionProxyDelegate {
                     log.info("Block local: Suppressing IPv6 route \(destination)/\($0.prefix())")
 
                     let included = NEIPv6Route(destinationAddress: destination, networkPrefixLength: prefix as NSNumber)
-                    included.gatewayAddress = reply.options.ipv6?.defaultGateway
+                    included.gatewayAddress = options.ipv6?.defaultGateway
                     ipv6Settings?.includedRoutes?.append(included)
                 }
             }
@@ -806,7 +807,7 @@ extension TunnelKitProvider {
             default:
                 break
             }
-        } else if let se = error as? SessionError {
+        } else if let se = error as? OpenVPNError {
             switch se {
             case .negotiationTimeout, .pingTimeout, .staleSession:
                 return .timeout
