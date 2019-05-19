@@ -78,7 +78,7 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertEqual(parsed.routingPolicies, nil)
         XCTAssertNotEqual(parsed.routingPolicies, [])
         parsed = try! ConfigurationParser.parsed(fromLines: ["redirect-gateway   ipv4   block-local"]).configuration
-        XCTAssertEqual(parsed.routingPolicies, [.IPv4, .IPv6])
+        XCTAssertEqual(Set(parsed.routingPolicies!), Set([.IPv4, .blockLocal]))
     }
 
     func testConnectionBlock() throws {
