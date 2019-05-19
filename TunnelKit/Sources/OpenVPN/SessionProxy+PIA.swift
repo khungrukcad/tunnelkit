@@ -36,7 +36,7 @@
 
 import Foundation
 
-extension SessionProxy {
+extension OpenVPN.SessionProxy {
     struct PIAHardReset {
         private static let obfuscationKeyLength = 3
         
@@ -50,7 +50,7 @@ extension SessionProxy {
         
         private let digestName: String
         
-        init(caMd5Digest: String, cipher: Cipher, digest: Digest) {
+        init(caMd5Digest: String, cipher: OpenVPN.Cipher, digest: OpenVPN.Digest) {
             self.caMd5Digest = caMd5Digest
             cipherName = cipher.rawValue.lowercased()
             digestName = digest.rawValue.lowercased()

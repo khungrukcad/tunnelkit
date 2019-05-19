@@ -50,7 +50,7 @@ class ControlChannelTests: XCTestCase {
 //    00000000 // message packet_id (HARD_RESET -> UInt32(0))
     func testHMAC() {
         let key = StaticKey(biData: Data(hex: hex))
-        let server = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: SessionProxy.Digest.sha1.rawValue)
+        let server = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: Digest.sha1.rawValue)
         XCTAssertNoThrow(try server.configure(withCipherEncKey: nil, cipherDecKey: nil, hmacEncKey: key.hmacReceiveKey, hmacDecKey: key.hmacSendKey))
         
 //        let original = Data(hex: "38858fe14742fdae40e67c9137933a412a711c0d0514aca6db6476d17d000000015b96c9470000000000")

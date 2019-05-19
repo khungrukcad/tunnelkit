@@ -57,9 +57,9 @@ class AppExtensionTests: XCTestCase {
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
         let hostname = "example.com"
-        let credentials = SessionProxy.Credentials("foo", "bar")
+        let credentials = Credentials("foo", "bar")
 
-        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        var sessionBuilder = ConfigurationBuilder()
         sessionBuilder.ca = CryptoContainer(pem: "abcdef")
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha256

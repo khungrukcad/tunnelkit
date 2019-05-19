@@ -1,5 +1,5 @@
 //
-//  SessionProxy+EncryptionBridge.swift
+//  EncryptionBridge.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/8/17.
@@ -38,7 +38,7 @@ import Foundation
 import __TunnelKitCore
 import __TunnelKitOpenVPN
 
-extension SessionProxy {
+extension OpenVPN {
 
     /// Bridges native encryption for high-level operations.
     public class EncryptionBridge {
@@ -127,7 +127,7 @@ extension SessionProxy {
             return buffer.withOffset(0, count: length)
         }
         
-        convenience init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ auth: SessionProxy.Authenticator,
+        convenience init(_ cipher: Cipher, _ digest: Digest, _ auth: Authenticator,
                          _ sessionId: Data, _ remoteSessionId: Data) throws {
             
             guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
@@ -161,7 +161,7 @@ extension SessionProxy {
             try self.init(cipher, digest, cipherEncKey, cipherDecKey, hmacEncKey, hmacDecKey)
         }
         
-        init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
+        init(_ cipher: Cipher, _ digest: Digest, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
             box = CryptoBox(cipherAlgorithm: cipher.rawValue, digestAlgorithm: digest.rawValue)
             try box.configure(
                 withCipherEncKey: cipherEncKey,

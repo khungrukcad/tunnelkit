@@ -37,58 +37,59 @@
 import Foundation
 import __TunnelKitOpenVPN
 
-/// Represents a cryptographic container in PEM format.
-public struct CryptoContainer: Equatable {
-    private static let begin = "-----BEGIN "
+extension OpenVPN {
 
-    private static let end = "-----END "
-    
-    /// The content in PEM format (ASCII).
-    public let pem: String
-    
-    /// :nodoc:
-    public init(pem: String) {
-        guard let beginRange = pem.range(of: CryptoContainer.begin) else {
-            self.pem = ""
-            return
+    /// Represents a cryptographic container in PEM format.
+    public struct CryptoContainer: Codable, Equatable {
+        private static let begin = "-----BEGIN "
+
+        private static let end = "-----END "
+        
+        /// The content in PEM format (ASCII).
+        public let pem: String
+        
+        var isEncrypted: Bool {
+            return pem.contains("ENCRYPTED")
         }
-        self.pem = String(pem[beginRange.lowerBound...])
-    }
-    
-    func write(to url: URL) throws {
-        try pem.write(to: url, atomically: true, encoding: .ascii)
-    }
+        
+        /// :nodoc:
+        public init(pem: String) {
+            guard let beginRange = pem.range(of: CryptoContainer.begin) else {
+                self.pem = ""
+                return
+            }
+            self.pem = String(pem[beginRange.lowerBound...])
+        }
+        
+        func write(to url: URL) throws {
+            try pem.write(to: url, atomically: true, encoding: .ascii)
+        }
 
-    // MARK: Equatable
-    
-    /// :nodoc:
-    public static func ==(lhs: CryptoContainer, rhs: CryptoContainer) -> Bool {
-        return lhs.pem == rhs.pem
-    }
-}
+        func decrypted(with passphrase: String) throws -> CryptoContainer {
+            let decryptedPEM = try TLSBox.decryptedPrivateKey(fromPEM: pem, passphrase: passphrase)
+            return CryptoContainer(pem: decryptedPEM)
+        }
 
-/// :nodoc:
-extension CryptoContainer: Codable {
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.singleValueContainer()
-        let pem = try container.decode(String.self)
-        self.init(pem: pem)
-    }
-    
-    public func encode(to encoder: Encoder) throws {
-        var container = encoder.singleValueContainer()
-        try container.encode(pem)
-    }
-}
+        // MARK: Equatable
+        
+        /// :nodoc:
+        public static func ==(lhs: CryptoContainer, rhs: CryptoContainer) -> Bool {
+            return lhs.pem == rhs.pem
+        }
 
-/// :nodoc:
-public extension CryptoContainer {
-    var isEncrypted: Bool {
-        return pem.contains("ENCRYPTED")
-    }
-    
-    func decrypted(with passphrase: String) throws -> CryptoContainer {
-        let decryptedPEM = try TLSBox.decryptedPrivateKey(fromPEM: pem, passphrase: passphrase)
-        return CryptoContainer(pem: decryptedPEM)
+        // MARK: Codable
+        
+        /// :nodoc:
+        public init(from decoder: Decoder) throws {
+            let container = try decoder.singleValueContainer()
+            let pem = try container.decode(String.self)
+            self.init(pem: pem)
+        }
+        
+        /// :nodoc:
+        public func encode(to encoder: Encoder) throws {
+            var container = encoder.singleValueContainer()
+            try container.encode(pem)
+        }
     }
 }

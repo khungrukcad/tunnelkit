@@ -1,5 +1,5 @@
 //
-//  SessionProxy+Authenticator.swift
+//  Authenticator.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/9/17.
@@ -48,7 +48,7 @@ fileprivate extension ZeroingData {
     }
 }
 
-extension SessionProxy {
+extension OpenVPN {
     class Authenticator {
         private var controlBuffer: ZeroingData
         
@@ -90,7 +90,7 @@ extension SessionProxy {
         // MARK: Authentication request
 
         // Ruby: on_tls_connect
-        func putAuth(into: TLSBox, options: SessionProxy.Configuration) throws {
+        func putAuth(into: TLSBox, options: Configuration) throws {
             let raw = Z(ProtocolMacros.tlsPrefix)
             
             // local keys

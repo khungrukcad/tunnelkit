@@ -40,14 +40,13 @@ class ConfigurationParserTests: XCTestCase {
     // from lines
     
     func testCompression() throws {
-//        XCTAssertNotNil(try OptionsBundle.parsed(fromLines: ["comp-lzo"]).warning)
-        XCTAssertNil(try ConfigurationParser.parsed(fromLines: ["comp-lzo"]).warning)
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo no"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
-//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
+        XCTAssertNil(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo"]).warning)
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo no"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
+//        XCTAssertThrowsError(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
         
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress lzo"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["compress"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["compress lzo"]))
     }
     
     func testDHCPOption() throws {
@@ -72,7 +71,7 @@ class ConfigurationParserTests: XCTestCase {
     }
     
     func testRedirectGateway() throws {
-        var parsed: SessionProxy.Configuration
+        var parsed: Configuration
 
         parsed = try! ConfigurationParser.parsed(fromLines: []).configuration
         XCTAssertEqual(parsed.routingPolicies, nil)

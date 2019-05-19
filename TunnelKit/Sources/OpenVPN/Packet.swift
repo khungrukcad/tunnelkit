@@ -37,66 +37,6 @@
 import Foundation
 import __TunnelKitOpenVPN
 
-///// Reads and writes packets as a stream. Useful for stream-oriented links (e.g TCP/IP).
-//public class PacketStream {
-//    
-//    /**
-//     Parses packets from a stream.
-//     
-//     - Parameter stream: The data stream.
-//     - Returns: A pair where the first value is the `Int` offset up to which
-//     the stream could be parsed, and the second value is an array containing
-//     the parsed packets up to such offset.
-//     */
-//    public static func packets(from stream: Data) -> (Int, [Data]) {
-//        var ni = 0
-//        var parsed: [Data] = []
-//        while (ni + 2 <= stream.count) {
-//            let packlen = Int(stream.networkUInt16Value(from: ni))
-//            let start = ni + 2
-//            let end = start + packlen
-//            guard (end <= stream.count) else {
-//                break
-//            }
-//            let packet = stream.subdata(offset: start, count: end - start)
-//            parsed.append(packet)
-//            ni = end
-//        }
-//        return (ni, parsed)
-//    }
-//    
-//    /**
-//     Creates a contiguous stream of packets.
-//     
-//     - Parameter packet: The packet.
-//     - Returns: A stream made of the packet.
-//     */
-//    public static func stream(from packet: Data) -> Data {
-//        var raw = Data(capacity: 2 + packet.count)
-//        raw.append(UInt16(packet.count).bigEndian)
-//        raw.append(contentsOf: packet)
-//        return raw
-//    }
-//    
-//    /**
-//     Creates a contiguous stream of packets.
-//     
-//     - Parameter packets: The array of packets.
-//     - Returns: A stream made of the array of packets.
-//     */
-//    public static func stream(from packets: [Data]) -> Data {
-//        var raw = Data()
-//        for payload in packets {
-//            raw.append(UInt16(payload.count).bigEndian)
-//            raw.append(payload)
-//        }
-//        return raw
-//    }
-//    
-//    private init() {
-//    }
-//}
-
 /// :nodoc:
 extension ControlPacket {
 
@@ -121,23 +61,25 @@ extension ControlPacket {
     }
 }
 
-class DataPacket {
-    static let pingString = Data(hex: "2a187bf3641eb4cb07ed2d0a981fc748")
-}
+extension OpenVPN {
+    class DataPacket {
+        static let pingString = Data(hex: "2a187bf3641eb4cb07ed2d0a981fc748")
+    }
 
-enum OCCPacket: UInt8 {
-    case exit = 0x06
-    
-    private static let magicString = Data(hex: "287f346bd4ef7a812d56b8d3afc5459c")
+    enum OCCPacket: UInt8 {
+        case exit = 0x06
+        
+        private static let magicString = Data(hex: "287f346bd4ef7a812d56b8d3afc5459c")
 
-    func serialized(_ info: Any? = nil) -> Data {
-        var data = OCCPacket.magicString
-        data.append(rawValue)
-        switch self {
-        case .exit:
-            break // nothing more
+        func serialized(_ info: Any? = nil) -> Data {
+            var data = OCCPacket.magicString
+            data.append(rawValue)
+            switch self {
+            case .exit:
+                break // nothing more
+            }
+            return data
         }
-        return data
     }
 }
 

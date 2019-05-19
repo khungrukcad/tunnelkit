@@ -26,13 +26,10 @@ custom_categories:
         - SocketType
     - name: OpenVPN
       children:
-        - ConfigurationParser
-        - CryptoContainer
+        - OpenVPN
         - SessionError
-        - SessionProxy
         - SessionProxyDelegate
         - SessionReply
-        - StaticKey
     - name: AppExtension
       children:
         - TunnelKitProvider

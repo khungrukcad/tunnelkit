@@ -1,5 +1,5 @@
 //
-//  SessionProxy+SessionReply.swift
+//  SessionReply.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 7/25/18.
@@ -40,16 +40,16 @@ import Foundation
 public protocol SessionReply {
 
     /// The returned options.
-    var options: SessionProxy.Configuration { get }
+    var options: OpenVPN.Configuration { get }
 }
 
-extension SessionProxy {
+extension OpenVPN {
     struct PushReply: SessionReply, CustomStringConvertible {
         private static let prefix = "PUSH_REPLY,"
         
         private let original: String
 
-        let options: SessionProxy.Configuration
+        let options: Configuration
         
         init?(message: String) throws {
             guard message.hasPrefix(PushReply.prefix) else {
