@@ -41,7 +41,7 @@
 #define TUNNEL_CRYPTO_RETURN_STATUS(ret)\
 if (ret <= 0) {\
     if (error) {\
-        *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxEncryption);\
+        *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoEncryption);\
     }\
     return NO;\
 }\

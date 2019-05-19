@@ -196,7 +196,7 @@ static const NSInteger CryptoCTRTagLength = 32;
     
     if (TUNNEL_CRYPTO_SUCCESS(code) && CRYPTO_memcmp(self.bufferDecHMAC, bytes, CryptoCTRTagLength) != 0) {
         if (error) {
-            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoBoxHMAC);
+            *error = TunnelKitErrorWithCode(TunnelKitErrorCodeCryptoHMAC);
         }
         return NO;
     }
