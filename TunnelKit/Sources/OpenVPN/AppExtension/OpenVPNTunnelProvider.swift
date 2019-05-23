@@ -1,5 +1,5 @@
 //
-//  TunnelKitProvider.swift
+//  OpenVPNTunnelProvider.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/1/17.
@@ -44,7 +44,7 @@ private let log = SwiftyBeaver.self
  Provides an all-in-one `NEPacketTunnelProvider` implementation for use in a
  Packet Tunnel Provider extension both on iOS and macOS.
  */
-open class TunnelKitProvider: NEPacketTunnelProvider {
+open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
     
     // MARK: Tweaks
     
@@ -89,7 +89,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
     private let observer = InterfaceObserver()
     
-    private let tunnelQueue = DispatchQueue(label: TunnelKitProvider.description())
+    private let tunnelQueue = DispatchQueue(label: OpenVPNTunnelProvider.description())
     
     private let prngSeedLength = 64
     
@@ -382,7 +382,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     }
 }
 
-extension TunnelKitProvider: GenericSocketDelegate {
+extension OpenVPNTunnelProvider: GenericSocketDelegate {
     
     // MARK: GenericSocketDelegate (tunnel queue)
     
@@ -470,7 +470,7 @@ extension TunnelKitProvider: GenericSocketDelegate {
     }
 }
 
-extension TunnelKitProvider: OpenVPNSessionDelegate {
+extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
     
     // MARK: OpenVPNSessionDelegate (tunnel queue)
     
@@ -721,7 +721,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
     }
 }
 
-extension TunnelKitProvider {
+extension OpenVPNTunnelProvider {
     private func tryNextProtocol() -> Bool {
         guard strategy.tryNextProtocol() else {
             disposeTunnel(error: ProviderError.exhaustedProtocols)

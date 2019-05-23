@@ -1,5 +1,5 @@
 //
-//  TunnelKitProvider+Configuration.swift
+//  OpenVPNTunnelProvider+Configuration.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 10/23/17.
@@ -40,11 +40,11 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-extension TunnelKitProvider {
+extension OpenVPNTunnelProvider {
 
     // MARK: Configuration
     
-    /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
+    /// The way to create a `OpenVPNTunnelProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
 
         /// :nodoc:
@@ -198,9 +198,9 @@ extension TunnelKitProvider {
         }
         
         /**
-         Builds a `TunnelKitProvider.Configuration` object that will connect to the provided endpoint.
+         Builds a `OpenVPNTunnelProvider.Configuration` object that will connect to the provided endpoint.
          
-         - Returns: A `TunnelKitProvider.Configuration` object with this builder and the additional method parameters.
+         - Returns: A `OpenVPNTunnelProvider.Configuration` object with this builder and the additional method parameters.
          */
         public func build() -> Configuration {
             return Configuration(
@@ -216,7 +216,7 @@ extension TunnelKitProvider {
         }
     }
     
-    /// Offers a bridge between the abstract `TunnelKitProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
+    /// Offers a bridge between the abstract `OpenVPNTunnelProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
     public struct Configuration: Codable {
         struct Keys {
             static let appGroup = "AppGroup"
@@ -280,29 +280,29 @@ extension TunnelKitProvider {
             static let masksPrivateData = "MasksPrivateData"
         }
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.prefersResolvedAddresses`
         public let prefersResolvedAddresses: Bool
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.resolvedAddresses`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
         /// - Seealso: `OpenVPN.Configuration.endpointProtocols`
         @available(*, deprecated)
         public var endpointProtocols: [EndpointProtocol]?
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.sessionConfiguration`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.sessionConfiguration`
         public let sessionConfiguration: OpenVPN.Configuration
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.masksPrivateData`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.masksPrivateData`
         public let masksPrivateData: Bool?
         
         // MARK: Shortcuts
@@ -397,10 +397,10 @@ extension TunnelKitProvider {
         }
         
         /**
-         Parses a new `TunnelKitProvider.Configuration` object from a provider configuration map.
+         Parses a new `OpenVPNTunnelProvider.Configuration` object from a provider configuration map.
          
          - Parameter from: The map to parse.
-         - Returns: The parsed `TunnelKitProvider.Configuration` object.
+         - Returns: The parsed `OpenVPNTunnelProvider.Configuration` object.
          - Throws: `ProviderError.configuration` if `providerConfiguration` is incomplete.
          */
         public static func parsed(from providerConfiguration: [String: Any]) throws -> Configuration {
@@ -613,15 +613,15 @@ extension TunnelKitProvider {
 
 // MARK: Modification
 
-extension TunnelKitProvider.Configuration {
+extension OpenVPNTunnelProvider.Configuration {
 
     /**
-     Returns a `TunnelKitProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+     Returns a `OpenVPNTunnelProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
 
-     - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
+     - Returns: An editable `OpenVPNTunnelProvider.ConfigurationBuilder` initialized with this configuration.
      */
-    public func builder() -> TunnelKitProvider.ConfigurationBuilder {
-        var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
+    public func builder() -> OpenVPNTunnelProvider.ConfigurationBuilder {
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.prefersResolvedAddresses = prefersResolvedAddresses
         builder.resolvedAddresses = resolvedAddresses
         builder.mtu = mtu
@@ -636,14 +636,14 @@ extension TunnelKitProvider.Configuration {
 public extension UserDefaults {
     @objc var dataCountArray: [Int]? {
         get {
-            return array(forKey: TunnelKitProvider.Configuration.dataCountKey) as? [Int]
+            return array(forKey: OpenVPNTunnelProvider.Configuration.dataCountKey) as? [Int]
         }
         set {
-            set(newValue, forKey: TunnelKitProvider.Configuration.dataCountKey)
+            set(newValue, forKey: OpenVPNTunnelProvider.Configuration.dataCountKey)
         }
     }
 
     func removeDataCountArray() {
-        removeObject(forKey: TunnelKitProvider.Configuration.dataCountKey)
+        removeObject(forKey: OpenVPNTunnelProvider.Configuration.dataCountKey)
     }
 }

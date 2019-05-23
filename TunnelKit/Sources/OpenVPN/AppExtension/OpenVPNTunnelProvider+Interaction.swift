@@ -1,5 +1,5 @@
 //
-//  TunnelKitProvider+Interaction.swift
+//  OpenVPNTunnelProvider+Interaction.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 9/24/17.
@@ -36,11 +36,11 @@
 
 import Foundation
 
-extension TunnelKitProvider {
+extension OpenVPNTunnelProvider {
 
     // MARK: Interaction
 
-    /// The messages accepted by `TunnelKitProvider`.
+    /// The messages accepted by `OpenVPNTunnelProvider`.
     public class Message: Equatable {
         
         /// Requests a snapshot of the latest debug log. Returns the log data decoded from UTF-8.
@@ -73,7 +73,7 @@ extension TunnelKitProvider {
     // mostly programming errors by host app
     enum ProviderConfigurationError: Error {
         
-        /// A field in the `TunnelKitProvider.Configuration` provided is incorrect or incomplete.
+        /// A field in the `OpenVPNTunnelProvider.Configuration` provided is incorrect or incomplete.
         case parameter(name: String)
         
         /// Credentials are missing or inaccessible.

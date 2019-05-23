@@ -51,8 +51,8 @@ class AppExtensionTests: XCTestCase {
     }
 
     func testConfiguration() {
-        var builder: TunnelKitProvider.ConfigurationBuilder!
-        var cfg: TunnelKitProvider.Configuration!
+        var builder: OpenVPNTunnelProvider.ConfigurationBuilder!
+        var cfg: OpenVPNTunnelProvider.Configuration!
 
         let identifier = "com.example.Provider"
         let appGroup = "group.com.algoritmico.TunnelKit"
@@ -65,7 +65,7 @@ class AppExtensionTests: XCTestCase {
         sessionBuilder.digest = .sha256
         sessionBuilder.hostname = hostname
         sessionBuilder.endpointProtocols = []
-        builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
+        builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         XCTAssertNotNil(builder)
 
         cfg = builder.build()
@@ -82,7 +82,7 @@ class AppExtensionTests: XCTestCase {
             print("\(pc)")
         }
         
-        let K = TunnelKitProvider.Configuration.Keys.self
+        let K = OpenVPNTunnelProvider.Configuration.Keys.self
         XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
         XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.sessionConfiguration.cipher?.rawValue)
         XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.sessionConfiguration.digest?.rawValue)
