@@ -401,14 +401,14 @@ extension TunnelKitProvider: GenericSocketDelegate {
     }
     
     func socketDidBecomeActive(_ socket: GenericSocket) {
-        guard let session = session else {
+        guard let session = session, let producer = socket as? LinkProducer else {
             return
         }
         if session.canRebindLink() {
-            session.rebindLink(socket.link(withMTU: cfg.mtu))
+            session.rebindLink(producer.link(withMTU: cfg.mtu))
             reasserting = false
         } else {
-            session.setLink(socket.link(withMTU: cfg.mtu))
+            session.setLink(producer.link(withMTU: cfg.mtu))
         }
     }
     

@@ -43,7 +43,7 @@ private let log = SwiftyBeaver.self
 class NEUDPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
-    private let impl: NWUDPSession
+    let impl: NWUDPSession
     
     init(impl: NWUDPSession) {
         self.impl = impl
@@ -101,10 +101,6 @@ class NEUDPSocket: NSObject, GenericSocket {
             return nil
         }
         return NEUDPSocket(impl: NWUDPSession(upgradeFor: impl))
-    }
-    
-    func link(withMTU mtu: Int) -> LinkInterface {
-        return NEUDPLink(impl: impl, mtu: mtu)
     }
     
     // MARK: Connection KVO (any queue)
@@ -173,57 +169,6 @@ class NEUDPSocket: NSObject, GenericSocket {
             
         default:
             break
-        }
-    }
-}
-
-class NEUDPLink: LinkInterface {
-    private let impl: NWUDPSession
-    
-    private let maxDatagrams: Int
-    
-    init(impl: NWUDPSession, mtu: Int, maxDatagrams: Int? = nil) {
-        self.impl = impl
-        self.mtu = mtu
-        self.maxDatagrams = maxDatagrams ?? 200
-    }
-
-    // MARK: LinkInterface
-    
-    let isReliable: Bool = false
-    
-    var remoteAddress: String? {
-        return (impl.resolvedEndpoint as? NWHostEndpoint)?.hostname
-    }
-
-    let mtu: Int
-
-    var packetBufferSize: Int {
-        return maxDatagrams
-    }
-
-    func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
-
-        // WARNING: runs in Network.framework queue
-        impl.setReadHandler({ [weak self] (packets, error) in
-            guard let _ = self else {
-                return
-            }
-            queue.sync {
-                handler(packets, error)
-            }
-        }, maxDatagrams: maxDatagrams)
-    }
-    
-    func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
-        impl.writeDatagram(packet) { (error) in
-            completionHandler?(error)
-        }
-    }
-    
-    func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
-        impl.writeMultipleDatagrams(packets) { (error) in
-            completionHandler?(error)
         }
     }
 }

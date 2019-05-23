@@ -36,10 +36,6 @@
 
 import Foundation
 
-protocol LinkProducer {
-    func link(withMTU mtu: Int) -> LinkInterface
-}
-
 protocol GenericSocketDelegate: class {
     func socketDidTimeout(_ socket: GenericSocket)
 
@@ -50,7 +46,7 @@ protocol GenericSocketDelegate: class {
     func socketHasBetterPath(_ socket: GenericSocket)
 }
 
-protocol GenericSocket: LinkProducer {
+protocol GenericSocket {
     var remoteAddress: String? { get }
     
     var hasBetterPath: Bool { get }

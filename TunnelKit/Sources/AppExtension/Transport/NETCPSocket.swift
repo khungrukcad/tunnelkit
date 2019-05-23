@@ -37,14 +37,13 @@
 import Foundation
 import NetworkExtension
 import SwiftyBeaver
-import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
 class NETCPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
-    private let impl: NWTCPConnection
+    let impl: NWTCPConnection
     
     init(impl: NWTCPConnection) {
         self.impl = impl
@@ -102,10 +101,6 @@ class NETCPSocket: NSObject, GenericSocket {
             return nil
         }
         return NETCPSocket(impl: NWTCPConnection(upgradeFor: impl))
-    }
-    
-    func link(withMTU mtu: Int) -> LinkInterface {
-        return NETCPLink(impl: impl, mtu: mtu)
     }
     
     // MARK: Connection KVO (any queue)
@@ -171,75 +166,6 @@ class NETCPSocket: NSObject, GenericSocket {
             
         default:
             break
-        }
-    }
-}
-
-class NETCPLink: LinkInterface {
-    private let impl: NWTCPConnection
-    
-    private let maxPacketSize: Int
-    
-    init(impl: NWTCPConnection, mtu: Int, maxPacketSize: Int? = nil) {
-        self.impl = impl
-        self.mtu = mtu
-        self.maxPacketSize = maxPacketSize ?? (512 * 1024)
-    }
-
-    // MARK: LinkInterface
-    
-    let isReliable: Bool = true
-
-    var remoteAddress: String? {
-        return (impl.remoteAddress as? NWHostEndpoint)?.hostname
-    }
-    
-    let mtu: Int
-    
-    var packetBufferSize: Int {
-        return maxPacketSize
-    }
-    
-    func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
-        loopReadPackets(queue, Data(), handler)
-    }
-    
-    private func loopReadPackets(_ queue: DispatchQueue, _ buffer: Data, _ handler: @escaping ([Data]?, Error?) -> Void) {
-
-        // WARNING: runs in Network.framework queue
-        impl.readMinimumLength(2, maximumLength: packetBufferSize) { [weak self] (data, error) in
-            guard let _ = self else {
-                return
-            }
-            queue.sync {
-                guard (error == nil), let data = data else {
-                    handler(nil, error)
-                    return
-                }
-
-                var newBuffer = buffer
-                newBuffer.append(contentsOf: data)
-                var until = 0
-                let packets = PacketStream.packets(fromStream: newBuffer, until: &until)
-                newBuffer = newBuffer.subdata(in: until..<newBuffer.count)
-                self?.loopReadPackets(queue, newBuffer, handler)
-
-                handler(packets, nil)
-            }
-        }
-    }
-
-    func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
-        let stream = PacketStream.stream(fromPacket: packet)
-        impl.write(stream) { (error) in
-            completionHandler?(error)
-        }
-    }
-    
-    func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
-        let stream = PacketStream.stream(fromPackets: packets)
-        impl.write(stream) { (error) in
-            completionHandler?(error)
         }
     }
 }
