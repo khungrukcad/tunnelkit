@@ -386,7 +386,8 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
     
     // MARK: GenericSocketDelegate (tunnel queue)
     
-    func socketDidTimeout(_ socket: GenericSocket) {
+    /// :nodoc:
+    public func socketDidTimeout(_ socket: GenericSocket) {
         log.debug("Socket timed out waiting for activity, cancelling...")
         reasserting = true
         socket.shutdown()
@@ -400,7 +401,8 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
         }
     }
     
-    func socketDidBecomeActive(_ socket: GenericSocket) {
+    /// :nodoc:
+    public func socketDidBecomeActive(_ socket: GenericSocket) {
         guard let session = session, let producer = socket as? LinkProducer else {
             return
         }
@@ -412,7 +414,8 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
         }
     }
     
-    func socket(_ socket: GenericSocket, didShutdownWithFailure failure: Bool) {
+    /// :nodoc:
+    public func socket(_ socket: GenericSocket, didShutdownWithFailure failure: Bool) {
         guard let session = session else {
             return
         }
@@ -463,7 +466,8 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
         disposeTunnel(error: shutdownError)
     }
     
-    func socketHasBetterPath(_ socket: GenericSocket) {
+    /// :nodoc:
+    public func socketHasBetterPath(_ socket: GenericSocket) {
         log.debug("Stopping tunnel due to a new better path")
         logCurrentSSID()
         session?.reconnect(error: ProviderError.networkChanged)

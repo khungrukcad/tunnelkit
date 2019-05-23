@@ -96,8 +96,9 @@ class NETCPLink: LinkInterface {
     }
 }
 
+/// :nodoc:
 extension NETCPSocket: LinkProducer {
-    func link(withMTU mtu: Int) -> LinkInterface {
+    public func link(withMTU mtu: Int) -> LinkInterface {
         return NETCPLink(impl: impl, mtu: mtu)
     }
 }

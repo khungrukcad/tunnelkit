@@ -36,7 +36,7 @@
 
 import Foundation
 
-protocol GenericSocketDelegate: class {
+public protocol GenericSocketDelegate: class {
     func socketDidTimeout(_ socket: GenericSocket)
 
     func socketDidBecomeActive(_ socket: GenericSocket)
@@ -46,7 +46,7 @@ protocol GenericSocketDelegate: class {
     func socketHasBetterPath(_ socket: GenericSocket)
 }
 
-protocol GenericSocket {
+public protocol GenericSocket {
     var remoteAddress: String? { get }
     
     var hasBetterPath: Bool { get }

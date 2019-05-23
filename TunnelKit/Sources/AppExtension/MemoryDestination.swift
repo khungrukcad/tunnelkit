@@ -37,39 +37,33 @@
 import Foundation
 import SwiftyBeaver
 
-class MemoryDestination: BaseDestination, CustomStringConvertible {
+public class MemoryDestination: BaseDestination, CustomStringConvertible {
     private var buffer: [String] = []
     
-    var maxLines: Int?
+    public var maxLines: Int?
     
-    override init() {
+    public override init() {
         super.init()
         asynchronously = false
     }
     
-    func start(with existing: [String]) {
+    public func start(with existing: [String]) {
         execute(synchronously: true) {
             self.buffer = existing
         }
     }
     
-    func flush(to url: URL) {
+    public func flush(to url: URL) {
         execute(synchronously: true) {
             let content = self.buffer.joined(separator: "\n")
             try? content.write(to: url, atomically: true, encoding: .utf8)
         }
     }
     
-    var description: String {
-        return executeSynchronously {
-            return self.buffer.joined(separator: "\n")
-        }
-    }
-    
     // MARK: BaseDestination
 
     // XXX: executed in SwiftyBeaver queue. DO NOT invoke execute* here (sync in sync would crash otherwise)
-    override func send(_ level: SwiftyBeaver.Level, msg: String, thread: String, file: String, function: String, line: Int, context: Any?) -> String? {
+    public override func send(_ level: SwiftyBeaver.Level, msg: String, thread: String, file: String, function: String, line: Int, context: Any?) -> String? {
         guard let message = super.send(level, msg: msg, thread: thread, file: file, function: function, line: line) else {
             return nil
         }
@@ -80,5 +74,13 @@ class MemoryDestination: BaseDestination, CustomStringConvertible {
             }
         }
         return message
+    }
+
+    // MARK: CustomStringConvertible
+    
+    public var description: String {
+        return executeSynchronously {
+            return self.buffer.joined(separator: "\n")
+        }
     }
 }

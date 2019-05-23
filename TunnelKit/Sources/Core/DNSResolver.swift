@@ -36,7 +36,6 @@
 
 import Foundation
 
-/// :nodoc:
 public class DNSResolver {
     private static let queue = DispatchQueue(label: "DNSResolver")
 

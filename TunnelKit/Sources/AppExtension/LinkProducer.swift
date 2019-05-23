@@ -25,6 +25,6 @@
 
 import Foundation
 
-protocol LinkProducer {
+public protocol LinkProducer {
     func link(withMTU mtu: Int) -> LinkInterface
 }

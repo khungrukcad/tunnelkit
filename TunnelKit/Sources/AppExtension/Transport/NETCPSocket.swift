@@ -40,12 +40,12 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NETCPSocket: NSObject, GenericSocket {
+public class NETCPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
-    let impl: NWTCPConnection
+    public let impl: NWTCPConnection
     
-    init(impl: NWTCPConnection) {
+    public init(impl: NWTCPConnection) {
         self.impl = impl
         isActive = false
         isShutdown = false
@@ -57,19 +57,19 @@ class NETCPSocket: NSObject, GenericSocket {
     
     private var isActive: Bool
     
-    private(set) var isShutdown: Bool
+    public private(set) var isShutdown: Bool
     
-    var remoteAddress: String? {
+    public var remoteAddress: String? {
         return (impl.remoteAddress as? NWHostEndpoint)?.hostname
     }
     
-    var hasBetterPath: Bool {
+    public var hasBetterPath: Bool {
         return impl.hasBetterPath
     }
     
-    weak var delegate: GenericSocketDelegate?
+    public weak var delegate: GenericSocketDelegate?
     
-    func observe(queue: DispatchQueue, activeTimeout: Int) {
+    public func observe(queue: DispatchQueue, activeTimeout: Int) {
         isActive = false
         
         self.queue = queue
@@ -86,17 +86,17 @@ class NETCPSocket: NSObject, GenericSocket {
         impl.addObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), options: .new, context: &NETCPSocket.linkContext)
     }
     
-    func unobserve() {
+    public func unobserve() {
         impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.state), context: &NETCPSocket.linkContext)
         impl.removeObserver(self, forKeyPath: #keyPath(NWTCPConnection.hasBetterPath), context: &NETCPSocket.linkContext)
     }
     
-    func shutdown() {
+    public func shutdown() {
         impl.writeClose()
         impl.cancel()
     }
     
-    func upgraded() -> GenericSocket? {
+    public func upgraded() -> GenericSocket? {
         guard impl.hasBetterPath else {
             return nil
         }
@@ -105,7 +105,7 @@ class NETCPSocket: NSObject, GenericSocket {
     
     // MARK: Connection KVO (any queue)
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard (context == &NETCPSocket.linkContext) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
@@ -170,8 +170,9 @@ class NETCPSocket: NSObject, GenericSocket {
     }
 }
 
+/// :nodoc:
 extension NETCPSocket {
-    override var description: String {
+    public override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.maskedDescription
         }

@@ -37,25 +37,25 @@
 import Foundation
 import NetworkExtension
 
-class NETunnelInterface: TunnelInterface {
+public class NETunnelInterface: TunnelInterface {
     private weak var impl: NEPacketTunnelFlow?
     
     private let protocolNumber: NSNumber
     
-    init(impl: NEPacketTunnelFlow, isIPv6: Bool) {
+    public init(impl: NEPacketTunnelFlow, isIPv6: Bool) {
         self.impl = impl
         protocolNumber = (isIPv6 ? AF_INET6 : AF_INET) as NSNumber
     }
     
     // MARK: TunnelInterface
     
-    var isPersistent: Bool {
+    public var isPersistent: Bool {
         return false
     }
     
     // MARK: IOInterface
     
-    func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
+    public func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
         loopReadPackets(queue, handler)
     }
     
@@ -70,12 +70,12 @@ class NETunnelInterface: TunnelInterface {
         }
     }
     
-    func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
+    public func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
         impl?.writePackets([packet], withProtocols: [protocolNumber])
         completionHandler?(nil)
     }
     
-    func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
+    public func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
         let protocols = [NSNumber](repeating: protocolNumber, count: packets.count)
         impl?.writePackets(packets, withProtocols: protocols)
         completionHandler?(nil)

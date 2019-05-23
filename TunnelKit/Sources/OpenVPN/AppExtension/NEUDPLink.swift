@@ -77,8 +77,9 @@ class NEUDPLink: LinkInterface {
     }
 }
 
+/// :nodoc:
 extension NEUDPSocket: LinkProducer {
-    func link(withMTU mtu: Int) -> LinkInterface {
+    public func link(withMTU mtu: Int) -> LinkInterface {
         return NEUDPLink(impl: impl, mtu: mtu)
     }
 }

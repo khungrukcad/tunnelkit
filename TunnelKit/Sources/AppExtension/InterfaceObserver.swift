@@ -44,14 +44,14 @@ extension NSNotification.Name {
     static let __InterfaceObserverDidDetectWifiChange = NSNotification.Name("__InterfaceObserverDidDetectWifiChange")
 }
 
-class InterfaceObserver: NSObject {
+public class InterfaceObserver: NSObject {
     private var queue: DispatchQueue?
     
     private var timer: DispatchSourceTimer?
     
     private var lastWifiName: String?
     
-    func start(queue: DispatchQueue) {
+    public func start(queue: DispatchQueue) {
         self.queue = queue
 
         let timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue)
@@ -64,7 +64,7 @@ class InterfaceObserver: NSObject {
         self.timer = timer
     }
     
-    func stop() {
+    public func stop() {
         timer?.cancel()
         timer = nil
         queue = nil
@@ -87,7 +87,7 @@ class InterfaceObserver: NSObject {
         lastWifiName = currentWifiName
     }
 
-    func currentWifiNetworkName() -> String? {
+    public func currentWifiNetworkName() -> String? {
         #if os(iOS)
         guard let interfaceNames = CNCopySupportedInterfaces() as? [CFString] else {
             return nil
