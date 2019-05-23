@@ -52,7 +52,6 @@ extension OpenVPNTunnelProvider {
             sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             prefersResolvedAddresses: false,
             resolvedAddresses: nil,
-            endpointProtocols: nil,
             mtu: 1250,
             shouldDebug: false,
             debugLogFormat: nil,
@@ -129,7 +128,6 @@ extension OpenVPNTunnelProvider {
                 sessionConfiguration: sessionConfiguration,
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
-                endpointProtocols: nil,
                 mtu: mtu,
                 shouldDebug: shouldDebug,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
@@ -213,10 +211,6 @@ extension OpenVPNTunnelProvider {
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
-        /// - Seealso: `OpenVPN.Configuration.endpointProtocols`
-        @available(*, deprecated)
-        public var endpointProtocols: [EndpointProtocol]?
-        
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
         
