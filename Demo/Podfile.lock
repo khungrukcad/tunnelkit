@@ -1,15 +1,17 @@
 PODS:
   - OpenSSL-Apple (1.1.0j.2)
   - SwiftyBeaver (1.7.0)
-  - TunnelKit (1.6.3):
-    - TunnelKit/AppExtension (= 1.6.3)
-    - TunnelKit/Core (= 1.6.3)
-  - TunnelKit/AppExtension (1.6.3):
+  - TunnelKit (2.0.0):
+    - TunnelKit/Protocols/OpenVPN (= 2.0.0)
+  - TunnelKit/AppExtension (2.0.0):
     - SwiftyBeaver
     - TunnelKit/Core
-  - TunnelKit/Core (1.6.3):
+  - TunnelKit/Core (2.0.0):
     - OpenSSL-Apple (~> 1.1.0j.2)
     - SwiftyBeaver
+  - TunnelKit/Protocols/OpenVPN (2.0.0):
+    - TunnelKit/AppExtension
+    - TunnelKit/Core
 
 DEPENDENCIES:
   - TunnelKit (from `..`)
@@ -26,7 +28,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   OpenSSL-Apple: e88e1eb314acb4a05e2348069790c4aa49f6d319
   SwiftyBeaver: 4cc0080d2e23f980652e28978db11a5c9da39165
-  TunnelKit: ac8dad986e36e513303ed5d258c7e4aedb45c84b
+  TunnelKit: 821c15bb87aafae69eb8c63e4cc46d883fff8797
 
 PODFILE CHECKSUM: f66dfaaa92a8d04ab2743f3caeab0ac9f9f25859
 
