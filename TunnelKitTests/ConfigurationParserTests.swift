@@ -40,14 +40,13 @@ class ConfigurationParserTests: XCTestCase {
     // from lines
     
     func testCompression() throws {
-//        XCTAssertNotNil(try OptionsBundle.parsed(fromLines: ["comp-lzo"]).warning)
-        XCTAssertNil(try ConfigurationParser.parsed(fromLines: ["comp-lzo"]).warning)
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo no"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
-//        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
+        XCTAssertNil(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo"]).warning)
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo no"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
+//        XCTAssertThrowsError(try OpenVPN.ConfigurationParser.parsed(fromLines: ["comp-lzo yes"]))
         
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress"]))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: ["compress lzo"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["compress"]))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: ["compress lzo"]))
     }
     
     func testDHCPOption() throws {
@@ -59,9 +58,9 @@ class ConfigurationParserTests: XCTestCase {
             "dhcp-option PROXY_HTTPS 7.8.9.10 8082",
             "dhcp-option PROXY_BYPASS   foo.com   bar.org     net.chat"
         ]
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromLines: lines))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: lines))
         
-        let parsed = try! ConfigurationParser.parsed(fromLines: lines).configuration
+        let parsed = try! OpenVPN.ConfigurationParser.parsed(fromLines: lines).configuration
         XCTAssertEqual(parsed.dnsServers, ["8.8.8.8", "ffff::1"])
         XCTAssertEqual(parsed.searchDomain, "example.com")
         XCTAssertEqual(parsed.httpProxy?.address, "1.2.3.4")
@@ -72,24 +71,24 @@ class ConfigurationParserTests: XCTestCase {
     }
     
     func testRedirectGateway() throws {
-        var parsed: SessionProxy.Configuration
+        var parsed: OpenVPN.Configuration
 
-        parsed = try! ConfigurationParser.parsed(fromLines: []).configuration
+        parsed = try! OpenVPN.ConfigurationParser.parsed(fromLines: []).configuration
         XCTAssertEqual(parsed.routingPolicies, nil)
         XCTAssertNotEqual(parsed.routingPolicies, [])
-        parsed = try! ConfigurationParser.parsed(fromLines: ["redirect-gateway   ipv4   block-local"]).configuration
+        parsed = try! OpenVPN.ConfigurationParser.parsed(fromLines: ["redirect-gateway   ipv4   block-local"]).configuration
         XCTAssertEqual(Set(parsed.routingPolicies!), Set([.IPv4, .blockLocal]))
     }
 
     func testConnectionBlock() throws {
         let lines = ["<connection>", "</connection>"]
-        XCTAssertThrowsError(try ConfigurationParser.parsed(fromLines: lines))
+        XCTAssertThrowsError(try OpenVPN.ConfigurationParser.parsed(fromLines: lines))
     }
 
     // from file
     
     func testPIA() throws {
-        let file = try ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"))
+        let file = try OpenVPN.ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"))
         XCTAssertEqual(file.configuration.hostname, "hungary.privateinternetaccess.com")
         XCTAssertEqual(file.configuration.cipher, .aes128cbc)
         XCTAssertEqual(file.configuration.digest, .sha1)
@@ -100,7 +99,7 @@ class ConfigurationParserTests: XCTestCase {
     }
 
     func testStripped() throws {
-        let lines = try ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"), returnsStripped: true).strippedLines!
+        let lines = try OpenVPN.ConfigurationParser.parsed(fromURL: url(withName: "pia-hungary"), returnsStripped: true).strippedLines!
         let stripped = lines.joined(separator: "\n")
         print(stripped)
     }
@@ -112,8 +111,8 @@ class ConfigurationParserTests: XCTestCase {
     
     private func privateTestEncryptedCertificateKey(pkcs: String) throws {
         let cfgURL = url(withName: "tunnelbear.enc.\(pkcs)")
-        XCTAssertThrowsError(try ConfigurationParser.parsed(fromURL: cfgURL))
-        XCTAssertNoThrow(try ConfigurationParser.parsed(fromURL: cfgURL, passphrase: "foobar"))
+        XCTAssertThrowsError(try OpenVPN.ConfigurationParser.parsed(fromURL: cfgURL))
+        XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromURL: cfgURL, passphrase: "foobar"))
     }
     
     private func url(withName name: String) -> URL {

@@ -1,5 +1,5 @@
 //
-//  SessionProxy+Configuration.swift
+//  Configuration.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 8/23/18.
@@ -36,7 +36,7 @@
 
 import Foundation
 
-extension SessionProxy {
+extension OpenVPN {
     
     /// A pair of credentials for authentication.
     public struct Credentials: Codable, Equatable {
@@ -61,7 +61,7 @@ extension SessionProxy {
         }
     }
 
-    /// The available encryption algorithms.
+    /// Encryption algorithm.
     public enum Cipher: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
@@ -114,7 +114,7 @@ extension SessionProxy {
         }
     }
     
-    /// The available message digest algorithms.
+    /// Message digest algorithm.
     public enum Digest: String, Codable, CustomStringConvertible {
         
         // WARNING: must match OpenSSL algorithm names
@@ -167,22 +167,22 @@ extension SessionProxy {
         static let compressionFraming: CompressionFraming = .disabled
     }
     
-    /// The way to create a `SessionProxy.Configuration` object for a `SessionProxy`.
+    /// The way to create a `Configuration` object for a `OpenVPNSession`.
     public struct ConfigurationBuilder {
 
         // MARK: General
         
         /// The cipher algorithm for data encryption.
-        public var cipher: SessionProxy.Cipher?
+        public var cipher: Cipher?
         
         /// The digest algorithm for HMAC.
-        public var digest: SessionProxy.Digest?
+        public var digest: Digest?
         
         /// Compression framing, disabled by default.
-        public var compressionFraming: SessionProxy.CompressionFraming?
+        public var compressionFraming: CompressionFraming?
         
         /// Compression algorithm, disabled by default.
-        public var compressionAlgorithm: SessionProxy.CompressionAlgorithm?
+        public var compressionAlgorithm: CompressionAlgorithm?
         
         /// The CA for TLS negotiation (PEM format).
         public var ca: CryptoContainer?
@@ -194,7 +194,7 @@ extension SessionProxy {
         public var clientKey: CryptoContainer?
         
         /// The optional TLS wrapping.
-        public var tlsWrap: SessionProxy.TLSWrap?
+        public var tlsWrap: TLSWrap?
         
         /// If set, overrides TLS security level (0 = lowest).
         public var tlsSecurityLevel: Int?
@@ -232,10 +232,10 @@ extension SessionProxy {
         
         // MARK: Routing
         
-        /// The settings for IPv4. `SessionProxy` only evaluates this server-side.
+        /// The settings for IPv4. `OpenVPNSession` only evaluates this server-side.
         public var ipv4: IPv4Settings?
         
-        /// The settings for IPv6. `SessionProxy` only evaluates this server-side.
+        /// The settings for IPv6. `OpenVPNSession` only evaluates this server-side.
         public var ipv6: IPv6Settings?
         
         /// The DNS servers.
@@ -261,9 +261,9 @@ extension SessionProxy {
         }
         
         /**
-         Builds a `SessionProxy.Configuration` object.
+         Builds a `Configuration` object.
          
-         - Returns: A `SessionProxy.Configuration` object with this builder.
+         - Returns: A `Configuration` object with this builder.
          */
         public func build() -> Configuration {
             return Configuration(
@@ -314,85 +314,85 @@ extension SessionProxy {
         }
     }
     
-    /// The immutable configuration for `SessionProxy`.
+    /// The immutable configuration for `OpenVPNSession`.
     public struct Configuration: Codable {
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.cipher`
+        /// - Seealso: `ConfigurationBuilder.cipher`
         public let cipher: Cipher?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.digest`
+        /// - Seealso: `ConfigurationBuilder.digest`
         public let digest: Digest?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionFraming`
+        /// - Seealso: `ConfigurationBuilder.compressionFraming`
         public let compressionFraming: CompressionFraming?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.compressionAlgorithm`
+        /// - Seealso: `ConfigurationBuilder.compressionAlgorithm`
         public let compressionAlgorithm: CompressionAlgorithm?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.ca`
+        /// - Seealso: `ConfigurationBuilder.ca`
         public let ca: CryptoContainer?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientCertificate`
+        /// - Seealso: `ConfigurationBuilder.clientCertificate`
         public let clientCertificate: CryptoContainer?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.clientKey`
+        /// - Seealso: `ConfigurationBuilder.clientKey`
         public let clientKey: CryptoContainer?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsWrap`
+        /// - Seealso: `ConfigurationBuilder.tlsWrap`
         public let tlsWrap: TLSWrap?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.tlsSecurityLevel`
+        /// - Seealso: `ConfigurationBuilder.tlsSecurityLevel`
         public let tlsSecurityLevel: Int?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.keepAliveInterval`
+        /// - Seealso: `ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.renegotiatesAfter`
+        /// - Seealso: `ConfigurationBuilder.renegotiatesAfter`
         public let renegotiatesAfter: TimeInterval?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.hostname`
+        /// - Seealso: `ConfigurationBuilder.hostname`
         public let hostname: String?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.endpointProtocols`
+        /// - Seealso: `ConfigurationBuilder.endpointProtocols`
         public let endpointProtocols: [EndpointProtocol]?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.checksEKU`
+        /// - Seealso: `ConfigurationBuilder.checksEKU`
         public let checksEKU: Bool?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.randomizeEndpoint`
+        /// - Seealso: `ConfigurationBuilder.randomizeEndpoint`
         public let randomizeEndpoint: Bool?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.usesPIAPatches`
+        /// - Seealso: `ConfigurationBuilder.usesPIAPatches`
         public let usesPIAPatches: Bool?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.authToken`
+        /// - Seealso: `ConfigurationBuilder.authToken`
         public let authToken: String?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.peerId`
+        /// - Seealso: `ConfigurationBuilder.peerId`
         public let peerId: UInt32?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.ipv4`
+        /// - Seealso: `ConfigurationBuilder.ipv4`
         public let ipv4: IPv4Settings?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.ipv6`
+        /// - Seealso: `ConfigurationBuilder.ipv6`
         public let ipv6: IPv6Settings?
 
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.dnsServers`
+        /// - Seealso: `ConfigurationBuilder.dnsServers`
         public let dnsServers: [String]?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.searchDomain`
+        /// - Seealso: `ConfigurationBuilder.searchDomain`
         public let searchDomain: String?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.httpProxy`
+        /// - Seealso: `ConfigurationBuilder.httpProxy`
         public let httpProxy: Proxy?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.httpsProxy`
+        /// - Seealso: `ConfigurationBuilder.httpsProxy`
         public let httpsProxy: Proxy?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.proxyBypassDomains`
+        /// - Seealso: `ConfigurationBuilder.proxyBypassDomains`
         public let proxyBypassDomains: [String]?
         
-        /// - Seealso: `SessionProxy.ConfigurationBuilder.routingPolicies`
+        /// - Seealso: `ConfigurationBuilder.routingPolicies`
         public let routingPolicies: [RoutingPolicy]?
         
         // MARK: Shortcuts
@@ -416,15 +416,15 @@ extension SessionProxy {
 
 // MARK: Modification
 
-extension SessionProxy.Configuration {
+extension OpenVPN.Configuration {
     
     /**
-     Returns a `SessionProxy.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+     Returns a `ConfigurationBuilder` to use this configuration as a starting point for a new one.
      
-     - Returns: An editable `SessionProxy.ConfigurationBuilder` initialized with this configuration.
+     - Returns: An editable `ConfigurationBuilder` initialized with this configuration.
      */
-    public func builder() -> SessionProxy.ConfigurationBuilder {
-        var builder = SessionProxy.ConfigurationBuilder()
+    public func builder() -> OpenVPN.ConfigurationBuilder {
+        var builder = OpenVPN.ConfigurationBuilder()
         builder.cipher = cipher
         builder.digest = digest
         builder.compressionFraming = compressionFraming

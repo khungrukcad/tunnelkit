@@ -1,5 +1,5 @@
 //
-//  SessionProxy+TLSWrap.swift
+//  TLSWrap.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 9/11/18.
@@ -25,7 +25,7 @@
 
 import Foundation
 
-extension SessionProxy {
+extension OpenVPN {
 
     /// Holds parameters for TLS wrapping.
     public class TLSWrap: Codable {
@@ -53,8 +53,8 @@ extension SessionProxy {
         }
 
         /// :nodoc:
-        public static func deserialized(_ data: Data) throws -> SessionProxy.TLSWrap {
-            return try JSONDecoder().decode(SessionProxy.TLSWrap.self, from: data)
+        public static func deserialized(_ data: Data) throws -> TLSWrap {
+            return try JSONDecoder().decode(TLSWrap.self, from: data)
         }
         
         /// :nodoc:

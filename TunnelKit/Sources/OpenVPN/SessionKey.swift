@@ -1,5 +1,5 @@
 //
-//  SessionProxy+SessionKey.swift
+//  SessionKey.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 4/12/17.
@@ -41,7 +41,7 @@ import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
-extension SessionProxy {
+extension OpenVPN {
     class SessionKey {
         enum State {
             case invalid, hardReset, softReset, tls

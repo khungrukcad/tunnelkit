@@ -1,8 +1,8 @@
 //
-//  SessionProxy+SessionReply.swift
+//  OpenVPNSession+PIA.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 7/25/18.
+//  Created by Davide De Rosa on 10/18/18.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -36,45 +36,41 @@
 
 import Foundation
 
-/// Groups the parsed reply of a successfully started session.
-public protocol SessionReply {
-
-    /// The returned options.
-    var options: SessionProxy.Configuration { get }
-}
-
-extension SessionProxy {
-    struct PushReply: SessionReply, CustomStringConvertible {
-        private static let prefix = "PUSH_REPLY,"
+extension OpenVPNSession {
+    struct PIAHardReset {
+        private static let obfuscationKeyLength = 3
         
-        private let original: String
-
-        let options: SessionProxy.Configuration
+        private static let magic = "53eo0rk92gxic98p1asgl5auh59r1vp4lmry1e3chzi100qntd"
         
-        init?(message: String) throws {
-            guard message.hasPrefix(PushReply.prefix) else {
-                return nil
-            }
-            guard let prefixIndex = message.range(of: PushReply.prefix)?.lowerBound else {
-                return nil
-            }
-            original = String(message[prefixIndex...])
-
-            let lines = original.components(separatedBy: ",")
-            options = try ConfigurationParser.parsed(fromLines: lines).configuration
+        private static let encodedFormat = "\(magic)crypto\t%@|%@\tca\t%@"
+        
+        private let caMd5Digest: String
+        
+        private let cipherName: String
+        
+        private let digestName: String
+        
+        init(caMd5Digest: String, cipher: OpenVPN.Cipher, digest: OpenVPN.Digest) {
+            self.caMd5Digest = caMd5Digest
+            cipherName = cipher.rawValue.lowercased()
+            digestName = digest.rawValue.lowercased()
         }
         
-        // MARK: CustomStringConvertible
-        
-        var description: String {
-            let stripped = NSMutableString(string: original)
-            ConfigurationParser.Regex.authToken.replaceMatches(
-                in: stripped,
-                options: [],
-                range: NSMakeRange(0, stripped.length),
-                withTemplate: "auth-token"
-            )
-            return stripped as String
+        // Ruby: pia_settings
+        func encodedData() throws -> Data {
+            guard let plainData = String(format: PIAHardReset.encodedFormat, cipherName, digestName, caMd5Digest).data(using: .ascii) else {
+                fatalError("Unable to encode string to ASCII")
+            }
+            let keyBytes = try SecureRandom.data(length: PIAHardReset.obfuscationKeyLength)
+            
+            var encodedData = Data(keyBytes)
+            for (i, b) in plainData.enumerated() {
+                let keyChar = keyBytes[i % keyBytes.count]
+                let xorredB = b ^ keyChar
+                
+                encodedData.append(xorredB)
+            }
+            return encodedData
         }
     }
 }

@@ -1,5 +1,5 @@
 //
-//  SessionProxy.swift
+//  OpenVPNSession.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/3/17.
@@ -41,28 +41,28 @@ import __TunnelKitOpenVPN
 
 private let log = SwiftyBeaver.self
 
-/// Observes major events notified by a `SessionProxy`.
-public protocol SessionProxyDelegate: class {
-
+/// Observes major events notified by a `OpenVPNSession`.
+public protocol OpenVPNSessionDelegate: class {
+    
     /**
      Called after starting a session.
-
+     
      - Parameter remoteAddress: The address of the VPN server.
-     - Parameter reply: The compound `SessionReply` containing tunnel settings.
+     - Parameter options: The pulled tunnel settings.
      */
-    func sessionDidStart(_: SessionProxy, remoteAddress: String, reply: SessionReply)
+    func sessionDidStart(_: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration)
     
     /**
      Called after stopping a session.
      
      - Parameter shouldReconnect: When `true`, the session can/should be restarted. Usually because the stop reason was recoverable.
-     - Seealso: `SessionProxy.reconnect(...)`
+     - Seealso: `OpenVPNSession.reconnect(...)`
      */
-    func sessionDidStop(_: SessionProxy, shouldReconnect: Bool)
+    func sessionDidStop(_: OpenVPNSession, shouldReconnect: Bool)
 }
 
 /// Provides methods to set up and maintain an OpenVPN session.
-public class SessionProxy {
+public class OpenVPNSession: Session {
     private enum StopMethod {
         case shutdown
         
@@ -80,10 +80,10 @@ public class SessionProxy {
     // MARK: Configuration
     
     /// The session base configuration.
-    public let configuration: Configuration
+    public let configuration: OpenVPN.Configuration
     
     /// The optional credentials.
-    public var credentials: Credentials?
+    public var credentials: OpenVPN.Credentials?
     
     private var keepAliveInterval: TimeInterval? {
         let interval: TimeInterval?
@@ -97,8 +97,8 @@ public class SessionProxy {
         return interval
     }
     
-    /// An optional `SessionProxyDelegate` for receiving session events.
-    public weak var delegate: SessionProxyDelegate?
+    /// An optional `OpenVPNSessionDelegate` for receiving session events.
+    public weak var delegate: OpenVPNSessionDelegate?
     
     // MARK: State
 
@@ -108,22 +108,22 @@ public class SessionProxy {
     
     private var withLocalOptions: Bool
 
-    private var keys: [UInt8: SessionKey]
+    private var keys: [UInt8: OpenVPN.SessionKey]
 
-    private var oldKeys: [SessionKey]
+    private var oldKeys: [OpenVPN.SessionKey]
 
     private var negotiationKeyIdx: UInt8
     
     private var currentKeyIdx: UInt8?
     
-    private var negotiationKey: SessionKey {
+    private var negotiationKey: OpenVPN.SessionKey {
         guard let key = keys[negotiationKeyIdx] else {
             fatalError("Keys are empty or index \(negotiationKeyIdx) not found in \(keys.keys)")
         }
         return key
     }
     
-    private var currentKey: SessionKey? {
+    private var currentKey: OpenVPN.SessionKey? {
         guard let i = currentKeyIdx else {
             return nil
         }
@@ -140,7 +140,7 @@ public class SessionProxy {
 
     private var continuatedPushReplyMessage: String?
 
-    private var pushReply: SessionReply?
+    private var pushReply: OpenVPN.PushReply?
     
     private var nextPushRequestDate: Date?
     
@@ -155,9 +155,9 @@ public class SessionProxy {
     
     // MARK: Control
     
-    private var controlChannel: ControlChannel
+    private var controlChannel: OpenVPN.ControlChannel
     
-    private var authenticator: Authenticator?
+    private var authenticator: OpenVPN.Authenticator?
     
     // MARK: Caching
     
@@ -181,9 +181,9 @@ public class SessionProxy {
      Creates a VPN session.
      
      - Parameter queue: The `DispatchQueue` where to run the session loop.
-     - Parameter configuration: The `SessionProxy.Configuration` to use for this session.
+     - Parameter configuration: The `Configuration` to use for this session.
      */
-    public init(queue: DispatchQueue, configuration: Configuration, cachesURL: URL) throws {
+    public init(queue: DispatchQueue, configuration: OpenVPN.Configuration, cachesURL: URL) throws {
         guard let ca = configuration.ca else {
             throw ConfigurationError.missingConfiguration(option: "ca")
         }
@@ -202,13 +202,13 @@ public class SessionProxy {
         if let tlsWrap = configuration.tlsWrap {
             switch tlsWrap.strategy {
             case .auth:
-                controlChannel = try ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.fallbackDigest)
+                controlChannel = try OpenVPN.ControlChannel(withAuthKey: tlsWrap.key, digest: configuration.fallbackDigest)
 
             case .crypt:
-                controlChannel = try ControlChannel(withCryptKey: tlsWrap.key)
+                controlChannel = try OpenVPN.ControlChannel(withCryptKey: tlsWrap.key)
             }
         } else {
-            controlChannel = ControlChannel()
+            controlChannel = OpenVPN.ControlChannel()
         }
         
         // cache PEMs locally (mandatory for OpenSSL)
@@ -236,15 +236,8 @@ public class SessionProxy {
         }
     }
     
-    // MARK: Public interface
+    // MARK: Session
 
-    /**
-     Establishes the link interface for this session. The interface must be up and running for sending and receiving packets.
-     
-     - Precondition: `link` is an active network interface.
-     - Postcondition: The VPN negotiation is started.
-     - Parameter link: The `LinkInterface` on which to establish the VPN session.
-     */
     public func setLink(_ link: LinkInterface) {
         guard (self.link == nil) else {
             log.warning("Link interface already set!")
@@ -265,11 +258,6 @@ public class SessionProxy {
         start()
     }
     
-    /**
-     Returns `true` if the current session can rebind to a new link with `rebindLink(...)`.
-
-     - Returns: `true` if supports link rebinding.
-     */
     public func canRebindLink() -> Bool {
 //        return (pushReply?.peerId != nil)
 
@@ -277,14 +265,6 @@ public class SessionProxy {
         return false
     }
     
-    /**
-     Rebinds the session to a new link if supported.
-     
-     - Precondition: `link` is an active network interface.
-     - Postcondition: The VPN session is active.
-     - Parameter link: The `LinkInterface` on which to establish the VPN session.
-     - Seealso: `canRebindLink()`.
-     */
     public func rebindLink(_ link: LinkInterface) {
         guard let _ = pushReply?.options.peerId else {
             log.warning("Session doesn't support link rebinding!")
@@ -299,13 +279,6 @@ public class SessionProxy {
         loopLink()
     }
 
-    /**
-     Establishes the tunnel interface for this session. The interface must be up and running for sending and receiving packets.
-     
-     - Precondition: `tunnel` is an active network interface.
-     - Postcondition: The VPN data channel is open.
-     - Parameter tunnel: The `TunnelInterface` on which to exchange the VPN data traffic.
-     */
     public func setTunnel(tunnel: TunnelInterface) {
         guard (self.tunnel == nil) else {
             log.warning("Tunnel interface already set!")
@@ -315,11 +288,6 @@ public class SessionProxy {
         loopTunnel()
     }
 
-    /**
-     Returns the current data bytes count.
- 
-     - Returns: The current data bytes count as a pair, inbound first.
-     */
     public func dataCount() -> (Int, Int)? {
         guard let _ = link else {
             return nil
@@ -327,11 +295,6 @@ public class SessionProxy {
         return controlChannel.currentDataCount()
     }
     
-    /**
-     Shuts down the session with an optional `Error` reason. Does nothing if the session is already stopped or about to stop.
-     
-     - Parameter error: An optional `Error` being the reason of the shutdown.
-     */
     public func shutdown(error: Error?) {
         guard !isStopping else {
             log.warning("Ignore stop request, already stopping!")
@@ -340,12 +303,6 @@ public class SessionProxy {
         deferStop(.shutdown, error)
     }
     
-    /**
-     Shuts down the session with an optional `Error` reason and signals a reconnect flag to `SessionProxyDelegate.sessionDidStop(...)`. Does nothing if the session is already stopped or about to stop.
-     
-     - Parameter error: An optional `Error` being the reason of the shutdown.
-     - Seealso: `SessionProxyDelegate.sessionDidStop(...)`
-     */
     public func reconnect(error: Error?) {
         guard !isStopping else {
             log.warning("Ignore stop request, already stopping!")
@@ -355,9 +312,6 @@ public class SessionProxy {
     }
     
     // Ruby: cleanup
-    /**
-     Cleans up the session resources.
-     */
     public func cleanup() {
         log.info("Cleaning up...")
 
@@ -402,14 +356,14 @@ public class SessionProxy {
         }
 
         guard !negotiationKey.didHardResetTimeOut(link: link) else {
-            doReconnect(error: SessionError.negotiationTimeout)
+            doReconnect(error: OpenVPNError.negotiationTimeout)
             return
         }
         guard !negotiationKey.didNegotiationTimeOut(link: link) else {
-            doShutdown(error: SessionError.negotiationTimeout)
+            doShutdown(error: OpenVPNError.negotiationTimeout)
             return
         }
-            
+        
         pushRequest()
         if !isReliableLink {
             flushControlQueue()
@@ -499,7 +453,7 @@ public class SessionProxy {
                 let key = firstByte & 0b111
                 guard let _ = keys[key] else {
                     log.error("Key with id \(key) not found")
-                    deferStop(.shutdown, SessionError.badKey)
+                    deferStop(.shutdown, OpenVPNError.badKey)
                     return
                 }
 
@@ -526,7 +480,7 @@ public class SessionProxy {
 //                return
             }
             if (code == .hardResetServerV2) && (negotiationKey.controlState == .connected) {
-                deferStop(.shutdown, SessionError.staleSession)
+                deferStop(.shutdown, OpenVPNError.staleSession)
                 return
             } else if (code == .softResetV1) && !negotiationKey.softReset {
                 softReset(isServerInitiated: true)
@@ -567,7 +521,7 @@ public class SessionProxy {
         
         let now = Date()
         guard (now.timeIntervalSince(lastPing.inbound) <= CoreConfiguration.OpenVPN.pingTimeout) else {
-            deferStop(.shutdown, SessionError.pingTimeout)
+            deferStop(.shutdown, OpenVPNError.pingTimeout)
             return
         }
 
@@ -581,7 +535,7 @@ public class SessionProxy {
         }
 
         log.debug("Send ping")
-        sendDataPackets([DataPacket.pingString])
+        sendDataPackets([OpenVPN.DataPacket.pingString])
         lastPing.outbound = Date()
 
         scheduleNextPing()
@@ -617,7 +571,7 @@ public class SessionProxy {
         continuatedPushReplyMessage = nil
         pushReply = nil
         negotiationKeyIdx = 0
-        let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
+        let newKey = OpenVPN.SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
         log.debug("Negotiation key index is \(negotiationKeyIdx)")
 
@@ -658,8 +612,8 @@ public class SessionProxy {
         }
         
         resetControlChannel(forNewSession: false)
-        negotiationKeyIdx = max(1, (negotiationKeyIdx + 1) % ProtocolMacros.numberOfKeys)
-        let newKey = SessionKey(id: UInt8(negotiationKeyIdx))
+        negotiationKeyIdx = max(1, (negotiationKeyIdx + 1) % OpenVPN.ProtocolMacros.numberOfKeys)
+        let newKey = OpenVPN.SessionKey(id: UInt8(negotiationKeyIdx))
         keys[negotiationKeyIdx] = newKey
         log.debug("Negotiation key index is \(negotiationKeyIdx)")
 
@@ -678,7 +632,7 @@ public class SessionProxy {
         negotiationKey.controlState = .preAuth
         
         do {
-            authenticator = try Authenticator(credentials?.username, pushReply?.options.authToken ?? credentials?.password)
+            authenticator = try OpenVPN.Authenticator(credentials?.username, pushReply?.options.authToken ?? credentials?.password)
             authenticator?.withLocalOptions = withLocalOptions
             try authenticator?.putAuth(into: negotiationKey.tls, options: configuration)
         } catch let e {
@@ -766,7 +720,7 @@ public class SessionProxy {
     private func handleControlPacket(_ packet: ControlPacket) {
         guard packet.key == negotiationKey.id else {
             log.error("Bad key in control packet (\(packet.key) != \(negotiationKey.id))")
-//            deferStop(.shutdown, SessionError.badKey)
+//            deferStop(.shutdown, OpenVPNError.badKey)
             return
         }
         
@@ -779,12 +733,12 @@ public class SessionProxy {
             }
             guard let remoteSessionId = controlChannel.remoteSessionId else {
                 log.error("No remote sessionId (never set)")
-                deferStop(.shutdown, SessionError.missingSessionId)
+                deferStop(.shutdown, OpenVPNError.missingSessionId)
                 return
             }
             guard packet.sessionId == remoteSessionId else {
                 log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
-                deferStop(.shutdown, SessionError.sessionMismatch)
+                deferStop(.shutdown, OpenVPNError.sessionMismatch)
                 return
             }
 
@@ -829,12 +783,12 @@ public class SessionProxy {
         else if ((packet.code == .controlV1) && (negotiationKey.state == .tls)) {
             guard let remoteSessionId = controlChannel.remoteSessionId else {
                 log.error("No remote sessionId found in packet (control packets before server HARD_RESET)")
-                deferStop(.shutdown, SessionError.missingSessionId)
+                deferStop(.shutdown, OpenVPNError.missingSessionId)
                 return
             }
             guard packet.sessionId == remoteSessionId else {
                 log.error("Packet session mismatch (\(packet.sessionId.toHex()) != \(remoteSessionId.toHex()))")
-                deferStop(.shutdown, SessionError.sessionMismatch)
+                deferStop(.shutdown, OpenVPNError.sessionMismatch)
                 return
             }
             
@@ -921,11 +875,11 @@ public class SessionProxy {
             if authenticator?.withLocalOptions ?? false {
                 log.warning("Authentication failure, retrying without local options")
                 withLocalOptions = false
-                deferStop(.reconnect, SessionError.badCredentials)
+                deferStop(.reconnect, OpenVPNError.badCredentials)
                 return
             }
 
-            deferStop(.shutdown, SessionError.badCredentials)
+            deferStop(.shutdown, OpenVPNError.badCredentials)
             return
         }
         
@@ -943,9 +897,9 @@ public class SessionProxy {
         } else {
             completeMessage = message
         }
-        let reply: PushReply
+        let reply: OpenVPN.PushReply
         do {
-            guard let optionalReply = try PushReply(message: completeMessage) else {
+            guard let optionalReply = try OpenVPN.PushReply(message: completeMessage) else {
                 return
             }
             reply = optionalReply
@@ -959,15 +913,15 @@ public class SessionProxy {
                 case .LZO:
                     if !LZOIsSupported() {
                         log.error("Server has LZO compression enabled and this was not built into the library (framing=\(framing))")
-                        throw SessionError.serverCompression
+                        throw OpenVPNError.serverCompression
                     }
 
                 case .other:
                     log.error("Server has non-LZO compression enabled and this is currently unsupported (framing=\(framing))")
-                    throw SessionError.serverCompression
+                    throw OpenVPNError.serverCompression
                 }
             }
-        } catch SessionError.continuationPushReply {
+        } catch OpenVPNError.continuationPushReply {
             continuatedPushReplyMessage = completeMessage.replacingOccurrences(of: "push-continuation", with: "")
             // FIXME: strip "PUSH_REPLY" and "push-continuation 2"
             return
@@ -978,7 +932,7 @@ public class SessionProxy {
         
         pushReply = reply
         guard reply.options.ipv4 != nil || reply.options.ipv6 != nil else {
-            deferStop(.shutdown, SessionError.noRouting)
+            deferStop(.shutdown, OpenVPNError.noRouting)
             return
         }
         
@@ -987,7 +941,7 @@ public class SessionProxy {
         guard let remoteAddress = link?.remoteAddress else {
             fatalError("Could not resolve link remote address")
         }
-        delegate?.sessionDidStart(self, remoteAddress: remoteAddress, reply: reply)
+        delegate?.sessionDidStart(self, remoteAddress: remoteAddress, options: reply.options)
 
         scheduleNextPing()
     }
@@ -1039,7 +993,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
-                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                 }
                 return
             }
@@ -1093,9 +1047,9 @@ public class SessionProxy {
             log.info("\tNegotiated keep-alive: \(negPing) seconds")
         }
 
-        let bridge: EncryptionBridge
+        let bridge: OpenVPN.EncryptionBridge
         do {
-            bridge = try EncryptionBridge(
+            bridge = try OpenVPN.EncryptionBridge(
                 pushedCipher ?? configuration.fallbackCipher,
                 configuration.fallbackDigest,
                 auth,
@@ -1121,7 +1075,7 @@ public class SessionProxy {
     // MARK: Data
 
     // Ruby: handle_data_pkt
-    private func handleDataPackets(_ packets: [Data], key: SessionKey) {
+    private func handleDataPackets(_ packets: [Data], key: OpenVPN.SessionKey) {
         controlChannel.addReceivedDataCount(packets.flatCount)
         do {
             guard let decryptedPackets = try key.decrypt(packets: packets) else {
@@ -1169,7 +1123,7 @@ public class SessionProxy {
                     
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
-                        self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                        self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                     }
                     return
                 }
@@ -1210,7 +1164,7 @@ public class SessionProxy {
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
-                    self?.deferStop(.shutdown, SessionError.failedLinkWrite)
+                    self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
                 }
                 return
             }
@@ -1240,7 +1194,7 @@ public class SessionProxy {
         // shut down after sending exit notification if socket is unreliable (normally UDP)
         if let link = link, !link.isReliable {
             do {
-                guard let packets = try currentKey?.encrypt(packets: [OCCPacket.exit.serialized()]) else {
+                guard let packets = try currentKey?.encrypt(packets: [OpenVPN.OCCPacket.exit.serialized()]) else {
                     completion()
                     return
                 }

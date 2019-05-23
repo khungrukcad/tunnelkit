@@ -22,17 +22,15 @@ custom_categories:
         - IPv6Settings
         - LinkInterface
         - Proxy
-        - TunnelInterface
+        - Session
         - SocketType
+        - TunnelInterface
     - name: OpenVPN
       children:
-        - ConfigurationParser
-        - CryptoContainer
-        - SessionError
-        - SessionProxy
-        - SessionProxyDelegate
-        - SessionReply
-        - StaticKey
+        - OpenVPN
+        - OpenVPNError
+        - OpenVPNSession
+        - OpenVPNSessionDelegate
     - name: AppExtension
       children:
         - TunnelKitProvider

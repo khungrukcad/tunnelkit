@@ -1,8 +1,8 @@
 //
-//  SessionProxy+CompressionAlgorithm.swift
+//  CompressionFraming.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 3/19/19.
+//  Created by Davide De Rosa on 8/30/18.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -26,23 +26,23 @@
 import Foundation
 import __TunnelKitOpenVPN
 
-extension SessionProxy {
-    
-    /// Defines the type of compression algorithm.
-    public enum CompressionAlgorithm: Int, Codable, CustomStringConvertible {
-        
-        /// No compression.
+extension OpenVPN {
+
+    /// Defines the type of compression framing.
+    public enum CompressionFraming: Int, Codable, CustomStringConvertible {
+
+        /// No compression framing.
         case disabled
         
-        /// LZO compression.
-        case LZO
+        /// Framing compatible with `comp-lzo` (deprecated in 2.4).
+        case compLZO
+
+        /// Framing compatible with 2.4 `compress`.
+        case compress
         
-        /// Any other compression algorithm (unsupported).
-        case other
-        
-        var native: CompressionAlgorithmNative {
-            guard let val = CompressionAlgorithmNative(rawValue: rawValue) else {
-                fatalError("Unhandled CompressionAlgorithm bridging")
+        var native: CompressionFramingNative {
+            guard let val = CompressionFramingNative(rawValue: rawValue) else {
+                fatalError("Unhandled CompressionFraming bridging")
             }
             return val
         }
@@ -55,11 +55,11 @@ extension SessionProxy {
             case .disabled:
                 return "disabled"
                 
-            case .LZO:
-                return "lzo"
+            case .compress:
+                return "compress"
                 
-            case .other:
-                return "other"
+            case .compLZO:
+                return "comp-lzo"
             }
         }
     }

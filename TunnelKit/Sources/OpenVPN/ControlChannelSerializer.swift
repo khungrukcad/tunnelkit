@@ -38,7 +38,7 @@ protocol ControlChannelSerializer {
     func deserialize(data: Data, start: Int, end: Int?) throws -> ControlPacket
 }
 
-extension ControlChannel {
+extension OpenVPN.ControlChannel {
     class PlainSerializer: ControlChannelSerializer {
         func reset() {
         }
@@ -52,11 +52,11 @@ extension ControlChannel {
             let end = end ?? packet.count
             
             guard end >= offset + PacketOpcodeLength else {
-                throw ControlChannelError("Missing opcode")
+                throw OpenVPN.ControlChannelError("Missing opcode")
             }
             let codeValue = packet[offset] >> 3
             guard let code = PacketCode(rawValue: codeValue) else {
-                throw ControlChannelError("Unknown code: \(codeValue))")
+                throw OpenVPN.ControlChannelError("Unknown code: \(codeValue))")
             }
             let key = packet[offset] & 0b111
             offset += PacketOpcodeLength
@@ -64,13 +64,13 @@ extension ControlChannel {
             log.debug("Control: Try read packet with code \(code) and key \(key)")
             
             guard end >= offset + PacketSessionIdLength else {
-                throw ControlChannelError("Missing sessionId")
+                throw OpenVPN.ControlChannelError("Missing sessionId")
             }
             let sessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
             offset += PacketSessionIdLength
 
             guard end >= offset + 1 else {
-                throw ControlChannelError("Missing ackSize")
+                throw OpenVPN.ControlChannelError("Missing ackSize")
             }
             let ackSize = packet[offset]
             offset += 1
@@ -79,7 +79,7 @@ extension ControlChannel {
             var ackRemoteSessionId: Data?
             if ackSize > 0 {
                 guard end >= (offset + Int(ackSize) * PacketIdLength) else {
-                    throw ControlChannelError("Missing acks")
+                    throw OpenVPN.ControlChannelError("Missing acks")
                 }
                 var ids: [UInt32] = []
                 for _ in 0..<ackSize {
@@ -89,7 +89,7 @@ extension ControlChannel {
                 }
 
                 guard end >= offset + PacketSessionIdLength else {
-                    throw ControlChannelError("Missing remoteSessionId")
+                    throw OpenVPN.ControlChannelError("Missing remoteSessionId")
                 }
                 let remoteSessionId = packet.subdata(offset: offset, count: PacketSessionIdLength)
                 offset += PacketSessionIdLength
@@ -100,16 +100,16 @@ extension ControlChannel {
 
             if code == .ackV1 {
                 guard let ackIds = ackIds else {
-                    throw ControlChannelError("Ack packet without ids")
+                    throw OpenVPN.ControlChannelError("Ack packet without ids")
                 }
                 guard let ackRemoteSessionId = ackRemoteSessionId else {
-                    throw ControlChannelError("Ack packet without remoteSessionId")
+                    throw OpenVPN.ControlChannelError("Ack packet without remoteSessionId")
                 }
                 return ControlPacket(key: key, sessionId: sessionId, ackIds: ackIds as [NSNumber], ackRemoteSessionId: ackRemoteSessionId)
             }
 
             guard end >= offset + PacketIdLength else {
-                throw ControlChannelError("Missing packetId")
+                throw OpenVPN.ControlChannelError("Missing packetId")
             }
             let packetId = packet.networkUInt32Value(from: offset)
             offset += PacketIdLength
@@ -129,7 +129,7 @@ extension ControlChannel {
     }
 }
 
-extension ControlChannel {
+extension OpenVPN.ControlChannel {
     class AuthSerializer: ControlChannelSerializer {
         private let encrypter: Encrypter
         
@@ -149,7 +149,7 @@ extension ControlChannel {
         
         private let plain: PlainSerializer
         
-        init(withKey key: StaticKey, digest: SessionProxy.Digest) throws {
+        init(withKey key: OpenVPN.StaticKey, digest: OpenVPN.Digest) throws {
             let crypto = CryptoBox(cipherAlgorithm: nil, digestAlgorithm: digest.rawValue)
             try crypto.configure(
                 withCipherEncKey: nil,
@@ -190,7 +190,7 @@ extension ControlChannel {
             
             // data starts with (prefix=(header + sessionId) + auth=(hmac + replayId))
             guard end >= preambleLength else {
-                throw ControlChannelError("Missing HMAC")
+                throw OpenVPN.ControlChannelError("Missing HMAC")
             }
             
             // needs a copy for swapping
@@ -209,7 +209,7 @@ extension ControlChannel {
     }
 }
 
-extension ControlChannel {
+extension OpenVPN.ControlChannel {
     class CryptSerializer: ControlChannelSerializer {
         private let encrypter: Encrypter
         
@@ -227,7 +227,7 @@ extension ControlChannel {
         
         private let plain: PlainSerializer
 
-        init(withKey key: StaticKey) throws {
+        init(withKey key: OpenVPN.StaticKey) throws {
             let crypto = CryptoBox(cipherAlgorithm: "AES-256-CTR", digestAlgorithm: "SHA256")
             try crypto.configure(
                 withCipherEncKey: key.cipherEncryptKey,
@@ -267,7 +267,7 @@ extension ControlChannel {
             
             // data starts with (ad=(header + sessionId + replayId) + tag)
             guard end >= start + adLength + tagLength else {
-                throw ControlChannelError("Missing AD+TAG")
+                throw OpenVPN.ControlChannelError("Missing AD+TAG")
             }
             
             let encryptedCount = packet.count - adLength

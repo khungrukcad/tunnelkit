@@ -63,7 +63,7 @@ dccdb953cdf32bea03f365760b0ed800
     
     func testFileBidirectional() {
         let expected = Data(hex: "cf55d863fcbe314df5f0b45dbe974d9bde33ef5b4803c3985531c6c23ca6906d6cd028efc8585d1b9e71003566bd7891b9cc9212bcba510109922eed87f5c8e6")
-        let key = StaticKey(file: content, direction: nil)
+        let key = OpenVPN.StaticKey(file: content, direction: nil)
         XCTAssertNotNil(key)
         
         XCTAssertEqual(key?.hmacSendKey.toData(), expected)
@@ -73,7 +73,7 @@ dccdb953cdf32bea03f365760b0ed800
     func testFileDirection() {
         let send = Data(hex: "778a6b35a124e700920879f1d003ba93dccdb953cdf32bea03f365760b0ed8002098d4ce20d045b45a83a8432cc737677aed27125592a7148d25c87fdbe0a3f6")
         let receive = Data(hex: "cf55d863fcbe314df5f0b45dbe974d9bde33ef5b4803c3985531c6c23ca6906d6cd028efc8585d1b9e71003566bd7891b9cc9212bcba510109922eed87f5c8e6")
-        let key = StaticKey(file: content, direction: .client)
+        let key = OpenVPN.StaticKey(file: content, direction: .client)
         XCTAssertNotNil(key)
         
         XCTAssertEqual(key?.hmacSendKey.toData(), send)

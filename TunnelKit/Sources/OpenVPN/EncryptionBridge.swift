@@ -1,5 +1,5 @@
 //
-//  SessionProxy+EncryptionBridge.swift
+//  EncryptionBridge.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/8/17.
@@ -38,28 +38,11 @@ import Foundation
 import __TunnelKitCore
 import __TunnelKitOpenVPN
 
-extension SessionProxy {
-
-    /// Bridges native encryption for high-level operations.
-    public class EncryptionBridge {
+extension OpenVPN {
+    class EncryptionBridge {
         private static let maxHmacLength = 100
         
         private let box: CryptoBox
-        
-        /**
-         Initializes the PRNG. Must be issued before using `SessionProxy`.
-     
-         - Parameter seedLength: The length in bytes of the pseudorandom seed that will feed the PRNG.
-         */
-        public static func prepareRandomNumberGenerator(seedLength: Int) -> Bool {
-            let seed: ZeroingData
-            do {
-                seed = try SecureRandom.safeData(length: seedLength)
-            } catch {
-                return false
-            }
-            return CryptoBox.preparePRNG(withSeed: seed.bytes, length: seed.count)
-        }
         
         // Ruby: keys_prf
         private static func keysPRF(
@@ -127,7 +110,7 @@ extension SessionProxy {
             return buffer.withOffset(0, count: length)
         }
         
-        convenience init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ auth: SessionProxy.Authenticator,
+        convenience init(_ cipher: Cipher, _ digest: Digest, _ auth: Authenticator,
                          _ sessionId: Data, _ remoteSessionId: Data) throws {
             
             guard let serverRandom1 = auth.serverRandom1, let serverRandom2 = auth.serverRandom2 else {
@@ -161,7 +144,7 @@ extension SessionProxy {
             try self.init(cipher, digest, cipherEncKey, cipherDecKey, hmacEncKey, hmacDecKey)
         }
         
-        init(_ cipher: SessionProxy.Cipher, _ digest: SessionProxy.Digest, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
+        init(_ cipher: Cipher, _ digest: Digest, _ cipherEncKey: ZeroingData, _ cipherDecKey: ZeroingData, _ hmacEncKey: ZeroingData, _ hmacDecKey: ZeroingData) throws {
             box = CryptoBox(cipherAlgorithm: cipher.rawValue, digestAlgorithm: digest.rawValue)
             try box.configure(
                 withCipherEncKey: cipherEncKey,

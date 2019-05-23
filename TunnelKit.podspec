@@ -18,8 +18,7 @@ Pod::Spec.new do |s|
         p.source_files          = "TunnelKit/Sources/Core/**/*.{h,m,swift}"
         p.private_header_files  = "TunnelKit/Sources/Core/**/*.h"
         p.preserve_paths        = "TunnelKit/Sources/Core/*.modulemap"
-        p.pod_target_xcconfig   = { "OTHER_LDFLAGS" => "-framework openssl",
-                                    "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Core",
+        p.pod_target_xcconfig   = { "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Core",
                                     "APPLICATION_EXTENSION_API_ONLY" => "YES" }
         p.dependency "SwiftyBeaver"
         p.dependency "OpenSSL-Apple", "~> 1.1.0j.2"
@@ -30,7 +29,8 @@ Pod::Spec.new do |s|
         p.source_files          = "TunnelKit/Sources/OpenVPN/**/*.{h,m,swift}"
         p.private_header_files  = "TunnelKit/Sources/OpenVPN/**/*.h"
         p.preserve_paths        = "TunnelKit/Sources/OpenVPN/*.modulemap"
-        p.pod_target_xcconfig   = { "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/OpenVPN",
+        p.pod_target_xcconfig   = { "OTHER_LDFLAGS" => "-framework openssl",
+                                    "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/OpenVPN",
                                     "APPLICATION_EXTENSION_API_ONLY" => "YES" }
 
         p.dependency "TunnelKit/Core"

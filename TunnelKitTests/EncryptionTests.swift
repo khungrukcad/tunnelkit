@@ -137,7 +137,7 @@ class EncryptionTests: XCTestCase {
     
     func testCertificatePreamble() {
         let url = Bundle(for: EncryptionTests.self).url(forResource: "tunnelbear", withExtension: "crt")!
-        let cert = CryptoContainer(pem: try! String(contentsOf: url))
+        let cert = OpenVPN.CryptoContainer(pem: try! String(contentsOf: url))
         XCTAssert(cert.pem.hasPrefix("-----BEGIN"))
     }
     

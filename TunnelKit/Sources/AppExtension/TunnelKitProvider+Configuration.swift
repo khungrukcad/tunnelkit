@@ -53,7 +53,7 @@ extension TunnelKitProvider {
             resolvedAddresses: nil,
             endpointProtocols: nil,
             mtu: 1250,
-            sessionConfiguration: SessionProxy.ConfigurationBuilder().build(),
+            sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             shouldDebug: false,
             debugLogFormat: nil,
             masksPrivateData: true
@@ -71,7 +71,7 @@ extension TunnelKitProvider {
         public var mtu: Int
         
         /// The session configuration.
-        public var sessionConfiguration: SessionProxy.Configuration
+        public var sessionConfiguration: OpenVPN.Configuration
         
         // MARK: Debugging
         
@@ -91,7 +91,7 @@ extension TunnelKitProvider {
          
          - Parameter ca: The CA certificate.
          */
-        public init(sessionConfiguration: SessionProxy.Configuration) {
+        public init(sessionConfiguration: OpenVPN.Configuration) {
             prefersResolvedAddresses = ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = nil
             mtu = ConfigurationBuilder.defaults.mtu
@@ -114,34 +114,34 @@ extension TunnelKitProvider {
                 throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
             }
 
-            var sessionConfigurationBuilder = SessionProxy.ConfigurationBuilder()
+            var sessionConfigurationBuilder = OpenVPN.ConfigurationBuilder()
             if let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String {
-                sessionConfigurationBuilder.cipher = SessionProxy.Cipher(rawValue: cipherAlgorithm)
+                sessionConfigurationBuilder.cipher = OpenVPN.Cipher(rawValue: cipherAlgorithm)
             }
             if let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String {
-                sessionConfigurationBuilder.digest = SessionProxy.Digest(rawValue: digestAlgorithm)
+                sessionConfigurationBuilder.digest = OpenVPN.Digest(rawValue: digestAlgorithm)
             }
-            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = SessionProxy.CompressionFraming(rawValue: compressionFramingValue) {
+            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = OpenVPN.CompressionFraming(rawValue: compressionFramingValue) {
                 sessionConfigurationBuilder.compressionFraming = compressionFraming
             } else {
                 sessionConfigurationBuilder.compressionFraming = ConfigurationBuilder.defaults.sessionConfiguration.compressionFraming
             }
-            if let compressionAlgorithmValue = providerConfiguration[S.compressionAlgorithm] as? Int, let compressionAlgorithm = SessionProxy.CompressionAlgorithm(rawValue: compressionAlgorithmValue) {
+            if let compressionAlgorithmValue = providerConfiguration[S.compressionAlgorithm] as? Int, let compressionAlgorithm = OpenVPN.CompressionAlgorithm(rawValue: compressionAlgorithmValue) {
                 sessionConfigurationBuilder.compressionAlgorithm = compressionAlgorithm
             } else {
                 sessionConfigurationBuilder.compressionAlgorithm = ConfigurationBuilder.defaults.sessionConfiguration.compressionAlgorithm
             }
-            sessionConfigurationBuilder.ca = CryptoContainer(pem: caPEM)
+            sessionConfigurationBuilder.ca = OpenVPN.CryptoContainer(pem: caPEM)
             if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
                 guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
                     throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
                 }
-                sessionConfigurationBuilder.clientCertificate = CryptoContainer(pem: clientPEM)
-                sessionConfigurationBuilder.clientKey = CryptoContainer(pem: keyPEM)
+                sessionConfigurationBuilder.clientCertificate = OpenVPN.CryptoContainer(pem: clientPEM)
+                sessionConfigurationBuilder.clientKey = OpenVPN.CryptoContainer(pem: keyPEM)
             }
             if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
                 do {
-                    sessionConfigurationBuilder.tlsWrap = try SessionProxy.TLSWrap.deserialized(tlsWrapData)
+                    sessionConfigurationBuilder.tlsWrap = try OpenVPN.TLSWrap.deserialized(tlsWrapData)
                 } catch {
                     throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
                 }
@@ -178,7 +178,7 @@ extension TunnelKitProvider {
             sessionConfigurationBuilder.proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String]
             if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String] {
                 sessionConfigurationBuilder.routingPolicies = try routingPoliciesStrings.map {
-                    guard let policy = SessionProxy.RoutingPolicy(rawValue: $0) else {
+                    guard let policy = OpenVPN.RoutingPolicy(rawValue: $0) else {
                         throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.routingPolicies)] has a badly formed element")
                     }
                     return policy
@@ -286,7 +286,7 @@ extension TunnelKitProvider {
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
-        /// - Seealso: `SessionProxy.Configuration.endpointProtocols`
+        /// - Seealso: `OpenVPN.Configuration.endpointProtocols`
         @available(*, deprecated)
         public var endpointProtocols: [EndpointProtocol]?
         
@@ -294,7 +294,7 @@ extension TunnelKitProvider {
         public let mtu: Int
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.sessionConfiguration`
-        public let sessionConfiguration: SessionProxy.Configuration
+        public let sessionConfiguration: OpenVPN.Configuration
         
         /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
@@ -511,7 +511,7 @@ extension TunnelKitProvider {
          - Returns: The generated `NETunnelProviderProtocol` object.
          - Throws: `ProviderError.credentials` if unable to store `credentials.password` to the `appGroup` keychain.
          */
-        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, credentials: SessionProxy.Credentials? = nil) throws -> NETunnelProviderProtocol {
+        public func generatedTunnelProtocol(withBundleIdentifier bundleIdentifier: String, appGroup: String, credentials: OpenVPN.Credentials? = nil) throws -> NETunnelProviderProtocol {
             let protocolConfiguration = NETunnelProviderProtocol()
             
             protocolConfiguration.providerBundleIdentifier = bundleIdentifier
