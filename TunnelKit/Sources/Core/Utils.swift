@@ -36,7 +36,8 @@
 
 import Foundation
 
-extension DispatchQueue {
+/// :nodoc:
+public extension DispatchQueue {
     func schedule(after: DispatchTimeInterval, block: @escaping () -> Void) {
         asyncAfter(deadline: .now() + after, execute: block)
     }

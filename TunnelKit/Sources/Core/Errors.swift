@@ -2,7 +2,7 @@
 //  Errors.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 05/19/19.
+//  Created by Davide De Rosa on 5/19/19.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
