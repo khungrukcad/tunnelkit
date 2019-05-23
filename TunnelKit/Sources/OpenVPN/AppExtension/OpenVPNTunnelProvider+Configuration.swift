@@ -49,15 +49,18 @@ extension OpenVPNTunnelProvider {
 
         /// :nodoc:
         public static let defaults = Configuration(
+            sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             prefersResolvedAddresses: false,
             resolvedAddresses: nil,
             endpointProtocols: nil,
             mtu: 1250,
-            sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             shouldDebug: false,
             debugLogFormat: nil,
             masksPrivateData: true
         )
+        
+        /// The session configuration.
+        public var sessionConfiguration: OpenVPN.Configuration
         
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
         ///
@@ -69,9 +72,6 @@ extension OpenVPNTunnelProvider {
         
         /// The MTU of the link.
         public var mtu: Int
-        
-        /// The session configuration.
-        public var sessionConfiguration: OpenVPN.Configuration
         
         // MARK: Debugging
         
@@ -92,10 +92,10 @@ extension OpenVPNTunnelProvider {
          - Parameter ca: The CA certificate.
          */
         public init(sessionConfiguration: OpenVPN.Configuration) {
+            self.sessionConfiguration = sessionConfiguration
             prefersResolvedAddresses = ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = nil
             mtu = ConfigurationBuilder.defaults.mtu
-            self.sessionConfiguration = sessionConfiguration
             shouldDebug = ConfigurationBuilder.defaults.shouldDebug
             debugLogFormat = ConfigurationBuilder.defaults.debugLogFormat
             masksPrivateData = ConfigurationBuilder.defaults.masksPrivateData
@@ -104,10 +104,10 @@ extension OpenVPNTunnelProvider {
         fileprivate init(providerConfiguration: [String: Any]) throws {
             let S = Configuration.Keys.self
 
+            sessionConfiguration = try OpenVPN.Configuration.with(providerConfiguration: providerConfiguration)
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
             mtu = providerConfiguration[S.mtu] as? Int ?? ConfigurationBuilder.defaults.mtu
-            sessionConfiguration = try OpenVPN.Configuration.with(providerConfiguration: providerConfiguration)
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
             if shouldDebug {
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
@@ -126,11 +126,11 @@ extension OpenVPNTunnelProvider {
          */
         public func build() -> Configuration {
             return Configuration(
+                sessionConfiguration: sessionConfiguration,
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
                 endpointProtocols: nil,
                 mtu: mtu,
-                sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
                 masksPrivateData: masksPrivateData
@@ -142,12 +142,6 @@ extension OpenVPNTunnelProvider {
     public struct Configuration: Codable {
         struct Keys {
             static let appGroup = "AppGroup"
-            
-            static let prefersResolvedAddresses = "PrefersResolvedAddresses"
-
-            static let resolvedAddresses = "ResolvedAddresses"
-
-            static let mtu = "MTU"
             
             // MARK: SessionConfiguration
 
@@ -193,6 +187,14 @@ extension OpenVPNTunnelProvider {
             
             static let routingPolicies = "RoutingPolicies"
             
+            // MARK: Customization
+
+            static let prefersResolvedAddresses = "PrefersResolvedAddresses"
+            
+            static let resolvedAddresses = "ResolvedAddresses"
+            
+            static let mtu = "MTU"
+            
             // MARK: Debugging
             
             static let debug = "Debug"
@@ -201,6 +203,9 @@ extension OpenVPNTunnelProvider {
 
             static let masksPrivateData = "MasksPrivateData"
         }
+        
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.sessionConfiguration`
+        public let sessionConfiguration: OpenVPN.Configuration
         
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.prefersResolvedAddresses`
         public let prefersResolvedAddresses: Bool
@@ -214,9 +219,6 @@ extension OpenVPNTunnelProvider {
         
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.mtu`
         public let mtu: Int
-        
-        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.sessionConfiguration`
-        public let sessionConfiguration: OpenVPN.Configuration
         
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
