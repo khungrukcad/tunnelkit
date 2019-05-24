@@ -12,7 +12,7 @@ Pod::Spec.new do |s|
     s.ios.deployment_target = "11.0"
     s.osx.deployment_target = "10.11"
 
-    s.default_subspecs = "OpenVPN"
+    s.default_subspecs = "Protocols/OpenVPN"
 
     s.subspec "Core" do |p|
         p.source_files          = "TunnelKit/Sources/Core/**/*.{h,m,swift}"
@@ -34,25 +34,29 @@ Pod::Spec.new do |s|
         p.dependency "TunnelKit/Core"
     end
 
-    s.subspec "OpenVPN" do |p|
-        p.source_files          = "TunnelKit/Sources/OpenVPN/**/*.{h,m,swift}"
-        p.private_header_files  = "TunnelKit/Sources/OpenVPN/**/*.h"
-        p.preserve_paths        = "TunnelKit/Sources/OpenVPN/*.modulemap"
-        p.pod_target_xcconfig   = { "OTHER_LDFLAGS" => "-framework openssl",
-                                    "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/OpenVPN",
-                                    "APPLICATION_EXTENSION_API_ONLY" => "YES" }
+    s.subspec "Protocols" do |t|
+        t.subspec "OpenVPN" do |p|
+            p.source_files          = "TunnelKit/Sources/Protocols/OpenVPN/**/*.{h,m,swift}"
+            p.private_header_files  = "TunnelKit/Sources/Protocols/OpenVPN/**/*.h"
+            p.preserve_paths        = "TunnelKit/Sources/Protocols/OpenVPN/*.modulemap"
+            p.pod_target_xcconfig   = { "OTHER_LDFLAGS" => "-framework openssl",
+                                        "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Protocols/OpenVPN",
+                                        "APPLICATION_EXTENSION_API_ONLY" => "YES" }
 
-        p.dependency "TunnelKit/Core"
-        p.dependency "TunnelKit/AppExtension"
+            p.dependency "TunnelKit/Core"
+            p.dependency "TunnelKit/AppExtension"
+        end
     end
 
-    s.subspec "LZO" do |p|
-        p.source_files          = "TunnelKit/Sources/Core/LZO.h",
-                                  "TunnelKit/Sources/Core/Errors.{h,m}",
-                                  "TunnelKit/Sources/LZO/lib/*lzo*.{h,m,c}"
-        p.private_header_files  = "TunnelKit/Sources/Core/LZO.h",
-                                  "TunnelKit/Sources/Core/Errors.h",
-                                  "TunnelKit/Sources/LZO/lib/*lzo*.h"
-        p.pod_target_xcconfig   = { "APPLICATION_EXTENSION_API_ONLY" => "YES" }
+    s.subspec "Extra" do |t|
+        t.subspec "LZO" do |p|
+            p.source_files          = "TunnelKit/Sources/Core/LZO.h",
+                                      "TunnelKit/Sources/Core/Errors.{h,m}",
+                                      "TunnelKit/Sources/Extra/LZO/lib/*lzo*.{h,m,c}"
+            p.private_header_files  = "TunnelKit/Sources/Core/LZO.h",
+                                      "TunnelKit/Sources/Core/Errors.h",
+                                      "TunnelKit/Sources/Extra/LZO/lib/*lzo*.h"
+            p.pod_target_xcconfig   = { "APPLICATION_EXTENSION_API_ONLY" => "YES" }
+        end
     end
 end
