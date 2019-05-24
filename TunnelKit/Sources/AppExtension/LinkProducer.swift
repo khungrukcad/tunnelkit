@@ -25,6 +25,13 @@
 
 import Foundation
 
+/// Entity able to produce a `LinkInterface`.
 public protocol LinkProducer {
+
+    /**
+     Returns a `LinkInterface`.
+ 
+     - Parameter mtu: The MTU value.
+     **/
     func link(withMTU mtu: Int) -> LinkInterface
 }

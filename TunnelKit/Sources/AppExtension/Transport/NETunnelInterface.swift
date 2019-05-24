@@ -37,11 +37,13 @@
 import Foundation
 import NetworkExtension
 
+/// `TunnelInterface` implementation via NetworkExtension.
 public class NETunnelInterface: TunnelInterface {
     private weak var impl: NEPacketTunnelFlow?
     
     private let protocolNumber: NSNumber
-    
+
+    /// :nodoc:
     public init(impl: NEPacketTunnelFlow, isIPv6: Bool) {
         self.impl = impl
         protocolNumber = (isIPv6 ? AF_INET6 : AF_INET) as NSNumber
@@ -49,12 +51,14 @@ public class NETunnelInterface: TunnelInterface {
     
     // MARK: TunnelInterface
     
+    /// :nodoc:
     public var isPersistent: Bool {
         return false
     }
     
     // MARK: IOInterface
     
+    /// :nodoc:
     public func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
         loopReadPackets(queue, handler)
     }
@@ -70,11 +74,13 @@ public class NETunnelInterface: TunnelInterface {
         }
     }
     
+    /// :nodoc:
     public func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
         impl?.writePackets([packet], withProtocols: [protocolNumber])
         completionHandler?(nil)
     }
     
+    /// :nodoc:
     public func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
         let protocols = [NSNumber](repeating: protocolNumber, count: packets.count)
         impl?.writePackets(packets, withProtocols: protocols)

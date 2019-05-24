@@ -41,16 +41,24 @@ import SwiftyBeaver
 private let log = SwiftyBeaver.self
 
 extension NSNotification.Name {
-    static let __InterfaceObserverDidDetectWifiChange = NSNotification.Name("__InterfaceObserverDidDetectWifiChange")
+
+    /// A change in Wi-Fi state occurred.
+    public static let InterfaceObserverDidDetectWifiChange = NSNotification.Name("InterfaceObserverDidDetectWifiChange")
 }
 
+/// Observes changes in the current Wi-Fi network.
 public class InterfaceObserver: NSObject {
     private var queue: DispatchQueue?
     
     private var timer: DispatchSourceTimer?
     
     private var lastWifiName: String?
-    
+
+    /**
+     Starts observing Wi-Fi updates.
+
+     - Parameter queue: The `DispatchQueue` to deliver notifications to.
+     **/
     public func start(queue: DispatchQueue) {
         self.queue = queue
 
@@ -63,7 +71,10 @@ public class InterfaceObserver: NSObject {
 
         self.timer = timer
     }
-    
+
+    /**
+     Stops observing Wi-Fi updates.
+     **/
     public func stop() {
         timer?.cancel()
         timer = nil
@@ -77,7 +88,7 @@ public class InterfaceObserver: NSObject {
                 log.debug("SSID is now '\(current.maskedDescription)'")
                 if let last = lastWifiName, (current != last) {
                     queue?.async {
-                        NotificationCenter.default.post(name: .__InterfaceObserverDidDetectWifiChange, object: nil)
+                        NotificationCenter.default.post(name: .InterfaceObserverDidDetectWifiChange, object: nil)
                     }
                 }
             } else {
@@ -87,6 +98,11 @@ public class InterfaceObserver: NSObject {
         lastWifiName = currentWifiName
     }
 
+    /**
+     Returns the current Wi-Fi SSID if any.
+
+     - Returns: The current Wi-Fi SSID if any.
+     **/
     public func currentWifiNetworkName() -> String? {
         #if os(iOS)
         guard let interfaceNames = CNCopySupportedInterfaces() as? [CFString] else {
