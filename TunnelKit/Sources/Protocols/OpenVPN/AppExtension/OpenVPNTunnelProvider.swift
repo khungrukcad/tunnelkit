@@ -1,5 +1,5 @@
 //
-//  TunnelKitProvider.swift
+//  OpenVPNTunnelProvider.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 2/1/17.
@@ -44,7 +44,7 @@ private let log = SwiftyBeaver.self
  Provides an all-in-one `NEPacketTunnelProvider` implementation for use in a
  Packet Tunnel Provider extension both on iOS and macOS.
  */
-open class TunnelKitProvider: NEPacketTunnelProvider {
+open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
     
     // MARK: Tweaks
     
@@ -89,7 +89,7 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
 
     private let observer = InterfaceObserver()
     
-    private let tunnelQueue = DispatchQueue(label: TunnelKitProvider.description())
+    private let tunnelQueue = DispatchQueue(label: OpenVPNTunnelProvider.description())
     
     private let prngSeedLength = 64
     
@@ -382,11 +382,12 @@ open class TunnelKitProvider: NEPacketTunnelProvider {
     }
 }
 
-extension TunnelKitProvider: GenericSocketDelegate {
+extension OpenVPNTunnelProvider: GenericSocketDelegate {
     
     // MARK: GenericSocketDelegate (tunnel queue)
     
-    func socketDidTimeout(_ socket: GenericSocket) {
+    /// :nodoc:
+    public func socketDidTimeout(_ socket: GenericSocket) {
         log.debug("Socket timed out waiting for activity, cancelling...")
         reasserting = true
         socket.shutdown()
@@ -400,19 +401,21 @@ extension TunnelKitProvider: GenericSocketDelegate {
         }
     }
     
-    func socketDidBecomeActive(_ socket: GenericSocket) {
-        guard let session = session else {
+    /// :nodoc:
+    public func socketDidBecomeActive(_ socket: GenericSocket) {
+        guard let session = session, let producer = socket as? LinkProducer else {
             return
         }
         if session.canRebindLink() {
-            session.rebindLink(socket.link(withMTU: cfg.mtu))
+            session.rebindLink(producer.link(withMTU: cfg.mtu))
             reasserting = false
         } else {
-            session.setLink(socket.link(withMTU: cfg.mtu))
+            session.setLink(producer.link(withMTU: cfg.mtu))
         }
     }
     
-    func socket(_ socket: GenericSocket, didShutdownWithFailure failure: Bool) {
+    /// :nodoc:
+    public func socket(_ socket: GenericSocket, didShutdownWithFailure failure: Bool) {
         guard let session = session else {
             return
         }
@@ -463,14 +466,15 @@ extension TunnelKitProvider: GenericSocketDelegate {
         disposeTunnel(error: shutdownError)
     }
     
-    func socketHasBetterPath(_ socket: GenericSocket) {
+    /// :nodoc:
+    public func socketHasBetterPath(_ socket: GenericSocket) {
         log.debug("Stopping tunnel due to a new better path")
         logCurrentSSID()
         session?.reconnect(error: ProviderError.networkChanged)
     }
 }
 
-extension TunnelKitProvider: OpenVPNSessionDelegate {
+extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
     
     // MARK: OpenVPNSessionDelegate (tunnel queue)
     
@@ -721,7 +725,7 @@ extension TunnelKitProvider: OpenVPNSessionDelegate {
     }
 }
 
-extension TunnelKitProvider {
+extension OpenVPNTunnelProvider {
     private func tryNextProtocol() -> Bool {
         guard strategy.tryNextProtocol() else {
             disposeTunnel(error: ProviderError.exhaustedProtocols)

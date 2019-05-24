@@ -39,7 +39,7 @@ import UIKit
 import NetworkExtension
 import TunnelKit
 
-private let ca = CryptoContainer(pem: """
+private let ca = OpenVPN.CryptoContainer(pem: """
 -----BEGIN CERTIFICATE-----
 MIIFqzCCBJOgAwIBAgIJAKZ7D5Yv87qDMA0GCSqGSIb3DQEBDQUAMIHoMQswCQYD
 VQQGEwJVUzELMAkGA1UECBMCQ0ExEzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNV
@@ -86,9 +86,9 @@ extension ViewController {
         
         let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
         let port = UInt16(textPort.text!)!
-        let credentials = SessionProxy.Credentials(textUsername.text!, textPassword.text!)
+        let credentials = OpenVPN.Credentials(textUsername.text!, textPassword.text!)
         
-        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        var sessionBuilder = OpenVPN.ConfigurationBuilder()
         sessionBuilder.ca = ca
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha1
@@ -98,7 +98,7 @@ extension ViewController {
         let socketType: SocketType = switchTCP.isOn ? .tcp : .udp
         sessionBuilder.endpointProtocols = [EndpointProtocol(socketType, port)]
         sessionBuilder.usesPIAPatches = true
-        var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         builder.mtu = 1350
         builder.shouldDebug = true
         builder.masksPrivateData = false
@@ -218,7 +218,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
         guard let vpn = currentManager?.connection as? NETunnelProviderSession else {
             return
         }
-        try? vpn.sendProviderMessage(TunnelKitProvider.Message.requestLog.data) { (data) in
+        try? vpn.sendProviderMessage(OpenVPNTunnelProvider.Message.requestLog.data) { (data) in
             guard let data = data, let log = String(data: data, encoding: .utf8) else {
                 return
             }

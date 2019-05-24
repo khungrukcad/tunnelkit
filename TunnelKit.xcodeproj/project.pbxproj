@@ -13,30 +13,10 @@
 		0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */; };
 		0E011F852196E25900BA59EE /* pia-hungary.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E011F832196E25400BA59EE /* pia-hungary.ovpn */; };
 		0E011F862196E25A00BA59EE /* pia-hungary.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E011F832196E25400BA59EE /* pia-hungary.ovpn */; };
-		0E011F882196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
-		0E011F892196E2AB00BA59EE /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */; };
-		0E041D092152E6FE0025FE3C /* TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* TLSWrap.swift */; };
-		0E041D0A2152E6FE0025FE3C /* TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E041D082152E6FE0025FE3C /* TLSWrap.swift */; };
-		0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
-		0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */; };
-		0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
-		0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596120EF733F00F38FD8 /* CryptoMacros.h */; };
-		0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Crypto.h */; };
-		0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596A20EF79AB00F38FD8 /* Crypto.h */; };
-		0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596D20EF79B400F38FD8 /* CryptoCBC.h */; };
-		0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07596D20EF79B400F38FD8 /* CryptoCBC.h */; };
-		0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */; };
-		0E07597F20F0060E00F38FD8 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */; };
-		0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
-		0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */; };
 		0E0B20402278A85C007A3CB9 /* RoutingTableEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */; };
 		0E0B20412278A85C007A3CB9 /* RoutingTableEntry.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */; };
 		0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
 		0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
-		0E0C2125212ED29D008AB282 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* OpenVPNError.swift */; };
-		0E0C2126212ED29D008AB282 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2123212ED29D008AB282 /* OpenVPNError.swift */; };
-		0E0C2127212ED29D008AB282 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* Configuration.swift */; };
-		0E0C2128212ED29D008AB282 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E0C2124212ED29D008AB282 /* Configuration.swift */; };
 		0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0E1108AC1F77B9F900A92462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AB1F77B9F900A92462 /* AppDelegate.swift */; };
 		0E1108AE1F77B9F900A92462 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AD1F77B9F900A92462 /* ViewController.swift */; };
@@ -47,115 +27,184 @@
 		0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */; };
 		0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
 		0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
-		0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
-		0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */; };
-		0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
-		0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */; };
-		0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
-		0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
-		0E39BCE9214B2AB60035E9DE /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E39BCE6214B2AB60035E9DE /* ControlPacket.h */; };
-		0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E39BCE7214B2AB60035E9DE /* ControlPacket.m */; };
-		0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E39BCE7214B2AB60035E9DE /* ControlPacket.m */; };
-		0E3B15C72152B05E00984B17 /* CryptoCTR.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E3B15C52152B05E00984B17 /* CryptoCTR.h */; };
-		0E3B15C82152B05E00984B17 /* CryptoCTR.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E3B15C52152B05E00984B17 /* CryptoCTR.h */; };
-		0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B15C62152B05E00984B17 /* CryptoCTR.m */; };
-		0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E3B15C62152B05E00984B17 /* CryptoCTR.m */; };
+		0E23B3DB2297466600304C30 /* TestUtils+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3D82297463200304C30 /* TestUtils+Core.swift */; };
+		0E23B3DC2297466700304C30 /* TestUtils+Core.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3D82297463200304C30 /* TestUtils+Core.swift */; };
+		0E23B3DE229749C600304C30 /* LinkProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3DD229749C600304C30 /* LinkProducer.swift */; };
+		0E23B3DF229749C600304C30 /* LinkProducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3DD229749C600304C30 /* LinkProducer.swift */; };
+		0E23B42522982AF800304C30 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E222982AF800304C30 /* CryptoCBC.h */; };
+		0E23B42622982AF800304C30 /* CryptoCBC.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E222982AF800304C30 /* CryptoCBC.h */; };
+		0E23B42722982AF800304C30 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E322982AF800304C30 /* CryptoAEAD.m */; };
+		0E23B42822982AF800304C30 /* CryptoAEAD.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E322982AF800304C30 /* CryptoAEAD.m */; };
+		0E23B42922982AF800304C30 /* CryptoCTR.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E422982AF800304C30 /* CryptoCTR.h */; };
+		0E23B42A22982AF800304C30 /* CryptoCTR.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E422982AF800304C30 /* CryptoCTR.h */; };
+		0E23B42B22982AF800304C30 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E522982AF800304C30 /* SessionKey.swift */; };
+		0E23B42C22982AF800304C30 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E522982AF800304C30 /* SessionKey.swift */; };
+		0E23B42D22982AF800304C30 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E622982AF800304C30 /* ControlChannelSerializer.swift */; };
+		0E23B42E22982AF800304C30 /* ControlChannelSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E622982AF800304C30 /* ControlChannelSerializer.swift */; };
+		0E23B42F22982AF800304C30 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E722982AF800304C30 /* MSS.h */; };
+		0E23B43022982AF800304C30 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3E722982AF800304C30 /* MSS.h */; };
+		0E23B43122982AF800304C30 /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E822982AF800304C30 /* PacketMacros.m */; };
+		0E23B43222982AF800304C30 /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E822982AF800304C30 /* PacketMacros.m */; };
+		0E23B43322982AF800304C30 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E922982AF800304C30 /* ControlChannel.swift */; };
+		0E23B43422982AF800304C30 /* ControlChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3E922982AF800304C30 /* ControlChannel.swift */; };
+		0E23B43522982AF800304C30 /* CoreConfiguration+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EA22982AF800304C30 /* CoreConfiguration+OpenVPN.swift */; };
+		0E23B43622982AF800304C30 /* CoreConfiguration+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EA22982AF800304C30 /* CoreConfiguration+OpenVPN.swift */; };
+		0E23B43722982AF800304C30 /* TLSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EB22982AF800304C30 /* TLSBox.m */; };
+		0E23B43822982AF800304C30 /* TLSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EB22982AF800304C30 /* TLSBox.m */; };
+		0E23B43922982AF800304C30 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EC22982AF800304C30 /* OpenVPNError.swift */; };
+		0E23B43A22982AF800304C30 /* OpenVPNError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EC22982AF800304C30 /* OpenVPNError.swift */; };
+		0E23B43B22982AF800304C30 /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3ED22982AF800304C30 /* ControlPacket.h */; };
+		0E23B43C22982AF800304C30 /* ControlPacket.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3ED22982AF800304C30 /* ControlPacket.h */; };
+		0E23B43D22982AF800304C30 /* CryptoBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EE22982AF800304C30 /* CryptoBox.m */; };
+		0E23B43E22982AF800304C30 /* CryptoBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EE22982AF800304C30 /* CryptoBox.m */; };
+		0E23B43F22982AF800304C30 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EF22982AF800304C30 /* OpenVPNSession.swift */; };
+		0E23B44022982AF800304C30 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3EF22982AF800304C30 /* OpenVPNSession.swift */; };
+		0E23B44122982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F022982AF800304C30 /* OpenVPNSession+PIA.swift */; };
+		0E23B44222982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F022982AF800304C30 /* OpenVPNSession+PIA.swift */; };
+		0E23B44322982AF800304C30 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F122982AF800304C30 /* CryptoContainer.swift */; };
+		0E23B44422982AF800304C30 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F122982AF800304C30 /* CryptoContainer.swift */; };
+		0E23B44522982AF800304C30 /* DataPathCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F222982AF800304C30 /* DataPathCrypto.h */; };
+		0E23B44622982AF800304C30 /* DataPathCrypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F222982AF800304C30 /* DataPathCrypto.h */; };
+		0E23B44722982AF800304C30 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F322982AF800304C30 /* OpenVPN.swift */; };
+		0E23B44822982AF800304C30 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F322982AF800304C30 /* OpenVPN.swift */; };
+		0E23B44922982AF800304C30 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F422982AF800304C30 /* CompressionAlgorithmNative.h */; };
+		0E23B44A22982AF800304C30 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F422982AF800304C30 /* CompressionAlgorithmNative.h */; };
+		0E23B44B22982AF800304C30 /* TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F522982AF800304C30 /* TLSWrap.swift */; };
+		0E23B44C22982AF800304C30 /* TLSWrap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F522982AF800304C30 /* TLSWrap.swift */; };
+		0E23B44D22982AF800304C30 /* DataPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F622982AF800304C30 /* DataPath.h */; };
+		0E23B44E22982AF800304C30 /* DataPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3F622982AF800304C30 /* DataPath.h */; };
+		0E23B44F22982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */; };
+		0E23B45022982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */; };
+		0E23B45122982AF800304C30 /* NEUDPLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F922982AF800304C30 /* NEUDPLink.swift */; };
+		0E23B45222982AF800304C30 /* NEUDPLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3F922982AF800304C30 /* NEUDPLink.swift */; };
+		0E23B45322982AF800304C30 /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FA22982AF800304C30 /* ConnectionStrategy.swift */; };
+		0E23B45422982AF800304C30 /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FA22982AF800304C30 /* ConnectionStrategy.swift */; };
+		0E23B45522982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */; };
+		0E23B45622982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */; };
+		0E23B45722982AF800304C30 /* NETCPLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FC22982AF800304C30 /* NETCPLink.swift */; };
+		0E23B45822982AF800304C30 /* NETCPLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FC22982AF800304C30 /* NETCPLink.swift */; };
+		0E23B45922982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FD22982AF800304C30 /* OpenVPNTunnelProvider.swift */; };
+		0E23B45A22982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FD22982AF800304C30 /* OpenVPNTunnelProvider.swift */; };
+		0E23B45B22982AF800304C30 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3FE22982AF800304C30 /* PacketStream.h */; };
+		0E23B45C22982AF800304C30 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B3FE22982AF800304C30 /* PacketStream.h */; };
+		0E23B45D22982AF800304C30 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FF22982AF800304C30 /* ProtocolMacros.swift */; };
+		0E23B45E22982AF800304C30 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B3FF22982AF800304C30 /* ProtocolMacros.swift */; };
+		0E23B45F22982AF800304C30 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40022982AF800304C30 /* ReplayProtector.h */; };
+		0E23B46022982AF800304C30 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40022982AF800304C30 /* ReplayProtector.h */; };
+		0E23B46122982AF800304C30 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40122982AF800304C30 /* Crypto.h */; };
+		0E23B46222982AF800304C30 /* Crypto.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40122982AF800304C30 /* Crypto.h */; };
+		0E23B46322982AF800304C30 /* CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40222982AF800304C30 /* CompressionAlgorithm.swift */; };
+		0E23B46422982AF800304C30 /* CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40222982AF800304C30 /* CompressionAlgorithm.swift */; };
+		0E23B46522982AF800304C30 /* EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40322982AF800304C30 /* EncryptionBridge.swift */; };
+		0E23B46622982AF800304C30 /* EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40322982AF800304C30 /* EncryptionBridge.swift */; };
+		0E23B46722982AF800304C30 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40422982AF800304C30 /* Authenticator.swift */; };
+		0E23B46822982AF800304C30 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40422982AF800304C30 /* Authenticator.swift */; };
+		0E23B46922982AF800304C30 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40522982AF800304C30 /* CompressionFraming.swift */; };
+		0E23B46A22982AF800304C30 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40522982AF800304C30 /* CompressionFraming.swift */; };
+		0E23B46B22982AF800304C30 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40622982AF800304C30 /* CryptoCBC.m */; };
+		0E23B46C22982AF800304C30 /* CryptoCBC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40622982AF800304C30 /* CryptoCBC.m */; };
+		0E23B46D22982AF800304C30 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40722982AF800304C30 /* StaticKey.swift */; };
+		0E23B46E22982AF800304C30 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40722982AF800304C30 /* StaticKey.swift */; };
+		0E23B46F22982AF800304C30 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40822982AF800304C30 /* PushReply.swift */; };
+		0E23B47022982AF800304C30 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40822982AF800304C30 /* PushReply.swift */; };
+		0E23B47122982AF800304C30 /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40922982AF800304C30 /* PacketMacros.h */; };
+		0E23B47222982AF800304C30 /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40922982AF800304C30 /* PacketMacros.h */; };
+		0E23B47322982AF800304C30 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40A22982AF800304C30 /* MSS.m */; };
+		0E23B47422982AF800304C30 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40A22982AF800304C30 /* MSS.m */; };
+		0E23B47522982AF800304C30 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40B22982AF800304C30 /* CryptoCTR.m */; };
+		0E23B47622982AF800304C30 /* CryptoCTR.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40B22982AF800304C30 /* CryptoCTR.m */; };
+		0E23B47722982AF800304C30 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40C22982AF800304C30 /* CryptoAEAD.h */; };
+		0E23B47822982AF800304C30 /* CryptoAEAD.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40C22982AF800304C30 /* CryptoAEAD.h */; };
+		0E23B47922982AF800304C30 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40D22982AF800304C30 /* CompressionFramingNative.h */; };
+		0E23B47A22982AF800304C30 /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B40D22982AF800304C30 /* CompressionFramingNative.h */; };
+		0E23B47B22982AF800304C30 /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40E22982AF800304C30 /* ConfigurationParser.swift */; };
+		0E23B47C22982AF800304C30 /* ConfigurationParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40E22982AF800304C30 /* ConfigurationParser.swift */; };
+		0E23B47D22982AF800304C30 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40F22982AF800304C30 /* Packet.swift */; };
+		0E23B47E22982AF800304C30 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B40F22982AF800304C30 /* Packet.swift */; };
+		0E23B47F22982AF800304C30 /* CryptoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41022982AF800304C30 /* CryptoBox.h */; };
+		0E23B48022982AF800304C30 /* CryptoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41022982AF800304C30 /* CryptoBox.h */; };
+		0E23B48122982AF800304C30 /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41122982AF800304C30 /* ControlPacket.m */; };
+		0E23B48222982AF800304C30 /* ControlPacket.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41122982AF800304C30 /* ControlPacket.m */; };
+		0E23B48322982AF800304C30 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41322982AF800304C30 /* TLSBox.h */; };
+		0E23B48422982AF800304C30 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41322982AF800304C30 /* TLSBox.h */; };
+		0E23B48522982AF800304C30 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41422982AF800304C30 /* ReplayProtector.m */; };
+		0E23B48622982AF800304C30 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41422982AF800304C30 /* ReplayProtector.m */; };
+		0E23B48722982AF800304C30 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41522982AF800304C30 /* CryptoMacros.h */; };
+		0E23B48822982AF800304C30 /* CryptoMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41522982AF800304C30 /* CryptoMacros.h */; };
+		0E23B48922982AF800304C30 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41622982AF800304C30 /* PacketStream.m */; };
+		0E23B48A22982AF800304C30 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41622982AF800304C30 /* PacketStream.m */; };
+		0E23B48B22982AF800304C30 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41722982AF800304C30 /* Configuration.swift */; };
+		0E23B48C22982AF800304C30 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41722982AF800304C30 /* Configuration.swift */; };
+		0E23B48D22982AF800304C30 /* DataPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41822982AF800304C30 /* DataPath.m */; };
+		0E23B48E22982AF800304C30 /* DataPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41822982AF800304C30 /* DataPath.m */; };
+		0E23B48F22982AF800304C30 /* StandardLZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41B22982AF800304C30 /* StandardLZO.m */; };
+		0E23B49022982AF800304C30 /* StandardLZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B41B22982AF800304C30 /* StandardLZO.m */; };
+		0E23B49122982AF800304C30 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41D22982AF800304C30 /* lzodefs.h */; };
+		0E23B49222982AF800304C30 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41D22982AF800304C30 /* lzodefs.h */; };
+		0E23B49322982AF800304C30 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41E22982AF800304C30 /* lzoconf.h */; };
+		0E23B49422982AF800304C30 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B41E22982AF800304C30 /* lzoconf.h */; };
+		0E23B49722982AF800304C30 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B42022982AF800304C30 /* minilzo.h */; };
+		0E23B49822982AF800304C30 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E23B42022982AF800304C30 /* minilzo.h */; };
+		0E23B49F22982AF800304C30 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B42422982AF800304C30 /* minilzo.c */; };
+		0E23B4A022982AF800304C30 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E23B42422982AF800304C30 /* minilzo.c */; };
 		0E3B65742249253A00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */; };
 		0E3B65752249253B00EFF4DA /* tunnelbear.enc.1.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */; };
 		0E3B65762249253F00EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
 		0E3B65772249254000EFF4DA /* tunnelbear.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E3B65712249247E00EFF4DA /* tunnelbear.key */; };
-		0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* PushReply.swift */; };
-		0E3E0F222108A8CC00B371C1 /* PushReply.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E3E0F202108A8CC00B371C1 /* PushReply.swift */; };
 		0E411B9B2271F90700E0852C /* DNS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E411B992271F90700E0852C /* DNS.h */; };
 		0E411B9C2271F90700E0852C /* DNS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E411B992271F90700E0852C /* DNS.h */; };
 		0E411B9D2271F90700E0852C /* DNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E411B9A2271F90700E0852C /* DNS.m */; };
 		0E411B9E2271F90700E0852C /* DNS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E411B9A2271F90700E0852C /* DNS.m */; };
 		0E411BA02271FA3300E0852C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E411B9F2271FA3300E0852C /* libresolv.tbd */; };
 		0E411BA22271FA3C00E0852C /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E411BA12271FA3C00E0852C /* libresolv.tbd */; };
-		0E48AC642271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
-		0E48AC652271ADA9009B1A98 /* PacketStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E48AC622271ADA8009B1A98 /* PacketStream.h */; };
-		0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E48AC632271ADA9009B1A98 /* PacketStream.m */; };
-		0E48AC672271ADA9009B1A98 /* PacketStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E48AC632271ADA9009B1A98 /* PacketStream.m */; };
 		0E500EA622493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
 		0E500EA722493B5B00CAE560 /* tunnelbear.enc.1.key in Resources */ = {isa = PBXBuildFile; fileRef = 0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */; };
-		0E58BF3322405410006FB157 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF2F22405410006FB157 /* lzoconf.h */; };
-		0E58BF3422405410006FB157 /* lzoconf.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF2F22405410006FB157 /* lzoconf.h */; };
-		0E58BF3522405410006FB157 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF3022405410006FB157 /* lzodefs.h */; };
-		0E58BF3622405410006FB157 /* lzodefs.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF3022405410006FB157 /* lzodefs.h */; };
-		0E58BF3722405410006FB157 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF3122405410006FB157 /* minilzo.h */; };
-		0E58BF3822405410006FB157 /* minilzo.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF3122405410006FB157 /* minilzo.h */; };
-		0E58BF3922405410006FB157 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF3222405410006FB157 /* minilzo.c */; };
-		0E58BF3A22405410006FB157 /* minilzo.c in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF3222405410006FB157 /* minilzo.c */; };
-		0E58BF4C22405C2F006FB157 /* StandardLZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF4922405C2F006FB157 /* StandardLZO.m */; };
-		0E58BF4D22405C2F006FB157 /* StandardLZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF4922405C2F006FB157 /* StandardLZO.m */; };
-		0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */; };
-		0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */; };
-		0E58BF532240FAA6006FB157 /* CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF522240FAA6006FB157 /* CompressionAlgorithm.swift */; };
-		0E58BF542240FAA6006FB157 /* CompressionAlgorithm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF522240FAA6006FB157 /* CompressionAlgorithm.swift */; };
 		0E58BF5622411F3D006FB157 /* LZO.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF5522411F37006FB157 /* LZO.h */; };
 		0E58BF5722411F3E006FB157 /* LZO.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E58BF5522411F37006FB157 /* LZO.h */; };
 		0E58BF5922411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E58BF5A22411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
-		0E749F5F2178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */; };
-		0E749F602178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
 		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
 		0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
-		0EB03E3F2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB03E3E2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift */; };
-		0EB03E402290D310006D03A0 /* CoreConfiguration+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB03E3E2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift */; };
 		0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
-		0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
-		0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECE3527212EB7770040F253 /* CryptoContainer.swift */; };
 		0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
 		0ECEB1162252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
 		0ECEB1172252C8E900E9E551 /* tunnelbear.enc.8.key in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1142252C8E900E9E551 /* tunnelbear.enc.8.key */; };
 		0ECEB1182252C8E900E9E551 /* tunnelbear.enc.8.key in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1142252C8E900E9E551 /* tunnelbear.enc.8.key */; };
 		0ECEB11B2252CDAD00E9E551 /* tunnelbear.crt in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB11A2252CDAD00E9E551 /* tunnelbear.crt */; };
 		0ECEB11C2252CDAD00E9E551 /* tunnelbear.crt in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB11A2252CDAD00E9E551 /* tunnelbear.crt */; };
-		0ED9C8642138139000621BA3 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED9C8632138139000621BA3 /* CompressionFraming.swift */; };
-		0ED9C8652138139000621BA3 /* CompressionFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ED9C8632138139000621BA3 /* CompressionFraming.swift */; };
 		0EE2F96E2291636B00F56F49 /* IPv4Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F96D2291636B00F56F49 /* IPv4Settings.swift */; };
 		0EE2F96F2291636B00F56F49 /* IPv4Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F96D2291636B00F56F49 /* IPv4Settings.swift */; };
 		0EE2F9712291638600F56F49 /* IPv6Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9702291638600F56F49 /* IPv6Settings.swift */; };
 		0EE2F9722291638600F56F49 /* IPv6Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9702291638600F56F49 /* IPv6Settings.swift */; };
 		0EE2F974229163C900F56F49 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F973229163C900F56F49 /* Proxy.swift */; };
 		0EE2F975229163C900F56F49 /* Proxy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F973229163C900F56F49 /* Proxy.swift */; };
-		0EE2F97722916A5D00F56F49 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F97622916A5D00F56F49 /* OpenVPN.swift */; };
-		0EE2F97822916A5D00F56F49 /* OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F97622916A5D00F56F49 /* OpenVPN.swift */; };
 		0EE2F97A2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
 		0EE2F97B2291817300F56F49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9792291817300F56F49 /* Errors.swift */; };
 		0EE2F9AC2291853D00F56F49 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9AB2291853D00F56F49 /* Session.swift */; };
 		0EE2F9AD2291853D00F56F49 /* Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9AB2291853D00F56F49 /* Session.swift */; };
-		0EE2F9EE22918DA100F56F49 /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9DE22918DA100F56F49 /* ConnectionStrategy.swift */; };
-		0EE2F9EF22918DA100F56F49 /* ConnectionStrategy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9DE22918DA100F56F49 /* ConnectionStrategy.swift */; };
-		0EE2F9F022918DA100F56F49 /* NETCPInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E022918DA100F56F49 /* NETCPInterface.swift */; };
-		0EE2F9F122918DA100F56F49 /* NETCPInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E022918DA100F56F49 /* NETCPInterface.swift */; };
+		0EE2F9F022918DA100F56F49 /* NETCPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E022918DA100F56F49 /* NETCPSocket.swift */; };
+		0EE2F9F122918DA100F56F49 /* NETCPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E022918DA100F56F49 /* NETCPSocket.swift */; };
 		0EE2F9F222918DA100F56F49 /* NETunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E122918DA100F56F49 /* NETunnelInterface.swift */; };
 		0EE2F9F322918DA100F56F49 /* NETunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E122918DA100F56F49 /* NETunnelInterface.swift */; };
 		0EE2F9F422918DA100F56F49 /* NWTCPConnectionState+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E222918DA100F56F49 /* NWTCPConnectionState+Description.swift */; };
 		0EE2F9F522918DA100F56F49 /* NWTCPConnectionState+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E222918DA100F56F49 /* NWTCPConnectionState+Description.swift */; };
-		0EE2F9F622918DA100F56F49 /* NEUDPInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E322918DA100F56F49 /* NEUDPInterface.swift */; };
-		0EE2F9F722918DA100F56F49 /* NEUDPInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E322918DA100F56F49 /* NEUDPInterface.swift */; };
+		0EE2F9F622918DA100F56F49 /* NEUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E322918DA100F56F49 /* NEUDPSocket.swift */; };
+		0EE2F9F722918DA100F56F49 /* NEUDPSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E322918DA100F56F49 /* NEUDPSocket.swift */; };
 		0EE2F9F822918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E422918DA100F56F49 /* NWUDPSessionState+Description.swift */; };
 		0EE2F9F922918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E422918DA100F56F49 /* NWUDPSessionState+Description.swift */; };
 		0EE2F9FA22918DA100F56F49 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E522918DA100F56F49 /* DNSResolver.swift */; };
 		0EE2F9FB22918DA100F56F49 /* DNSResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E522918DA100F56F49 /* DNSResolver.swift */; };
-		0EE2F9FC22918DA100F56F49 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E622918DA100F56F49 /* TunnelKitProvider+Configuration.swift */; };
-		0EE2F9FD22918DA100F56F49 /* TunnelKitProvider+Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E622918DA100F56F49 /* TunnelKitProvider+Configuration.swift */; };
 		0EE2F9FE22918DA100F56F49 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E722918DA100F56F49 /* Keychain.swift */; };
 		0EE2F9FF22918DA100F56F49 /* Keychain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E722918DA100F56F49 /* Keychain.swift */; };
 		0EE2FA0022918DA100F56F49 /* MemoryDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E822918DA100F56F49 /* MemoryDestination.swift */; };
 		0EE2FA0122918DA100F56F49 /* MemoryDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E822918DA100F56F49 /* MemoryDestination.swift */; };
 		0EE2FA0222918DA100F56F49 /* GenericSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E922918DA100F56F49 /* GenericSocket.swift */; };
 		0EE2FA0322918DA100F56F49 /* GenericSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9E922918DA100F56F49 /* GenericSocket.swift */; };
-		0EE2FA0422918DA100F56F49 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EA22918DA100F56F49 /* TunnelKitProvider.swift */; };
-		0EE2FA0522918DA100F56F49 /* TunnelKitProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EA22918DA100F56F49 /* TunnelKitProvider.swift */; };
 		0EE2FA0622918DA100F56F49 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EB22918DA100F56F49 /* Utils.swift */; };
 		0EE2FA0722918DA100F56F49 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EB22918DA100F56F49 /* Utils.swift */; };
-		0EE2FA0822918DA100F56F49 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EC22918DA100F56F49 /* TunnelKitProvider+Interaction.swift */; };
-		0EE2FA0922918DA100F56F49 /* TunnelKitProvider+Interaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9EC22918DA100F56F49 /* TunnelKitProvider+Interaction.swift */; };
 		0EE2FA0A22918DA100F56F49 /* InterfaceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9ED22918DA100F56F49 /* InterfaceObserver.swift */; };
 		0EE2FA0B22918DA100F56F49 /* InterfaceObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2F9ED22918DA100F56F49 /* InterfaceObserver.swift */; };
 		0EE2FA422291954300F56F49 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA0E2291953300F56F49 /* AppExtensionTests.swift */; };
@@ -175,7 +224,7 @@
 		0EE2FA502291954300F56F49 /* RawPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA0C2291953300F56F49 /* RawPerformanceTests.swift */; };
 		0EE2FA512291954300F56F49 /* RoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA132291953300F56F49 /* RoutingTests.swift */; };
 		0EE2FA522291954300F56F49 /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA142291953300F56F49 /* StaticKeyTests.swift */; };
-		0EE2FA532291954300F56F49 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA152291953300F56F49 /* TestUtils.swift */; };
+		0EE2FA532291954300F56F49 /* TestUtils+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA152291953300F56F49 /* TestUtils+OpenVPN.swift */; };
 		0EE2FA542291954400F56F49 /* AppExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA0E2291953300F56F49 /* AppExtensionTests.swift */; };
 		0EE2FA552291954400F56F49 /* CompressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA1C2291953300F56F49 /* CompressionTests.swift */; };
 		0EE2FA562291954400F56F49 /* ConfigurationParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA162291953300F56F49 /* ConfigurationParserTests.swift */; };
@@ -193,76 +242,37 @@
 		0EE2FA622291954400F56F49 /* RawPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA0C2291953300F56F49 /* RawPerformanceTests.swift */; };
 		0EE2FA632291954400F56F49 /* RoutingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA132291953300F56F49 /* RoutingTests.swift */; };
 		0EE2FA642291954400F56F49 /* StaticKeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA142291953300F56F49 /* StaticKeyTests.swift */; };
-		0EE2FA652291954400F56F49 /* TestUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA152291953300F56F49 /* TestUtils.swift */; };
-		0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
-		0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE3B3E321471C3A0027AB17 /* StaticKey.swift */; };
-		0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
-		0EE7A79920F6296F00B42E6A /* PacketMacros.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EE7A79720F6296F00B42E6A /* PacketMacros.m */; };
+		0EE2FA652291954400F56F49 /* TestUtils+OpenVPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EE2FA152291953300F56F49 /* TestUtils+OpenVPN.swift */; };
 		0EEC49E120B5F7EA008FEB91 /* Allocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42E2006D3C800F81029 /* Allocation.h */; };
-		0EEC49E220B5F7F6008FEB91 /* CryptoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4402006D3C800F81029 /* CryptoBox.h */; };
-		0EEC49E320B5F7F6008FEB91 /* DataPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4352006D3C800F81029 /* DataPath.h */; };
 		0EEC49E520B5F7F6008FEB91 /* Errors.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4362006D3C800F81029 /* Errors.h */; };
-		0EEC49E620B5F7F6008FEB91 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42D2006D3C800F81029 /* MSS.h */; };
-		0EEC49E820B5F7F6008FEB91 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4392006D3C800F81029 /* ReplayProtector.h */; };
-		0EEC49E920B5F7F6008FEB91 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4442006D3C800F81029 /* TLSBox.h */; };
 		0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4412006D3C800F81029 /* ZeroingData.h */; };
-		0EF5CF262141E142004FF1BD /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
-		0EF5CF272141E15B004FF1BD /* PacketMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EE7A79420F61EDC00B42E6A /* PacketMacros.h */; };
-		0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */ = {isa = PBXBuildFile; fileRef = 0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */; };
 		0EFB902922788511006405E4 /* RoutingTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFB902722788511006405E4 /* RoutingTable.h */; };
 		0EFB902A22788511006405E4 /* RoutingTable.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFB902722788511006405E4 /* RoutingTable.h */; };
 		0EFB902B22788512006405E4 /* RoutingTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFB902822788511006405E4 /* RoutingTable.m */; };
 		0EFB902C22788512006405E4 /* RoutingTable.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFB902822788511006405E4 /* RoutingTable.m */; };
-		0EFEB4552006D3C800F81029 /* EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* EncryptionBridge.swift */; };
-		0EFEB4562006D3C800F81029 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionKey.swift */; };
-		0EFEB4582006D3C800F81029 /* MSS.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42D2006D3C800F81029 /* MSS.h */; };
 		0EFEB4592006D3C800F81029 /* Allocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB42E2006D3C800F81029 /* Allocation.h */; };
 		0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */; };
-		0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4302006D3C800F81029 /* TLSBox.m */; };
 		0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4312006D3C800F81029 /* ZeroingData.m */; };
-		0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4322006D3C800F81029 /* CryptoBox.m */; };
-		0EFEB4602006D3C800F81029 /* DataPath.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4352006D3C800F81029 /* DataPath.h */; };
 		0EFEB4612006D3C800F81029 /* Errors.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4362006D3C800F81029 /* Errors.h */; };
 		0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4372006D3C800F81029 /* SecureRandom.swift */; };
-		0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */; };
-		0EFEB4642006D3C800F81029 /* ReplayProtector.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4392006D3C800F81029 /* ReplayProtector.h */; };
-		0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
 		0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
-		0EFEB4672006D3C800F81029 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */; };
-		0EFEB4682006D3C800F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
-		0EFEB4692006D3C800F81029 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43E2006D3C800F81029 /* Packet.swift */; };
-		0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4402006D3C800F81029 /* CryptoBox.h */; };
 		0EFEB46C2006D3C800F81029 /* ZeroingData.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4412006D3C800F81029 /* ZeroingData.h */; };
 		0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */; };
-		0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */ = {isa = PBXBuildFile; fileRef = 0EFEB4442006D3C800F81029 /* TLSBox.h */; };
 		0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4452006D3C800F81029 /* IOInterface.swift */; };
 		0EFEB4702006D3C800F81029 /* Allocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4462006D3C800F81029 /* Allocation.m */; };
-		0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4482006D3C800F81029 /* ReplayProtector.m */; };
 		0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4492006D3C800F81029 /* LinkInterface.swift */; };
 		0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
 		0EFEB4752006D3C800F81029 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44B2006D3C800F81029 /* Errors.m */; };
-		0EFEB4762006D3C800F81029 /* DataPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44C2006D3C800F81029 /* DataPath.m */; };
-		0EFEB48D2006D7F300F81029 /* EncryptionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42A2006D3C800F81029 /* EncryptionBridge.swift */; };
-		0EFEB48E2006D7F300F81029 /* SessionKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42B2006D3C800F81029 /* SessionKey.swift */; };
 		0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */; };
-		0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4302006D3C800F81029 /* TLSBox.m */; };
 		0EFEB4922006D7F300F81029 /* ZeroingData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4312006D3C800F81029 /* ZeroingData.m */; };
-		0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4322006D3C800F81029 /* CryptoBox.m */; };
 		0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4372006D3C800F81029 /* SecureRandom.swift */; };
-		0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */; };
-		0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43A2006D3C800F81029 /* Authenticator.swift */; };
 		0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43B2006D3C800F81029 /* ZeroingData.swift */; };
-		0EFEB4992006D7F300F81029 /* OpenVPNSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */; };
-		0EFEB49A2006D7F300F81029 /* MSS.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43D2006D3C800F81029 /* MSS.m */; };
-		0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB43E2006D3C800F81029 /* Packet.swift */; };
 		0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */; };
 		0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4452006D3C800F81029 /* IOInterface.swift */; };
 		0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4462006D3C800F81029 /* Allocation.m */; };
-		0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4482006D3C800F81029 /* ReplayProtector.m */; };
 		0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB4492006D3C800F81029 /* LinkInterface.swift */; };
 		0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
 		0EFEB4A32006D7F300F81029 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44B2006D3C800F81029 /* Errors.m */; };
-		0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44C2006D3C800F81029 /* DataPath.m */; };
 		83B2AD687B4E13994EABABCB /* Pods_TunnelKit_TunnelKitTests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3832A0057760E6C8900714B /* Pods_TunnelKit_TunnelKitTests_macOS.framework */; };
 		B4C2A996F52241B77E7762BD /* Pods_TunnelKit_TunnelKit_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 276657B3FED3840178C53D6B /* Pods_TunnelKit_TunnelKit_iOS.framework */; };
 		B94D5E2579FB6292E2EC7AF1 /* Pods_TunnelKit_TunnelKitHost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF76B5FEAAFD5056FFCC5DA2 /* Pods_TunnelKit_TunnelKitHost.framework */; };
@@ -304,18 +314,8 @@
 		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
 		0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		0E011F832196E25400BA59EE /* pia-hungary.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "pia-hungary.ovpn"; sourceTree = "<group>"; };
-		0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParser.swift; sourceTree = "<group>"; };
-		0E041D082152E6FE0025FE3C /* TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLSWrap.swift; sourceTree = "<group>"; };
-		0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
-		0E07596120EF733F00F38FD8 /* CryptoMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoMacros.h; sourceTree = "<group>"; };
-		0E07596A20EF79AB00F38FD8 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
-		0E07596D20EF79B400F38FD8 /* CryptoCBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCBC.h; sourceTree = "<group>"; };
-		0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoAEAD.h; sourceTree = "<group>"; };
-		0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
 		0E0B203E2278A85B007A3CB9 /* RoutingTableEntry.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutingTableEntry.h; sourceTree = "<group>"; };
 		0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTableEntry.m; sourceTree = "<group>"; };
-		0E0C2123212ED29D008AB282 /* OpenVPNError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNError.swift; sourceTree = "<group>"; };
-		0E0C2124212ED29D008AB282 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E11089E1F77B9E800A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E1108A91F77B9F900A92462 /* TunnelKitHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TunnelKitHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -327,70 +327,104 @@
 		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Shortcuts.swift"; sourceTree = "<group>"; };
 		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
-		0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannel.swift; sourceTree = "<group>"; };
-		0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlChannelSerializer.swift; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFramingNative.h; sourceTree = "<group>"; };
+		0E23B3D82297463200304C30 /* TestUtils+Core.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TestUtils+Core.swift"; sourceTree = "<group>"; };
+		0E23B3DD229749C600304C30 /* LinkProducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkProducer.swift; sourceTree = "<group>"; };
+		0E23B3E222982AF800304C30 /* CryptoCBC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCBC.h; sourceTree = "<group>"; };
+		0E23B3E322982AF800304C30 /* CryptoAEAD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoAEAD.m; sourceTree = "<group>"; };
+		0E23B3E422982AF800304C30 /* CryptoCTR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCTR.h; sourceTree = "<group>"; };
+		0E23B3E522982AF800304C30 /* SessionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionKey.swift; sourceTree = "<group>"; };
+		0E23B3E622982AF800304C30 /* ControlChannelSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannelSerializer.swift; sourceTree = "<group>"; };
+		0E23B3E722982AF800304C30 /* MSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSS.h; sourceTree = "<group>"; };
+		0E23B3E822982AF800304C30 /* PacketMacros.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
+		0E23B3E922982AF800304C30 /* ControlChannel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ControlChannel.swift; sourceTree = "<group>"; };
+		0E23B3EA22982AF800304C30 /* CoreConfiguration+OpenVPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreConfiguration+OpenVPN.swift"; sourceTree = "<group>"; };
+		0E23B3EB22982AF800304C30 /* TLSBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLSBox.m; sourceTree = "<group>"; };
+		0E23B3EC22982AF800304C30 /* OpenVPNError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNError.swift; sourceTree = "<group>"; };
+		0E23B3ED22982AF800304C30 /* ControlPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ControlPacket.h; sourceTree = "<group>"; };
+		0E23B3EE22982AF800304C30 /* CryptoBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoBox.m; sourceTree = "<group>"; };
+		0E23B3EF22982AF800304C30 /* OpenVPNSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNSession.swift; sourceTree = "<group>"; };
+		0E23B3F022982AF800304C30 /* OpenVPNSession+PIA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenVPNSession+PIA.swift"; sourceTree = "<group>"; };
+		0E23B3F122982AF800304C30 /* CryptoContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoContainer.swift; sourceTree = "<group>"; };
+		0E23B3F222982AF800304C30 /* DataPathCrypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPathCrypto.h; sourceTree = "<group>"; };
+		0E23B3F322982AF800304C30 /* OpenVPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPN.swift; sourceTree = "<group>"; };
+		0E23B3F422982AF800304C30 /* CompressionAlgorithmNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionAlgorithmNative.h; sourceTree = "<group>"; };
+		0E23B3F522982AF800304C30 /* TLSWrap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLSWrap.swift; sourceTree = "<group>"; };
+		0E23B3F622982AF800304C30 /* DataPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPath.h; sourceTree = "<group>"; };
+		0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenVPNTunnelProvider+Interaction.swift"; sourceTree = "<group>"; };
+		0E23B3F922982AF800304C30 /* NEUDPLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUDPLink.swift; sourceTree = "<group>"; };
+		0E23B3FA22982AF800304C30 /* ConnectionStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
+		0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "OpenVPNTunnelProvider+Configuration.swift"; sourceTree = "<group>"; };
+		0E23B3FC22982AF800304C30 /* NETCPLink.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NETCPLink.swift; sourceTree = "<group>"; };
+		0E23B3FD22982AF800304C30 /* OpenVPNTunnelProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNTunnelProvider.swift; sourceTree = "<group>"; };
+		0E23B3FE22982AF800304C30 /* PacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketStream.h; sourceTree = "<group>"; };
+		0E23B3FF22982AF800304C30 /* ProtocolMacros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolMacros.swift; sourceTree = "<group>"; };
+		0E23B40022982AF800304C30 /* ReplayProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayProtector.h; sourceTree = "<group>"; };
+		0E23B40122982AF800304C30 /* Crypto.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Crypto.h; sourceTree = "<group>"; };
+		0E23B40222982AF800304C30 /* CompressionAlgorithm.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionAlgorithm.swift; sourceTree = "<group>"; };
+		0E23B40322982AF800304C30 /* EncryptionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionBridge.swift; sourceTree = "<group>"; };
+		0E23B40422982AF800304C30 /* Authenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
+		0E23B40522982AF800304C30 /* CompressionFraming.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionFraming.swift; sourceTree = "<group>"; };
+		0E23B40622982AF800304C30 /* CryptoCBC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCBC.m; sourceTree = "<group>"; };
+		0E23B40722982AF800304C30 /* StaticKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKey.swift; sourceTree = "<group>"; };
+		0E23B40822982AF800304C30 /* PushReply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushReply.swift; sourceTree = "<group>"; };
+		0E23B40922982AF800304C30 /* PacketMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
+		0E23B40A22982AF800304C30 /* MSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSS.m; sourceTree = "<group>"; };
+		0E23B40B22982AF800304C30 /* CryptoCTR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCTR.m; sourceTree = "<group>"; };
+		0E23B40C22982AF800304C30 /* CryptoAEAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoAEAD.h; sourceTree = "<group>"; };
+		0E23B40D22982AF800304C30 /* CompressionFramingNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionFramingNative.h; sourceTree = "<group>"; };
+		0E23B40E22982AF800304C30 /* ConfigurationParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParser.swift; sourceTree = "<group>"; };
+		0E23B40F22982AF800304C30 /* Packet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Packet.swift; sourceTree = "<group>"; };
+		0E23B41022982AF800304C30 /* CryptoBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoBox.h; sourceTree = "<group>"; };
+		0E23B41122982AF800304C30 /* ControlPacket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ControlPacket.m; sourceTree = "<group>"; };
+		0E23B41222982AF800304C30 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
+		0E23B41322982AF800304C30 /* TLSBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLSBox.h; sourceTree = "<group>"; };
+		0E23B41422982AF800304C30 /* ReplayProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayProtector.m; sourceTree = "<group>"; };
+		0E23B41522982AF800304C30 /* CryptoMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoMacros.h; sourceTree = "<group>"; };
+		0E23B41622982AF800304C30 /* PacketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketStream.m; sourceTree = "<group>"; };
+		0E23B41722982AF800304C30 /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
+		0E23B41822982AF800304C30 /* DataPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPath.m; sourceTree = "<group>"; };
+		0E23B41B22982AF800304C30 /* StandardLZO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandardLZO.m; sourceTree = "<group>"; };
+		0E23B41D22982AF800304C30 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzodefs.h; sourceTree = "<group>"; };
+		0E23B41E22982AF800304C30 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
+		0E23B42022982AF800304C30 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minilzo.h; sourceTree = "<group>"; };
+		0E23B42422982AF800304C30 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minilzo.c; sourceTree = "<group>"; };
 		0E3251C51F95770D00C108D9 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E39BCE6214B2AB60035E9DE /* ControlPacket.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ControlPacket.h; sourceTree = "<group>"; };
-		0E39BCE7214B2AB60035E9DE /* ControlPacket.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ControlPacket.m; sourceTree = "<group>"; };
-		0E3B15C52152B05E00984B17 /* CryptoCTR.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoCTR.h; sourceTree = "<group>"; };
-		0E3B15C62152B05E00984B17 /* CryptoCTR.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoCTR.m; sourceTree = "<group>"; };
 		0E3B656E224923EC00EFF4DA /* tunnelbear.enc.1.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.1.ovpn; sourceTree = "<group>"; };
 		0E3B65712249247E00EFF4DA /* tunnelbear.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.key; sourceTree = "<group>"; };
-		0E3E0F202108A8CC00B371C1 /* PushReply.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushReply.swift; sourceTree = "<group>"; };
 		0E411B992271F90700E0852C /* DNS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DNS.h; sourceTree = "<group>"; };
 		0E411B9A2271F90700E0852C /* DNS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DNS.m; sourceTree = "<group>"; };
 		0E411B9F2271FA3300E0852C /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
 		0E411BA12271FA3C00E0852C /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		0E48AC622271ADA8009B1A98 /* PacketStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketStream.h; sourceTree = "<group>"; };
-		0E48AC632271ADA9009B1A98 /* PacketStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketStream.m; sourceTree = "<group>"; };
 		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
-		0E58BF2F22405410006FB157 /* lzoconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzoconf.h; sourceTree = "<group>"; };
-		0E58BF3022405410006FB157 /* lzodefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lzodefs.h; sourceTree = "<group>"; };
-		0E58BF3122405410006FB157 /* minilzo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = minilzo.h; sourceTree = "<group>"; };
-		0E58BF3222405410006FB157 /* minilzo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = minilzo.c; sourceTree = "<group>"; };
-		0E58BF4922405C2F006FB157 /* StandardLZO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StandardLZO.m; sourceTree = "<group>"; };
-		0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompressionAlgorithmNative.h; sourceTree = "<group>"; };
-		0E58BF522240FAA6006FB157 /* CompressionAlgorithm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressionAlgorithm.swift; sourceTree = "<group>"; };
 		0E58BF5522411F37006FB157 /* LZO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LZO.h; sourceTree = "<group>"; };
 		0E58BF5822411FEF006FB157 /* LZO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LZO.m; sourceTree = "<group>"; };
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OpenVPNSession+PIA.swift"; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA82A272190B220007960EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EB03E0E2290CF52006D03A0 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
-		0EB03E3E2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CoreConfiguration+OpenVPN.swift"; sourceTree = "<group>"; };
-		0EB03E412291542C006D03A0 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0ECC60D72254981A0020BEAC /* ConfigurationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationError.swift; sourceTree = "<group>"; };
-		0ECE3527212EB7770040F253 /* CryptoContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoContainer.swift; sourceTree = "<group>"; };
 		0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.ovpn; sourceTree = "<group>"; };
 		0ECEB1142252C8E900E9E551 /* tunnelbear.enc.8.key */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.key; sourceTree = "<group>"; };
 		0ECEB11A2252CDAD00E9E551 /* tunnelbear.crt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.crt; sourceTree = "<group>"; };
-		0ED9C8632138139000621BA3 /* CompressionFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompressionFraming.swift; sourceTree = "<group>"; };
 		0EE2F96D2291636B00F56F49 /* IPv4Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPv4Settings.swift; sourceTree = "<group>"; };
 		0EE2F9702291638600F56F49 /* IPv6Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPv6Settings.swift; sourceTree = "<group>"; };
 		0EE2F973229163C900F56F49 /* Proxy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Proxy.swift; sourceTree = "<group>"; };
-		0EE2F97622916A5D00F56F49 /* OpenVPN.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenVPN.swift; sourceTree = "<group>"; };
 		0EE2F9792291817300F56F49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		0EE2F9AB2291853D00F56F49 /* Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Session.swift; sourceTree = "<group>"; };
-		0EE2F9DE22918DA100F56F49 /* ConnectionStrategy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConnectionStrategy.swift; sourceTree = "<group>"; };
-		0EE2F9E022918DA100F56F49 /* NETCPInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NETCPInterface.swift; sourceTree = "<group>"; };
+		0EE2F9E022918DA100F56F49 /* NETCPSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NETCPSocket.swift; sourceTree = "<group>"; };
 		0EE2F9E122918DA100F56F49 /* NETunnelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NETunnelInterface.swift; sourceTree = "<group>"; };
 		0EE2F9E222918DA100F56F49 /* NWTCPConnectionState+Description.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NWTCPConnectionState+Description.swift"; sourceTree = "<group>"; };
-		0EE2F9E322918DA100F56F49 /* NEUDPInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUDPInterface.swift; sourceTree = "<group>"; };
+		0EE2F9E322918DA100F56F49 /* NEUDPSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NEUDPSocket.swift; sourceTree = "<group>"; };
 		0EE2F9E422918DA100F56F49 /* NWUDPSessionState+Description.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NWUDPSessionState+Description.swift"; sourceTree = "<group>"; };
 		0EE2F9E522918DA100F56F49 /* DNSResolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNSResolver.swift; sourceTree = "<group>"; };
-		0EE2F9E622918DA100F56F49 /* TunnelKitProvider+Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Configuration.swift"; sourceTree = "<group>"; };
 		0EE2F9E722918DA100F56F49 /* Keychain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keychain.swift; sourceTree = "<group>"; };
 		0EE2F9E822918DA100F56F49 /* MemoryDestination.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemoryDestination.swift; sourceTree = "<group>"; };
 		0EE2F9E922918DA100F56F49 /* GenericSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenericSocket.swift; sourceTree = "<group>"; };
-		0EE2F9EA22918DA100F56F49 /* TunnelKitProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelKitProvider.swift; sourceTree = "<group>"; };
 		0EE2F9EB22918DA100F56F49 /* Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
-		0EE2F9EC22918DA100F56F49 /* TunnelKitProvider+Interaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TunnelKitProvider+Interaction.swift"; sourceTree = "<group>"; };
 		0EE2F9ED22918DA100F56F49 /* InterfaceObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InterfaceObserver.swift; sourceTree = "<group>"; };
 		0EE2FA0C2291953300F56F49 /* RawPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RawPerformanceTests.swift; sourceTree = "<group>"; };
 		0EE2FA0D2291953300F56F49 /* DataPathPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPathPerformanceTests.swift; sourceTree = "<group>"; };
@@ -401,7 +435,7 @@
 		0EE2FA122291953300F56F49 /* LinkTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkTests.swift; sourceTree = "<group>"; };
 		0EE2FA132291953300F56F49 /* RoutingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutingTests.swift; sourceTree = "<group>"; };
 		0EE2FA142291953300F56F49 /* StaticKeyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StaticKeyTests.swift; sourceTree = "<group>"; };
-		0EE2FA152291953300F56F49 /* TestUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestUtils.swift; sourceTree = "<group>"; };
+		0EE2FA152291953300F56F49 /* TestUtils+OpenVPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TestUtils+OpenVPN.swift"; sourceTree = "<group>"; };
 		0EE2FA162291953300F56F49 /* ConfigurationParserTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfigurationParserTests.swift; sourceTree = "<group>"; };
 		0EE2FA172291953300F56F49 /* EncryptionPerformanceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionPerformanceTests.swift; sourceTree = "<group>"; };
 		0EE2FA182291953300F56F49 /* PacketTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PacketTests.swift; sourceTree = "<group>"; };
@@ -410,41 +444,21 @@
 		0EE2FA1B2291953300F56F49 /* PushTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushTests.swift; sourceTree = "<group>"; };
 		0EE2FA1C2291953300F56F49 /* CompressionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompressionTests.swift; sourceTree = "<group>"; };
 		0EE2FA1D2291953300F56F49 /* DataPathEncryptionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPathEncryptionTests.swift; sourceTree = "<group>"; };
-		0EE3B3E321471C3A0027AB17 /* StaticKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticKey.swift; sourceTree = "<group>"; };
-		0EE7A79420F61EDC00B42E6A /* PacketMacros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketMacros.h; sourceTree = "<group>"; };
-		0EE7A79720F6296F00B42E6A /* PacketMacros.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PacketMacros.m; sourceTree = "<group>"; };
-		0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataPathCrypto.h; sourceTree = "<group>"; };
 		0EFB902722788511006405E4 /* RoutingTable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RoutingTable.h; sourceTree = "<group>"; };
 		0EFB902822788511006405E4 /* RoutingTable.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTable.m; sourceTree = "<group>"; };
-		0EFEB42A2006D3C800F81029 /* EncryptionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncryptionBridge.swift; sourceTree = "<group>"; };
-		0EFEB42B2006D3C800F81029 /* SessionKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SessionKey.swift; sourceTree = "<group>"; };
-		0EFEB42D2006D3C800F81029 /* MSS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSS.h; sourceTree = "<group>"; };
 		0EFEB42E2006D3C800F81029 /* Allocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Allocation.h; sourceTree = "<group>"; };
 		0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TunnelInterface.swift; sourceTree = "<group>"; };
-		0EFEB4302006D3C800F81029 /* TLSBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLSBox.m; sourceTree = "<group>"; };
 		0EFEB4312006D3C800F81029 /* ZeroingData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZeroingData.m; sourceTree = "<group>"; };
-		0EFEB4322006D3C800F81029 /* CryptoBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CryptoBox.m; sourceTree = "<group>"; };
-		0EFEB4352006D3C800F81029 /* DataPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataPath.h; sourceTree = "<group>"; };
 		0EFEB4362006D3C800F81029 /* Errors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Errors.h; sourceTree = "<group>"; };
 		0EFEB4372006D3C800F81029 /* SecureRandom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureRandom.swift; sourceTree = "<group>"; };
-		0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProtocolMacros.swift; sourceTree = "<group>"; };
-		0EFEB4392006D3C800F81029 /* ReplayProtector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReplayProtector.h; sourceTree = "<group>"; };
-		0EFEB43A2006D3C800F81029 /* Authenticator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authenticator.swift; sourceTree = "<group>"; };
 		0EFEB43B2006D3C800F81029 /* ZeroingData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZeroingData.swift; sourceTree = "<group>"; };
-		0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNSession.swift; sourceTree = "<group>"; };
-		0EFEB43D2006D3C800F81029 /* MSS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSS.m; sourceTree = "<group>"; };
-		0EFEB43E2006D3C800F81029 /* Packet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Packet.swift; sourceTree = "<group>"; };
-		0EFEB4402006D3C800F81029 /* CryptoBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptoBox.h; sourceTree = "<group>"; };
 		0EFEB4412006D3C800F81029 /* ZeroingData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZeroingData.h; sourceTree = "<group>"; };
 		0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+Manipulation.swift"; sourceTree = "<group>"; };
-		0EFEB4442006D3C800F81029 /* TLSBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLSBox.h; sourceTree = "<group>"; };
 		0EFEB4452006D3C800F81029 /* IOInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IOInterface.swift; sourceTree = "<group>"; };
 		0EFEB4462006D3C800F81029 /* Allocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Allocation.m; sourceTree = "<group>"; };
-		0EFEB4482006D3C800F81029 /* ReplayProtector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReplayProtector.m; sourceTree = "<group>"; };
 		0EFEB4492006D3C800F81029 /* LinkInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkInterface.swift; sourceTree = "<group>"; };
 		0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreConfiguration.swift; sourceTree = "<group>"; };
 		0EFEB44B2006D3C800F81029 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
-		0EFEB44C2006D3C800F81029 /* DataPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataPath.m; sourceTree = "<group>"; };
 		276657B3FED3840178C53D6B /* Pods_TunnelKit_TunnelKit_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKit_TunnelKit_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2DD764A8C3908CB48A442295 /* Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitTests-macOS/Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		33C00B882D0DF7C28257630B /* Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKit-macOS/Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -511,24 +525,9 @@
 		0E11089B1F77B9E800A92462 /* TunnelKitTests */ = {
 			isa = PBXGroup;
 			children = (
-				0EE2FA0E2291953300F56F49 /* AppExtensionTests.swift */,
-				0EE2FA1C2291953300F56F49 /* CompressionTests.swift */,
-				0EE2FA162291953300F56F49 /* ConfigurationParserTests.swift */,
-				0EE2FA1A2291953300F56F49 /* ControlChannelTests.swift */,
-				0EE2FA192291953300F56F49 /* DataManipulationTests.swift */,
-				0EE2FA1D2291953300F56F49 /* DataPathEncryptionTests.swift */,
-				0EE2FA0D2291953300F56F49 /* DataPathPerformanceTests.swift */,
-				0EE2FA112291953300F56F49 /* DNSTests.swift */,
-				0EE2FA172291953300F56F49 /* EncryptionPerformanceTests.swift */,
-				0EE2FA102291953300F56F49 /* EncryptionTests.swift */,
-				0EE2FA122291953300F56F49 /* LinkTests.swift */,
-				0EE2FA182291953300F56F49 /* PacketTests.swift */,
-				0EE2FA1B2291953300F56F49 /* PushTests.swift */,
-				0EE2FA0F2291953300F56F49 /* RandomTests.swift */,
-				0EE2FA0C2291953300F56F49 /* RawPerformanceTests.swift */,
-				0EE2FA132291953300F56F49 /* RoutingTests.swift */,
-				0EE2FA142291953300F56F49 /* StaticKeyTests.swift */,
-				0EE2FA152291953300F56F49 /* TestUtils.swift */,
+				0E23B3D52297451700304C30 /* OpenVPN */,
+				0E23B3D62297452B00304C30 /* LZO */,
+				0E23B3D72297452E00304C30 /* Core */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
 				0E011F832196E25400BA59EE /* pia-hungary.ovpn */,
 				0ECEB11A2252CDAD00E9E551 /* tunnelbear.crt */,
@@ -596,28 +595,153 @@
 			children = (
 				0EE2F9DD22918DA100F56F49 /* AppExtension */,
 				0EFEB4292006D3C800F81029 /* Core */,
-				0E58BEDC2240521F006FB157 /* LZO */,
-				0EB03E0A2290A338006D03A0 /* OpenVPN */,
+				0E23B41922982AF800304C30 /* Extra */,
+				0E23B3E022982AF800304C30 /* Protocols */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
 		};
-		0E58BEDC2240521F006FB157 /* LZO */ = {
+		0E23B3D52297451700304C30 /* OpenVPN */ = {
 			isa = PBXGroup;
 			children = (
-				0E58BF4722405734006FB157 /* lib */,
-				0E58BF4922405C2F006FB157 /* StandardLZO.m */,
+				0EE2FA0E2291953300F56F49 /* AppExtensionTests.swift */,
+				0EE2FA162291953300F56F49 /* ConfigurationParserTests.swift */,
+				0EE2FA1A2291953300F56F49 /* ControlChannelTests.swift */,
+				0EE2FA1D2291953300F56F49 /* DataPathEncryptionTests.swift */,
+				0EE2FA0D2291953300F56F49 /* DataPathPerformanceTests.swift */,
+				0EE2FA172291953300F56F49 /* EncryptionPerformanceTests.swift */,
+				0EE2FA102291953300F56F49 /* EncryptionTests.swift */,
+				0EE2FA122291953300F56F49 /* LinkTests.swift */,
+				0EE2FA182291953300F56F49 /* PacketTests.swift */,
+				0EE2FA1B2291953300F56F49 /* PushTests.swift */,
+				0EE2FA142291953300F56F49 /* StaticKeyTests.swift */,
+				0EE2FA152291953300F56F49 /* TestUtils+OpenVPN.swift */,
+			);
+			path = OpenVPN;
+			sourceTree = "<group>";
+		};
+		0E23B3D62297452B00304C30 /* LZO */ = {
+			isa = PBXGroup;
+			children = (
+				0EE2FA1C2291953300F56F49 /* CompressionTests.swift */,
 			);
 			path = LZO;
 			sourceTree = "<group>";
 		};
-		0E58BF4722405734006FB157 /* lib */ = {
+		0E23B3D72297452E00304C30 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				0E58BF2F22405410006FB157 /* lzoconf.h */,
-				0E58BF3022405410006FB157 /* lzodefs.h */,
-				0E58BF3222405410006FB157 /* minilzo.c */,
-				0E58BF3122405410006FB157 /* minilzo.h */,
+				0EE2FA192291953300F56F49 /* DataManipulationTests.swift */,
+				0EE2FA112291953300F56F49 /* DNSTests.swift */,
+				0EE2FA0F2291953300F56F49 /* RandomTests.swift */,
+				0EE2FA0C2291953300F56F49 /* RawPerformanceTests.swift */,
+				0EE2FA132291953300F56F49 /* RoutingTests.swift */,
+				0E23B3D82297463200304C30 /* TestUtils+Core.swift */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		0E23B3E022982AF800304C30 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B3E122982AF800304C30 /* OpenVPN */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		0E23B3E122982AF800304C30 /* OpenVPN */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B3F722982AF800304C30 /* AppExtension */,
+				0E23B40422982AF800304C30 /* Authenticator.swift */,
+				0E23B40222982AF800304C30 /* CompressionAlgorithm.swift */,
+				0E23B3F422982AF800304C30 /* CompressionAlgorithmNative.h */,
+				0E23B40522982AF800304C30 /* CompressionFraming.swift */,
+				0E23B40D22982AF800304C30 /* CompressionFramingNative.h */,
+				0E23B41722982AF800304C30 /* Configuration.swift */,
+				0E23B40E22982AF800304C30 /* ConfigurationParser.swift */,
+				0E23B3E922982AF800304C30 /* ControlChannel.swift */,
+				0E23B3E622982AF800304C30 /* ControlChannelSerializer.swift */,
+				0E23B3ED22982AF800304C30 /* ControlPacket.h */,
+				0E23B41122982AF800304C30 /* ControlPacket.m */,
+				0E23B3EA22982AF800304C30 /* CoreConfiguration+OpenVPN.swift */,
+				0E23B40122982AF800304C30 /* Crypto.h */,
+				0E23B40C22982AF800304C30 /* CryptoAEAD.h */,
+				0E23B3E322982AF800304C30 /* CryptoAEAD.m */,
+				0E23B41022982AF800304C30 /* CryptoBox.h */,
+				0E23B3EE22982AF800304C30 /* CryptoBox.m */,
+				0E23B3E222982AF800304C30 /* CryptoCBC.h */,
+				0E23B40622982AF800304C30 /* CryptoCBC.m */,
+				0E23B3F122982AF800304C30 /* CryptoContainer.swift */,
+				0E23B3E422982AF800304C30 /* CryptoCTR.h */,
+				0E23B40B22982AF800304C30 /* CryptoCTR.m */,
+				0E23B41522982AF800304C30 /* CryptoMacros.h */,
+				0E23B3F622982AF800304C30 /* DataPath.h */,
+				0E23B41822982AF800304C30 /* DataPath.m */,
+				0E23B3F222982AF800304C30 /* DataPathCrypto.h */,
+				0E23B40322982AF800304C30 /* EncryptionBridge.swift */,
+				0E23B41222982AF800304C30 /* module.modulemap */,
+				0E23B3E722982AF800304C30 /* MSS.h */,
+				0E23B40A22982AF800304C30 /* MSS.m */,
+				0E23B3F322982AF800304C30 /* OpenVPN.swift */,
+				0E23B3EC22982AF800304C30 /* OpenVPNError.swift */,
+				0E23B3EF22982AF800304C30 /* OpenVPNSession.swift */,
+				0E23B3F022982AF800304C30 /* OpenVPNSession+PIA.swift */,
+				0E23B40F22982AF800304C30 /* Packet.swift */,
+				0E23B40922982AF800304C30 /* PacketMacros.h */,
+				0E23B3E822982AF800304C30 /* PacketMacros.m */,
+				0E23B3FE22982AF800304C30 /* PacketStream.h */,
+				0E23B41622982AF800304C30 /* PacketStream.m */,
+				0E23B3FF22982AF800304C30 /* ProtocolMacros.swift */,
+				0E23B40822982AF800304C30 /* PushReply.swift */,
+				0E23B40022982AF800304C30 /* ReplayProtector.h */,
+				0E23B41422982AF800304C30 /* ReplayProtector.m */,
+				0E23B3E522982AF800304C30 /* SessionKey.swift */,
+				0E23B40722982AF800304C30 /* StaticKey.swift */,
+				0E23B41322982AF800304C30 /* TLSBox.h */,
+				0E23B3EB22982AF800304C30 /* TLSBox.m */,
+				0E23B3F522982AF800304C30 /* TLSWrap.swift */,
+			);
+			path = OpenVPN;
+			sourceTree = "<group>";
+		};
+		0E23B3F722982AF800304C30 /* AppExtension */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */,
+				0E23B3F922982AF800304C30 /* NEUDPLink.swift */,
+				0E23B3FA22982AF800304C30 /* ConnectionStrategy.swift */,
+				0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */,
+				0E23B3FC22982AF800304C30 /* NETCPLink.swift */,
+				0E23B3FD22982AF800304C30 /* OpenVPNTunnelProvider.swift */,
+			);
+			path = AppExtension;
+			sourceTree = "<group>";
+		};
+		0E23B41922982AF800304C30 /* Extra */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B41A22982AF800304C30 /* LZO */,
+			);
+			path = Extra;
+			sourceTree = "<group>";
+		};
+		0E23B41A22982AF800304C30 /* LZO */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B41C22982AF800304C30 /* lib */,
+				0E23B41B22982AF800304C30 /* StandardLZO.m */,
+			);
+			path = LZO;
+			sourceTree = "<group>";
+		};
+		0E23B41C22982AF800304C30 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				0E23B41E22982AF800304C30 /* lzoconf.h */,
+				0E23B41D22982AF800304C30 /* lzodefs.h */,
+				0E23B42422982AF800304C30 /* minilzo.c */,
+				0E23B42022982AF800304C30 /* minilzo.h */,
 			);
 			path = lib;
 			sourceTree = "<group>";
@@ -654,75 +778,15 @@
 			path = "TunnelKitTests-iOS";
 			sourceTree = "<group>";
 		};
-		0EB03E0A2290A338006D03A0 /* OpenVPN */ = {
-			isa = PBXGroup;
-			children = (
-				0EFEB43A2006D3C800F81029 /* Authenticator.swift */,
-				0E58BF522240FAA6006FB157 /* CompressionAlgorithm.swift */,
-				0E58BF4F2240F98E006FB157 /* CompressionAlgorithmNative.h */,
-				0ED9C8632138139000621BA3 /* CompressionFraming.swift */,
-				0E245D6B2137F73600B012A2 /* CompressionFramingNative.h */,
-				0E0C2124212ED29D008AB282 /* Configuration.swift */,
-				0E011F872196E2AB00BA59EE /* ConfigurationParser.swift */,
-				0E12B2A721456C0200B4BAE9 /* ControlChannel.swift */,
-				0E12B2AA2145E01700B4BAE9 /* ControlChannelSerializer.swift */,
-				0E39BCE6214B2AB60035E9DE /* ControlPacket.h */,
-				0E39BCE7214B2AB60035E9DE /* ControlPacket.m */,
-				0EB03E3E2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift */,
-				0E07596A20EF79AB00F38FD8 /* Crypto.h */,
-				0E07597C20F0060E00F38FD8 /* CryptoAEAD.h */,
-				0E07597D20F0060E00F38FD8 /* CryptoAEAD.m */,
-				0EFEB4402006D3C800F81029 /* CryptoBox.h */,
-				0EFEB4322006D3C800F81029 /* CryptoBox.m */,
-				0E07596D20EF79B400F38FD8 /* CryptoCBC.h */,
-				0E07595C20EF6D1400F38FD8 /* CryptoCBC.m */,
-				0ECE3527212EB7770040F253 /* CryptoContainer.swift */,
-				0E3B15C52152B05E00984B17 /* CryptoCTR.h */,
-				0E3B15C62152B05E00984B17 /* CryptoCTR.m */,
-				0E07596120EF733F00F38FD8 /* CryptoMacros.h */,
-				0EFEB4352006D3C800F81029 /* DataPath.h */,
-				0EFEB44C2006D3C800F81029 /* DataPath.m */,
-				0EE7A79D20F6488400B42E6A /* DataPathCrypto.h */,
-				0EFEB42A2006D3C800F81029 /* EncryptionBridge.swift */,
-				0EB03E412291542C006D03A0 /* module.modulemap */,
-				0EFEB42D2006D3C800F81029 /* MSS.h */,
-				0EFEB43D2006D3C800F81029 /* MSS.m */,
-				0EE2F97622916A5D00F56F49 /* OpenVPN.swift */,
-				0E0C2123212ED29D008AB282 /* OpenVPNError.swift */,
-				0EFEB43C2006D3C800F81029 /* OpenVPNSession.swift */,
-				0E749F5E2178885500BB2701 /* OpenVPNSession+PIA.swift */,
-				0EFEB43E2006D3C800F81029 /* Packet.swift */,
-				0EE7A79420F61EDC00B42E6A /* PacketMacros.h */,
-				0EE7A79720F6296F00B42E6A /* PacketMacros.m */,
-				0E48AC622271ADA8009B1A98 /* PacketStream.h */,
-				0E48AC632271ADA9009B1A98 /* PacketStream.m */,
-				0EFEB4382006D3C800F81029 /* ProtocolMacros.swift */,
-				0E3E0F202108A8CC00B371C1 /* PushReply.swift */,
-				0EFEB4392006D3C800F81029 /* ReplayProtector.h */,
-				0EFEB4482006D3C800F81029 /* ReplayProtector.m */,
-				0EFEB42B2006D3C800F81029 /* SessionKey.swift */,
-				0EE3B3E321471C3A0027AB17 /* StaticKey.swift */,
-				0EFEB4442006D3C800F81029 /* TLSBox.h */,
-				0EFEB4302006D3C800F81029 /* TLSBox.m */,
-				0E041D082152E6FE0025FE3C /* TLSWrap.swift */,
-			);
-			path = OpenVPN;
-			sourceTree = "<group>";
-		};
 		0EE2F9DD22918DA100F56F49 /* AppExtension */ = {
 			isa = PBXGroup;
 			children = (
 				0EE2F9DF22918DA100F56F49 /* Transport */,
-				0EE2F9DE22918DA100F56F49 /* ConnectionStrategy.swift */,
-				0EE2F9E522918DA100F56F49 /* DNSResolver.swift */,
 				0EE2F9E922918DA100F56F49 /* GenericSocket.swift */,
 				0EE2F9ED22918DA100F56F49 /* InterfaceObserver.swift */,
 				0EE2F9E722918DA100F56F49 /* Keychain.swift */,
+				0E23B3DD229749C600304C30 /* LinkProducer.swift */,
 				0EE2F9E822918DA100F56F49 /* MemoryDestination.swift */,
-				0EE2F9EA22918DA100F56F49 /* TunnelKitProvider.swift */,
-				0EE2F9E622918DA100F56F49 /* TunnelKitProvider+Configuration.swift */,
-				0EE2F9EC22918DA100F56F49 /* TunnelKitProvider+Interaction.swift */,
-				0EE2F9EB22918DA100F56F49 /* Utils.swift */,
 			);
 			path = AppExtension;
 			sourceTree = "<group>";
@@ -730,10 +794,10 @@
 		0EE2F9DF22918DA100F56F49 /* Transport */ = {
 			isa = PBXGroup;
 			children = (
-				0EE2F9E022918DA100F56F49 /* NETCPInterface.swift */,
+				0EE2F9E022918DA100F56F49 /* NETCPSocket.swift */,
 				0EE2F9E122918DA100F56F49 /* NETunnelInterface.swift */,
+				0EE2F9E322918DA100F56F49 /* NEUDPSocket.swift */,
 				0EE2F9E222918DA100F56F49 /* NWTCPConnectionState+Description.swift */,
-				0EE2F9E322918DA100F56F49 /* NEUDPInterface.swift */,
 				0EE2F9E422918DA100F56F49 /* NWUDPSessionState+Description.swift */,
 			);
 			path = Transport;
@@ -750,6 +814,7 @@
 				0EFEB4432006D3C800F81029 /* Data+Manipulation.swift */,
 				0E411B992271F90700E0852C /* DNS.h */,
 				0E411B9A2271F90700E0852C /* DNS.m */,
+				0EE2F9E522918DA100F56F49 /* DNSResolver.swift */,
 				0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */,
 				0EFEB4362006D3C800F81029 /* Errors.h */,
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
@@ -771,6 +836,7 @@
 				0EE2F9AB2291853D00F56F49 /* Session.swift */,
 				0E011F792196D93600BA59EE /* SocketType.swift */,
 				0EFEB42F2006D3C800F81029 /* TunnelInterface.swift */,
+				0EE2F9EB22918DA100F56F49 /* Utils.swift */,
 				0EFEB4412006D3C800F81029 /* ZeroingData.h */,
 				0EFEB4312006D3C800F81029 /* ZeroingData.m */,
 				0EFEB43B2006D3C800F81029 /* ZeroingData.swift */,
@@ -815,30 +881,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E58BF5622411F3D006FB157 /* LZO.h in Headers */,
-				0EF5CF262141E142004FF1BD /* PacketMacros.h in Headers */,
-				0EFEB4642006D3C800F81029 /* ReplayProtector.h in Headers */,
+				0E23B48722982AF800304C30 /* CryptoMacros.h in Headers */,
+				0E23B44922982AF800304C30 /* CompressionAlgorithmNative.h in Headers */,
 				0EFEB4612006D3C800F81029 /* Errors.h in Headers */,
-				0E48AC642271ADA9009B1A98 /* PacketStream.h in Headers */,
-				0E58BF3722405410006FB157 /* minilzo.h in Headers */,
-				0E07596E20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
-				0E58BF3522405410006FB157 /* lzodefs.h in Headers */,
-				0E58BF502240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
+				0E23B45B22982AF800304C30 /* PacketStream.h in Headers */,
+				0E23B42F22982AF800304C30 /* MSS.h in Headers */,
+				0E23B42522982AF800304C30 /* CryptoCBC.h in Headers */,
+				0E23B45F22982AF800304C30 /* ReplayProtector.h in Headers */,
+				0E23B44D22982AF800304C30 /* DataPath.h in Headers */,
+				0E23B46122982AF800304C30 /* Crypto.h in Headers */,
 				0E0B20402278A85C007A3CB9 /* RoutingTableEntry.h in Headers */,
-				0E07596320EF733F00F38FD8 /* CryptoMacros.h in Headers */,
-				0EFEB46E2006D3C800F81029 /* TLSBox.h in Headers */,
 				0E411B9B2271F90700E0852C /* DNS.h in Headers */,
-				0E07596B20EF79AB00F38FD8 /* Crypto.h in Headers */,
-				0EFEB46B2006D3C800F81029 /* CryptoBox.h in Headers */,
+				0E23B47F22982AF800304C30 /* CryptoBox.h in Headers */,
+				0E23B44522982AF800304C30 /* DataPathCrypto.h in Headers */,
+				0E23B49322982AF800304C30 /* lzoconf.h in Headers */,
 				0EFEB4592006D3C800F81029 /* Allocation.h in Headers */,
+				0E23B47122982AF800304C30 /* PacketMacros.h in Headers */,
+				0E23B43B22982AF800304C30 /* ControlPacket.h in Headers */,
 				0EFB902922788511006405E4 /* RoutingTable.h in Headers */,
-				0EFEB4582006D3C800F81029 /* MSS.h in Headers */,
-				0E58BF3322405410006FB157 /* lzoconf.h in Headers */,
-				0E245D6C2137F73600B012A2 /* CompressionFramingNative.h in Headers */,
-				0E3B15C72152B05E00984B17 /* CryptoCTR.h in Headers */,
-				0EFEB4602006D3C800F81029 /* DataPath.h in Headers */,
-				0E39BCE8214B2AB60035E9DE /* ControlPacket.h in Headers */,
-				0E07597E20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
 				0EFEB46C2006D3C800F81029 /* ZeroingData.h in Headers */,
+				0E23B47922982AF800304C30 /* CompressionFramingNative.h in Headers */,
+				0E23B49722982AF800304C30 /* minilzo.h in Headers */,
+				0E23B47722982AF800304C30 /* CryptoAEAD.h in Headers */,
+				0E23B48322982AF800304C30 /* TLSBox.h in Headers */,
+				0E23B49122982AF800304C30 /* lzodefs.h in Headers */,
+				0E23B42922982AF800304C30 /* CryptoCTR.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -847,30 +914,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E58BF5722411F3E006FB157 /* LZO.h in Headers */,
-				0EF5CF272141E15B004FF1BD /* PacketMacros.h in Headers */,
-				0EEC49E620B5F7F6008FEB91 /* MSS.h in Headers */,
+				0E23B48822982AF800304C30 /* CryptoMacros.h in Headers */,
+				0E23B44A22982AF800304C30 /* CompressionAlgorithmNative.h in Headers */,
 				0EEC49E520B5F7F6008FEB91 /* Errors.h in Headers */,
-				0E48AC652271ADA9009B1A98 /* PacketStream.h in Headers */,
-				0E58BF3822405410006FB157 /* minilzo.h in Headers */,
-				0E07596F20EF79B400F38FD8 /* CryptoCBC.h in Headers */,
-				0E58BF3622405410006FB157 /* lzodefs.h in Headers */,
-				0E58BF512240F98F006FB157 /* CompressionAlgorithmNative.h in Headers */,
+				0E23B45C22982AF800304C30 /* PacketStream.h in Headers */,
+				0E23B43022982AF800304C30 /* MSS.h in Headers */,
+				0E23B42622982AF800304C30 /* CryptoCBC.h in Headers */,
+				0E23B46022982AF800304C30 /* ReplayProtector.h in Headers */,
+				0E23B44E22982AF800304C30 /* DataPath.h in Headers */,
+				0E23B46222982AF800304C30 /* Crypto.h in Headers */,
 				0E0B20412278A85C007A3CB9 /* RoutingTableEntry.h in Headers */,
-				0E07596420EF733F00F38FD8 /* CryptoMacros.h in Headers */,
 				0EEC49EA20B5F7F6008FEB91 /* ZeroingData.h in Headers */,
+				0E23B48022982AF800304C30 /* CryptoBox.h in Headers */,
+				0E23B44622982AF800304C30 /* DataPathCrypto.h in Headers */,
+				0E23B49422982AF800304C30 /* lzoconf.h in Headers */,
 				0E411B9C2271F90700E0852C /* DNS.h in Headers */,
-				0E07596C20EF79AB00F38FD8 /* Crypto.h in Headers */,
+				0E23B47222982AF800304C30 /* PacketMacros.h in Headers */,
+				0E23B43C22982AF800304C30 /* ControlPacket.h in Headers */,
 				0EEC49E120B5F7EA008FEB91 /* Allocation.h in Headers */,
-				0EEC49E320B5F7F6008FEB91 /* DataPath.h in Headers */,
 				0EFB902A22788511006405E4 /* RoutingTable.h in Headers */,
-				0EF5CF282141E183004FF1BD /* CompressionFramingNative.h in Headers */,
-				0E58BF3422405410006FB157 /* lzoconf.h in Headers */,
-				0EEC49E820B5F7F6008FEB91 /* ReplayProtector.h in Headers */,
-				0E3B15C82152B05E00984B17 /* CryptoCTR.h in Headers */,
-				0EEC49E920B5F7F6008FEB91 /* TLSBox.h in Headers */,
-				0E39BCE9214B2AB60035E9DE /* ControlPacket.h in Headers */,
-				0E07597F20F0060E00F38FD8 /* CryptoAEAD.h in Headers */,
-				0EEC49E220B5F7F6008FEB91 /* CryptoBox.h in Headers */,
+				0E23B47A22982AF800304C30 /* CompressionFramingNative.h in Headers */,
+				0E23B49822982AF800304C30 /* minilzo.h in Headers */,
+				0E23B47822982AF800304C30 /* CryptoAEAD.h in Headers */,
+				0E23B48422982AF800304C30 /* TLSBox.h in Headers */,
+				0E23B49222982AF800304C30 /* lzodefs.h in Headers */,
+				0E23B42A22982AF800304C30 /* CryptoCTR.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1241,6 +1309,7 @@
 				0EE2FA472291954300F56F49 /* DataPathEncryptionTests.swift in Sources */,
 				0EE2FA502291954300F56F49 /* RawPerformanceTests.swift in Sources */,
 				0EE2FA4D2291954300F56F49 /* PacketTests.swift in Sources */,
+				0E23B3DB2297466600304C30 /* TestUtils+Core.swift in Sources */,
 				0EE2FA452291954300F56F49 /* ControlChannelTests.swift in Sources */,
 				0EE2FA4E2291954300F56F49 /* PushTests.swift in Sources */,
 				0EE2FA422291954300F56F49 /* AppExtensionTests.swift in Sources */,
@@ -1248,7 +1317,7 @@
 				0EE2FA4A2291954300F56F49 /* EncryptionPerformanceTests.swift in Sources */,
 				0EE2FA4F2291954300F56F49 /* RandomTests.swift in Sources */,
 				0EE2FA4B2291954300F56F49 /* EncryptionTests.swift in Sources */,
-				0EE2FA532291954300F56F49 /* TestUtils.swift in Sources */,
+				0EE2FA532291954300F56F49 /* TestUtils+OpenVPN.swift in Sources */,
 				0EE2FA462291954300F56F49 /* DataManipulationTests.swift in Sources */,
 				0EE2FA4C2291954300F56F49 /* LinkTests.swift in Sources */,
 				0EE2FA442291954300F56F49 /* ConfigurationParserTests.swift in Sources */,
@@ -1269,77 +1338,80 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E58BF4C22405C2F006FB157 /* StandardLZO.m in Sources */,
 				0EE2F974229163C900F56F49 /* Proxy.swift in Sources */,
 				0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */,
-				0EFEB4652006D3C800F81029 /* Authenticator.swift in Sources */,
+				0E23B48922982AF800304C30 /* PacketStream.m in Sources */,
+				0E23B3DE229749C600304C30 /* LinkProducer.swift in Sources */,
+				0E23B42722982AF800304C30 /* CryptoAEAD.m in Sources */,
 				0EE2F9F222918DA100F56F49 /* NETunnelInterface.swift in Sources */,
+				0E23B46722982AF800304C30 /* Authenticator.swift in Sources */,
+				0E23B43922982AF800304C30 /* OpenVPNError.swift in Sources */,
+				0E23B44F22982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */,
+				0E23B46D22982AF800304C30 /* StaticKey.swift in Sources */,
+				0E23B49F22982AF800304C30 /* minilzo.c in Sources */,
 				0EE2F9FE22918DA100F56F49 /* Keychain.swift in Sources */,
-				0EE7A79820F6296F00B42E6A /* PacketMacros.m in Sources */,
-				0EFEB4562006D3C800F81029 /* SessionKey.swift in Sources */,
+				0E23B45122982AF800304C30 /* NEUDPLink.swift in Sources */,
 				0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */,
+				0E23B43D22982AF800304C30 /* CryptoBox.m in Sources */,
+				0E23B44B22982AF800304C30 /* TLSWrap.swift in Sources */,
+				0E23B47522982AF800304C30 /* CryptoCTR.m in Sources */,
+				0E23B47D22982AF800304C30 /* Packet.swift in Sources */,
+				0E23B46322982AF800304C30 /* CompressionAlgorithm.swift in Sources */,
+				0E23B48D22982AF800304C30 /* DataPath.m in Sources */,
 				0E58BF5922411FEF006FB157 /* LZO.m in Sources */,
 				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EE2F9F822918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */,
-				0E749F5F2178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
-				0EE3B3E421471C3A0027AB17 /* StaticKey.swift in Sources */,
 				0EE2F9AC2291853D00F56F49 /* Session.swift in Sources */,
+				0E23B48122982AF800304C30 /* ControlPacket.m in Sources */,
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
-				0EFEB45D2006D3C800F81029 /* CryptoBox.m in Sources */,
-				0E3B15C92152B05E00984B17 /* CryptoCTR.m in Sources */,
 				0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
-				0EE2F9F022918DA100F56F49 /* NETCPInterface.swift in Sources */,
-				0E0C2125212ED29D008AB282 /* OpenVPNError.swift in Sources */,
-				0E12B2A821456C0200B4BAE9 /* ControlChannel.swift in Sources */,
-				0EFEB4552006D3C800F81029 /* EncryptionBridge.swift in Sources */,
+				0E23B46922982AF800304C30 /* CompressionFraming.swift in Sources */,
+				0E23B47B22982AF800304C30 /* ConfigurationParser.swift in Sources */,
+				0E23B46F22982AF800304C30 /* PushReply.swift in Sources */,
+				0E23B45522982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift in Sources */,
+				0EE2F9F022918DA100F56F49 /* NETCPSocket.swift in Sources */,
+				0E23B48B22982AF800304C30 /* Configuration.swift in Sources */,
+				0E23B43122982AF800304C30 /* PacketMacros.m in Sources */,
 				0EFEB45C2006D3C800F81029 /* ZeroingData.m in Sources */,
 				0EE2F9712291638600F56F49 /* IPv6Settings.swift in Sources */,
+				0E23B42B22982AF800304C30 /* SessionKey.swift in Sources */,
 				0EE2F97A2291817300F56F49 /* Errors.swift in Sources */,
-				0EFEB4632006D3C800F81029 /* ProtocolMacros.swift in Sources */,
 				0EFB902B22788512006405E4 /* RoutingTable.m in Sources */,
+				0E23B43522982AF800304C30 /* CoreConfiguration+OpenVPN.swift in Sources */,
 				0EFEB46D2006D3C800F81029 /* Data+Manipulation.swift in Sources */,
+				0E23B46B22982AF800304C30 /* CryptoCBC.m in Sources */,
+				0E23B46522982AF800304C30 /* EncryptionBridge.swift in Sources */,
 				0EE2F9F422918DA100F56F49 /* NWTCPConnectionState+Description.swift in Sources */,
-				0ECE3528212EB7770040F253 /* CryptoContainer.swift in Sources */,
 				0EFEB4742006D3C800F81029 /* CoreConfiguration.swift in Sources */,
-				0E07595F20EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
+				0E23B48F22982AF800304C30 /* StandardLZO.m in Sources */,
 				0EFEB46F2006D3C800F81029 /* IOInterface.swift in Sources */,
-				0E07598020F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
-				0E011F882196E2AB00BA59EE /* ConfigurationParser.swift in Sources */,
 				0EE2FA0222918DA100F56F49 /* GenericSocket.swift in Sources */,
-				0EE2FA0822918DA100F56F49 /* TunnelKitProvider+Interaction.swift in Sources */,
-				0EE2FA0422918DA100F56F49 /* TunnelKitProvider.swift in Sources */,
 				0EE2F9FA22918DA100F56F49 /* DNSResolver.swift in Sources */,
-				0EE2F9F622918DA100F56F49 /* NEUDPInterface.swift in Sources */,
-				0E39BCEA214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E23B43322982AF800304C30 /* ControlChannel.swift in Sources */,
+				0E23B48522982AF800304C30 /* ReplayProtector.m in Sources */,
+				0E23B44122982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */,
+				0E23B42D22982AF800304C30 /* ControlChannelSerializer.swift in Sources */,
+				0EE2F9F622918DA100F56F49 /* NEUDPSocket.swift in Sources */,
 				0EE2F96E2291636B00F56F49 /* IPv4Settings.swift in Sources */,
-				0E12B2AB2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
 				0EFEB4662006D3C800F81029 /* ZeroingData.swift in Sources */,
-				0EFEB4682006D3C800F81029 /* MSS.m in Sources */,
 				0EE2FA0622918DA100F56F49 /* Utils.swift in Sources */,
-				0E48AC662271ADA9009B1A98 /* PacketStream.m in Sources */,
-				0EE2F97722916A5D00F56F49 /* OpenVPN.swift in Sources */,
+				0E23B44322982AF800304C30 /* CryptoContainer.swift in Sources */,
 				0E411B9D2271F90700E0852C /* DNS.m in Sources */,
-				0EFEB45B2006D3C800F81029 /* TLSBox.m in Sources */,
-				0E58BF3922405410006FB157 /* minilzo.c in Sources */,
-				0EE2F9FC22918DA100F56F49 /* TunnelKitProvider+Configuration.swift in Sources */,
+				0E23B43722982AF800304C30 /* TLSBox.m in Sources */,
 				0EFEB4702006D3C800F81029 /* Allocation.m in Sources */,
-				0E041D092152E6FE0025FE3C /* TLSWrap.swift in Sources */,
-				0EFEB4672006D3C800F81029 /* OpenVPNSession.swift in Sources */,
-				0ED9C8642138139000621BA3 /* CompressionFraming.swift in Sources */,
-				0EFEB4722006D3C800F81029 /* ReplayProtector.m in Sources */,
-				0E3E0F212108A8CC00B371C1 /* PushReply.swift in Sources */,
 				0EE2FA0A22918DA100F56F49 /* InterfaceObserver.swift in Sources */,
+				0E23B43F22982AF800304C30 /* OpenVPNSession.swift in Sources */,
+				0E23B44722982AF800304C30 /* OpenVPN.swift in Sources */,
 				0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */,
 				0EFEB4752006D3C800F81029 /* Errors.m in Sources */,
-				0E58BF532240FAA6006FB157 /* CompressionAlgorithm.swift in Sources */,
-				0EB03E3F2290D310006D03A0 /* CoreConfiguration+OpenVPN.swift in Sources */,
 				0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
-				0EFEB4762006D3C800F81029 /* DataPath.m in Sources */,
-				0E0C2127212ED29D008AB282 /* Configuration.swift in Sources */,
-				0EE2F9EE22918DA100F56F49 /* ConnectionStrategy.swift in Sources */,
-				0EFEB4692006D3C800F81029 /* Packet.swift in Sources */,
+				0E23B45722982AF800304C30 /* NETCPLink.swift in Sources */,
+				0E23B45322982AF800304C30 /* ConnectionStrategy.swift in Sources */,
 				0E011F7A2196D93600BA59EE /* SocketType.swift in Sources */,
+				0E23B45922982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
+				0E23B47322982AF800304C30 /* MSS.m in Sources */,
+				0E23B45D22982AF800304C30 /* ProtocolMacros.swift in Sources */,
 				0EE2FA0022918DA100F56F49 /* MemoryDestination.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1348,77 +1420,80 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E58BF4D22405C2F006FB157 /* StandardLZO.m in Sources */,
 				0EE2F975229163C900F56F49 /* Proxy.swift in Sources */,
 				0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */,
-				0EE7A79920F6296F00B42E6A /* PacketMacros.m in Sources */,
+				0E23B48A22982AF800304C30 /* PacketStream.m in Sources */,
+				0E23B3DF229749C600304C30 /* LinkProducer.swift in Sources */,
+				0E23B42822982AF800304C30 /* CryptoAEAD.m in Sources */,
 				0EE2F9F322918DA100F56F49 /* NETunnelInterface.swift in Sources */,
+				0E23B46822982AF800304C30 /* Authenticator.swift in Sources */,
+				0E23B43A22982AF800304C30 /* OpenVPNError.swift in Sources */,
+				0E23B45022982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */,
+				0E23B46E22982AF800304C30 /* StaticKey.swift in Sources */,
+				0E23B4A022982AF800304C30 /* minilzo.c in Sources */,
 				0EE2F9FF22918DA100F56F49 /* Keychain.swift in Sources */,
+				0E23B45222982AF800304C30 /* NEUDPLink.swift in Sources */,
 				0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */,
+				0E23B43E22982AF800304C30 /* CryptoBox.m in Sources */,
+				0E23B44C22982AF800304C30 /* TLSWrap.swift in Sources */,
+				0E23B47622982AF800304C30 /* CryptoCTR.m in Sources */,
+				0E23B47E22982AF800304C30 /* Packet.swift in Sources */,
+				0E23B46422982AF800304C30 /* CompressionAlgorithm.swift in Sources */,
+				0E23B48E22982AF800304C30 /* DataPath.m in Sources */,
 				0E58BF5A22411FEF006FB157 /* LZO.m in Sources */,
 				0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
-				0EFEB4A02006D7F300F81029 /* ReplayProtector.m in Sources */,
-				0E749F602178885500BB2701 /* OpenVPNSession+PIA.swift in Sources */,
 				0EE2F9F922918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */,
-				0EFEB4992006D7F300F81029 /* OpenVPNSession.swift in Sources */,
-				0EE3B3E521471C3A0027AB17 /* StaticKey.swift in Sources */,
 				0EE2F9AD2291853D00F56F49 /* Session.swift in Sources */,
-				0EFEB4962006D7F300F81029 /* ProtocolMacros.swift in Sources */,
-				0E3B15CA2152B05E00984B17 /* CryptoCTR.m in Sources */,
+				0E23B48222982AF800304C30 /* ControlPacket.m in Sources */,
 				0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
-				0E0C2126212ED29D008AB282 /* OpenVPNError.swift in Sources */,
-				0EE2F9F122918DA100F56F49 /* NETCPInterface.swift in Sources */,
-				0E12B2A921456C0200B4BAE9 /* ControlChannel.swift in Sources */,
+				0EE2F9F122918DA100F56F49 /* NETCPSocket.swift in Sources */,
+				0E23B46A22982AF800304C30 /* CompressionFraming.swift in Sources */,
+				0E23B47C22982AF800304C30 /* ConfigurationParser.swift in Sources */,
+				0E23B47022982AF800304C30 /* PushReply.swift in Sources */,
+				0E23B45622982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift in Sources */,
 				0EFEB4982006D7F300F81029 /* ZeroingData.swift in Sources */,
+				0E23B48C22982AF800304C30 /* Configuration.swift in Sources */,
+				0E23B43222982AF800304C30 /* PacketMacros.m in Sources */,
 				0EFEB4A32006D7F300F81029 /* Errors.m in Sources */,
 				0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */,
+				0E23B42C22982AF800304C30 /* SessionKey.swift in Sources */,
 				0EE2F9722291638600F56F49 /* IPv6Settings.swift in Sources */,
 				0EE2F97B2291817300F56F49 /* Errors.swift in Sources */,
+				0E23B43622982AF800304C30 /* CoreConfiguration+OpenVPN.swift in Sources */,
 				0EFB902C22788512006405E4 /* RoutingTable.m in Sources */,
+				0E23B46C22982AF800304C30 /* CryptoCBC.m in Sources */,
+				0E23B46622982AF800304C30 /* EncryptionBridge.swift in Sources */,
 				0EFEB4952006D7F300F81029 /* SecureRandom.swift in Sources */,
-				0EFEB49A2006D7F300F81029 /* MSS.m in Sources */,
 				0EE2F9F522918DA100F56F49 /* NWTCPConnectionState+Description.swift in Sources */,
-				0ECE352A212EB88E0040F253 /* CryptoContainer.swift in Sources */,
-				0EFEB48D2006D7F300F81029 /* EncryptionBridge.swift in Sources */,
+				0E23B49022982AF800304C30 /* StandardLZO.m in Sources */,
 				0EFEB4922006D7F300F81029 /* ZeroingData.m in Sources */,
-				0E07596020EF6D1400F38FD8 /* CryptoCBC.m in Sources */,
-				0EFEB4932006D7F300F81029 /* CryptoBox.m in Sources */,
-				0E011F892196E2AB00BA59EE /* ConfigurationParser.swift in Sources */,
 				0EE2FA0322918DA100F56F49 /* GenericSocket.swift in Sources */,
-				0EE2FA0922918DA100F56F49 /* TunnelKitProvider+Interaction.swift in Sources */,
-				0EE2FA0522918DA100F56F49 /* TunnelKitProvider.swift in Sources */,
 				0EE2F9FB22918DA100F56F49 /* DNSResolver.swift in Sources */,
-				0EE2F9F722918DA100F56F49 /* NEUDPInterface.swift in Sources */,
-				0E39BCEB214B2AB60035E9DE /* ControlPacket.m in Sources */,
+				0E23B43422982AF800304C30 /* ControlChannel.swift in Sources */,
+				0E23B48622982AF800304C30 /* ReplayProtector.m in Sources */,
+				0E23B44222982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */,
+				0E23B42E22982AF800304C30 /* ControlChannelSerializer.swift in Sources */,
+				0EE2F9F722918DA100F56F49 /* NEUDPSocket.swift in Sources */,
 				0EE2F96F2291636B00F56F49 /* IPv4Settings.swift in Sources */,
-				0E12B2AC2145E01700B4BAE9 /* ControlChannelSerializer.swift in Sources */,
-				0E07598120F0060E00F38FD8 /* CryptoAEAD.m in Sources */,
 				0EFEB49C2006D7F300F81029 /* Data+Manipulation.swift in Sources */,
 				0EE2FA0722918DA100F56F49 /* Utils.swift in Sources */,
-				0E48AC672271ADA9009B1A98 /* PacketStream.m in Sources */,
-				0EE2F97822916A5D00F56F49 /* OpenVPN.swift in Sources */,
+				0E23B44422982AF800304C30 /* CryptoContainer.swift in Sources */,
 				0E411B9E2271F90700E0852C /* DNS.m in Sources */,
+				0E23B43822982AF800304C30 /* TLSBox.m in Sources */,
 				0EFEB4902006D7F300F81029 /* TunnelInterface.swift in Sources */,
 				0EFEB49E2006D7F300F81029 /* Allocation.m in Sources */,
-				0EE2F9FD22918DA100F56F49 /* TunnelKitProvider+Configuration.swift in Sources */,
-				0E58BF3A22405410006FB157 /* minilzo.c in Sources */,
-				0E041D0A2152E6FE0025FE3C /* TLSWrap.swift in Sources */,
-				0EFEB48E2006D7F300F81029 /* SessionKey.swift in Sources */,
-				0ED9C8652138139000621BA3 /* CompressionFraming.swift in Sources */,
-				0EFEB4A42006D7F300F81029 /* DataPath.m in Sources */,
+				0E23B44022982AF800304C30 /* OpenVPNSession.swift in Sources */,
+				0E23B44822982AF800304C30 /* OpenVPN.swift in Sources */,
 				0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */,
 				0EE2FA0B22918DA100F56F49 /* InterfaceObserver.swift in Sources */,
-				0E3E0F222108A8CC00B371C1 /* PushReply.swift in Sources */,
-				0E58BF542240FAA6006FB157 /* CompressionAlgorithm.swift in Sources */,
 				0E12B2A621454F7F00B4BAE9 /* BidirectionalState.swift in Sources */,
-				0EB03E402290D310006D03A0 /* CoreConfiguration+OpenVPN.swift in Sources */,
-				0EFEB4912006D7F300F81029 /* TLSBox.m in Sources */,
+				0E23B45822982AF800304C30 /* NETCPLink.swift in Sources */,
+				0E23B45422982AF800304C30 /* ConnectionStrategy.swift in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
-				0E0C2128212ED29D008AB282 /* Configuration.swift in Sources */,
-				0EE2F9EF22918DA100F56F49 /* ConnectionStrategy.swift in Sources */,
-				0EFEB4972006D7F300F81029 /* Authenticator.swift in Sources */,
+				0E23B45A22982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */,
-				0EFEB49B2006D7F300F81029 /* Packet.swift in Sources */,
+				0E23B47422982AF800304C30 /* MSS.m in Sources */,
+				0E23B45E22982AF800304C30 /* ProtocolMacros.swift in Sources */,
 				0EE2FA0122918DA100F56F49 /* MemoryDestination.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1433,6 +1508,7 @@
 				0EE2FA592291954400F56F49 /* DataPathEncryptionTests.swift in Sources */,
 				0EE2FA622291954400F56F49 /* RawPerformanceTests.swift in Sources */,
 				0EE2FA5F2291954400F56F49 /* PacketTests.swift in Sources */,
+				0E23B3DC2297466700304C30 /* TestUtils+Core.swift in Sources */,
 				0EE2FA572291954400F56F49 /* ControlChannelTests.swift in Sources */,
 				0EE2FA602291954400F56F49 /* PushTests.swift in Sources */,
 				0EE2FA542291954400F56F49 /* AppExtensionTests.swift in Sources */,
@@ -1440,7 +1516,7 @@
 				0EE2FA5C2291954400F56F49 /* EncryptionPerformanceTests.swift in Sources */,
 				0EE2FA612291954400F56F49 /* RandomTests.swift in Sources */,
 				0EE2FA5D2291954400F56F49 /* EncryptionTests.swift in Sources */,
-				0EE2FA652291954400F56F49 /* TestUtils.swift in Sources */,
+				0EE2FA652291954400F56F49 /* TestUtils+OpenVPN.swift in Sources */,
 				0EE2FA582291954400F56F49 /* DataManipulationTests.swift in Sources */,
 				0EE2FA5E2291954400F56F49 /* LinkTests.swift in Sources */,
 				0EE2FA562291954400F56F49 /* ConfigurationParserTests.swift in Sources */,

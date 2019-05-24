@@ -1,8 +1,8 @@
 //
-//  Errors.swift
+//  LinkProducer.swift
 //  TunnelKit
 //
-//  Created by Davide De Rosa on 5/19/19.
+//  Created by Davide De Rosa on 5/23/19.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -24,19 +24,14 @@
 //
 
 import Foundation
-import __TunnelKitCore
 
-extension Error {
-    func isTunnelKitError() -> Bool {
-        let te = self as NSError
-        return te.domain == TunnelKitErrorDomain
-    }
-    
-    func tunnelKitErrorCode() -> TunnelKitErrorCode? {
-        let te = self as NSError
-        guard te.domain == TunnelKitErrorDomain else {
-            return nil
-        }
-        return TunnelKitErrorCode(rawValue: te.code)
-    }
+/// Entity able to produce a `LinkInterface`.
+public protocol LinkProducer {
+
+    /**
+     Returns a `LinkInterface`.
+ 
+     - Parameter mtu: The MTU value.
+     **/
+    func link(withMTU mtu: Int) -> LinkInterface
 }

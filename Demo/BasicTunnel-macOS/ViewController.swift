@@ -39,7 +39,7 @@ import Cocoa
 import NetworkExtension
 import TunnelKit
 
-private let ca = CryptoContainer(pem: """
+private let ca = OpenVPN.CryptoContainer(pem: """
 -----BEGIN CERTIFICATE-----
 MIIFqzCCBJOgAwIBAgIJAKZ7D5Yv87qDMA0GCSqGSIb3DQEBDQUAMIHoMQswCQYD
 VQQGEwJVUzELMAkGA1UECBMCQ0ExEzARBgNVBAcTCkxvc0FuZ2VsZXMxIDAeBgNV
@@ -86,9 +86,9 @@ extension ViewController {
         
         let hostname = ((domain == "") ? server : [server, domain].joined(separator: "."))
         let port = UInt16(textPort.stringValue)!
-        let credentials = SessionProxy.Credentials(textUsername.stringValue, textPassword.stringValue)
+        let credentials = OpenVPN.Credentials(textUsername.stringValue, textPassword.stringValue)
 
-        var sessionBuilder = SessionProxy.ConfigurationBuilder()
+        var sessionBuilder = OpenVPN.ConfigurationBuilder()
         sessionBuilder.ca = ca
         sessionBuilder.cipher = .aes128cbc
         sessionBuilder.digest = .sha1
@@ -99,7 +99,7 @@ extension ViewController {
         let socketType: SocketType = .udp
         sessionBuilder.endpointProtocols = [EndpointProtocol(socketType, port)]
         sessionBuilder.usesPIAPatches = true
-        var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
         builder.mtu = 1350
         builder.shouldDebug = true
         builder.masksPrivateData = false

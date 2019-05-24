@@ -36,10 +36,18 @@
 
 import Foundation
 
-/// :nodoc:
+/// Convenient methods for DNS resolution.
 public class DNSResolver {
     private static let queue = DispatchQueue(label: "DNSResolver")
 
+    /**
+     Resolves a hostname asynchronously.
+     
+     - Parameter hostname: The hostname to resolve.
+     - Parameter timeout: The timeout in milliseconds.
+     - Parameter queue: The queue to execute the `completionHandler` in.
+     - Parameter completionHandler: The completion handler with the resolved addresses and an optional error.
+     */
     public static func resolve(_ hostname: String, timeout: Int, queue: DispatchQueue, completionHandler: @escaping ([String]?, Error?) -> Void) {
         var pendingHandler: (([String]?, Error?) -> Void)? = completionHandler
         let host = CFHostCreateWithName(nil, hostname as CFString).takeRetainedValue()
@@ -95,6 +103,12 @@ public class DNSResolver {
         completionHandler(ipAddresses, nil)
     }
 
+    /**
+     Returns a `String` representation from a numeric IPv4 address.
+     
+     - Parameter ipv4: The IPv4 address as a 32-bit number.
+     - Returns: The string representation of `ipv4`.
+     */
     public static func string(fromIPv4 ipv4: UInt32) -> String {
         var addr = in_addr(s_addr: CFSwapInt32HostToBig(ipv4))
         var buf = Data(count: Int(INET_ADDRSTRLEN))
@@ -111,6 +125,12 @@ public class DNSResolver {
         return String(cString: result)
     }
     
+    /**
+     Returns a numeric representation from an IPv4 address.
+     
+     - Parameter string: The IPv4 address as a string.
+     - Returns: The numeric representation of `string`.
+     */
     public static func ipv4(fromString string: String) -> UInt32? {
         var addr = in_addr()
         let result = string.withCString {

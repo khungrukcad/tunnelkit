@@ -1,8 +1,8 @@
 //
-//  Utils.swift
-//  TunnelKit
+//  TestUtils+OpenVPN.swift
+//  TunnelKitTests
 //
-//  Created by Davide De Rosa on 5/23/18.
+//  Created by Davide De Rosa on 7/7/18.
 //  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
 //  https://github.com/passepartoutvpn
@@ -35,9 +35,39 @@
 //
 
 import Foundation
+@testable import TunnelKit
+import __TunnelKitCore
+import __TunnelKitOpenVPN
 
-extension DispatchQueue {
-    func schedule(after: DispatchTimeInterval, block: @escaping () -> Void) {
-        asyncAfter(deadline: .now() + after, execute: block)
+extension Encrypter {
+    func encryptData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws -> Data {
+        let srcLength = data.count
+        var dest: [UInt8] = Array(repeating: 0, count: srcLength + 256)
+        var destLength = 0
+        try data.withUnsafeBytes {
+            try encryptBytes($0.bytePointer, length: srcLength, dest: &dest, destLength: &destLength, flags: flags)
+        }
+        dest.removeSubrange(destLength..<dest.count)
+        return Data(dest)
+    }
+}
+
+extension Decrypter {
+    func decryptData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws -> Data {
+        let srcLength = data.count
+        var dest: [UInt8] = Array(repeating: 0, count: srcLength + 256)
+        var destLength = 0
+        try data.withUnsafeBytes {
+            try decryptBytes($0.bytePointer, length: srcLength, dest: &dest, destLength: &destLength, flags: flags)
+        }
+        dest.removeSubrange(destLength..<dest.count)
+        return Data(dest)
+    }
+    
+    func verifyData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws {
+        let srcLength = data.count
+        try data.withUnsafeBytes {
+            try verifyBytes($0.bytePointer, length: srcLength, flags: flags)
+        }
     }
 }

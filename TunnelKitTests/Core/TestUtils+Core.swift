@@ -1,11 +1,11 @@
 //
-//  PacketTunnelProvider.swift
-//  BasicTunnelExtension-iOS
+//  TestUtils+Core.swift
+//  TunnelKitTests
 //
-//  Created by Davide De Rosa on 9/15/17.
-//  Copyright (c) 2018 Davide De Rosa. All rights reserved.
+//  Created by Davide De Rosa on 7/7/18.
+//  Copyright (c) 2019 Davide De Rosa. All rights reserved.
 //
-//  https://github.com/keeshux
+//  https://github.com/passepartoutvpn
 //
 //  This file is part of TunnelKit.
 //
@@ -33,9 +33,23 @@
 //
 //      THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-//
 
-import TunnelKit
+import Foundation
+@testable import TunnelKit
 
-class PacketTunnelProvider: OpenVPNTunnelProvider {
+class TestUtils {
+    static func uniqArray(_ v: [Int]) -> [Int] {
+        return v.reduce([]){ $0.contains($1) ? $0 : $0 + [$1] }
+    }
+    
+    static func generateDataSuite(_ size: Int, _ count: Int) -> [Data] {
+        var suite = [Data]()
+        for _ in 0..<count {
+            suite.append(try! SecureRandom.data(length: size))
+        }
+        return suite
+    }
+    
+    private init() {
+    }
 }

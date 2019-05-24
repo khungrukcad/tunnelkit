@@ -1,5 +1,5 @@
 //
-//  TunnelKitProvider+Configuration.swift
+//  OpenVPNTunnelProvider+Configuration.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 10/23/17.
@@ -40,24 +40,26 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-extension TunnelKitProvider {
+extension OpenVPNTunnelProvider {
 
     // MARK: Configuration
     
-    /// The way to create a `TunnelKitProvider.Configuration` object for the tunnel profile.
+    /// The way to create a `OpenVPNTunnelProvider.Configuration` object for the tunnel profile.
     public struct ConfigurationBuilder {
 
         /// :nodoc:
         public static let defaults = Configuration(
+            sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             prefersResolvedAddresses: false,
             resolvedAddresses: nil,
-            endpointProtocols: nil,
             mtu: 1250,
-            sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             shouldDebug: false,
             debugLogFormat: nil,
             masksPrivateData: true
         )
+        
+        /// The session configuration.
+        public var sessionConfiguration: OpenVPN.Configuration
         
         /// Prefers resolved addresses over DNS resolution. `resolvedAddresses` must be set and non-empty. Default is `false`.
         ///
@@ -69,9 +71,6 @@ extension TunnelKitProvider {
         
         /// The MTU of the link.
         public var mtu: Int
-        
-        /// The session configuration.
-        public var sessionConfiguration: OpenVPN.Configuration
         
         // MARK: Debugging
         
@@ -92,10 +91,10 @@ extension TunnelKitProvider {
          - Parameter ca: The CA certificate.
          */
         public init(sessionConfiguration: OpenVPN.Configuration) {
+            self.sessionConfiguration = sessionConfiguration
             prefersResolvedAddresses = ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = nil
             mtu = ConfigurationBuilder.defaults.mtu
-            self.sessionConfiguration = sessionConfiguration
             shouldDebug = ConfigurationBuilder.defaults.shouldDebug
             debugLogFormat = ConfigurationBuilder.defaults.debugLogFormat
             masksPrivateData = ConfigurationBuilder.defaults.masksPrivateData
@@ -104,88 +103,10 @@ extension TunnelKitProvider {
         fileprivate init(providerConfiguration: [String: Any]) throws {
             let S = Configuration.Keys.self
 
+            sessionConfiguration = try OpenVPN.Configuration.with(providerConfiguration: providerConfiguration)
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
             mtu = providerConfiguration[S.mtu] as? Int ?? ConfigurationBuilder.defaults.mtu
-            
-            //
-
-            guard let caPEM = providerConfiguration[S.ca] as? String else {
-                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
-            }
-
-            var sessionConfigurationBuilder = OpenVPN.ConfigurationBuilder()
-            if let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String {
-                sessionConfigurationBuilder.cipher = OpenVPN.Cipher(rawValue: cipherAlgorithm)
-            }
-            if let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String {
-                sessionConfigurationBuilder.digest = OpenVPN.Digest(rawValue: digestAlgorithm)
-            }
-            if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = OpenVPN.CompressionFraming(rawValue: compressionFramingValue) {
-                sessionConfigurationBuilder.compressionFraming = compressionFraming
-            } else {
-                sessionConfigurationBuilder.compressionFraming = ConfigurationBuilder.defaults.sessionConfiguration.compressionFraming
-            }
-            if let compressionAlgorithmValue = providerConfiguration[S.compressionAlgorithm] as? Int, let compressionAlgorithm = OpenVPN.CompressionAlgorithm(rawValue: compressionAlgorithmValue) {
-                sessionConfigurationBuilder.compressionAlgorithm = compressionAlgorithm
-            } else {
-                sessionConfigurationBuilder.compressionAlgorithm = ConfigurationBuilder.defaults.sessionConfiguration.compressionAlgorithm
-            }
-            sessionConfigurationBuilder.ca = OpenVPN.CryptoContainer(pem: caPEM)
-            if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
-                guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
-                }
-                sessionConfigurationBuilder.clientCertificate = OpenVPN.CryptoContainer(pem: clientPEM)
-                sessionConfigurationBuilder.clientKey = OpenVPN.CryptoContainer(pem: keyPEM)
-            }
-            if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
-                do {
-                    sessionConfigurationBuilder.tlsWrap = try OpenVPN.TLSWrap.deserialized(tlsWrapData)
-                } catch {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
-                }
-            }
-            sessionConfigurationBuilder.tlsSecurityLevel = providerConfiguration[S.tlsSecurityLevel] as? Int ?? ConfigurationBuilder.defaults.sessionConfiguration.tlsSecurityLevel
-            sessionConfigurationBuilder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.keepAliveInterval
-            sessionConfigurationBuilder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval ?? ConfigurationBuilder.defaults.sessionConfiguration.renegotiatesAfter
-            guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
-                throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
-            }
-            sessionConfigurationBuilder.endpointProtocols = try endpointProtocolsStrings.map {
-                guard let ep = EndpointProtocol(rawValue: $0) else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
-                }
-                return ep
-            }
-            sessionConfigurationBuilder.checksEKU = providerConfiguration[S.checksEKU] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.checksEKU
-            sessionConfigurationBuilder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.randomizeEndpoint
-            sessionConfigurationBuilder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? ConfigurationBuilder.defaults.sessionConfiguration.usesPIAPatches
-            sessionConfigurationBuilder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
-            sessionConfigurationBuilder.searchDomain = providerConfiguration[S.searchDomain] as? String
-            if let proxyString = providerConfiguration[S.httpProxy] as? String {
-                guard let proxy = Proxy(rawValue: proxyString) else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpProxy)] has a badly formed element")
-                }
-                sessionConfigurationBuilder.httpProxy = proxy
-            }
-            if let proxyString = providerConfiguration[S.httpsProxy] as? String {
-                guard let proxy = Proxy(rawValue: proxyString) else {
-                    throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpsProxy)] has a badly formed element")
-                }
-                sessionConfigurationBuilder.httpsProxy = proxy
-            }
-            sessionConfigurationBuilder.proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String]
-            if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String] {
-                sessionConfigurationBuilder.routingPolicies = try routingPoliciesStrings.map {
-                    guard let policy = OpenVPN.RoutingPolicy(rawValue: $0) else {
-                        throw ProviderConfigurationError.parameter(name: "protocolConfiguration.providerConfiguration[\(S.routingPolicies)] has a badly formed element")
-                    }
-                    return policy
-                }
-            }
-            sessionConfiguration = sessionConfigurationBuilder.build()
-
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
             if shouldDebug {
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
@@ -198,17 +119,16 @@ extension TunnelKitProvider {
         }
         
         /**
-         Builds a `TunnelKitProvider.Configuration` object that will connect to the provided endpoint.
+         Builds a `OpenVPNTunnelProvider.Configuration` object that will connect to the provided endpoint.
          
-         - Returns: A `TunnelKitProvider.Configuration` object with this builder and the additional method parameters.
+         - Returns: A `OpenVPNTunnelProvider.Configuration` object with this builder and the additional method parameters.
          */
         public func build() -> Configuration {
             return Configuration(
+                sessionConfiguration: sessionConfiguration,
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
-                endpointProtocols: nil,
                 mtu: mtu,
-                sessionConfiguration: sessionConfiguration,
                 shouldDebug: shouldDebug,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
                 masksPrivateData: masksPrivateData
@@ -216,16 +136,10 @@ extension TunnelKitProvider {
         }
     }
     
-    /// Offers a bridge between the abstract `TunnelKitProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
+    /// Offers a bridge between the abstract `OpenVPNTunnelProvider.ConfigurationBuilder` and a concrete `NETunnelProviderProtocol` profile.
     public struct Configuration: Codable {
         struct Keys {
             static let appGroup = "AppGroup"
-            
-            static let prefersResolvedAddresses = "PrefersResolvedAddresses"
-
-            static let resolvedAddresses = "ResolvedAddresses"
-
-            static let mtu = "MTU"
             
             // MARK: SessionConfiguration
 
@@ -271,6 +185,14 @@ extension TunnelKitProvider {
             
             static let routingPolicies = "RoutingPolicies"
             
+            // MARK: Customization
+
+            static let prefersResolvedAddresses = "PrefersResolvedAddresses"
+            
+            static let resolvedAddresses = "ResolvedAddresses"
+            
+            static let mtu = "MTU"
+            
             // MARK: Debugging
             
             static let debug = "Debug"
@@ -280,29 +202,25 @@ extension TunnelKitProvider {
             static let masksPrivateData = "MasksPrivateData"
         }
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.prefersResolvedAddresses`
-        public let prefersResolvedAddresses: Bool
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.resolvedAddresses`
-        public let resolvedAddresses: [String]?
-
-        /// - Seealso: `OpenVPN.Configuration.endpointProtocols`
-        @available(*, deprecated)
-        public var endpointProtocols: [EndpointProtocol]?
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.mtu`
-        public let mtu: Int
-        
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.sessionConfiguration`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.sessionConfiguration`
         public let sessionConfiguration: OpenVPN.Configuration
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.shouldDebug`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.prefersResolvedAddresses`
+        public let prefersResolvedAddresses: Bool
+        
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.resolvedAddresses`
+        public let resolvedAddresses: [String]?
+
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.mtu`
+        public let mtu: Int
+        
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.debugLogFormat`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.debugLogFormat`
         public let debugLogFormat: String?
         
-        /// - Seealso: `TunnelKitProvider.ConfigurationBuilder.masksPrivateData`
+        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.masksPrivateData`
         public let masksPrivateData: Bool?
         
         // MARK: Shortcuts
@@ -397,10 +315,10 @@ extension TunnelKitProvider {
         }
         
         /**
-         Parses a new `TunnelKitProvider.Configuration` object from a provider configuration map.
+         Parses a new `OpenVPNTunnelProvider.Configuration` object from a provider configuration map.
          
          - Parameter from: The map to parse.
-         - Returns: The parsed `TunnelKitProvider.Configuration` object.
+         - Returns: The parsed `OpenVPNTunnelProvider.Configuration` object.
          - Throws: `ProviderError.configuration` if `providerConfiguration` is incomplete.
          */
         public static func parsed(from providerConfiguration: [String: Any]) throws -> Configuration {
@@ -432,64 +350,7 @@ extension TunnelKitProvider {
                 S.mtu: mtu,
                 S.debug: shouldDebug
             ]
-            if let cipher = sessionConfiguration.cipher {
-                dict[S.cipherAlgorithm] = cipher.rawValue
-            }
-            if let digest = sessionConfiguration.digest {
-                dict[S.digestAlgorithm] = digest.rawValue
-            }
-            if let compressionFraming = sessionConfiguration.compressionFraming {
-                dict[S.compressionFraming] = compressionFraming.rawValue
-            }
-            if let compressionAlgorithm = sessionConfiguration.compressionAlgorithm {
-                dict[S.compressionAlgorithm] = compressionAlgorithm.rawValue
-            }
-            if let clientCertificate = sessionConfiguration.clientCertificate {
-                dict[S.clientCertificate] = clientCertificate.pem
-            }
-            if let clientKey = sessionConfiguration.clientKey {
-                dict[S.clientKey] = clientKey.pem
-            }
-            if let tlsWrapData = sessionConfiguration.tlsWrap?.serialized() {
-                dict[S.tlsWrap] = tlsWrapData
-            }
-            if let tlsSecurityLevel = sessionConfiguration.tlsSecurityLevel {
-                dict[S.tlsSecurityLevel] = tlsSecurityLevel
-            }
-            if let keepAliveSeconds = sessionConfiguration.keepAliveInterval {
-                dict[S.keepAlive] = keepAliveSeconds
-            }
-            if let renegotiatesAfterSeconds = sessionConfiguration.renegotiatesAfter {
-                dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
-            }
-            if let checksEKU = sessionConfiguration.checksEKU {
-                dict[S.checksEKU] = checksEKU
-            }
-            if let randomizeEndpoint = sessionConfiguration.randomizeEndpoint {
-                dict[S.randomizeEndpoint] = randomizeEndpoint
-            }
-            if let usesPIAPatches = sessionConfiguration.usesPIAPatches {
-                dict[S.usesPIAPatches] = usesPIAPatches
-            }
-            if let dnsServers = sessionConfiguration.dnsServers {
-                dict[S.dnsServers] = dnsServers
-            }
-            if let searchDomain = sessionConfiguration.searchDomain {
-                dict[S.searchDomain] = searchDomain
-            }
-            if let httpProxy = sessionConfiguration.httpProxy {
-                dict[S.httpProxy] = httpProxy.rawValue
-            }
-            if let httpsProxy = sessionConfiguration.httpsProxy {
-                dict[S.httpsProxy] = httpsProxy.rawValue
-            }
-            if let proxyBypassDomains = sessionConfiguration.proxyBypassDomains {
-                dict[S.proxyBypassDomains] = proxyBypassDomains
-            }
-            if let routingPolicies = sessionConfiguration.routingPolicies {
-                dict[S.routingPolicies] = routingPolicies.map { $0.rawValue }
-            }
-            //
+            sessionConfiguration.store(to: &dict)
             if let resolvedAddresses = resolvedAddresses {
                 dict[S.resolvedAddresses] = resolvedAddresses
             }
@@ -532,78 +393,10 @@ extension TunnelKitProvider {
         }
         
         func print(appVersion: String?) {
-            guard let endpointProtocols = sessionConfiguration.endpointProtocols else {
-                fatalError("No sessionConfiguration.endpointProtocols set")
-            }
-
             if let appVersion = appVersion {
                 log.info("App version: \(appVersion)")
             }
-            
-            log.info("\tProtocols: \(endpointProtocols)")
-            log.info("\tCipher: \(sessionConfiguration.fallbackCipher)")
-            log.info("\tDigest: \(sessionConfiguration.fallbackDigest)")
-            log.info("\tCompression framing: \(sessionConfiguration.fallbackCompressionFraming)")
-            if let compressionAlgorithm = sessionConfiguration.compressionAlgorithm, compressionAlgorithm != .disabled {
-                log.info("\tCompression algorithm: \(compressionAlgorithm)")
-            } else {
-                log.info("\tCompression algorithm: disabled")
-            }
-            if let _ = sessionConfiguration.clientCertificate {
-                log.info("\tClient verification: enabled")
-            } else {
-                log.info("\tClient verification: disabled")
-            }
-            if let tlsWrap = sessionConfiguration.tlsWrap {
-                log.info("\tTLS wrapping: \(tlsWrap.strategy)")
-            } else {
-                log.info("\tTLS wrapping: disabled")
-            }
-            if let tlsSecurityLevel = sessionConfiguration.tlsSecurityLevel {
-                log.info("\tTLS security level: \(tlsSecurityLevel)")
-            } else {
-                log.info("\tTLS security level: default")
-            }
-            if let keepAliveSeconds = sessionConfiguration.keepAliveInterval, keepAliveSeconds > 0 {
-                log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
-            } else {
-                log.info("\tKeep-alive: never")
-            }
-            if let renegotiatesAfterSeconds = sessionConfiguration.renegotiatesAfter, renegotiatesAfterSeconds > 0 {
-                log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
-            } else {
-                log.info("\tRenegotiation: never")
-            }
-            if sessionConfiguration.checksEKU ?? false {
-                log.info("\tServer EKU verification: enabled")
-            } else {
-                log.info("\tServer EKU verification: disabled")
-            }
-            if sessionConfiguration.randomizeEndpoint ?? false {
-                log.info("\tRandomize endpoint: true")
-            }
-            if let routingPolicies = sessionConfiguration.routingPolicies {
-                log.info("\tGateway: \(routingPolicies.map { $0.rawValue })")
-            } else {
-                log.info("\tGateway: not configured")
-            }
-            if let dnsServers = sessionConfiguration.dnsServers, !dnsServers.isEmpty {
-                log.info("\tDNS: \(dnsServers.maskedDescription)")
-            } else {
-                log.info("\tDNS: not configured")
-            }
-            if let searchDomain = sessionConfiguration.searchDomain, !searchDomain.isEmpty {
-                log.info("\tSearch domain: \(searchDomain.maskedDescription)")
-            }
-            if let httpProxy = sessionConfiguration.httpProxy {
-                log.info("\tHTTP proxy: \(httpProxy.maskedDescription)")
-            }
-            if let httpsProxy = sessionConfiguration.httpsProxy {
-                log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
-            }
-            if let proxyBypassDomains = sessionConfiguration.proxyBypassDomains {
-                log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
-            }
+            sessionConfiguration.print()
             log.info("\tMTU: \(mtu)")
             log.info("\tDebug: \(shouldDebug)")
             log.info("\tMasks private data: \(masksPrivateData ?? true)")
@@ -613,15 +406,15 @@ extension TunnelKitProvider {
 
 // MARK: Modification
 
-extension TunnelKitProvider.Configuration {
-
+extension OpenVPNTunnelProvider.Configuration {
+    
     /**
-     Returns a `TunnelKitProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
-
-     - Returns: An editable `TunnelKitProvider.ConfigurationBuilder` initialized with this configuration.
+     Returns a `OpenVPNTunnelProvider.ConfigurationBuilder` to use this configuration as a starting point for a new one.
+     
+     - Returns: An editable `OpenVPNTunnelProvider.ConfigurationBuilder` initialized with this configuration.
      */
-    public func builder() -> TunnelKitProvider.ConfigurationBuilder {
-        var builder = TunnelKitProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
+    public func builder() -> OpenVPNTunnelProvider.ConfigurationBuilder {
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.prefersResolvedAddresses = prefersResolvedAddresses
         builder.resolvedAddresses = resolvedAddresses
         builder.mtu = mtu
@@ -636,14 +429,247 @@ extension TunnelKitProvider.Configuration {
 public extension UserDefaults {
     @objc var dataCountArray: [Int]? {
         get {
-            return array(forKey: TunnelKitProvider.Configuration.dataCountKey) as? [Int]
+            return array(forKey: OpenVPNTunnelProvider.Configuration.dataCountKey) as? [Int]
         }
         set {
-            set(newValue, forKey: TunnelKitProvider.Configuration.dataCountKey)
+            set(newValue, forKey: OpenVPNTunnelProvider.Configuration.dataCountKey)
         }
     }
-
+    
     func removeDataCountArray() {
-        removeObject(forKey: TunnelKitProvider.Configuration.dataCountKey)
+        removeObject(forKey: OpenVPNTunnelProvider.Configuration.dataCountKey)
+    }
+}
+
+// MARK: OpenVPN configuration
+
+private extension OpenVPN.Configuration {
+    static func with(providerConfiguration: [String: Any]) throws -> OpenVPN.Configuration {
+        let S = OpenVPNTunnelProvider.Configuration.Keys.self
+        let E = OpenVPNTunnelProvider.ProviderConfigurationError.self
+        
+        guard let caPEM = providerConfiguration[S.ca] as? String else {
+            throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
+        }
+        guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
+            throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
+        }
+
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder.defaults.sessionConfiguration.builder()
+
+        builder.ca = OpenVPN.CryptoContainer(pem: caPEM)
+        builder.endpointProtocols = try endpointProtocolsStrings.map {
+            guard let ep = EndpointProtocol(rawValue: $0) else {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
+            }
+            return ep
+        }
+
+        if let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String {
+            builder.cipher = OpenVPN.Cipher(rawValue: cipherAlgorithm)
+        }
+        if let digestAlgorithm = providerConfiguration[S.digestAlgorithm] as? String {
+            builder.digest = OpenVPN.Digest(rawValue: digestAlgorithm)
+        }
+        if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = OpenVPN.CompressionFraming(rawValue: compressionFramingValue) {
+            builder.compressionFraming = compressionFraming
+        }
+        if let compressionAlgorithmValue = providerConfiguration[S.compressionAlgorithm] as? Int, let compressionAlgorithm = OpenVPN.CompressionAlgorithm(rawValue: compressionAlgorithmValue) {
+            builder.compressionAlgorithm = compressionAlgorithm
+        }
+        if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
+            guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
+            }
+            builder.clientCertificate = OpenVPN.CryptoContainer(pem: clientPEM)
+            builder.clientKey = OpenVPN.CryptoContainer(pem: keyPEM)
+        }
+        if let tlsWrapData = providerConfiguration[S.tlsWrap] as? Data {
+            do {
+                builder.tlsWrap = try OpenVPN.TLSWrap.deserialized(tlsWrapData)
+            } catch {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
+            }
+        }
+        if let tlsSecurityLevel = providerConfiguration[S.tlsSecurityLevel] as? Int {
+            builder.tlsSecurityLevel =  tlsSecurityLevel
+        }
+        if let keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval {
+            builder.keepAliveInterval = keepAliveInterval
+        }
+        if let renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval {
+            builder.renegotiatesAfter = renegotiatesAfter
+        }
+        if let checksEKU = providerConfiguration[S.checksEKU] as? Bool {
+            builder.checksEKU = checksEKU
+        }
+        if let randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool {
+            builder.randomizeEndpoint = randomizeEndpoint
+        }
+        if let usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool {
+            builder.usesPIAPatches = usesPIAPatches
+        }
+        if let dnsServers = providerConfiguration[S.dnsServers] as? [String] {
+            builder.dnsServers = dnsServers
+        }
+        if let searchDomain = providerConfiguration[S.searchDomain] as? String {
+            builder.searchDomain = searchDomain
+        }
+        if let proxyString = providerConfiguration[S.httpProxy] as? String {
+            guard let proxy = Proxy(rawValue: proxyString) else {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpProxy)] has a badly formed element")
+            }
+            builder.httpProxy = proxy
+        }
+        if let proxyString = providerConfiguration[S.httpsProxy] as? String {
+            guard let proxy = Proxy(rawValue: proxyString) else {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpsProxy)] has a badly formed element")
+            }
+            builder.httpsProxy = proxy
+        }
+        if let proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String] {
+            builder.proxyBypassDomains = proxyBypassDomains
+        }
+        if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String] {
+            builder.routingPolicies = try routingPoliciesStrings.map {
+                guard let policy = OpenVPN.RoutingPolicy(rawValue: $0) else {
+                    throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.routingPolicies)] has a badly formed element")
+                }
+                return policy
+            }
+        }
+        return builder.build()
+    }
+    
+    func store(to dict: inout [String: Any]) {
+        let S = OpenVPNTunnelProvider.Configuration.Keys.self
+
+        if let cipher = cipher {
+            dict[S.cipherAlgorithm] = cipher.rawValue
+        }
+        if let digest = digest {
+            dict[S.digestAlgorithm] = digest.rawValue
+        }
+        if let compressionFraming = compressionFraming {
+            dict[S.compressionFraming] = compressionFraming.rawValue
+        }
+        if let compressionAlgorithm = compressionAlgorithm {
+            dict[S.compressionAlgorithm] = compressionAlgorithm.rawValue
+        }
+        if let clientCertificate = clientCertificate {
+            dict[S.clientCertificate] = clientCertificate.pem
+        }
+        if let clientKey = clientKey {
+            dict[S.clientKey] = clientKey.pem
+        }
+        if let tlsWrapData = tlsWrap?.serialized() {
+            dict[S.tlsWrap] = tlsWrapData
+        }
+        if let tlsSecurityLevel = tlsSecurityLevel {
+            dict[S.tlsSecurityLevel] = tlsSecurityLevel
+        }
+        if let keepAliveSeconds = keepAliveInterval {
+            dict[S.keepAlive] = keepAliveSeconds
+        }
+        if let renegotiatesAfterSeconds = renegotiatesAfter {
+            dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
+        }
+        if let checksEKU = checksEKU {
+            dict[S.checksEKU] = checksEKU
+        }
+        if let randomizeEndpoint = randomizeEndpoint {
+            dict[S.randomizeEndpoint] = randomizeEndpoint
+        }
+        if let usesPIAPatches = usesPIAPatches {
+            dict[S.usesPIAPatches] = usesPIAPatches
+        }
+        if let dnsServers = dnsServers {
+            dict[S.dnsServers] = dnsServers
+        }
+        if let searchDomain = searchDomain {
+            dict[S.searchDomain] = searchDomain
+        }
+        if let httpProxy = httpProxy {
+            dict[S.httpProxy] = httpProxy.rawValue
+        }
+        if let httpsProxy = httpsProxy {
+            dict[S.httpsProxy] = httpsProxy.rawValue
+        }
+        if let proxyBypassDomains = proxyBypassDomains {
+            dict[S.proxyBypassDomains] = proxyBypassDomains
+        }
+        if let routingPolicies = routingPolicies {
+            dict[S.routingPolicies] = routingPolicies.map { $0.rawValue }
+        }
+    }
+    
+    func print() {
+        guard let endpointProtocols = endpointProtocols else {
+            fatalError("No sessionConfiguration.endpointProtocols set")
+        }
+        log.info("\tProtocols: \(endpointProtocols)")
+        log.info("\tCipher: \(fallbackCipher)")
+        log.info("\tDigest: \(fallbackDigest)")
+        log.info("\tCompression framing: \(fallbackCompressionFraming)")
+        if let compressionAlgorithm = compressionAlgorithm, compressionAlgorithm != .disabled {
+            log.info("\tCompression algorithm: \(compressionAlgorithm)")
+        } else {
+            log.info("\tCompression algorithm: disabled")
+        }
+        if let _ = clientCertificate {
+            log.info("\tClient verification: enabled")
+        } else {
+            log.info("\tClient verification: disabled")
+        }
+        if let tlsWrap = tlsWrap {
+            log.info("\tTLS wrapping: \(tlsWrap.strategy)")
+        } else {
+            log.info("\tTLS wrapping: disabled")
+        }
+        if let tlsSecurityLevel = tlsSecurityLevel {
+            log.info("\tTLS security level: \(tlsSecurityLevel)")
+        } else {
+            log.info("\tTLS security level: default")
+        }
+        if let keepAliveSeconds = keepAliveInterval, keepAliveSeconds > 0 {
+            log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
+        } else {
+            log.info("\tKeep-alive: never")
+        }
+        if let renegotiatesAfterSeconds = renegotiatesAfter, renegotiatesAfterSeconds > 0 {
+            log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
+        } else {
+            log.info("\tRenegotiation: never")
+        }
+        if checksEKU ?? false {
+            log.info("\tServer EKU verification: enabled")
+        } else {
+            log.info("\tServer EKU verification: disabled")
+        }
+        if randomizeEndpoint ?? false {
+            log.info("\tRandomize endpoint: true")
+        }
+        if let routingPolicies = routingPolicies {
+            log.info("\tGateway: \(routingPolicies.map { $0.rawValue })")
+        } else {
+            log.info("\tGateway: not configured")
+        }
+        if let dnsServers = dnsServers, !dnsServers.isEmpty {
+            log.info("\tDNS: \(dnsServers.maskedDescription)")
+        } else {
+            log.info("\tDNS: not configured")
+        }
+        if let searchDomain = searchDomain, !searchDomain.isEmpty {
+            log.info("\tSearch domain: \(searchDomain.maskedDescription)")
+        }
+        if let httpProxy = httpProxy {
+            log.info("\tHTTP proxy: \(httpProxy.maskedDescription)")
+        }
+        if let httpsProxy = httpsProxy {
+            log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
+        }
+        if let proxyBypassDomains = proxyBypassDomains {
+            log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
+        }
     }
 }

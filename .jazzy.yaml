@@ -16,6 +16,7 @@ custom_categories:
       children:
         - BidirectionalState
         - ConfigurationError
+        - DNSResolver
         - EndpointProtocol
         - IOInterface
         - IPv4Settings
@@ -25,12 +26,22 @@ custom_categories:
         - Session
         - SocketType
         - TunnelInterface
-    - name: OpenVPN
+    - name: AppExtension
+      children:
+        - GenericSocket
+        - GenericSocketDelegate
+        - InterfaceObserver
+        - Keychain
+        - KeychainError
+        - LinkProducer
+        - MemoryDestination
+        - NETCPSocket
+        - NETunnelInterface
+        - NEUDPSocket
+    - name: Protocols/OpenVPN
       children:
         - OpenVPN
         - OpenVPNError
         - OpenVPNSession
         - OpenVPNSessionDelegate
-    - name: AppExtension
-      children:
-        - TunnelKitProvider
+        - OpenVPNTunnelProvider

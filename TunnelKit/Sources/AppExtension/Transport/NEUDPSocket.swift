@@ -40,12 +40,15 @@ import SwiftyBeaver
 
 private let log = SwiftyBeaver.self
 
-class NEUDPSocket: NSObject, GenericSocket {
+/// UDP implementation of a `GenericSocket` via NetworkExtension.
+public class NEUDPSocket: NSObject, GenericSocket {
     private static var linkContext = 0
     
-    private let impl: NWUDPSession
+    /// :nodoc:
+    public let impl: NWUDPSession
     
-    init(impl: NWUDPSession) {
+    /// :nodoc:
+    public init(impl: NWUDPSession) {
         self.impl = impl
 
         isActive = false
@@ -58,19 +61,24 @@ class NEUDPSocket: NSObject, GenericSocket {
     
     private var isActive: Bool
     
-    private(set) var isShutdown: Bool
+    /// :nodoc:
+    public private(set) var isShutdown: Bool
 
-    var remoteAddress: String? {
+    /// :nodoc:
+    public var remoteAddress: String? {
         return (impl.resolvedEndpoint as? NWHostEndpoint)?.hostname
     }
     
-    var hasBetterPath: Bool {
+    /// :nodoc:
+    public var hasBetterPath: Bool {
         return impl.hasBetterPath
     }
     
-    weak var delegate: GenericSocketDelegate?
+    /// :nodoc:
+    public weak var delegate: GenericSocketDelegate?
     
-    func observe(queue: DispatchQueue, activeTimeout: Int) {
+    /// :nodoc:
+    public func observe(queue: DispatchQueue, activeTimeout: Int) {
         isActive = false
         
         self.queue = queue
@@ -87,29 +95,29 @@ class NEUDPSocket: NSObject, GenericSocket {
         impl.addObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), options: .new, context: &NEUDPSocket.linkContext)
     }
     
-    func unobserve() {
+    /// :nodoc:
+    public func unobserve() {
         impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.state), context: &NEUDPSocket.linkContext)
         impl.removeObserver(self, forKeyPath: #keyPath(NWUDPSession.hasBetterPath), context: &NEUDPSocket.linkContext)
     }
     
-    func shutdown() {
+    /// :nodoc:
+    public func shutdown() {
         impl.cancel()
     }
     
-    func upgraded() -> GenericSocket? {
+    /// :nodoc:
+    public func upgraded() -> GenericSocket? {
         guard impl.hasBetterPath else {
             return nil
         }
         return NEUDPSocket(impl: NWUDPSession(upgradeFor: impl))
     }
     
-    func link(withMTU mtu: Int) -> LinkInterface {
-        return NEUDPLink(impl: impl, mtu: mtu)
-    }
-    
     // MARK: Connection KVO (any queue)
     
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+    /// :nodoc:
+    public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard (context == &NEUDPSocket.linkContext) else {
             super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
             return
@@ -177,59 +185,9 @@ class NEUDPSocket: NSObject, GenericSocket {
     }
 }
 
-class NEUDPLink: LinkInterface {
-    private let impl: NWUDPSession
-    
-    private let maxDatagrams: Int
-    
-    init(impl: NWUDPSession, mtu: Int, maxDatagrams: Int? = nil) {
-        self.impl = impl
-        self.mtu = mtu
-        self.maxDatagrams = maxDatagrams ?? 200
-    }
-
-    // MARK: LinkInterface
-    
-    let isReliable: Bool = false
-    
-    var remoteAddress: String? {
-        return (impl.resolvedEndpoint as? NWHostEndpoint)?.hostname
-    }
-
-    let mtu: Int
-
-    var packetBufferSize: Int {
-        return maxDatagrams
-    }
-
-    func setReadHandler(queue: DispatchQueue, _ handler: @escaping ([Data]?, Error?) -> Void) {
-
-        // WARNING: runs in Network.framework queue
-        impl.setReadHandler({ [weak self] (packets, error) in
-            guard let _ = self else {
-                return
-            }
-            queue.sync {
-                handler(packets, error)
-            }
-        }, maxDatagrams: maxDatagrams)
-    }
-    
-    func writePacket(_ packet: Data, completionHandler: ((Error?) -> Void)?) {
-        impl.writeDatagram(packet) { (error) in
-            completionHandler?(error)
-        }
-    }
-    
-    func writePackets(_ packets: [Data], completionHandler: ((Error?) -> Void)?) {
-        impl.writeMultipleDatagrams(packets) { (error) in
-            completionHandler?(error)
-        }
-    }
-}
-
+/// :nodoc:
 extension NEUDPSocket {
-    override var description: String {
+    public override var description: String {
         guard let hostEndpoint = impl.endpoint as? NWHostEndpoint else {
             return impl.endpoint.maskedDescription
         }

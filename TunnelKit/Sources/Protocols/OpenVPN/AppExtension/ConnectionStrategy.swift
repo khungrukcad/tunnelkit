@@ -51,7 +51,7 @@ class ConnectionStrategy {
     
     private var currentProtocolIndex = 0
 
-    init(configuration: TunnelKitProvider.Configuration) {
+    init(configuration: OpenVPNTunnelProvider.Configuration) {
         hostname = configuration.sessionConfiguration.hostname
         prefersResolvedAddresses = (hostname == nil) || configuration.prefersResolvedAddresses
         resolvedAddresses = configuration.resolvedAddresses
@@ -95,7 +95,7 @@ class ConnectionStrategy {
         // fall back to DNS
         guard let hostname = hostname else {
             log.error("DNS resolution unavailable: no hostname provided!")
-            completionHandler(nil, TunnelKitProvider.ProviderError.dnsFailure)
+            completionHandler(nil, OpenVPNTunnelProvider.ProviderError.dnsFailure)
             return
         }
         log.debug("DNS resolve hostname: \(hostname.maskedDescription)")
@@ -112,7 +112,7 @@ class ConnectionStrategy {
 
             guard let targetAddress = self.resolvedAddress(from: addresses) else {
                 log.error("No resolved or fallback address available")
-                completionHandler(nil, TunnelKitProvider.ProviderError.dnsFailure)
+                completionHandler(nil, OpenVPNTunnelProvider.ProviderError.dnsFailure)
                 return
             }
 
