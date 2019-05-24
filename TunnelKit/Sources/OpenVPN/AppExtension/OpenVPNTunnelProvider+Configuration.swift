@@ -451,13 +451,24 @@ private extension OpenVPN.Configuration {
     static func with(providerConfiguration: [String: Any]) throws -> OpenVPN.Configuration {
         let S = OpenVPNTunnelProvider.Configuration.Keys.self
         let E = OpenVPNTunnelProvider.ProviderConfigurationError.self
-        let D = OpenVPNTunnelProvider.ConfigurationBuilder.defaults.sessionConfiguration
         
         guard let caPEM = providerConfiguration[S.ca] as? String else {
             throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.ca)]")
         }
-        
-        var builder = D.builder()
+        guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
+            throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
+        }
+
+        var builder = OpenVPNTunnelProvider.ConfigurationBuilder.defaults.sessionConfiguration.builder()
+
+        builder.ca = OpenVPN.CryptoContainer(pem: caPEM)
+        builder.endpointProtocols = try endpointProtocolsStrings.map {
+            guard let ep = EndpointProtocol(rawValue: $0) else {
+                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
+            }
+            return ep
+        }
+
         if let cipherAlgorithm = providerConfiguration[S.cipherAlgorithm] as? String {
             builder.cipher = OpenVPN.Cipher(rawValue: cipherAlgorithm)
         }
@@ -466,15 +477,10 @@ private extension OpenVPN.Configuration {
         }
         if let compressionFramingValue = providerConfiguration[S.compressionFraming] as? Int, let compressionFraming = OpenVPN.CompressionFraming(rawValue: compressionFramingValue) {
             builder.compressionFraming = compressionFraming
-        } else {
-            builder.compressionFraming = D.compressionFraming
         }
         if let compressionAlgorithmValue = providerConfiguration[S.compressionAlgorithm] as? Int, let compressionAlgorithm = OpenVPN.CompressionAlgorithm(rawValue: compressionAlgorithmValue) {
             builder.compressionAlgorithm = compressionAlgorithm
-        } else {
-            builder.compressionAlgorithm = D.compressionAlgorithm
         }
-        builder.ca = OpenVPN.CryptoContainer(pem: caPEM)
         if let clientPEM = providerConfiguration[S.clientCertificate] as? String {
             guard let keyPEM = providerConfiguration[S.clientKey] as? String else {
                 throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.clientKey)]")
@@ -489,23 +495,30 @@ private extension OpenVPN.Configuration {
                 throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.tlsWrap)]")
             }
         }
-        builder.tlsSecurityLevel = providerConfiguration[S.tlsSecurityLevel] as? Int ?? D.tlsSecurityLevel
-        builder.keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval ?? D.keepAliveInterval
-        builder.renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval ?? D.renegotiatesAfter
-        guard let endpointProtocolsStrings = providerConfiguration[S.endpointProtocols] as? [String], !endpointProtocolsStrings.isEmpty else {
-            throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] is nil or empty")
+        if let tlsSecurityLevel = providerConfiguration[S.tlsSecurityLevel] as? Int {
+            builder.tlsSecurityLevel =  tlsSecurityLevel
         }
-        builder.endpointProtocols = try endpointProtocolsStrings.map {
-            guard let ep = EndpointProtocol(rawValue: $0) else {
-                throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.endpointProtocols)] has a badly formed element")
-            }
-            return ep
+        if let keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval {
+            builder.keepAliveInterval = keepAliveInterval
         }
-        builder.checksEKU = providerConfiguration[S.checksEKU] as? Bool ?? D.checksEKU
-        builder.randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool ?? D.randomizeEndpoint
-        builder.usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool ?? D.usesPIAPatches
-        builder.dnsServers = providerConfiguration[S.dnsServers] as? [String]
-        builder.searchDomain = providerConfiguration[S.searchDomain] as? String
+        if let renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval {
+            builder.renegotiatesAfter = renegotiatesAfter
+        }
+        if let checksEKU = providerConfiguration[S.checksEKU] as? Bool {
+            builder.checksEKU = checksEKU
+        }
+        if let randomizeEndpoint = providerConfiguration[S.randomizeEndpoint] as? Bool {
+            builder.randomizeEndpoint = randomizeEndpoint
+        }
+        if let usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool {
+            builder.usesPIAPatches = usesPIAPatches
+        }
+        if let dnsServers = providerConfiguration[S.dnsServers] as? [String] {
+            builder.dnsServers = dnsServers
+        }
+        if let searchDomain = providerConfiguration[S.searchDomain] as? String {
+            builder.searchDomain = searchDomain
+        }
         if let proxyString = providerConfiguration[S.httpProxy] as? String {
             guard let proxy = Proxy(rawValue: proxyString) else {
                 throw E.parameter(name: "protocolConfiguration.providerConfiguration[\(S.httpProxy)] has a badly formed element")
@@ -518,7 +531,9 @@ private extension OpenVPN.Configuration {
             }
             builder.httpsProxy = proxy
         }
-        builder.proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String]
+        if let proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String] {
+            builder.proxyBypassDomains = proxyBypassDomains
+        }
         if let routingPoliciesStrings = providerConfiguration[S.routingPolicies] as? [String] {
             builder.routingPolicies = try routingPoliciesStrings.map {
                 guard let policy = OpenVPN.RoutingPolicy(rawValue: $0) else {
