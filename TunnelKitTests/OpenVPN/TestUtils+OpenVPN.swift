@@ -1,5 +1,5 @@
 //
-//  TestUtils.swift
+//  TestUtils+OpenVPN.swift
 //  TunnelKitTests
 //
 //  Created by Davide De Rosa on 7/7/18.
@@ -38,23 +38,6 @@ import Foundation
 @testable import TunnelKit
 import __TunnelKitCore
 import __TunnelKitOpenVPN
-
-class TestUtils {
-    static func uniqArray(_ v: [Int]) -> [Int] {
-        return v.reduce([]){ $0.contains($1) ? $0 : $0 + [$1] }
-    }
-    
-    static func generateDataSuite(_ size: Int, _ count: Int) -> [Data] {
-        var suite = [Data]()
-        for _ in 0..<count {
-            suite.append(try! SecureRandom.data(length: size))
-        }
-        return suite
-    }
-    
-    private init() {
-    }
-}
 
 extension Encrypter {
     func encryptData(_ data: Data, flags: UnsafePointer<CryptoFlags>?) throws -> Data {
