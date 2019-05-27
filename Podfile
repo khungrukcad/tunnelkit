@@ -8,6 +8,9 @@ abstract_target 'TunnelKit' do
     target 'TunnelKit-iOS' do
         platform :ios, '11.0'
     end
+    target 'TunnelKitTests-iOS' do
+        platform :ios, '11.0'
+    end
     target 'TunnelKitHost' do
         platform :ios, '11.0'
     end

@@ -6,3 +6,4 @@
 **/*.xcodeproj/xcuserdata
 Pods
 docs
+build
