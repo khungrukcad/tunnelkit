@@ -6,6 +6,10 @@ xcode_destination: platform=iOS Simulator,OS=12.2,name=iPhone 8 Plus
 cache:
     - bundler
     - cocoapods
+branches:
+    only:
+        - master
+        - stable
 install:
     - bundle install --jobs=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
     - bundle exec pod repo update
