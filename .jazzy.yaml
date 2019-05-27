@@ -38,6 +38,7 @@ custom_categories:
         - NETCPSocket
         - NETunnelInterface
         - NEUDPSocket
+        - NSNotification
     - name: Protocols/OpenVPN
       children:
         - OpenVPN
