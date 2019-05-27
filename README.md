@@ -5,7 +5,7 @@
 [![License GPLv3](https://img.shields.io/badge/license-GPLv3-lightgray.svg)](LICENSE)
 ![Travis-CI](https://api.travis-ci.org/passepartoutvpn/tunnelkit.svg?branch=master)
 
-This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms. The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0i, which in turn enables support for a certain range of encryption and digest algorithms.
+This library provides a simplified Swift/Obj-C implementation of the OpenVPN® protocol for the Apple platforms. The crypto layer is built on top of [OpenSSL][dep-openssl] 1.1.0j, which in turn enables support for a certain range of encryption and digest algorithms.
 
 <a href="https://www.patreon.com/keeshux"><img src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" width="160"></a>
 
@@ -92,7 +92,7 @@ Assuming you have a [working CocoaPods environment][dep-cocoapods], setting up t
 
     $ pod install
 
-After that, open `TunnelKit.xcworkspace` in Xcode and run the unit tests found in the `TunnelKitTests` target. A simple CMD+U while on `TunnelKit-iOS` should do that as well.
+After that, open `TunnelKit.xcworkspace` in Xcode and run the unit tests found in the `TunnelKitTests` folder. A simple CMD+U while on `TunnelKit-iOS` should do that as well.
 
 #### Demo
 
@@ -128,7 +128,7 @@ Remember that the App Group on macOS requires a team ID prefix.
 
 ## Documentation
 
-The library is split into two modules, in order to decouple the low-level protocol implementation from the platform-specific bridging, namely the [NetworkExtension][ne-home] VPN framework.
+The library is split into several modules, in order to decouple the low-level protocol implementation from the platform-specific bridging, namely the [NetworkExtension][ne-home] VPN framework.
 
 Full documentation of the public interface is available and can be generated with [jazzy][dep-jazzy]. After installing the jazzy Ruby gem with:
 
@@ -142,17 +142,28 @@ The generated output is stored into the `docs` directory in HTML format.
 
 ### Core
 
-Here you will find the low-level entities on top of which the connection is established. Code is mixed Swift and Obj-C, most of it is not exposed to consumers. The *Core* module depends on OpenSSL and is mostly platform-agnostic.
+Contains the building blocks of a VPN protocol. Eventually, a consumer would implement the `Session` interface, expected to start and control the VPN session. A session is expected to work with generic network interfaces:
 
-The entry point is the `SessionProxy` class. The networking layer is fully abstract and delegated externally with the use of opaque `IOInterface` (`LinkInterface` and `TunnelInterface`) and `SessionProxyDelegate` protocols.
+- `LinkInterface` (e.g. a socket)
+- `TunnelInterface` (e.g. an `utun` interface)
+
+There are no physical network implementations (e.g. UDP or TCP) in this module.
 
 ### AppExtension
 
-The goal of this module is packaging up a black box implementation of a [NEPacketTunnelProvider][ne-ptp], which is the essential part of a Packet Tunnel Provider app extension. You will find the main implementation in the `TunnelKitProvider` class.
+Provides a layer on top of the NetworkExtension framework. Most importantly, bridges native [NWUDPSession][ne-udp] and [NWTCPConnection][ne-tcp] to an abstract `GenericSocket` interface, thus making a multi-protocol VPN dramatically easier to manage.
 
-Currently, the extension supports VPN over both [UDP][ne-udp] and [TCP][ne-tcp] sockets. A debug log snapshot is optionally maintained and shared to host apps via the App Group container.
+### Protocols/OpenVPN
 
-### LZO
+Here you will find the low-level entities on top of which an OpenVPN connection is established. Code is mixed Swift and Obj-C, most of it is not exposed to consumers. The module depends on OpenSSL.
+
+The entry point is the `OpenVPNSession` class. The networking layer is fully abstract and delegated externally with the use of opaque `IOInterface` (`LinkInterface` and `TunnelInterface`) and `OpenVPNSessionDelegate` protocols.
+
+Another goal of this module is packaging up a black box implementation of a [NEPacketTunnelProvider][ne-ptp], which is the essential part of a Packet Tunnel Provider app extension. You will find the main implementation in the `OpenVPNTunnelProvider` class.
+
+A debug log snapshot is optionally maintained and shared by the tunnel provider to host apps via the App Group container.
+
+### Extra/LZO
 
 Due to the restrictive license (GPLv2), LZO support is provided as an optional subspec.
 
