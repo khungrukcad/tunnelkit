@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
     s.name              = "TunnelKit"
-    s.version           = "2.0.0"
+    s.version           = "2.0.1"
     s.summary           = "Non-official OpenVPN client for Apple platforms."
 
     s.homepage          = "https://github.com/passepartoutvpn/tunnelkit"
@@ -52,9 +52,11 @@ Pod::Spec.new do |s|
         t.subspec "LZO" do |p|
             p.source_files          = "TunnelKit/Sources/Core/LZO.h",
                                       "TunnelKit/Sources/Core/Errors.{h,m}",
+                                      "TunnelKit/Sources/Extra/LZO/*.{h,m}",
                                       "TunnelKit/Sources/Extra/LZO/lib/*lzo*.{h,m,c}"
             p.private_header_files  = "TunnelKit/Sources/Core/LZO.h",
                                       "TunnelKit/Sources/Core/Errors.h",
+                                      "TunnelKit/Sources/Extra/LZO/*.h",
                                       "TunnelKit/Sources/Extra/LZO/lib/*lzo*.h"
             p.pod_target_xcconfig   = { "APPLICATION_EXTENSION_API_ONLY" => "YES" }
         end
