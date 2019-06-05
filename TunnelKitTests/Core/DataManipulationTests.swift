@@ -72,4 +72,14 @@ class DataManipulationTests: XCTestCase {
         XCTAssertEqual(z2.toData(), Data(hex: "5678ab"))
         XCTAssertEqual(z3.toData(), Data(hex: "5678abaaddcc"))
     }
+    
+    func testFlatCount() {
+        var v: [Data] = []
+        v.append(Data(hex: "11223344"))
+        v.append(Data(hex: "1122"))
+        v.append(Data(hex: "1122334455"))
+        v.append(Data(hex: "11223344556677"))
+        v.append(Data(hex: "112233"))
+        XCTAssertEqual(v.flatCount, 21)
+    }
 }
