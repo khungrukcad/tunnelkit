@@ -628,7 +628,9 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         var dnsServers = cfg.sessionConfiguration.dnsServers ?? options.dnsServers ?? []
 
         // fall back
-        if dnsServers.isEmpty {
+        if !dnsServers.isEmpty {
+            log.info("DNS: Using servers \(dnsServers.maskedDescription)")
+        } else {
             log.warning("DNS: No servers provided, using fall-back servers: \(fallbackDNSServers.maskedDescription)")
             dnsServers = fallbackDNSServers
         }
