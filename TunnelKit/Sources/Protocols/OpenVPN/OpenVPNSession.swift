@@ -871,8 +871,9 @@ public class OpenVPNSession: Session {
             }
             
             negotiationKey.controlState = .preIfConfig
-            nextPushRequestDate = Date().addingTimeInterval(isRenegotiating ? CoreConfiguration.OpenVPN.softResetDelay : CoreConfiguration.OpenVPN.retransmissionLimit)
+            nextPushRequestDate = Date()
             pushRequest()
+            nextPushRequestDate?.addTimeInterval(isRenegotiating ? CoreConfiguration.OpenVPN.pushRequestInterval : CoreConfiguration.OpenVPN.retransmissionLimit)
         }
         
         for message in auth.parseMessages() {
