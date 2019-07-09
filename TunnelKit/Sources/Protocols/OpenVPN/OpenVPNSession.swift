@@ -479,11 +479,20 @@ public class OpenVPNSession: Session {
 //                deferStop(.shutdown, e)
 //                return
             }
-            if (code == .hardResetServerV2) && (negotiationKey.controlState == .connected) {
-                deferStop(.shutdown, OpenVPNError.staleSession)
-                return
-            } else if (code == .softResetV1) && !negotiationKey.softReset {
-                softReset(isServerInitiated: true)
+            switch code {
+            case .hardResetServerV2:
+                guard negotiationKey.state == .hardReset else {
+                    deferStop(.shutdown, OpenVPNError.staleSession)
+                    return
+                }
+                
+            case .softResetV1:
+                if !negotiationKey.softReset {
+                    softReset(isServerInitiated: true)
+                }
+
+            default:
+                break
             }
 
             sendAck(for: controlPacket)
