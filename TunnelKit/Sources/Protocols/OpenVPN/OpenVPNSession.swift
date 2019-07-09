@@ -1198,6 +1198,9 @@ public class OpenVPNSession: Session {
     }
     
     private func deferStop(_ method: StopMethod, _ error: Error?) {
+        guard !isStopping else {
+            return
+        }
         isStopping = true
 
         let completion = { [weak self] in
