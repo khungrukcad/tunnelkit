@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Deadlock on shutdown. [#106](https://github.com/passepartoutvpn/tunnelkit/issues/106)
 - Stuck on SOFT_RESET. [#105](https://github.com/passepartoutvpn/tunnelkit/issues/105)
 - Tunnel dies unexpectedly on macOS. [#111](https://github.com/passepartoutvpn/tunnelkit/issues/111)
+- Recover from ENOBUFS. [#112](https://github.com/passepartoutvpn/tunnelkit/issues/112)
 
 ## 2.0.1 (2019-05-28)
 
