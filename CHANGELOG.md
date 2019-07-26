@@ -13,6 +13,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Stuck on SOFT_RESET. [#105](https://github.com/passepartoutvpn/tunnelkit/issues/105)
 - Tunnel dies unexpectedly on macOS. [#111](https://github.com/passepartoutvpn/tunnelkit/issues/111)
 
+## 2.0.1 (2019-05-28)
+
+### Fixed
+
+- Regression in LZO subspec.
+
+## 2.0.0 (2019-05-28)
+
+### Changed
+
+- Major refactoring.
+
 ## 1.7.1 (2019-05-14)
 
 ### Added
