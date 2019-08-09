@@ -387,7 +387,7 @@ public class OpenVPNSession: Session {
     private func loopLink() {
         let loopedLink = link
         loopedLink?.setReadHandler(queue: queue) { [weak self] (newPackets, error) in
-            guard loopedLink === self?.link else {
+            guard self?.link === loopedLink else {
                 log.warning("Ignoring read from outdated LINK")
                 return
             }
@@ -1008,7 +1008,12 @@ public class OpenVPNSession: Session {
         }
         
         // WARNING: runs in Network.framework queue
+        let writeLink = link
         link?.writePackets(rawList) { [weak self] (error) in
+            guard self?.link === writeLink else {
+                log.warning("Ignoring write from outdated LINK")
+                return
+            }
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during control flush: \(error)")
@@ -1131,7 +1136,12 @@ public class OpenVPNSession: Session {
             
             // WARNING: runs in Network.framework queue
             controlChannel.addSentDataCount(encryptedPackets.flatCount)
+            let writeLink = link
             link?.writePackets(encryptedPackets) { [weak self] (error) in
+                guard self?.link === writeLink else {
+                    log.warning("Ignoring write from outdated LINK")
+                    return
+                }
                 if let error = error {
                     self?.queue.sync {
                         log.error("Data: Failed LINK write during send data: \(error)")
@@ -1172,7 +1182,12 @@ public class OpenVPNSession: Session {
         }
         
         // WARNING: runs in Network.framework queue
+        let writeLink = link
         link?.writePacket(raw) { [weak self] (error) in
+            guard self?.link === writeLink else {
+                log.warning("Ignoring write from outdated LINK")
+                return
+            }
             if let error = error {
                 self?.queue.sync {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
