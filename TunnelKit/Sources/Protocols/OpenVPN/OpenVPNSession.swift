@@ -1010,16 +1010,16 @@ public class OpenVPNSession: Session {
         // WARNING: runs in Network.framework queue
         let writeLink = link
         link?.writePackets(rawList) { [weak self] (error) in
-            guard self?.link === writeLink else {
-                log.warning("Ignoring write from outdated LINK")
-                return
-            }
-            if let error = error {
-                self?.queue.sync {
+            self?.queue.sync {
+                guard self?.link === writeLink else {
+                    log.warning("Ignoring write from outdated LINK")
+                    return
+                }
+                if let error = error {
                     log.error("Failed LINK write during control flush: \(error)")
                     self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
+                    return
                 }
-                return
             }
         }
     }
@@ -1138,18 +1138,18 @@ public class OpenVPNSession: Session {
             controlChannel.addSentDataCount(encryptedPackets.flatCount)
             let writeLink = link
             link?.writePackets(encryptedPackets) { [weak self] (error) in
-                guard self?.link === writeLink else {
-                    log.warning("Ignoring write from outdated LINK")
-                    return
-                }
-                if let error = error {
-                    self?.queue.sync {
+                self?.queue.sync {
+                    guard self?.link === writeLink else {
+                        log.warning("Ignoring write from outdated LINK")
+                        return
+                    }
+                    if let error = error {
                         log.error("Data: Failed LINK write during send data: \(error)")
                         self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
+                        return
                     }
-                    return
+//                    log.verbose("Data: \(encryptedPackets.count) packets successfully written to LINK")
                 }
-//                log.verbose("Data: \(encryptedPackets.count) packets successfully written to LINK")
             }
         } catch let e {
             guard !e.isTunnelKitError() else {
@@ -1184,18 +1184,18 @@ public class OpenVPNSession: Session {
         // WARNING: runs in Network.framework queue
         let writeLink = link
         link?.writePacket(raw) { [weak self] (error) in
-            guard self?.link === writeLink else {
-                log.warning("Ignoring write from outdated LINK")
-                return
-            }
-            if let error = error {
-                self?.queue.sync {
+            self?.queue.sync {
+                guard self?.link === writeLink else {
+                    log.warning("Ignoring write from outdated LINK")
+                    return
+                }
+                if let error = error {
                     log.error("Failed LINK write during send ack for packetId \(controlPacket.packetId): \(error)")
                     self?.deferStop(.shutdown, OpenVPNError.failedLinkWrite)
+                    return
                 }
-                return
+                log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
             }
-            log.debug("Ack successfully written to LINK for packetId \(controlPacket.packetId)")
         }
     }
     
