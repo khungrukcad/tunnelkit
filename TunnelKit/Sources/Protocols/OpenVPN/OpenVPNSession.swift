@@ -485,7 +485,9 @@ public class OpenVPNSession: Session {
             }
             switch code {
             case .hardResetServerV2:
-                guard negotiationKey.state == .hardReset else {
+
+                // HARD_RESET coming during a SOFT_RESET handshake (before connecting)
+                guard !isRenegotiating else {
                     deferStop(.shutdown, OpenVPNError.staleSession)
                     return
                 }
