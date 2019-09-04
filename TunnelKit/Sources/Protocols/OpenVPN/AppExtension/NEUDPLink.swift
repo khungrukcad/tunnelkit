@@ -58,16 +58,16 @@ class NEUDPLink: LinkInterface {
         
         // WARNING: runs in Network.framework queue
         impl.setReadHandler({ [weak self] (packets, error) in
-            guard let _ = self else {
+            guard let self = self else {
                 return
             }
             var packetsToUse: [Data]?
-            if self!.xorMask == 0 || packets == nil {
-                packetsToUse = packets
-            } else {
-                packetsToUse = packets!.map({ (packet) -> Data in
-                    return Data(bytes: packet.map{$0 ^ self!.xorMask}, count: packet.count)
+            if let packets = packets, self.xorMask != 0 {
+                packetsToUse = packets.map({ (packet) -> Data in
+                    return Data(bytes: packet.map{$0 ^ self.xorMask}, count: packet.count)
                 })
+            } else {
+                packetsToUse = packets
             }
             queue.sync {
                 handler(packetsToUse, error)

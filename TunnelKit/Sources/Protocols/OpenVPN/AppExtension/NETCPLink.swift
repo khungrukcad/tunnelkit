@@ -61,6 +61,8 @@ class NETCPLink: LinkInterface {
     
     private func loopReadPackets(_ queue: DispatchQueue, _ buffer: Data, _ handler: @escaping ([Data]?, Error?) -> Void) {
         
+        let xorMaskSaved = xorMask
+        
         // WARNING: runs in Network.framework queue
         impl.readMinimumLength(2, maximumLength: packetBufferSize) { [weak self] (data, error) in
             guard let _ = self else {
@@ -75,7 +77,7 @@ class NETCPLink: LinkInterface {
                 var newBuffer = buffer
                 newBuffer.append(contentsOf: data)
                 var until = 0
-                let packets = PacketStream.packets(fromStream: newBuffer, until: &until, xorMask: self!.xorMask)
+                let packets = PacketStream.packets(fromStream: newBuffer, until: &until, xorMask: xorMaskSaved)
                 newBuffer = newBuffer.subdata(in: until..<newBuffer.count)
                 self?.loopReadPackets(queue, newBuffer, handler)
                 
