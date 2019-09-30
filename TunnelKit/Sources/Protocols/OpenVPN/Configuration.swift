@@ -202,6 +202,9 @@ extension OpenVPN {
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
+        /// Disconnects after no keep-alive packets are recieved within timeout interval if set.
+        public var keepAliveTimeout: TimeInterval?
+        
         /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
         public var renegotiatesAfter: TimeInterval?
         
@@ -277,6 +280,7 @@ extension OpenVPN {
                 tlsWrap: tlsWrap,
                 tlsSecurityLevel: tlsSecurityLevel,
                 keepAliveInterval: keepAliveInterval,
+                keepAliveTimeout: keepAliveTimeout,
                 renegotiatesAfter: renegotiatesAfter,
                 hostname: hostname,
                 endpointProtocols: endpointProtocols,
@@ -346,6 +350,9 @@ extension OpenVPN {
 
         /// - Seealso: `ConfigurationBuilder.keepAliveInterval`
         public let keepAliveInterval: TimeInterval?
+        
+        /// - Seealso: `ConfigurationBuilder.keepAliveTimeout`
+        public let keepAliveTimeout: TimeInterval?
 
         /// - Seealso: `ConfigurationBuilder.renegotiatesAfter`
         public let renegotiatesAfter: TimeInterval?
@@ -435,6 +442,7 @@ extension OpenVPN.Configuration {
         builder.tlsWrap = tlsWrap
         builder.tlsSecurityLevel = tlsSecurityLevel
         builder.keepAliveInterval = keepAliveInterval
+        builder.keepAliveTimeout = keepAliveTimeout
         builder.renegotiatesAfter = renegotiatesAfter
         builder.hostname = hostname
         builder.endpointProtocols = endpointProtocols
