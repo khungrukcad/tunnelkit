@@ -484,8 +484,6 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
     
     /// :nodoc:
     public func sessionDidStart(_ session: OpenVPNSession, remoteAddress: String, options: OpenVPN.Configuration) {
-        reasserting = false
-        
         log.info("Session did start")
         
         log.info("Returned ifconfig parameters:")
@@ -522,6 +520,8 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         }
 
         bringNetworkUp(remoteAddress: remoteAddress, localOptions: session.configuration, options: options) { (error) in
+            self.reasserting = false
+            
             if let error = error {
                 log.error("Failed to configure tunnel: \(error)")
                 self.pendingStartHandler?(error)
