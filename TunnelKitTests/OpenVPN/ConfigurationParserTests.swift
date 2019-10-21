@@ -56,6 +56,7 @@ class ConfigurationParserTests: XCTestCase {
             "dhcp-option DOMAIN example.com",
             "dhcp-option PROXY_HTTP 1.2.3.4 8081",
             "dhcp-option PROXY_HTTPS 7.8.9.10 8082",
+            "dhcp-option PROXY_AUTO_CONFIG_URL https://pac/",
             "dhcp-option PROXY_BYPASS   foo.com   bar.org     net.chat"
         ]
         XCTAssertNoThrow(try OpenVPN.ConfigurationParser.parsed(fromLines: lines))
@@ -67,6 +68,7 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertEqual(parsed.httpProxy?.port, 8081)
         XCTAssertEqual(parsed.httpsProxy?.address, "7.8.9.10")
         XCTAssertEqual(parsed.httpsProxy?.port, 8082)
+        XCTAssertEqual(parsed.proxyAutoConfURL?.absoluteString, "https://pac/")
         XCTAssertEqual(parsed.proxyBypassDomains, ["foo.com", "bar.org", "net.chat"])
     }
     

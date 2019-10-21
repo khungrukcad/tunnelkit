@@ -181,6 +181,8 @@ extension OpenVPNTunnelProvider {
             
             static let httpsProxy = "HTTPSProxy"
             
+            static let proxyAutoConfURL = "proxyAutoConfURL"
+            
             static let proxyBypassDomains = "ProxyBypassDomains"
             
             static let routingPolicies = "RoutingPolicies"
@@ -595,6 +597,9 @@ private extension OpenVPN.Configuration {
         if let httpsProxy = httpsProxy {
             dict[S.httpsProxy] = httpsProxy.rawValue
         }
+        if let proxyAutoConfURL = proxyAutoConfURL {
+            dict[S.proxyAutoConfURL] = proxyAutoConfURL.absoluteString
+        }
         if let proxyBypassDomains = proxyBypassDomains {
             dict[S.proxyBypassDomains] = proxyBypassDomains
         }
@@ -667,6 +672,9 @@ private extension OpenVPN.Configuration {
         }
         if let httpsProxy = httpsProxy {
             log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
+        }
+        if let proxyAutoConfURL = proxyAutoConfURL {
+            log.info("\tPAC: \(proxyAutoConfURL)")
         }
         if let proxyBypassDomains = proxyBypassDomains {
             log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")

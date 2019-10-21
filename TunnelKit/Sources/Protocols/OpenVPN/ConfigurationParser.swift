@@ -94,7 +94,7 @@ extension OpenVPN {
             
             static let domain = NSRegularExpression("^dhcp-option +DOMAIN +[^ ]+")
             
-            static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS?) +[^ ]+ +\\d+")
+            static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS? +[^ ]+ +\\d+|AUTO_CONFIG_URL +[^ ]+)")
             
             static let proxyBypass = NSRegularExpression("^dhcp-option +PROXY_BYPASS +.+")
             
@@ -225,6 +225,7 @@ extension OpenVPN {
             var optSearchDomain: String?
             var optHTTPProxy: Proxy?
             var optHTTPSProxy: Proxy?
+            var optProxyAutoConfURL: URL?
             var optProxyBypass: [String]?
             var optRedirectGateway: Set<RedirectGateway>?
 
@@ -517,6 +518,17 @@ extension OpenVPN {
                     optSearchDomain = $0[1]
                 }
                 Regex.proxy.enumerateArguments(in: line) {
+                    if $0.count == 2 {
+                        let maybeURL = URL(string: $0[1])
+                        if maybeURL != nil {
+                            optProxyAutoConfURL = maybeURL!
+                        }
+                        else {
+                            unsupportedError = ConfigurationError.malformed(option: "dhcp-option PROXY_AUTO_CONFIG_URL has malformed URL")
+                        }
+                        return
+                    }
+
                     guard $0.count == 3, let port = UInt16($0[2]) else {
                         return
                     }
@@ -526,7 +538,7 @@ extension OpenVPN {
                         
                     case "PROXY_HTTP":
                         optHTTPProxy = Proxy($0[1], port)
-                        
+
                     default:
                         break
                     }
@@ -714,6 +726,7 @@ extension OpenVPN {
             sessionBuilder.searchDomain = optSearchDomain
             sessionBuilder.httpProxy = optHTTPProxy
             sessionBuilder.httpsProxy = optHTTPSProxy
+            sessionBuilder.proxyAutoConfURL = optProxyAutoConfURL
             sessionBuilder.proxyBypassDomains = optProxyBypass
 
             if let flags = optRedirectGateway {
