@@ -514,6 +514,9 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
             if let proxy = options.httpsProxy {
                 log.info("\t\tHTTPS: \(proxy.maskedDescription)")
             }
+            if let pacURL = options.proxyAutoConfigurationURL {
+                log.info("\t\tPAC: \(pacURL)")
+            }
             if let bypass = options.proxyBypassDomains {
                 log.info("\t\tBypass domains: \(bypass.maskedDescription)")
             }
@@ -676,6 +679,14 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
             proxySettings?.httpServer = httpProxy.neProxy()
             proxySettings?.httpEnabled = true
             log.info("Routing: Setting HTTP proxy \(httpProxy.address.maskedDescription):\(httpProxy.port)")
+        }
+        if let pacURL = cfg.sessionConfiguration.proxyAutoConfigurationURL ?? options.proxyAutoConfigurationURL {
+            if proxySettings == nil {
+                proxySettings = NEProxySettings()
+            }
+            proxySettings?.proxyAutoConfigurationURL = pacURL
+            proxySettings?.autoProxyConfigurationEnabled = true
+            log.info("Routing: Setting PAC \(pacURL)")
         }
 
         // only set if there is a proxy (proxySettings set to non-nil above)
