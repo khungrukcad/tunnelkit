@@ -514,7 +514,7 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
             if let proxy = options.httpsProxy {
                 log.info("\t\tHTTPS: \(proxy.maskedDescription)")
             }
-            if let pacURL = options.proxyAutoConfURL {
+            if let pacURL = options.proxyAutoConfigurationURL {
                 log.info("\t\tPAC: \(pacURL)")
             }
             if let bypass = options.proxyBypassDomains {
@@ -668,24 +668,24 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         var proxySettings: NEProxySettings?
         if let httpsProxy = cfg.sessionConfiguration.httpsProxy ?? options.httpsProxy {
             proxySettings = NEProxySettings()
-            proxySettings!.httpsServer = httpsProxy.neProxy()
-            proxySettings!.httpsEnabled = true
+            proxySettings?.httpsServer = httpsProxy.neProxy()
+            proxySettings?.httpsEnabled = true
             log.info("Routing: Setting HTTPS proxy \(httpsProxy.address.maskedDescription):\(httpsProxy.port)")
         }
         if let httpProxy = cfg.sessionConfiguration.httpProxy ?? options.httpProxy {
             if proxySettings == nil {
                 proxySettings = NEProxySettings()
             }
-            proxySettings!.httpServer = httpProxy.neProxy()
-            proxySettings!.httpEnabled = true
+            proxySettings?.httpServer = httpProxy.neProxy()
+            proxySettings?.httpEnabled = true
             log.info("Routing: Setting HTTP proxy \(httpProxy.address.maskedDescription):\(httpProxy.port)")
         }
-        if let pacURL = cfg.sessionConfiguration.proxyAutoConfURL ?? options.proxyAutoConfURL {
+        if let pacURL = cfg.sessionConfiguration.proxyAutoConfigurationURL ?? options.proxyAutoConfigurationURL {
             if proxySettings == nil {
                 proxySettings = NEProxySettings()
             }
-            proxySettings!.proxyAutoConfigurationURL = pacURL
-            proxySettings!.autoProxyConfigurationEnabled = true
+            proxySettings?.proxyAutoConfigurationURL = pacURL
+            proxySettings?.autoProxyConfigurationEnabled = true
             log.info("Routing: Setting PAC \(pacURL)")
         }
 

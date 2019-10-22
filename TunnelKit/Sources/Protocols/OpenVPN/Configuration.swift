@@ -245,7 +245,7 @@ extension OpenVPN {
         public var searchDomain: String?
 
         /// The Proxy Auto-Configuration (PAC) url.
-        public var proxyAutoConfURL: URL?
+        public var proxyAutoConfigurationURL: URL?
         
         /// The HTTP proxy.
         public var httpProxy: Proxy?
@@ -294,7 +294,7 @@ extension OpenVPN {
                 searchDomain: searchDomain,
                 httpProxy: httpProxy,
                 httpsProxy: httpsProxy,
-                proxyAutoConfURL: proxyAutoConfURL,
+                proxyAutoConfigurationURL: proxyAutoConfigurationURL,
                 proxyBypassDomains: proxyBypassDomains,
                 routingPolicies: routingPolicies
             )
@@ -393,8 +393,8 @@ extension OpenVPN {
         /// - Seealso: `ConfigurationBuilder.httpsProxy`
         public let httpsProxy: Proxy?
         
-        /// - Seealso: `ConfigurationBuilder.proxyAutoConfURL`
-        public let proxyAutoConfURL: URL?
+        /// - Seealso: `ConfigurationBuilder.proxyAutoConfigurationURL`
+        public let proxyAutoConfigurationURL: URL?
 
         /// - Seealso: `ConfigurationBuilder.proxyBypassDomains`
         public let proxyBypassDomains: [String]?
@@ -456,7 +456,7 @@ extension OpenVPN.Configuration {
         builder.searchDomain = searchDomain
         builder.httpProxy = httpProxy
         builder.httpsProxy = httpsProxy
-        builder.proxyAutoConfURL = proxyAutoConfURL
+        builder.proxyAutoConfigurationURL = proxyAutoConfigurationURL
         builder.proxyBypassDomains = proxyBypassDomains
         builder.routingPolicies = routingPolicies
         return builder

@@ -225,7 +225,7 @@ extension OpenVPN {
             var optSearchDomain: String?
             var optHTTPProxy: Proxy?
             var optHTTPSProxy: Proxy?
-            var optProxyAutoConfURL: URL?
+            var optProxyAutoConfigurationURL: URL?
             var optProxyBypass: [String]?
             var optRedirectGateway: Set<RedirectGateway>?
 
@@ -519,13 +519,11 @@ extension OpenVPN {
                 }
                 Regex.proxy.enumerateArguments(in: line) {
                     if $0.count == 2 {
-                        let maybeURL = URL(string: $0[1])
-                        if maybeURL != nil {
-                            optProxyAutoConfURL = maybeURL!
-                        }
-                        else {
+                        guard let url = URL(string: $0[1]) else {
                             unsupportedError = ConfigurationError.malformed(option: "dhcp-option PROXY_AUTO_CONFIG_URL has malformed URL")
+                            return
                         }
+                        optProxyAutoConfigurationURL = url
                         return
                     }
 
@@ -726,7 +724,7 @@ extension OpenVPN {
             sessionBuilder.searchDomain = optSearchDomain
             sessionBuilder.httpProxy = optHTTPProxy
             sessionBuilder.httpsProxy = optHTTPSProxy
-            sessionBuilder.proxyAutoConfURL = optProxyAutoConfURL
+            sessionBuilder.proxyAutoConfigurationURL = optProxyAutoConfigurationURL
             sessionBuilder.proxyBypassDomains = optProxyBypass
 
             if let flags = optRedirectGateway {

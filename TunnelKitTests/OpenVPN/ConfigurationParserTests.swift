@@ -68,7 +68,7 @@ class ConfigurationParserTests: XCTestCase {
         XCTAssertEqual(parsed.httpProxy?.port, 8081)
         XCTAssertEqual(parsed.httpsProxy?.address, "7.8.9.10")
         XCTAssertEqual(parsed.httpsProxy?.port, 8082)
-        XCTAssertEqual(parsed.proxyAutoConfURL?.absoluteString, "https://pac/")
+        XCTAssertEqual(parsed.proxyAutoConfigurationURL?.absoluteString, "https://pac/")
         XCTAssertEqual(parsed.proxyBypassDomains, ["foo.com", "bar.org", "net.chat"])
     }
     
