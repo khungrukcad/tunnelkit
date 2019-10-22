@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Allow keep-alive timeout to be configured by the server or client (Robert Patchett). [#122](https://github.com/passepartoutvpn/tunnelkit/pull/122)
+- Support for proxy autoconfiguration URL (ThinkChaos). [#125](https://github.com/passepartoutvpn/tunnelkit/pull/125)
 
 ### Fixed
 
