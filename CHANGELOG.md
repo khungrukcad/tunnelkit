@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Session negotiation succeeds too early (Robert Patchett). [#124](https://github.com/passepartoutvpn/tunnelkit/pull/124)
+- Handle `vpn_gateway` literal in `--route`.
 
 ## 2.0.5 (2019-09-26)
 

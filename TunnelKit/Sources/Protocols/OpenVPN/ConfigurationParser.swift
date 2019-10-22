@@ -490,7 +490,10 @@ extension OpenVPN {
                     
                     let address = routeEntryArguments[0]
                     let mask = (routeEntryArguments.count > 1) ? routeEntryArguments[1] : "255.255.255.255"
-                    let gateway = (routeEntryArguments.count > 2) ? routeEntryArguments[2] : nil // defaultGateway4
+                    var gateway = (routeEntryArguments.count > 2) ? routeEntryArguments[2] : nil // defaultGateway4
+                    if gateway == "vpn_gateway" {
+                        gateway = nil
+                    }
                     optRoutes4.append((address, mask, gateway))
                 }
                 Regex.route6.enumerateArguments(in: line) {
@@ -505,7 +508,10 @@ extension OpenVPN {
                     }
                     
                     let destination = destinationComponents[0]
-                    let gateway = (routeEntryArguments.count > 1) ? routeEntryArguments[1] : nil // defaultGateway6
+                    var gateway = (routeEntryArguments.count > 1) ? routeEntryArguments[1] : nil // defaultGateway6
+                    if gateway == "vpn_gateway" {
+                        gateway = nil
+                    }
                     optRoutes6.append((destination, prefix, gateway))
                 }
                 Regex.gateway.enumerateArguments(in: line) {
