@@ -202,7 +202,7 @@ extension OpenVPN {
         /// Sends periodical keep-alive packets if set.
         public var keepAliveInterval: TimeInterval?
         
-        /// Disconnects after no keep-alive packets are recieved within timeout interval if set.
+        /// Disconnects after no keep-alive packets are received within timeout interval if set.
         public var keepAliveTimeout: TimeInterval?
         
         /// The number of seconds after which a renegotiation should be initiated. If `nil`, the client will never initiate a renegotiation.
