@@ -163,6 +163,8 @@ extension OpenVPNTunnelProvider {
 
             static let keepAlive = "KeepAlive"
             
+            static let keepAliveTimeout = "KeepAliveTimeout"
+            
             static let endpointProtocols = "EndpointProtocols"
             
             static let renegotiatesAfter = "RenegotiatesAfter"
@@ -497,6 +499,9 @@ private extension OpenVPN.Configuration {
         if let keepAliveInterval = providerConfiguration[S.keepAlive] as? TimeInterval {
             builder.keepAliveInterval = keepAliveInterval
         }
+        if let keepAliveTimeout = providerConfiguration[S.keepAliveTimeout] as? TimeInterval {
+            builder.keepAliveTimeout = keepAliveTimeout
+        }
         if let renegotiatesAfter = providerConfiguration[S.renegotiatesAfter] as? TimeInterval {
             builder.renegotiatesAfter = renegotiatesAfter
         }
@@ -571,6 +576,9 @@ private extension OpenVPN.Configuration {
         if let keepAliveSeconds = keepAliveInterval {
             dict[S.keepAlive] = keepAliveSeconds
         }
+        if let keepAliveTimeoutSeconds = keepAliveTimeout {
+            dict[S.keepAliveTimeout] = keepAliveTimeoutSeconds
+        }
         if let renegotiatesAfterSeconds = renegotiatesAfter {
             dict[S.renegotiatesAfter] = renegotiatesAfterSeconds
         }
@@ -632,9 +640,14 @@ private extension OpenVPN.Configuration {
             log.info("\tTLS security level: default")
         }
         if let keepAliveSeconds = keepAliveInterval, keepAliveSeconds > 0 {
-            log.info("\tKeep-alive: \(keepAliveSeconds) seconds")
+            log.info("\tKeep-alive interval: \(keepAliveSeconds) seconds")
         } else {
-            log.info("\tKeep-alive: never")
+            log.info("\tKeep-alive interval: never")
+        }
+        if let keepAliveTimeoutSeconds = keepAliveTimeout, keepAliveTimeoutSeconds > 0 {
+            log.info("\tKeep-alive timeout: \(keepAliveTimeoutSeconds) seconds")
+        } else {
+            log.info("\tKeep-alive timeout: never")
         }
         if let renegotiatesAfterSeconds = renegotiatesAfter, renegotiatesAfterSeconds > 0 {
             log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")

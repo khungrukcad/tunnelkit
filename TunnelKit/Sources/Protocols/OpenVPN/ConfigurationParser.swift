@@ -52,6 +52,8 @@ extension OpenVPN {
             
             static let ping = NSRegularExpression("^ping +\\d+")
             
+            static let pingRestart = NSRegularExpression("^ping-restart +\\d+")
+            
             static let renegSec = NSRegularExpression("^reneg-sec +\\d+")
             
             static let blockBegin = NSRegularExpression("^<[\\w\\-]+>")
@@ -203,6 +205,7 @@ extension OpenVPN {
             var optTLSKeyLines: [Substring]?
             var optTLSStrategy: TLSWrap.Strategy?
             var optKeepAliveSeconds: TimeInterval?
+            var optKeepAliveTimeoutSeconds: TimeInterval?
             var optRenegotiateAfterSeconds: TimeInterval?
             //
             var optHostname: String?
@@ -397,6 +400,13 @@ extension OpenVPN {
                         return
                     }
                     optKeepAliveSeconds = TimeInterval(arg)
+                }
+                Regex.pingRestart.enumerateArguments(in: line) {
+                    isHandled = true
+                    guard let arg = $0.first else {
+                        return
+                    }
+                    optKeepAliveTimeoutSeconds = TimeInterval(arg)
                 }
                 Regex.renegSec.enumerateArguments(in: line) {
                     isHandled = true
@@ -599,6 +609,7 @@ extension OpenVPN {
             }
             
             sessionBuilder.keepAliveInterval = optKeepAliveSeconds
+            sessionBuilder.keepAliveTimeout = optKeepAliveTimeoutSeconds
             sessionBuilder.renegotiatesAfter = optRenegotiateAfterSeconds
             
             // MARK: Client
