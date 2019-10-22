@@ -506,7 +506,7 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
             log.info("\tDomain: not configured")
         }
 
-        if options.httpProxy != nil || options.httpsProxy != nil {
+        if options.httpProxy != nil || options.httpsProxy != nil || options.proxyAutoConfigurationURL != nil {
             log.info("\tProxy:")
             if let proxy = options.httpProxy {
                 log.info("\t\tHTTP: \(proxy.maskedDescription)")
