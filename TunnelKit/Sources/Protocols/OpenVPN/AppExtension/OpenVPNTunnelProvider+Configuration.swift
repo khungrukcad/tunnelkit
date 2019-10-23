@@ -534,6 +534,9 @@ private extension OpenVPN.Configuration {
             }
             builder.httpsProxy = proxy
         }
+        if let proxyAutoConfigurationURLString = providerConfiguration[S.proxyAutoConfigurationURL] as? String, let proxyAutoConfigurationURL = URL(string: proxyAutoConfigurationURLString) {
+            builder.proxyAutoConfigurationURL = proxyAutoConfigurationURL
+        }
         if let proxyBypassDomains = providerConfiguration[S.proxyBypassDomains] as? [String] {
             builder.proxyBypassDomains = proxyBypassDomains
         }
