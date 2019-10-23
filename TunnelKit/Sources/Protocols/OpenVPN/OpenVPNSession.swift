@@ -308,6 +308,10 @@ public class OpenVPNSession: Session {
         return controlChannel.currentDataCount()
     }
     
+    public func serverConfiguration() -> OpenVPN.Configuration? {
+        return pushReply?.options
+    }
+    
     public func shutdown(error: Error?) {
         guard !isStopping else {
             log.warning("Ignore stop request, already stopping!")

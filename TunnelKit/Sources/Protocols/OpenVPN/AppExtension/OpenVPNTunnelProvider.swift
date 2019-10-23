@@ -277,6 +277,12 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
                 response?.append(UInt64(dataCount.1)) // outbound
             }
             
+        case .serverConfiguration:
+            if let cfg = session?.serverConfiguration() {
+                let encoder = JSONEncoder()
+                response = try? encoder.encode(cfg)
+            }
+            
         default:
             break
         }
