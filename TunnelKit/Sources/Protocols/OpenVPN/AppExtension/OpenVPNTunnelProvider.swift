@@ -506,10 +506,10 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         } else {
             log.info("\tDNS: not configured")
         }
-        if let searchDomain = options.searchDomain, !searchDomain.isEmpty {
-            log.info("\tDomain: \(searchDomain.maskedDescription)")
+        if let searchDomains = options.searchDomains, !searchDomains.isEmpty {
+            log.info("\tSearch domains: \(searchDomains.maskedDescription)")
         } else {
-            log.info("\tDomain: not configured")
+            log.info("\tSearch domains: not configured")
         }
 
         if options.httpProxy != nil || options.httpsProxy != nil || options.proxyAutoConfigurationURL != nil {
@@ -652,9 +652,9 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         if !isGateway {
             dnsSettings.matchDomains = [""]
         }
-        if let searchDomain = cfg.sessionConfiguration.searchDomain ?? options.searchDomain {
-            dnsSettings.domainName = searchDomain
-            dnsSettings.searchDomains = [searchDomain]
+        if let searchDomains = cfg.sessionConfiguration.searchDomains ?? options.searchDomains {
+            dnsSettings.domainName = searchDomains.first
+            dnsSettings.searchDomains = searchDomains
             if !isGateway {
                 dnsSettings.matchDomains = dnsSettings.searchDomains
             }
