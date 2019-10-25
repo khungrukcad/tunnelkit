@@ -653,6 +653,7 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
             dnsSettings.matchDomains = [""]
         }
         if let searchDomains = cfg.sessionConfiguration.searchDomains ?? options.searchDomains {
+            log.info("DNS: Using search domains \(searchDomains.maskedDescription)")
             dnsSettings.domainName = searchDomains.first
             dnsSettings.searchDomains = searchDomains
             if !isGateway {
