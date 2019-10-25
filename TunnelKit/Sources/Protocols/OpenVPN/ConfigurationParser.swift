@@ -225,7 +225,7 @@ extension OpenVPN {
             var optRoutes4: [(String, String, String?)] = [] // address, netmask, gateway
             var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
             var optDNSServers: [String]?
-            var optSearchDomain: String?
+            var optSearchDomains: [String]?
             var optHTTPProxy: Proxy?
             var optHTTPSProxy: Proxy?
             var optProxyAutoConfigurationURL: URL?
@@ -531,7 +531,10 @@ extension OpenVPN {
                     guard $0.count == 2 else {
                         return
                     }
-                    optSearchDomain = $0[1]
+                    if optSearchDomains == nil {
+                        optSearchDomains = []
+                    }
+                    optSearchDomains?.append($0[1])
                 }
                 Regex.proxy.enumerateArguments(in: line) {
                     if $0.count == 2 {
@@ -738,7 +741,7 @@ extension OpenVPN {
             }
             
             sessionBuilder.dnsServers = optDNSServers
-            sessionBuilder.searchDomain = optSearchDomain
+            sessionBuilder.searchDomains = optSearchDomains
             sessionBuilder.httpProxy = optHTTPProxy
             sessionBuilder.httpsProxy = optHTTPSProxy
             sessionBuilder.proxyAutoConfigurationURL = optProxyAutoConfigurationURL
