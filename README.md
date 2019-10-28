@@ -1,7 +1,7 @@
 # TunnelKit
 
 ![iOS 11+](https://img.shields.io/badge/ios-11+-green.svg)
-[![OpenSSL 1.1.0j](https://img.shields.io/badge/openssl-1.1.0j-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.0-notes.html)
+[![OpenSSL 1.1.0l](https://img.shields.io/badge/openssl-1.1.0l-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.0-notes.html)
 [![License GPLv3](https://img.shields.io/badge/license-GPLv3-lightgray.svg)](LICENSE)
 [![Travis-CI](https://api.travis-ci.org/passepartoutvpn/tunnelkit.svg?branch=master)](https://travis-ci.org/passepartoutvpn/tunnelkit)
 

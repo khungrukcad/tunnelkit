@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for proxy autoconfiguration URL (ThinkChaos). [#125](https://github.com/passepartoutvpn/tunnelkit/pull/125)
 - Support multiple DNS search domains. [#127](https://github.com/passepartoutvpn/tunnelkit/issues/127)
 
+### Changed
+
+- Upgrade OpenSSL to 1.1.0l.
+
 ### Fixed
 
 - Session negotiation succeeds too early (Robert Patchett). [#124](https://github.com/passepartoutvpn/tunnelkit/pull/124)
