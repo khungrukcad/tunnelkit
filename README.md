@@ -58,6 +58,7 @@ Ignored:
     - `--*-mtu` and variants
     - `--mssfix`
 - Multiple `--remote` with different `host` values (first wins)
+- Static client-side routes
 
 Many other flags are ignored too but it's normally not an issue.
 
