@@ -587,6 +587,13 @@ extension OpenVPN {
                 }
             }
             
+            guard let _ = optCA else {
+                throw ConfigurationError.missingConfiguration(option: "ca")
+            }
+            guard let _ = optCipher else {
+                throw ConfigurationError.missingConfiguration(option: "cipher")
+            }
+            
             //
             
             var sessionBuilder = ConfigurationBuilder()
