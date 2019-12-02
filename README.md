@@ -195,8 +195,8 @@ For more details please see [CONTRIBUTING][contrib-readme].
 
 - [lzo][dep-lzo-website] - © 1996 - 2017 Markus F.X.J. Oberhumer
 - [PIATunnel][dep-piatunnel-repo] - © 2018-Present Private Internet Access
-- [SwiftyBeaver][dep-swiftybeaver-repo] - © 2015 Sebastian Kreutzberger
 - [SURFnet][surfnet]
+- [SwiftyBeaver][dep-swiftybeaver-repo] - © 2015 Sebastian Kreutzberger
 
 This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit. ([https://www.openssl.org/][dep-openssl])
 
