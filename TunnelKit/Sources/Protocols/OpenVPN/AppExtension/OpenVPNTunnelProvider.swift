@@ -127,6 +127,12 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
     
     // MARK: NEPacketTunnelProvider (XPC queue)
     
+    open override var reasserting: Bool {
+        didSet {
+            log.debug("Reasserting flag \(reasserting ? "set" : "cleared")")
+        }
+    }
+    
     /// :nodoc:
     open override func startTunnel(options: [String : NSObject]? = nil, completionHandler: @escaping (Error?) -> Void) {
 
@@ -461,9 +467,11 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
         if reasserting {
             log.debug("Disconnection is recoverable, tunnel will reconnect in \(reconnectionDelay) milliseconds...")
             tunnelQueue.schedule(after: .milliseconds(reconnectionDelay)) {
+                log.debug("Tunnel is about to reconnect...")
 
                 // give up if reasserting cleared in the meantime
                 guard self.reasserting else {
+                    log.warning("Reasserting flag was cleared in the meantime")
                     return
                 }
 
@@ -529,6 +537,9 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         }
 
         bringNetworkUp(remoteAddress: remoteAddress, localOptions: session.configuration, options: options) { (error) in
+
+            // FIXME: XPC queue
+            
             self.reasserting = false
             
             if let error = error {
