@@ -470,8 +470,8 @@ public class OpenVPNSession: Session {
             if (code == .dataV1) || (code == .dataV2) {
                 let key = firstByte & 0b111
                 guard let _ = keys[key] else {
-                    log.error("Key with id \(key) not found")
-                    deferStop(.shutdown, OpenVPNError.badKey)
+                    log.warning("Key with id \(key) not found")
+//                    deferStop(.shutdown, OpenVPNError.badKey)
                     return
                 }
 
