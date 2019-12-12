@@ -297,6 +297,17 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
         }
         completionHandler?(response)
     }
+
+    // MARK: Wake/Sleep (debugging placeholders)
+
+    open override func wake() {
+        log.verbose("Wake signal received")
+    }
+    
+    open override func sleep(completionHandler: @escaping () -> Void) {
+        log.verbose("Sleep signal received")
+        completionHandler()
+    }
     
     // MARK: Connection (tunnel queue)
     
