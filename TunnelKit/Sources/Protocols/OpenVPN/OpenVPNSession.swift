@@ -437,6 +437,7 @@ public class OpenVPNSession: Session {
     // Ruby: recv_link
     private func receiveLink(packets: [Data]) {
         guard shouldHandlePackets() else {
+            log.warning("Discarding \(packets.count) LINK packets (should not handle)")
             return
         }
         
@@ -536,6 +537,7 @@ public class OpenVPNSession: Session {
     // Ruby: recv_tun
     private func receiveTunnel(packets: [Data]) {
         guard shouldHandlePackets() else {
+            log.warning("Discarding \(packets.count) TUN packets (should not handle)")
             return
         }
         sendDataPackets(packets)
@@ -1221,7 +1223,7 @@ public class OpenVPNSession: Session {
     // MARK: Stop
     
     private func shouldHandlePackets() -> Bool {
-        return (!isStopping && !keys.isEmpty)
+        return !isStopping && !keys.isEmpty
     }
     
     private func deferStop(_ method: StopMethod, _ error: Error?) {
