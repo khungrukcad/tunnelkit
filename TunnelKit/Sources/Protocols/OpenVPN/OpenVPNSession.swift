@@ -428,7 +428,7 @@ public class OpenVPNSession: Session {
             }
 
             if let packets = newPackets, !packets.isEmpty {
-//                log.verbose("Received \(packets.count) packets from \(self.tunnelName)")
+//                log.verbose("Received \(packets.count) packets from TUN")
                 self?.receiveTunnel(packets: packets)
             }
         }
