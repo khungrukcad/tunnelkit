@@ -555,19 +555,26 @@ public class OpenVPNSession: Session {
             return
         }
 
-        log.debug("Send ping")
-        sendDataPackets([OpenVPN.DataPacket.pingString])
-        lastPing.outbound = Date()
+        // is keep-alive enabled?
+        if let _ = keepAliveInterval {
+            log.debug("Send ping")
+            sendDataPackets([OpenVPN.DataPacket.pingString])
+            lastPing.outbound = Date()
+        }
 
+        // schedule even just to check for ping timeout
         scheduleNextPing()
     }
     
     private func scheduleNextPing() {
-        guard let interval = keepAliveInterval else {
-            log.verbose("Skip ping, keep-alive not set")
-            return
+        let interval: TimeInterval
+        if let keepAliveInterval = keepAliveInterval {
+            interval = keepAliveInterval
+            log.verbose("Schedule ping after \(interval) seconds")
+        } else {
+            interval = CoreConfiguration.OpenVPN.pingTimeoutCheckInterval
+            log.verbose("Schedule ping timeout check after \(interval) seconds")
         }
-        log.verbose("Schedule ping after \(interval) seconds")
         queue.asyncAfter(deadline: .now() + interval) { [weak self] in
             log.verbose("Running ping block")
             self?.ping()
