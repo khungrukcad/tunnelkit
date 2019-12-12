@@ -57,6 +57,9 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
     /// The maximum number of lines in the log.
     public var maxLogLines = 1000
     
+    /// The log level when `OpenVPNTunnelProvider.Configuration.shouldDebug` is enabled.
+    public var debugLogLevel: SwiftyBeaver.Level = .debug
+    
     /// The number of milliseconds after which a DNS resolution fails.
     public var dnsTimeout = 3000
     
@@ -772,7 +775,7 @@ extension OpenVPNTunnelProvider {
     // MARK: Logging
     
     private func configureLogging(debug: Bool, customFormat: String? = nil) {
-        let logLevel: SwiftyBeaver.Level = (debug ? .debug : .info)
+        let logLevel: SwiftyBeaver.Level = (debug ? debugLogLevel : .info)
         let logFormat = customFormat ?? "$Dyyyy-MM-dd HH:mm:ss.SSS$d $L $N.$F:$l - $M"
         
         if debug {
