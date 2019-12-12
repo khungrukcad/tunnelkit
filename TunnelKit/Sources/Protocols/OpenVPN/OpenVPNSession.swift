@@ -407,6 +407,8 @@ public class OpenVPNSession: Session {
             }
             if let error = error {
                 log.error("Failed LINK read: \(error)")
+                
+                // XXX: why isn't the tunnel shutting down at this point?
                 return
             }
             
