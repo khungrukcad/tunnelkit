@@ -574,10 +574,13 @@ public class OpenVPNSession: Session {
     
     private func scheduleNextPing(elapsed: TimeInterval = 0.0) {
         guard let interval = keepAliveInterval else {
+            log.verbose("Skip ping, keep-alive not set")
             return
         }
         let remaining = min(interval, interval - elapsed)
+        log.verbose("Schedule ping after \(remaining) seconds (interval=\(interval), elapsed=\(elapsed))")
         queue.asyncAfter(deadline: .now() + remaining) { [weak self] in
+            log.verbose("Running ping block")
             self?.ping()
         }
     }
