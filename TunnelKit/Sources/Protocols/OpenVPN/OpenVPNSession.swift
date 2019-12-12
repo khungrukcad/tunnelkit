@@ -160,7 +160,7 @@ public class OpenVPNSession: Session {
 
     private var lastPing: BidirectionalState<Date>
     
-    private var isStopping: Bool
+    private(set) var isStopping: Bool
     
     /// The optional reason why the session stopped.
     public private(set) var stopError: Error?
@@ -541,28 +541,18 @@ public class OpenVPNSession: Session {
             return
         }
         sendDataPackets(packets)
-        lastPing.outbound = Date()
     }
     
     // Ruby: ping
     private func ping() {
-        guard (currentKey?.controlState == .connected) else {
+        guard currentKey?.controlState == .connected else {
             return
         }
         
         let now = Date()
-        guard (now.timeIntervalSince(lastPing.inbound) <= keepAliveTimeout) else {
+        guard now.timeIntervalSince(lastPing.inbound) <= keepAliveTimeout else {
             deferStop(.shutdown, OpenVPNError.pingTimeout)
             return
-        }
-
-        // postpone ping if elapsed less than keep-alive
-        if let interval = keepAliveInterval {
-            let elapsed = now.timeIntervalSince(lastPing.outbound)
-            guard (elapsed >= interval) else {
-                scheduleNextPing(elapsed: elapsed)
-                return
-            }
         }
 
         log.debug("Send ping")
@@ -572,14 +562,13 @@ public class OpenVPNSession: Session {
         scheduleNextPing()
     }
     
-    private func scheduleNextPing(elapsed: TimeInterval = 0.0) {
+    private func scheduleNextPing() {
         guard let interval = keepAliveInterval else {
             log.verbose("Skip ping, keep-alive not set")
             return
         }
-        let remaining = min(interval, interval - elapsed)
-        log.verbose("Schedule ping after \(remaining) seconds (interval=\(interval), elapsed=\(elapsed))")
-        queue.asyncAfter(deadline: .now() + remaining) { [weak self] in
+        log.verbose("Schedule ping after \(interval) seconds")
+        queue.asyncAfter(deadline: .now() + interval) { [weak self] in
             log.verbose("Running ping block")
             self?.ping()
         }
