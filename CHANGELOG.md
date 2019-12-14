@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Fixed
+
+- Tunnel dying on idle or device locked. [#138](https://github.com/passepartoutvpn/tunnelkit/issues/138)
+- Keep-alive pings coalescing over time.
+- Ping timeout not checked for if keep-alive is disabled.
+
 ## 2.2.0 (2019-12-11)
 
 ### Changed
