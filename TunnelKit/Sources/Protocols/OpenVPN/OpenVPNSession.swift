@@ -745,7 +745,7 @@ public class OpenVPNSession: Session {
     
     private func completeConnection() {
         setupEncryption()
-        authenticator = nil
+        authenticator?.reset()
         negotiationKey.controlState = .connected
         connectedDate = Date()
         transitionKeys()
