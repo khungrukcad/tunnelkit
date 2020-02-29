@@ -156,11 +156,11 @@ private extension NEProvider {
     func createSocket(to address: String, protocol endpointProtocol: EndpointProtocol) -> GenericSocket {
         let endpoint = NWHostEndpoint(hostname: address, port: "\(endpointProtocol.port)")
         switch endpointProtocol.socketType {
-        case .udp:
+        case .udp, .udp4, .udp6:
             let impl = createUDPSession(to: endpoint, from: nil)
             return NEUDPSocket(impl: impl)
             
-        case .tcp:
+        case .tcp, .tcp4, .tcp6:
             let impl = createTCPConnection(to: endpoint, enableTLS: false, tlsParameters: nil, delegate: nil)
             return NETCPSocket(impl: impl)
         }
