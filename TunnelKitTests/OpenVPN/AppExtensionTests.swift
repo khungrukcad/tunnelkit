@@ -106,4 +106,24 @@ class AppExtensionTests: XCTestCase {
         }
         waitForExpectations(timeout: 5.0, handler: nil)
     }
+    
+    func testDNSAddressConversion() {
+        let testStrings = [
+            "0.0.0.0",
+            "1.2.3.4",
+            "111.222.333.444",
+            "1.0.3.255",
+            "1.2.255.4",
+            "1.2.3.0",
+            "255.255.255.255"
+        ]
+        for expString in testStrings {
+            guard let number = DNSResolver.ipv4(fromString: expString) else {
+                XCTAssertEqual(expString, "111.222.333.444")
+                continue
+            }
+            let string = DNSResolver.string(fromIPv4: number)
+            XCTAssertEqual(string, expString)
+        }
+    }
 }

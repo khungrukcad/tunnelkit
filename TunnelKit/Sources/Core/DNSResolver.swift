@@ -110,19 +110,15 @@ public class DNSResolver {
      - Returns: The string representation of `ipv4`.
      */
     public static func string(fromIPv4 ipv4: UInt32) -> String {
-        var addr = in_addr(s_addr: CFSwapInt32HostToBig(ipv4))
-        var buf = Data(count: Int(INET_ADDRSTRLEN))
-        let bufCount = socklen_t(buf.count)
-        let resultPtr: UnsafePointer<CChar>? = buf.withUnsafeMutableBytes {
-            let bufPtr = $0.bindMemory(to: CChar.self).baseAddress!
-            return withUnsafePointer(to: &addr) {
-                return inet_ntop(AF_INET, $0, bufPtr, bufCount)
-            }
+        var remainder = ipv4
+        var groups: [UInt32] = []
+        var base: UInt32 = 1 << 24
+        while base > 0 {
+            groups.append(remainder / base)
+            remainder %= base
+            base >>= 8
         }
-        guard let result = resultPtr else {
-            preconditionFailure()
-        }
-        return String(cString: result)
+        return groups.map { "\($0)" }.joined(separator: ".")
     }
     
     /**
