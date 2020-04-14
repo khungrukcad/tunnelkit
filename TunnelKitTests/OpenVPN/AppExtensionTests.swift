@@ -94,7 +94,7 @@ class AppExtensionTests: XCTestCase {
     
     func testDNSResolver() {
         let exp = expectation(description: "DNS")
-        DNSResolver.resolve("djsbjhcbjzhbxjnvsd.com", timeout: 1000, queue: DispatchQueue.main) { (addrs, error) in
+        DNSResolver.resolve("www.google.com", timeout: 1000, queue: .main) { (addrs, error) in
             defer {
                 exp.fulfill()
             }
@@ -126,4 +126,99 @@ class AppExtensionTests: XCTestCase {
             XCTAssertEqual(string, expString)
         }
     }
+
+    func testEndpointCycling() {
+        CoreConfiguration.masksPrivateData = false
+
+        var builder1 = OpenVPN.ConfigurationBuilder()
+        builder1.hostname = "italy.privateinternetaccess.com"
+        builder1.endpointProtocols = [
+            EndpointProtocol(.tcp6, 2222),
+            EndpointProtocol(.udp, 1111),
+            EndpointProtocol(.udp4, 3333)
+        ]
+        var builder2 = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: builder1.build())
+        builder2.prefersResolvedAddresses = true
+        builder2.resolvedAddresses = [
+            "82.102.21.218",
+            "82.102.21.214",
+            "82.102.21.213",
+        ]
+        let strategy = ConnectionStrategy(configuration: builder2.build())
+        
+        let expected = [
+            "82.102.21.218:UDP:1111",
+            "82.102.21.218:UDP4:3333",
+            "82.102.21.214:UDP:1111",
+            "82.102.21.214:UDP4:3333",
+            "82.102.21.213:UDP:1111",
+            "82.102.21.213:UDP4:3333",
+        ]
+        var i = 0
+        while strategy.hasEndpoint() {
+            let endpoint = strategy.currentEndpoint()
+            print("\(endpoint)")
+            XCTAssertEqual(endpoint.description, expected[i])
+            i += 1
+            strategy.tryNextEndpoint()
+        }
+    }
+
+//    func testEndpointCycling4() {
+//        CoreConfiguration.masksPrivateData = false
+//
+//        var builder = OpenVPN.ConfigurationBuilder()
+//        builder.hostname = "italy.privateinternetaccess.com"
+//        builder.endpointProtocols = [
+//            EndpointProtocol(.tcp4, 2222),
+//        ]
+//        let strategy = ConnectionStrategy(
+//            configuration: builder.build(),
+//            resolvedRecords: [
+//                DNSRecord(address: "111:bbbb:ffff::eeee", isIPv6: true),
+//                DNSRecord(address: "11.22.33.44", isIPv6: false),
+//            ]
+//        )
+//
+//        let expected = [
+//            "11.22.33.44:TCP4:2222"
+//        ]
+//        var i = 0
+//        while strategy.hasEndpoint() {
+//            let endpoint = strategy.currentEndpoint()
+//            print("\(endpoint)")
+//            XCTAssertEqual(endpoint.description, expected[i])
+//            i += 1
+//            strategy.tryNextEndpoint()
+//        }
+//    }
+//
+//    func testEndpointCycling6() {
+//        CoreConfiguration.masksPrivateData = false
+//
+//        var builder = OpenVPN.ConfigurationBuilder()
+//        builder.hostname = "italy.privateinternetaccess.com"
+//        builder.endpointProtocols = [
+//            EndpointProtocol(.udp6, 2222),
+//        ]
+//        let strategy = ConnectionStrategy(
+//            configuration: builder.build(),
+//            resolvedRecords: [
+//                DNSRecord(address: "111:bbbb:ffff::eeee", isIPv6: true),
+//                DNSRecord(address: "11.22.33.44", isIPv6: false),
+//            ]
+//        )
+//
+//        let expected = [
+//            "111:bbbb:ffff::eeee:UDP6:2222"
+//        ]
+//        var i = 0
+//        while strategy.hasEndpoint() {
+//            let endpoint = strategy.currentEndpoint()
+//            print("\(endpoint)")
+//            XCTAssertEqual(endpoint.description, expected[i])
+//            i += 1
+//            strategy.tryNextEndpoint()
+//        }
+//    }
 }
