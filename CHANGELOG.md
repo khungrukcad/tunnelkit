@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Upgrade OpenSSL to 1.1.1f. [#165](https://github.com/passepartoutvpn/tunnelkit/issues/165)
+
 ### Fixed
 
 - Index out of range during negotiation (Grivus). [#143](https://github.com/passepartoutvpn/tunnelkit/pull/143)
