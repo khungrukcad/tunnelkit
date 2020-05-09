@@ -14,6 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - IPv6 traffic broken on Mojave. [#146](https://github.com/passepartoutvpn/tunnelkit/issues/146), [#169](https://github.com/passepartoutvpn/tunnelkit/pull/169)
+- Restore tunnel MTU setting (ueshiba). [#148](https://github.com/passepartoutvpn/tunnelkit/pull/148)
+- Transient connected state upon connection failure (rob-patchett). [#128](https://github.com/passepartoutvpn/tunnelkit/pull/128)
 
 ## 2.2.3 (2019-04-21)
 
