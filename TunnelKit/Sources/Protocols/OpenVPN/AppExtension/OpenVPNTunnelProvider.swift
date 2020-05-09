@@ -440,7 +440,7 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
         }
         if session.canRebindLink() {
             session.rebindLink(producer.link(withMTU: cfg.mtu))
-            shouldReconnect = false
+            reasserting = false
         } else {
             session.setLink(producer.link(withMTU: cfg.mtu))
         }
