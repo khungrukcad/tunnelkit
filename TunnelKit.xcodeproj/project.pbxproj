@@ -164,9 +164,10 @@
 		0E58BF5922411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E58BF5A22411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
-		0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
 		0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
+		0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
+		0ECAF84B246697DA00D8266A /* TunnelKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
@@ -310,6 +311,20 @@
 			remoteInfo = "TunnelKit-macOS";
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		0ECAF84C246697DA00D8266A /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				0ECAF84B246697DA00D8266A /* TunnelKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
@@ -491,8 +506,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0E9379C91F819A4300CE91B6 /* TunnelKit.framework in Frameworks */,
 				B94D5E2579FB6292E2EC7AF1 /* Pods_TunnelKit_TunnelKitHost.framework in Frameworks */,
+				0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -981,6 +996,7 @@
 				0E1108A61F77B9F900A92462 /* Frameworks */,
 				0E1108A71F77B9F900A92462 /* Resources */,
 				50E8EAE4BAE91AD6D937A498 /* [CP] Embed Pods Frameworks */,
+				0ECAF84C246697DA00D8266A /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
