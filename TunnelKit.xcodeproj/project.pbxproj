@@ -1623,6 +1623,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3DE692CD2FA087ED390CB9C6 /* Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "TunnelKitTests-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1636,6 +1637,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 82499AC779944BE0D1CA651C /* Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
+				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = "TunnelKitTests-iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
