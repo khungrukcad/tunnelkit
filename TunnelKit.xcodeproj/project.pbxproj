@@ -164,6 +164,8 @@
 		0E58BF5922411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E58BF5A22411FEF006FB157 /* LZO.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E58BF5822411FEF006FB157 /* LZO.m */; };
 		0E749F622178911D00BB2701 /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
+		0E7F3F6A246ABA0F006BE77F /* IPHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F3F69246ABA0F006BE77F /* IPHeader.swift */; };
+		0E7F3F6B246ABA0F006BE77F /* IPHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F3F69246ABA0F006BE77F /* IPHeader.swift */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
 		0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
 		0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
@@ -418,6 +420,7 @@
 		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
+		0E7F3F69246ABA0F006BE77F /* IPHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPHeader.swift; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA82A272190B220007960EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -839,6 +842,7 @@
 				0EFEB44B2006D3C800F81029 /* Errors.m */,
 				0EE2F9792291817300F56F49 /* Errors.swift */,
 				0EFEB4452006D3C800F81029 /* IOInterface.swift */,
+				0E7F3F69246ABA0F006BE77F /* IPHeader.swift */,
 				0EE2F96D2291636B00F56F49 /* IPv4Settings.swift */,
 				0EE2F9702291638600F56F49 /* IPv6Settings.swift */,
 				0EFEB4492006D3C800F81029 /* LinkInterface.swift */,
@@ -1455,6 +1459,7 @@
 				0EE2F9FA22918DA100F56F49 /* DNSResolver.swift in Sources */,
 				0E23B43322982AF800304C30 /* ControlChannel.swift in Sources */,
 				0E23B48522982AF800304C30 /* ReplayProtector.m in Sources */,
+				0E7F3F6A246ABA0F006BE77F /* IPHeader.swift in Sources */,
 				0E23B44122982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */,
 				0E23B42D22982AF800304C30 /* ControlChannelSerializer.swift in Sources */,
 				0EE2F9F622918DA100F56F49 /* NEUDPSocket.swift in Sources */,
@@ -1537,6 +1542,7 @@
 				0EE2F9FB22918DA100F56F49 /* DNSResolver.swift in Sources */,
 				0E23B43422982AF800304C30 /* ControlChannel.swift in Sources */,
 				0E23B48622982AF800304C30 /* ReplayProtector.m in Sources */,
+				0E7F3F6B246ABA0F006BE77F /* IPHeader.swift in Sources */,
 				0E23B44222982AF800304C30 /* OpenVPNSession+PIA.swift in Sources */,
 				0E23B42E22982AF800304C30 /* ControlChannelSerializer.swift in Sources */,
 				0EE2F9F722918DA100F56F49 /* NEUDPSocket.swift in Sources */,
