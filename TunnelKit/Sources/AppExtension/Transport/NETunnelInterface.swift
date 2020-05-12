@@ -46,12 +46,11 @@ public class NETunnelInterface: TunnelInterface {
     
     private static let ipV6: UInt8 = 6
     
-    private static let protocolNumbers: [UInt8: NSNumber] = [
-        ipV4: NSNumber(value: AF_INET),
-        ipV6: NSNumber(value: AF_INET6)
-    ]
+    private static let ipV4ProtocolNumber = AF_INET as NSNumber
 
-    private static let fallbackProtocolNumber = protocolNumbers[ipV4]!
+    private static let ipV6ProtocolNumber = AF_INET6 as NSNumber
+
+    private static let fallbackProtocolNumber = ipV4ProtocolNumber
 
     private weak var impl: NEPacketTunnelFlow?
     
@@ -110,10 +109,7 @@ public class NETunnelInterface: TunnelInterface {
 
         // The first 4 bits identify the IP version
         let ipVersion = (packet[0] & 0xf0) >> 4
-        guard let protocolNumber = protocolNumbers[ipVersion] else {
-            log.warning("Unrecognized IP version (\(ipVersion))")
-            return fallbackProtocolNumber
-        }
-        return protocolNumber
+        assert(ipVersion == ipV4 || ipVersion == ipV6)
+        return (ipVersion == ipV6) ? ipV6ProtocolNumber : ipV4ProtocolNumber
     }
 }
