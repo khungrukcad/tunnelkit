@@ -179,18 +179,7 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
             return
         }
 
-        // optional credentials
-        let credentials: OpenVPN.Credentials?
-        if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference,
-            let password = try? Keychain.password(for: username, reference: passwordReference) {
-
-            credentials = OpenVPN.Credentials(username, password)
-        } else {
-            credentials = nil
-        }
-
-        strategy = ConnectionStrategy(configuration: cfg)
-
+        // prepare for logging (append)
         if let content = cfg.existingLog(in: appGroup) {
             var existingLog = content.components(separatedBy: "\n")
             if let i = existingLog.firstIndex(of: logSeparator) {
@@ -202,15 +191,26 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
             existingLog.append("")
             memoryLog.start(with: existingLog)
         }
-
         configureLogging(
             debug: cfg.shouldDebug,
             customFormat: cfg.debugLogFormat
         )
         
+        // logging only ACTIVE from now on
+        
         // override library configuration
         if let masksPrivateData = cfg.masksPrivateData {
             CoreConfiguration.masksPrivateData = masksPrivateData
+        }
+
+        // optional credentials
+        let credentials: OpenVPN.Credentials?
+        if let username = protocolConfiguration.username, let passwordReference = protocolConfiguration.passwordReference,
+            let password = try? Keychain.password(for: username, reference: passwordReference) {
+
+            credentials = OpenVPN.Credentials(username, password)
+        } else {
+            credentials = nil
         }
 
         log.info("Starting tunnel...")
@@ -222,7 +222,10 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
         }
 
         cfg.print(appVersion: appVersion)
-        
+
+        // prepare to pick endpoints
+        strategy = ConnectionStrategy(configuration: cfg)
+
         let session: OpenVPNSession
         do {
             session = try OpenVPNSession(queue: tunnelQueue, configuration: cfg.sessionConfiguration, cachesURL: cachesURL)
