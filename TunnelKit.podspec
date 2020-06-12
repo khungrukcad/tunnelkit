@@ -33,6 +33,13 @@ Pod::Spec.new do |s|
         p.dependency "TunnelKit/Core"
     end
 
+    s.subspec "Manager" do |p|
+        p.source_files          = "TunnelKit/Sources/Manager/**/*.swift"
+        p.frameworks            = "NetworkExtension"
+
+        p.dependency "SwiftyBeaver"
+    end
+
     s.subspec "Protocols" do |t|
         t.subspec "OpenVPN" do |p|
             p.source_files          = "TunnelKit/Sources/Protocols/OpenVPN/**/*.{h,m,swift}"
