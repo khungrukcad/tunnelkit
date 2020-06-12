@@ -1,6 +1,6 @@
 //
 //  PacketTunnelProvider.swift
-//  BasicTunnelExtension-iOS
+//  BasicTunnel-iOS
 //
 //  Created by Davide De Rosa on 9/15/17.
 //  Copyright (c) 2018 Davide De Rosa. All rights reserved.
