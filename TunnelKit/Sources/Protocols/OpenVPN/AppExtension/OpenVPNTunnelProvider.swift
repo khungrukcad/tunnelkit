@@ -132,6 +132,7 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
 
     // MARK: NEPacketTunnelProvider (XPC queue)
     
+    /// :nodoc:
     open override var reasserting: Bool {
         didSet {
             log.debug("Reasserting flag \(reasserting ? "set" : "cleared")")
@@ -305,10 +306,12 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
 
     // MARK: Wake/Sleep (debugging placeholders)
 
+    /// :nodoc:
     open override func wake() {
         log.verbose("Wake signal received")
     }
     
+    /// :nodoc:
     open override func sleep(completionHandler: @escaping () -> Void) {
         log.verbose("Sleep signal received")
         completionHandler()
