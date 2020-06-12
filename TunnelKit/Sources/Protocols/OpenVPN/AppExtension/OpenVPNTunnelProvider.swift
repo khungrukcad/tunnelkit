@@ -293,7 +293,7 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
             }
             
         case .serverConfiguration:
-            if let cfg = session?.serverConfiguration() {
+            if let cfg = session?.serverConfiguration() as? OpenVPN.Configuration {
                 let encoder = JSONEncoder()
                 response = try? encoder.encode(cfg)
             }

@@ -71,6 +71,13 @@ public protocol Session {
     func dataCount() -> (Int, Int)?
     
     /**
+     Returns the current server configuration.
+
+     - Returns: The current server configuration, represented as a generic object.
+     */
+    func serverConfiguration() -> Any?
+
+    /**
      Shuts down the session with an optional `Error` reason. Does nothing if the session is already stopped or about to stop.
      
      - Parameter error: An optional `Error` being the reason of the shutdown.
