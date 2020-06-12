@@ -10,6 +10,8 @@ xcodebuild_arguments:
     - "TunnelKit.xcworkspace"
     - "-scheme"
     - "TunnelKit-iOS"
+    - "-sdk"
+    - "iphonesimulator"
 
 custom_categories:
     - name: Core
