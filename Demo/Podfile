@@ -6,6 +6,7 @@ abstract_target 'iOS' do
 
     target 'BasicTunnelExtension-iOS' do
         pod 'TunnelKit', :path => '..'
+        pod 'TunnelKit/Manager', :path => '..'
     end
     target 'BasicTunnel-iOS' do
     end
@@ -16,6 +17,7 @@ abstract_target 'macOS' do
 
     target 'BasicTunnelExtension-macOS' do
         pod 'TunnelKit', :path => '..'
+        pod 'TunnelKit/Manager', :path => '..'
     end
     target 'BasicTunnel-macOS' do
     end
