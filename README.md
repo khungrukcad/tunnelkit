@@ -153,6 +153,15 @@ There are no physical network implementations (e.g. UDP or TCP) in this module.
 
 Provides a layer on top of the NetworkExtension framework. Most importantly, bridges native [NWUDPSession][ne-udp] and [NWTCPConnection][ne-tcp] to an abstract `GenericSocket` interface, thus making a multi-protocol VPN dramatically easier to manage.
 
+### Manager
+
+This subspec includes convenient classes to control the VPN tunnel from your app without the NetworkExtension headaches. Have a look at `VPNProvider` implementations:
+
+- `MockVPNProvider` (default, useful to test on simulator)
+- `StandardVPNProvider`
+
+Set `VPN.shared` to either of them at app launch time.
+
 ### Protocols/OpenVPN
 
 Here you will find the low-level entities on top of which an OpenVPN connection is established. Code is mixed Swift and Obj-C, most of it is not exposed to consumers. The module depends on OpenSSL.
