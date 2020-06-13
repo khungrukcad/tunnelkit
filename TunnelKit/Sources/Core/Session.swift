@@ -50,7 +50,7 @@ public protocol Session {
      - Precondition: `link` is an active network interface.
      - Postcondition: The VPN session is active.
      - Parameter link: The `LinkInterface` on which to establish the VPN session.
-     - Seealso: `canRebindLink()`.
+     - Seealso: `canRebindLink()`
      */
     func rebindLink(_ link: LinkInterface)
     

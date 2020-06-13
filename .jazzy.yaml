@@ -19,6 +19,7 @@ custom_categories:
         - BidirectionalState
         - ConfigurationError
         - DNSResolver
+        - DNSRecord
         - EndpointProtocol
         - IOInterface
         - IPv4Settings
@@ -28,6 +29,7 @@ custom_categories:
         - Session
         - SocketType
         - TunnelInterface
+        - IPHeader
     - name: AppExtension
       children:
         - GenericSocket
