@@ -62,7 +62,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(VPNStatusDidChange(notification:)),
-            name: .VPNDidChangeStatus,
+            name: VPN.didChangeStatus,
             object: nil
         )
         

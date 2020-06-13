@@ -25,6 +25,18 @@
 
 import Foundation
 
+/// Wrapper for shared access to VPN-related objects.
 public class VPN {
+    
+    /// The VPN became ready to use.
+    public static let didPrepare = Notification.Name("VPNDidPrepare")
+    
+    /// The VPN did change status.
+    public static let didChangeStatus = Notification.Name("VPNDidChangeStatus")
+
+    /// The VPN profile did (re)install.
+    public static let didReinstall = Notification.Name("VPNDidReinstall")
+
+    /// A singleton `VPNProvider` instance (default is a `MockVPNProvider`). Make sure to set this on app launch.
     public static var shared: VPNProvider = MockVPNProvider()
 }

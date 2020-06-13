@@ -58,7 +58,7 @@ class ViewController: NSViewController {
         NotificationCenter.default.addObserver(
             self,
             selector: #selector(VPNStatusDidChange(notification:)),
-            name: .NEVPNStatusDidChange,
+            name: VPN.didChangeStatus,
             object: nil
         )
         

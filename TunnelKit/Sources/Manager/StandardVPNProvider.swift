@@ -26,6 +26,7 @@
 import Foundation
 import NetworkExtension
 
+/// :nodoc:
 public class StandardVPNProvider: VPNProvider {
     private let bundleIdentifier: String
     
@@ -83,7 +84,7 @@ public class StandardVPNProvider: VPNProvider {
     public func prepare(completionHandler: (() -> Void)?) {
         find(with: bundleIdentifier) {
             self.manager = $0
-            NotificationCenter.default.post(name: .VPNDidPrepare, object: nil)
+            NotificationCenter.default.post(name: VPN.didPrepare, object: nil)
             completionHandler?()
         }
     }
@@ -307,10 +308,10 @@ public class StandardVPNProvider: VPNProvider {
         }
         lastNotifiedStatus = status
 
-        NotificationCenter.default.post(name: .VPNDidChangeStatus, object: self)
+        NotificationCenter.default.post(name: VPN.didChangeStatus, object: self)
     }
 
     @objc private func vpnDidReinstall(_ notification: Notification) {
-        NotificationCenter.default.post(name: .VPNDidReinstall, object: self)
+        NotificationCenter.default.post(name: VPN.didReinstall, object: self)
     }
 }

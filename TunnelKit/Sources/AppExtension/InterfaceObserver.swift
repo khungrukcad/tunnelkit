@@ -44,7 +44,7 @@ private let log = SwiftyBeaver.self
 public class InterfaceObserver: NSObject {
 
     /// A change in Wi-Fi state occurred.
-    public static let didDetectWifiChange = NSNotification.Name("InterfaceObserverDidDetectWifiChange")
+    public static let didDetectWifiChange = Notification.Name("InterfaceObserverDidDetectWifiChange")
 
     private var queue: DispatchQueue?
     

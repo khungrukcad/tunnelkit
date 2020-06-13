@@ -25,6 +25,7 @@
 
 import Foundation
 
+/// :nodoc:
 public class MockVPNProvider: VPNProvider {
     public let isPrepared: Bool = true
 
@@ -33,7 +34,7 @@ public class MockVPNProvider: VPNProvider {
     public private(set) var status: VPNStatus = .disconnected
     
     public func prepare(completionHandler: (() -> Void)?) {
-        NotificationCenter.default.post(name: .VPNDidPrepare, object: nil)
+        NotificationCenter.default.post(name: VPN.didPrepare, object: nil)
         completionHandler?()
     }
     
@@ -45,28 +46,28 @@ public class MockVPNProvider: VPNProvider {
     public func connect(completionHandler: ((Error?) -> Void)?) {
         isEnabled = true
         status = .connected
-        NotificationCenter.default.post(name: .VPNDidChangeStatus, object: self)
+        NotificationCenter.default.post(name: VPN.didChangeStatus, object: self)
         completionHandler?(nil)
     }
     
     public func disconnect(completionHandler: ((Error?) -> Void)?) {
         isEnabled = false
         status = .disconnected
-        NotificationCenter.default.post(name: .VPNDidChangeStatus, object: self)
+        NotificationCenter.default.post(name: VPN.didChangeStatus, object: self)
         completionHandler?(nil)
     }
     
     public func reconnect(configuration: VPNConfiguration, completionHandler: ((Error?) -> Void)?) {
         isEnabled = true
         status = .connected
-        NotificationCenter.default.post(name: .VPNDidChangeStatus, object: self)
+        NotificationCenter.default.post(name: VPN.didChangeStatus, object: self)
         completionHandler?(nil)
     }
     
     public func uninstall(completionHandler: (() -> Void)?) {
         isEnabled = false
         status = .disconnected
-        NotificationCenter.default.post(name: .VPNDidChangeStatus, object: self)
+        NotificationCenter.default.post(name: VPN.didChangeStatus, object: self)
         completionHandler?()
     }
     

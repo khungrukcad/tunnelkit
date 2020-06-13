@@ -26,14 +26,20 @@
 import Foundation
 import NetworkExtension
 
+/// Generic marker for objects able to configure a `VPNProvider`.
 public protocol VPNConfiguration {
 }
 
+/// A `VPNConfiguration` built on top of NetworkExtension entities.
 public struct NetworkExtensionVPNConfiguration: VPNConfiguration {
+
+    /// The `NETunnelProviderProtocol` object embedding tunnel configuration.
     public let protocolConfiguration: NETunnelProviderProtocol
     
+    /// The on-demand rules to establish.
     public let onDemandRules: [NEOnDemandRule]
     
+    /// :nodoc:
     public init(protocolConfiguration: NETunnelProviderProtocol, onDemandRules: [NEOnDemandRule]) {
         self.protocolConfiguration = protocolConfiguration
         self.onDemandRules = onDemandRules
