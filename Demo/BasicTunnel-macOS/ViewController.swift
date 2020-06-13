@@ -78,7 +78,7 @@ YDQ8z9v+DMO6iwyIDRiU
 extension ViewController {
     private static let appGroup = "DTDYD63ZX9.group.com.algoritmico.macos.demo.BasicTunnel"
     
-    private static let tunnelIdentifier = "com.algoritmico.macos.demo.BasicTunnel.BasicTunnelExtension"
+    private static let tunnelIdentifier = "com.algoritmico.macos.demo.BasicTunnel.Extension"
     
     private func makeProtocol() -> NETunnelProviderProtocol {
         let server = textServer.stringValue
