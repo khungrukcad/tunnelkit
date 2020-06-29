@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0EAC574724943B5D00D0FCE0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC574624943B5D00D0FCE0 /* Configuration.swift */; };
+		0EAC574824943B5D00D0FCE0 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC574624943B5D00D0FCE0 /* Configuration.swift */; };
 		0EB39FE91F7424F80023AFFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB39FE81F7424F80023AFFC /* AppDelegate.swift */; };
 		0EB39FEB1F7424F80023AFFC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EB39FEA1F7424F80023AFFC /* ViewController.swift */; };
 		0EB39FEE1F7424F80023AFFC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0EB39FEC1F7424F80023AFFC /* Main.storyboard */; };
@@ -71,6 +73,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0EAC574624943B5D00D0FCE0 /* Configuration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		0EB39FE61F7424F80023AFFC /* BasicTunnel-iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "BasicTunnel-iOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EB39FE81F7424F80023AFFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0EB39FEA1F7424F80023AFFC /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -147,6 +150,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0EAC574524943B3500D0FCE0 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC574624943B5D00D0FCE0 /* Configuration.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		0EB39FC41F7424580023AFFC = {
 			isa = PBXGroup;
 			children = (
@@ -154,6 +165,7 @@
 				0EB39FFD1F7425140023AFFC /* BasicTunnelExtension-iOS */,
 				0EB6EEB81F92D417005F6221 /* BasicTunnel-macOS */,
 				0EB6EECC1F92D43D005F6221 /* BasicTunnelExtension-macOS */,
+				0EAC574524943B3500D0FCE0 /* Shared */,
 				0EB39FCE1F7424580023AFFC /* Products */,
 				B850E57E641AD1B37E79BAB5 /* Frameworks */,
 				94C1D7B5B11C6CCE74B21D93 /* Pods */,
@@ -541,8 +553,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh",
 				"${PODS_ROOT}/OpenSSL-Apple/frameworks/MacOSX/openssl.framework",
@@ -550,8 +560,6 @@
 				"${BUILT_PRODUCTS_DIR}/TunnelKit-macOS/TunnelKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -567,8 +575,6 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputFileListPaths = (
-			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh",
 				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
@@ -576,8 +582,6 @@
 				"${BUILT_PRODUCTS_DIR}/TunnelKit-iOS/TunnelKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
@@ -639,6 +643,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EAC574724943B5D00D0FCE0 /* Configuration.swift in Sources */,
 				0EB39FEB1F7424F80023AFFC /* ViewController.swift in Sources */,
 				0EB39FE91F7424F80023AFFC /* AppDelegate.swift in Sources */,
 			);
@@ -656,6 +661,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0EAC574824943B5D00D0FCE0 /* Configuration.swift in Sources */,
 				0EB6EEBC1F92D417005F6221 /* ViewController.swift in Sources */,
 				0EB6EEBA1F92D417005F6221 /* AppDelegate.swift in Sources */,
 			);

@@ -168,6 +168,18 @@
 		0E7F3F6B246ABA0F006BE77F /* IPHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F3F69246ABA0F006BE77F /* IPHeader.swift */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
 		0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
+		0EAC57372494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */; };
+		0EAC57382494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */; };
+		0EAC57392494277A00D0FCE0 /* MockVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */; };
+		0EAC573A2494277A00D0FCE0 /* MockVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */; };
+		0EAC573B2494277A00D0FCE0 /* VPNStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57332494277A00D0FCE0 /* VPNStatus.swift */; };
+		0EAC573C2494277A00D0FCE0 /* VPNStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57332494277A00D0FCE0 /* VPNStatus.swift */; };
+		0EAC573D2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */; };
+		0EAC573E2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */; };
+		0EAC573F2494277A00D0FCE0 /* VPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57352494277A00D0FCE0 /* VPNProvider.swift */; };
+		0EAC57402494277A00D0FCE0 /* VPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57352494277A00D0FCE0 /* VPNProvider.swift */; };
+		0EAC57412494277A00D0FCE0 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57362494277A00D0FCE0 /* VPN.swift */; };
+		0EAC57422494277A00D0FCE0 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57362494277A00D0FCE0 /* VPN.swift */; };
 		0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
 		0ECAF84B246697DA00D8266A /* TunnelKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
@@ -424,6 +436,12 @@
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA82A272190B220007960EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardVPNProvider.swift; sourceTree = "<group>"; };
+		0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockVPNProvider.swift; sourceTree = "<group>"; };
+		0EAC57332494277A00D0FCE0 /* VPNStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNStatus.swift; sourceTree = "<group>"; };
+		0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNConfiguration.swift; sourceTree = "<group>"; };
+		0EAC57352494277A00D0FCE0 /* VPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNProvider.swift; sourceTree = "<group>"; };
+		0EAC57362494277A00D0FCE0 /* VPN.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPN.swift; sourceTree = "<group>"; };
 		0EB03E0E2290CF52006D03A0 /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; path = module.modulemap; sourceTree = "<group>"; };
 		0ECC60D72254981A0020BEAC /* ConfigurationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationError.swift; sourceTree = "<group>"; };
 		0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tunnelbear.enc.8.ovpn; sourceTree = "<group>"; };
@@ -618,6 +636,7 @@
 				0EE2F9DD22918DA100F56F49 /* AppExtension */,
 				0EFEB4292006D3C800F81029 /* Core */,
 				0E23B41922982AF800304C30 /* Extra */,
+				0EAC57302494277A00D0FCE0 /* Manager */,
 				0E23B3E022982AF800304C30 /* Protocols */,
 			);
 			path = Sources;
@@ -798,6 +817,19 @@
 				0E11089E1F77B9E800A92462 /* Info.plist */,
 			);
 			path = "TunnelKitTests-iOS";
+			sourceTree = "<group>";
+		};
+		0EAC57302494277A00D0FCE0 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */,
+				0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */,
+				0EAC57362494277A00D0FCE0 /* VPN.swift */,
+				0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */,
+				0EAC57352494277A00D0FCE0 /* VPNProvider.swift */,
+				0EAC57332494277A00D0FCE0 /* VPNStatus.swift */,
+			);
+			path = Manager;
 			sourceTree = "<group>";
 		};
 		0EE2F9DD22918DA100F56F49 /* AppExtension */ = {
@@ -1410,12 +1442,14 @@
 			files = (
 				0EE2F974229163C900F56F49 /* Proxy.swift in Sources */,
 				0EFEB4732006D3C800F81029 /* LinkInterface.swift in Sources */,
+				0EAC573B2494277A00D0FCE0 /* VPNStatus.swift in Sources */,
 				0E23B48922982AF800304C30 /* PacketStream.m in Sources */,
 				0E23B3DE229749C600304C30 /* LinkProducer.swift in Sources */,
 				0E23B42722982AF800304C30 /* CryptoAEAD.m in Sources */,
 				0EE2F9F222918DA100F56F49 /* NETunnelInterface.swift in Sources */,
 				0E23B46722982AF800304C30 /* Authenticator.swift in Sources */,
 				0E23B43922982AF800304C30 /* OpenVPNError.swift in Sources */,
+				0EAC573F2494277A00D0FCE0 /* VPNProvider.swift in Sources */,
 				0E23B44F22982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */,
 				0E23B46D22982AF800304C30 /* StaticKey.swift in Sources */,
 				0E23B49F22982AF800304C30 /* minilzo.c in Sources */,
@@ -1432,6 +1466,7 @@
 				0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EE2F9F822918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */,
 				0EE2F9AC2291853D00F56F49 /* Session.swift in Sources */,
+				0EAC57412494277A00D0FCE0 /* VPN.swift in Sources */,
 				0E23B48122982AF800304C30 /* ControlPacket.m in Sources */,
 				0EFEB4622006D3C800F81029 /* SecureRandom.swift in Sources */,
 				0E011F7D2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
@@ -1479,9 +1514,12 @@
 				0E23B45722982AF800304C30 /* NETCPLink.swift in Sources */,
 				0E23B45322982AF800304C30 /* ConnectionStrategy.swift in Sources */,
 				0E011F7A2196D93600BA59EE /* SocketType.swift in Sources */,
+				0EAC57392494277A00D0FCE0 /* MockVPNProvider.swift in Sources */,
 				0E23B45922982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
+				0EAC57372494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */,
 				0E23B47322982AF800304C30 /* MSS.m in Sources */,
+				0EAC573D2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */,
 				0E23B45D22982AF800304C30 /* ProtocolMacros.swift in Sources */,
 				0EE2FA0022918DA100F56F49 /* MemoryDestination.swift in Sources */,
 			);
@@ -1493,12 +1531,14 @@
 			files = (
 				0EE2F975229163C900F56F49 /* Proxy.swift in Sources */,
 				0EFEB4A12006D7F300F81029 /* LinkInterface.swift in Sources */,
+				0EAC573C2494277A00D0FCE0 /* VPNStatus.swift in Sources */,
 				0E23B48A22982AF800304C30 /* PacketStream.m in Sources */,
 				0E23B3DF229749C600304C30 /* LinkProducer.swift in Sources */,
 				0E23B42822982AF800304C30 /* CryptoAEAD.m in Sources */,
 				0EE2F9F322918DA100F56F49 /* NETunnelInterface.swift in Sources */,
 				0E23B46822982AF800304C30 /* Authenticator.swift in Sources */,
 				0E23B43A22982AF800304C30 /* OpenVPNError.swift in Sources */,
+				0EAC57402494277A00D0FCE0 /* VPNProvider.swift in Sources */,
 				0E23B45022982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift in Sources */,
 				0E23B46E22982AF800304C30 /* StaticKey.swift in Sources */,
 				0E23B4A022982AF800304C30 /* minilzo.c in Sources */,
@@ -1515,6 +1555,7 @@
 				0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */,
 				0EE2F9F922918DA100F56F49 /* NWUDPSessionState+Description.swift in Sources */,
 				0EE2F9AD2291853D00F56F49 /* Session.swift in Sources */,
+				0EAC57422494277A00D0FCE0 /* VPN.swift in Sources */,
 				0E23B48222982AF800304C30 /* ControlPacket.m in Sources */,
 				0E011F7E2196D97200BA59EE /* EndpointProtocol.swift in Sources */,
 				0EE2F9F122918DA100F56F49 /* NETCPSocket.swift in Sources */,
@@ -1562,9 +1603,12 @@
 				0E23B45822982AF800304C30 /* NETCPLink.swift in Sources */,
 				0E23B45422982AF800304C30 /* ConnectionStrategy.swift in Sources */,
 				0EFEB49D2006D7F300F81029 /* IOInterface.swift in Sources */,
+				0EAC573A2494277A00D0FCE0 /* MockVPNProvider.swift in Sources */,
 				0E23B45A22982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */,
+				0EAC57382494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */,
 				0E23B47422982AF800304C30 /* MSS.m in Sources */,
+				0EAC573E2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */,
 				0E23B45E22982AF800304C30 /* ProtocolMacros.swift in Sources */,
 				0EE2FA0122918DA100F56F49 /* MemoryDestination.swift in Sources */,
 			);

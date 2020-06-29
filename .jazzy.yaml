@@ -43,6 +43,16 @@ custom_categories:
         - NETunnelInterface
         - NEUDPSocket
         - NSNotification
+    - name: Manager
+      children:
+        - VPN
+        - VPNProvider
+        - MockVPNProvider
+        - StandardVPNProvider
+        - VPNConfiguration
+        - NetworkExtensionVPNConfiguration
+        - VPNStatus
+        - NSNotification
     - name: Protocols/OpenVPN
       children:
         - OpenVPN

@@ -1,11 +1,11 @@
 //
-//  PacketTunnelProvider.swift
-//  Demo
+//  VPN.swift
+//  TunnelKit
 //
-//  Created by Davide De Rosa on 9/15/17.
+//  Created by Davide De Rosa on 6/12/18.
 //  Copyright (c) 2020 Davide De Rosa. All rights reserved.
 //
-//  https://github.com/keeshux
+//  https://github.com/passepartoutvpn
 //
 //  This file is part of TunnelKit.
 //
@@ -23,7 +23,20 @@
 //  along with TunnelKit.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-import TunnelKit
+import Foundation
 
-class PacketTunnelProvider: OpenVPNTunnelProvider {
+/// Wrapper for shared access to VPN-related objects.
+public class VPN {
+    
+    /// The VPN became ready to use.
+    public static let didPrepare = Notification.Name("VPNDidPrepare")
+    
+    /// The VPN did change status.
+    public static let didChangeStatus = Notification.Name("VPNDidChangeStatus")
+
+    /// The VPN profile did (re)install.
+    public static let didReinstall = Notification.Name("VPNDidReinstall")
+
+    /// A singleton `VPNProvider` instance (default is a `MockVPNProvider`). Make sure to set this on app launch.
+    public static var shared: VPNProvider = MockVPNProvider()
 }
