@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 - Incorrect tunnel bundle identifiers in Demo. [#176](https://github.com/passepartoutvpn/tunnelkit/issues/176)
+- IV_PLAT in peer info was hardcoded to "mac" (pahnev). [#177](https://github.com/passepartoutvpn/tunnelkit/pull/177)
 
 # 2.2.7 (2020-06-11)
 
