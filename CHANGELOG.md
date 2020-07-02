@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Changed
+
+- Use active profile name in VPN configuration (device settings).
+
 ### Fixed
 
 - Incorrect tunnel bundle identifiers in Demo. [#176](https://github.com/passepartoutvpn/tunnelkit/issues/176)

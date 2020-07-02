@@ -28,10 +28,16 @@ import NetworkExtension
 
 /// Generic marker for objects able to configure a `VPNProvider`.
 public protocol VPNConfiguration {
+
+    /// The profile title in device settings.
+    var title: String { get }
 }
 
 /// A `VPNConfiguration` built on top of NetworkExtension entities.
 public struct NetworkExtensionVPNConfiguration: VPNConfiguration {
+    
+    /// :nodoc:
+    public var title: String
 
     /// The `NETunnelProviderProtocol` object embedding tunnel configuration.
     public let protocolConfiguration: NETunnelProviderProtocol
@@ -40,7 +46,8 @@ public struct NetworkExtensionVPNConfiguration: VPNConfiguration {
     public let onDemandRules: [NEOnDemandRule]
     
     /// :nodoc:
-    public init(protocolConfiguration: NETunnelProviderProtocol, onDemandRules: [NEOnDemandRule]) {
+    public init(title: String, protocolConfiguration: NETunnelProviderProtocol, onDemandRules: [NEOnDemandRule]) {
+        self.title = title
         self.protocolConfiguration = protocolConfiguration
         self.onDemandRules = onDemandRules
     }

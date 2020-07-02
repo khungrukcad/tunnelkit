@@ -99,6 +99,7 @@ public class StandardVPNProvider: VPNProvider {
                 return
             }
             self.manager = manager
+            manager.localizedDescription = configuration.title
             manager.protocolConfiguration = configuration.protocolConfiguration
             manager.onDemandRules = configuration.onDemandRules
             manager.isOnDemandEnabled = true
