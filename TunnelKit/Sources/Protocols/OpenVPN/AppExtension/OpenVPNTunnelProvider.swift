@@ -203,6 +203,9 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
         if let masksPrivateData = cfg.masksPrivateData {
             CoreConfiguration.masksPrivateData = masksPrivateData
         }
+        if let versionIdentifier = cfg.versionIdentifier {
+            CoreConfiguration.versionIdentifier = versionIdentifier
+        }
 
         // optional credentials
         let credentials: OpenVPN.Credentials?
