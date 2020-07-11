@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+### Added
+
+- Customize IV_UI_VER (pahnev). [#178](https://github.com/passepartoutvpn/tunnelkit/pull/178)
+
 ### Changed
 
 - Use active profile name in VPN configuration (device settings).
