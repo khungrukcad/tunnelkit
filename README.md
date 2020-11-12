@@ -1,7 +1,7 @@
 # TunnelKit
 
-![iOS 11+](https://img.shields.io/badge/ios-11+-green.svg)
-[![OpenSSL 1.1.1g](https://img.shields.io/badge/openssl-1.1.1g-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.1-notes.html)
+![iOS 12+](https://img.shields.io/badge/ios-12+-green.svg)
+[![OpenSSL 1.1.1h](https://img.shields.io/badge/openssl-1.1.1h-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.1-notes.html)
 [![License GPLv3](https://img.shields.io/badge/license-GPLv3-lightgray.svg)](LICENSE)
 [![Travis-CI](https://api.travis-ci.org/passepartoutvpn/tunnelkit.svg?branch=master)](https://travis-ci.org/passepartoutvpn/tunnelkit)
 
@@ -64,8 +64,8 @@ Many other flags are ignored too but it's normally not an issue.
 
 ### Requirements
 
-- iOS 11.0+ / macOS 10.11+
-- Xcode 10+ (Swift 5)
+- iOS 12.0+ / macOS 10.15+
+- Xcode 11+ (Swift 5)
 - Git (preinstalled with Xcode Command Line Tools)
 - Ruby (preinstalled with macOS)
 - [CocoaPods 1.6.0][dep-cocoapods]
