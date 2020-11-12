@@ -90,7 +90,7 @@ class ViewController: NSViewController {
             appGroup: appGroup,
             credentials: credentials
         )
-        let neCfg = NetworkExtensionVPNConfiguration(protocolConfiguration: proto, onDemandRules: [])
+        let neCfg = NetworkExtensionVPNConfiguration(title: "BasicTunnel", protocolConfiguration: proto, onDemandRules: [])
         vpn.reconnect(configuration: neCfg) { (error) in
             if let error = error {
                 print("configure error: \(error)")
