@@ -9,10 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Support for Apple Silicon (macOS arm64).
 - Customize IV_UI_VER (pahnev). [#178](https://github.com/passepartoutvpn/tunnelkit/pull/178)
 
 ### Changed
 
+- Deployment targets raised to iOS 12.0 and macOS 10.15
 - Use active profile name in VPN configuration (device settings).
 
 ### Fixed

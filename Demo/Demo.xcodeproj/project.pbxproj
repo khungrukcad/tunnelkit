@@ -555,15 +555,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-macOS-BasicTunnel-macOS/Pods-macOS-BasicTunnel-macOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/MacOSX/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-macOS/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/TunnelKit-macOS/TunnelKit.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TunnelKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -577,15 +577,15 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-iOS-BasicTunnel-iOS/Pods-iOS-BasicTunnel-iOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
 				"${BUILT_PRODUCTS_DIR}/TunnelKit-iOS/TunnelKit.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TunnelKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

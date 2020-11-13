@@ -3,8 +3,7 @@ use_frameworks!
 
 def shared_pods
     pod 'SwiftyBeaver'
-    pod 'OpenSSL-Apple', '~> 1.1.1g.6'
-    #pod 'OpenSSL-Apple', :path => '../../personal/openssl-apple'
+    pod 'OpenSSL-Apple', '~> 1.1.1h.8'
 end
 
 abstract_target 'TunnelKit' do
