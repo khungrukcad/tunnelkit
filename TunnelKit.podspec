@@ -52,6 +52,7 @@ Pod::Spec.new do |s|
             p.dependency "OpenSSL-Apple", "~> 1.1.1h.8"
             p.dependency "TunnelKit/Core"
             p.dependency "TunnelKit/AppExtension"
+            p.dependency "TunnelKit/Manager"
         end
     end
 

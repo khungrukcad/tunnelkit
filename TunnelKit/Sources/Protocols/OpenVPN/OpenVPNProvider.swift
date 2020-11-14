@@ -1,5 +1,5 @@
 //
-//  StandardVPNProvider.swift
+//  OpenVPNProvider.swift
 //  TunnelKit
 //
 //  Created by Davide De Rosa on 6/15/18.
