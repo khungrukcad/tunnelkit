@@ -11,7 +11,7 @@ xcodebuild_arguments:
     - "-scheme"
     - "TunnelKit-iOS"
     - "-sdk"
-    - "iphonesimulator"
+    - "iphoneos"
 
 custom_categories:
     - name: Core
