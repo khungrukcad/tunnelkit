@@ -48,7 +48,6 @@ custom_categories:
         - VPN
         - VPNProvider
         - MockVPNProvider
-        - StandardVPNProvider
         - VPNConfiguration
         - NetworkExtensionVPNConfiguration
         - VPNStatus
@@ -57,6 +56,7 @@ custom_categories:
       children:
         - OpenVPN
         - OpenVPNError
+        - OpenVPNProvider
         - OpenVPNSession
         - OpenVPNSessionDelegate
         - OpenVPNTunnelProvider

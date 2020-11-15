@@ -168,8 +168,8 @@
 		0E7F3F6B246ABA0F006BE77F /* IPHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E7F3F69246ABA0F006BE77F /* IPHeader.swift */; };
 		0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E3251C51F95770D00C108D9 /* TunnelKit.framework */; };
 		0EA82A3E2190B2BC007960EB /* pia-2048.pem in Resources */ = {isa = PBXBuildFile; fileRef = 0E749F612178911C00BB2701 /* pia-2048.pem */; };
-		0EAC57372494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */; };
-		0EAC57382494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */; };
+		0EAC57372494277A00D0FCE0 /* OpenVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */; };
+		0EAC57382494277A00D0FCE0 /* OpenVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */; };
 		0EAC57392494277A00D0FCE0 /* MockVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */; };
 		0EAC573A2494277A00D0FCE0 /* MockVPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */; };
 		0EAC573B2494277A00D0FCE0 /* VPNStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57332494277A00D0FCE0 /* VPNStatus.swift */; };
@@ -436,7 +436,7 @@
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EA82A272190B220007960EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StandardVPNProvider.swift; sourceTree = "<group>"; };
+		0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57332494277A00D0FCE0 /* VPNStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNStatus.swift; sourceTree = "<group>"; };
 		0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNConfiguration.swift; sourceTree = "<group>"; };
@@ -726,6 +726,7 @@
 				0E23B40A22982AF800304C30 /* MSS.m */,
 				0E23B3F322982AF800304C30 /* OpenVPN.swift */,
 				0E23B3EC22982AF800304C30 /* OpenVPNError.swift */,
+				0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */,
 				0E23B3EF22982AF800304C30 /* OpenVPNSession.swift */,
 				0E23B3F022982AF800304C30 /* OpenVPNSession+PIA.swift */,
 				0E23B40F22982AF800304C30 /* Packet.swift */,
@@ -823,7 +824,6 @@
 			isa = PBXGroup;
 			children = (
 				0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */,
-				0EAC57312494277A00D0FCE0 /* StandardVPNProvider.swift */,
 				0EAC57362494277A00D0FCE0 /* VPN.swift */,
 				0EAC57342494277A00D0FCE0 /* VPNConfiguration.swift */,
 				0EAC57352494277A00D0FCE0 /* VPNProvider.swift */,
@@ -1109,7 +1109,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1220;
 				ORGANIZATIONNAME = "Davide De Rosa";
 				TargetAttributes = {
 					0E1108991F77B9E800A92462 = {
@@ -1257,13 +1257,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TunnelKit-TunnelKitTests-iOS/Pods-TunnelKit-TunnelKitTests-iOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1277,13 +1277,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/iPhone/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1385,13 +1385,13 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-TunnelKit-TunnelKitTests-macOS/Pods-TunnelKit-TunnelKitTests-macOS-frameworks.sh",
-				"${PODS_ROOT}/OpenSSL-Apple/frameworks/MacOSX/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-macOS/SwiftyBeaver.framework",
+				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1517,7 +1517,7 @@
 				0EAC57392494277A00D0FCE0 /* MockVPNProvider.swift in Sources */,
 				0E23B45922982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0EFEB45A2006D3C800F81029 /* TunnelInterface.swift in Sources */,
-				0EAC57372494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */,
+				0EAC57372494277A00D0FCE0 /* OpenVPNProvider.swift in Sources */,
 				0E23B47322982AF800304C30 /* MSS.m in Sources */,
 				0EAC573D2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */,
 				0E23B45D22982AF800304C30 /* ProtocolMacros.swift in Sources */,
@@ -1606,7 +1606,7 @@
 				0EAC573A2494277A00D0FCE0 /* MockVPNProvider.swift in Sources */,
 				0E23B45A22982AF800304C30 /* OpenVPNTunnelProvider.swift in Sources */,
 				0E011F7B2196D93600BA59EE /* SocketType.swift in Sources */,
-				0EAC57382494277A00D0FCE0 /* StandardVPNProvider.swift in Sources */,
+				0EAC57382494277A00D0FCE0 /* OpenVPNProvider.swift in Sources */,
 				0E23B47422982AF800304C30 /* MSS.m in Sources */,
 				0EAC573E2494277A00D0FCE0 /* VPNConfiguration.swift in Sources */,
 				0E23B45E22982AF800304C30 /* ProtocolMacros.swift in Sources */,
@@ -1772,6 +1772,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1798,8 +1799,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -1836,6 +1837,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -1856,8 +1858,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

@@ -7,10 +7,10 @@ Pod::Spec.new do |s|
     s.license           = { :type => "GPLv3", :file => "LICENSE" }
     s.author            = { "Davide De Rosa" => "me@davidederosa.com" }
     s.source            = { :git => "https://github.com/passepartoutvpn/tunnelkit.git", :tag => "v#{s.version}" }
-    s.swift_version     = "5.0"
+    s.swift_version     = "5.1"
 
-    s.ios.deployment_target = "11.0"
-    s.osx.deployment_target = "10.11"
+    s.ios.deployment_target = "12.0"
+    s.osx.deployment_target = "10.15"
 
     s.default_subspecs = "Protocols/OpenVPN"
 
@@ -49,9 +49,10 @@ Pod::Spec.new do |s|
                                         "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Protocols/OpenVPN",
                                         "APPLICATION_EXTENSION_API_ONLY" => "YES" }
 
-            p.dependency "OpenSSL-Apple", "~> 1.1.1g.6"
+            p.dependency "OpenSSL-Apple", "~> 1.1.1h.8"
             p.dependency "TunnelKit/Core"
             p.dependency "TunnelKit/AppExtension"
+            p.dependency "TunnelKit/Manager"
         end
     end
 
