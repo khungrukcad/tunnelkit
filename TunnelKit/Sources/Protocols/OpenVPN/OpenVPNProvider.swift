@@ -27,7 +27,7 @@ import Foundation
 import NetworkExtension
 
 /// :nodoc:
-public class StandardVPNProvider: VPNProvider {
+public class OpenVPNProvider: VPNProvider {
     private let bundleIdentifier: String
     
     private var manager: NETunnelProviderManager?
@@ -274,7 +274,7 @@ public class StandardVPNProvider: VPNProvider {
                 completionHandler(nil)
                 return
             }
-            StandardVPNProvider.requestDebugLog(session: session, completionHandler: completionHandler)
+            OpenVPNProvider.requestDebugLog(session: session, completionHandler: completionHandler)
         }
     }
     
