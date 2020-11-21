@@ -36,6 +36,11 @@
 
 import NetworkExtension
 import SwiftyBeaver
+#if os(iOS)
+import SystemConfiguration.CaptiveNetwork
+#else
+import CoreWLAN
+#endif
 import __TunnelKitCore
 
 private let log = SwiftyBeaver.self
@@ -90,8 +95,6 @@ open class OpenVPNTunnelProvider: NEPacketTunnelProvider {
     
     private let memoryLog = MemoryDestination()
 
-    private let observer = InterfaceObserver()
-    
     private let tunnelQueue = DispatchQueue(label: OpenVPNTunnelProvider.description(), qos: .utility)
     
     private let prngSeedLength = 64
@@ -827,15 +830,17 @@ extension OpenVPNTunnelProvider {
             memoryLog.flush(to: url)
         }
     }
-    
+
     private func logCurrentSSID() {
-        if let ssid = observer.currentWifiNetworkName() {
-            log.debug("Current SSID: '\(ssid.maskedDescription)'")
-        } else {
-            log.debug("Current SSID: none (disconnected from WiFi)")
+        InterfaceObserver.fetchCurrentSSID {
+            if let ssid = $0 {
+                log.debug("Current SSID: '\(ssid.maskedDescription)'")
+            } else {
+                log.debug("Current SSID: none (disconnected from WiFi)")
+            }
         }
     }
-    
+
 //    private func anyPointer(_ object: Any?) -> UnsafeMutableRawPointer {
 //        let anyObject = object as AnyObject
 //        return Unmanaged<AnyObject>.passUnretained(anyObject).toOpaque()
