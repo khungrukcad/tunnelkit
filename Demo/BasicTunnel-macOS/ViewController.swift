@@ -44,7 +44,7 @@ class ViewController: NSViewController {
     
     @IBOutlet var buttonConnection: NSButton!
     
-    private let vpn = StandardVPNProvider(bundleIdentifier: tunnelIdentifier)
+    private let vpn = OpenVPNProvider(bundleIdentifier: tunnelIdentifier)
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -158,7 +158,7 @@ Provides a layer on top of the NetworkExtension framework. Most importantly, bri
 This subspec includes convenient classes to control the VPN tunnel from your app without the NetworkExtension headaches. Have a look at `VPNProvider` implementations:
 
 - `MockVPNProvider` (default, useful to test on simulator)
-- `StandardVPNProvider`
+- `OpenVPNProvider`
 
 Set `VPN.shared` to either of them at app launch time.
 
