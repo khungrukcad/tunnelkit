@@ -47,7 +47,7 @@ class ViewController: UIViewController, URLSessionDataDelegate {
 
     @IBOutlet var textLog: UITextView!
 
-    private let vpn = StandardVPNProvider(bundleIdentifier: tunnelIdentifier)
+    private let vpn = OpenVPNProvider(bundleIdentifier: tunnelIdentifier)
     
     override func viewDidLoad() {
         super.viewDidLoad()
