@@ -96,6 +96,8 @@ extension OpenVPN {
             
             static let domain = NSRegularExpression("^dhcp-option +DOMAIN +[^ ]+")
             
+            static let domainSearch = NSRegularExpression("^dhcp-option +DOMAIN-SEARCH +[^ ]+")
+            
             static let proxy = NSRegularExpression("^dhcp-option +PROXY_(HTTPS? +[^ ]+ +\\d+|AUTO_CONFIG_URL +[^ ]+)")
             
             static let proxyBypass = NSRegularExpression("^dhcp-option +PROXY_BYPASS +.+")
@@ -225,6 +227,7 @@ extension OpenVPN {
             var optRoutes4: [(String, String, String?)] = [] // address, netmask, gateway
             var optRoutes6: [(String, UInt8, String?)] = [] // destination, prefix, gateway
             var optDNSServers: [String]?
+            var optDomain: String?
             var optSearchDomains: [String]?
             var optHTTPProxy: Proxy?
             var optHTTPSProxy: Proxy?
@@ -528,6 +531,17 @@ extension OpenVPN {
                     optDNSServers?.append($0[1])
                 }
                 Regex.domain.enumerateArguments(in: line) {
+                    guard $0.count == 2, optDomain == nil else {
+                        return
+                    }
+                    optDomain = $0[1]
+                    if optSearchDomains == nil {
+                        optSearchDomains = [optDomain!]
+                    } else {
+                        optSearchDomains?.insert(optDomain!, at: 0)
+                    }
+                }
+                Regex.domainSearch.enumerateArguments(in: line) {
                     guard $0.count == 2 else {
                         return
                     }
