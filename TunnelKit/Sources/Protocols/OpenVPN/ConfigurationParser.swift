@@ -531,15 +531,10 @@ extension OpenVPN {
                     optDNSServers?.append($0[1])
                 }
                 Regex.domain.enumerateArguments(in: line) {
-                    guard $0.count == 2, optDomain == nil else {
+                    guard $0.count == 2 else {
                         return
                     }
                     optDomain = $0[1]
-                    if optSearchDomains == nil {
-                        optSearchDomains = [optDomain!]
-                    } else {
-                        optSearchDomains?.insert(optDomain!, at: 0)
-                    }
                 }
                 Regex.domainSearch.enumerateArguments(in: line) {
                     guard $0.count == 2 else {
@@ -763,6 +758,15 @@ extension OpenVPN {
                 )
             }
             
+            // prepend search domains with main domain (if set)
+            if let domain = optDomain {
+                if optSearchDomains == nil {
+                    optSearchDomains = [domain]
+                } else {
+                    optSearchDomains?.insert(domain, at: 0)
+                }
+            }
+
             sessionBuilder.dnsServers = optDNSServers
             sessionBuilder.searchDomains = optSearchDomains
             sessionBuilder.httpProxy = optHTTPProxy
