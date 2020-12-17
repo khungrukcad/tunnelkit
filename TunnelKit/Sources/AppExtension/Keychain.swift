@@ -45,6 +45,9 @@ public enum KeychainError: Error {
     /// Item not found.
     case notFound
     
+    /// Operation cancelled or unauthorized.
+    case userCancelled
+    
 //    /// Unexpected item type returned.
 //    case typeMismatch
 }
@@ -100,8 +103,14 @@ public class Keychain {
             guard password != currentPassword else {
                 return
             }
-        } catch {
-            // no pre-existing password
+        } catch let e as KeychainError {
+
+            // rethrow cancelation
+            if e == .userCancelled {
+                throw e
+            }
+
+            // otherwise, no pre-existing password
         }
 
         removePassword(for: username)
@@ -154,8 +163,14 @@ public class Keychain {
         query[kSecReturnData as String] = true
         
         var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        guard (status == errSecSuccess) else {
+        switch SecItemCopyMatching(query as CFDictionary, &result) {
+        case errSecSuccess:
+            break
+            
+        case errSecUserCanceled:
+            throw KeychainError.userCancelled
+
+        default:
             throw KeychainError.notFound
         }
         guard let data = result as? Data else {
@@ -183,8 +198,14 @@ public class Keychain {
         query[kSecReturnPersistentRef as String] = true
         
         var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        guard (status == errSecSuccess) else {
+        switch SecItemCopyMatching(query as CFDictionary, &result) {
+        case errSecSuccess:
+            break
+            
+        case errSecUserCanceled:
+            throw KeychainError.userCancelled
+
+        default:
             throw KeychainError.notFound
         }
         guard let data = result as? Data else {
@@ -209,8 +230,14 @@ public class Keychain {
         query[kSecReturnData as String] = true
         
         var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        guard (status == errSecSuccess) else {
+        switch SecItemCopyMatching(query as CFDictionary, &result) {
+        case errSecSuccess:
+            break
+            
+        case errSecUserCanceled:
+            throw KeychainError.userCancelled
+
+        default:
             throw KeychainError.notFound
         }
         guard let data = result as? Data else {
@@ -246,7 +273,7 @@ public class Keychain {
         query.removeValue(forKey: kSecAttrService as String)
 
         let status = SecItemAdd(query as CFDictionary, nil)
-        guard (status == errSecSuccess) else {
+        guard status == errSecSuccess else {
             throw KeychainError.add
         }
         return try publicKey(withIdentifier: identifier)
@@ -271,8 +298,14 @@ public class Keychain {
         query.removeValue(forKey: kSecAttrService as String)
 
         var result: AnyObject?
-        let status = SecItemCopyMatching(query as CFDictionary, &result)
-        guard (status == errSecSuccess) else {
+        switch SecItemCopyMatching(query as CFDictionary, &result) {
+        case errSecSuccess:
+            break
+            
+        case errSecUserCanceled:
+            throw KeychainError.userCancelled
+
+        default:
             throw KeychainError.notFound
         }
 //        guard let key = result as? SecKey else {
