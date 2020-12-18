@@ -103,6 +103,7 @@ public class Keychain {
             guard password != currentPassword else {
                 return
             }
+            removePassword(for: username)
         } catch let e as KeychainError {
 
             // rethrow cancelation
@@ -113,8 +114,6 @@ public class Keychain {
             // otherwise, no pre-existing password
         }
 
-        removePassword(for: username)
-        
         var query = [String: Any]()
         setScope(query: &query)
         query[kSecClass as String] = kSecClassGenericPassword
