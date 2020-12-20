@@ -152,7 +152,7 @@ public class OpenVPNProvider: VPNProvider {
             }
             if self.status != .disconnected {
                 self.manager?.connection.stopVPNTunnel()
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2.0, execute: connectBlock)
+                DispatchQueue.main.asyncAfter(deadline: .now() + CoreConfiguration.reconnectionDelay, execute: connectBlock)
             } else {
                 connectBlock()
             }
