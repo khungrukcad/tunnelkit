@@ -403,12 +403,12 @@ extension OpenVPNTunnelProvider {
             if let username = credentials?.username, let password = credentials?.password {
                 let keychain = Keychain(group: appGroup)
                 do {
-                    try keychain.set(password: password, for: username, label: Bundle.main.bundleIdentifier)
+                    try keychain.set(password: password, for: username, context: bundleIdentifier)
                 } catch _ {
                     throw ProviderConfigurationError.credentials(details: "keychain.set()")
                 }
                 protocolConfiguration.username = username
-                protocolConfiguration.passwordReference = try? keychain.passwordReference(for: username)
+                protocolConfiguration.passwordReference = try? keychain.passwordReference(for: username, context: bundleIdentifier)
             }
             protocolConfiguration.providerConfiguration = generatedProviderConfiguration(appGroup: appGroup)
             
