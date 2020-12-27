@@ -52,7 +52,6 @@ extension OpenVPNTunnelProvider {
             sessionConfiguration: OpenVPN.ConfigurationBuilder().build(),
             prefersResolvedAddresses: false,
             resolvedAddresses: nil,
-            mtu: 1250,
             shouldDebug: false,
             debugLogFormat: nil,
             masksPrivateData: true,
@@ -69,9 +68,6 @@ extension OpenVPNTunnelProvider {
         
         /// Resolved addresses in case DNS fails or `prefersResolvedAddresses` is `true` (IPv4 only).
         public var resolvedAddresses: [String]?
-        
-        /// The MTU of the link.
-        public var mtu: Int
 
         /// Optional version identifier about the client pushed to server in peer-info as `IV_UI_VER`.
         public var versionIdentifier: String?
@@ -98,7 +94,6 @@ extension OpenVPNTunnelProvider {
             self.sessionConfiguration = sessionConfiguration
             prefersResolvedAddresses = ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = nil
-            mtu = ConfigurationBuilder.defaults.mtu
             shouldDebug = ConfigurationBuilder.defaults.shouldDebug
             debugLogFormat = ConfigurationBuilder.defaults.debugLogFormat
             masksPrivateData = ConfigurationBuilder.defaults.masksPrivateData
@@ -111,7 +106,6 @@ extension OpenVPNTunnelProvider {
             sessionConfiguration = try OpenVPN.Configuration.with(providerConfiguration: providerConfiguration)
             prefersResolvedAddresses = providerConfiguration[S.prefersResolvedAddresses] as? Bool ?? ConfigurationBuilder.defaults.prefersResolvedAddresses
             resolvedAddresses = providerConfiguration[S.resolvedAddresses] as? [String]
-            mtu = providerConfiguration[S.mtu] as? Int ?? ConfigurationBuilder.defaults.mtu
             shouldDebug = providerConfiguration[S.debug] as? Bool ?? ConfigurationBuilder.defaults.shouldDebug
             if shouldDebug {
                 debugLogFormat = providerConfiguration[S.debugLogFormat] as? String
@@ -134,7 +128,6 @@ extension OpenVPNTunnelProvider {
                 sessionConfiguration: sessionConfiguration,
                 prefersResolvedAddresses: prefersResolvedAddresses,
                 resolvedAddresses: resolvedAddresses,
-                mtu: mtu,
                 shouldDebug: shouldDebug,
                 debugLogFormat: shouldDebug ? debugLogFormat : nil,
                 masksPrivateData: masksPrivateData,
@@ -208,8 +201,6 @@ extension OpenVPNTunnelProvider {
             
             static let resolvedAddresses = "ResolvedAddresses"
             
-            static let mtu = "MTU"
-            
             // MARK: Debugging
             
             static let debug = "Debug"
@@ -228,9 +219,6 @@ extension OpenVPNTunnelProvider {
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.resolvedAddresses`
         public let resolvedAddresses: [String]?
 
-        /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.mtu`
-        public let mtu: Int
-        
         /// - Seealso: `OpenVPNTunnelProvider.ConfigurationBuilder.shouldDebug`
         public let shouldDebug: Bool
         
@@ -367,7 +355,6 @@ extension OpenVPNTunnelProvider {
                 S.prefersResolvedAddresses: prefersResolvedAddresses,
                 S.ca: ca.pem,
                 S.endpointProtocols: endpointProtocols.map { $0.rawValue },
-                S.mtu: mtu,
                 S.debug: shouldDebug
             ]
             sessionConfiguration.store(to: &dict)
@@ -440,7 +427,6 @@ extension OpenVPNTunnelProvider.Configuration {
         var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionConfiguration)
         builder.prefersResolvedAddresses = prefersResolvedAddresses
         builder.resolvedAddresses = resolvedAddresses
-        builder.mtu = mtu
         builder.shouldDebug = shouldDebug
         builder.debugLogFormat = debugLogFormat
         builder.masksPrivateData = masksPrivateData
