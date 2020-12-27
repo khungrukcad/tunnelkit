@@ -165,6 +165,8 @@ extension OpenVPN {
         static let digest: Digest = .sha1
         
         static let compressionFraming: CompressionFraming = .disabled
+        
+        static let mtu = 1250
     }
     
     /// The way to create a `Configuration` object for a `OpenVPNSession`.
@@ -230,6 +232,9 @@ extension OpenVPN {
         
         /// Server is patched for the PIA VPN provider.
         public var usesPIAPatches: Bool?
+        
+        /// The tunnel MTU.
+        public var mtu: Int?
         
         // MARK: Server
         
@@ -310,6 +315,7 @@ extension OpenVPN {
                 sanHost: sanHost,
                 randomizeEndpoint: randomizeEndpoint,
                 usesPIAPatches: usesPIAPatches,
+                mtu: mtu,
                 authToken: authToken,
                 peerId: peerId,
                 ipv4: ipv4,
@@ -402,6 +408,9 @@ extension OpenVPN {
         /// - Seealso: `ConfigurationBuilder.usesPIAPatches`
         public let usesPIAPatches: Bool?
         
+        /// - Seealso: `ConfigurationBuilder.mtu`
+        public let mtu: Int?
+
         /// - Seealso: `ConfigurationBuilder.authToken`
         public let authToken: String?
         
@@ -451,6 +460,11 @@ extension OpenVPN {
         public var fallbackCompressionFraming: CompressionFraming {
             return compressionFraming ?? Fallback.compressionFraming
         }
+        
+        /// :nodoc:
+        public var fallbackMTU: Int {
+            return mtu ?? Fallback.mtu
+        }
     }
 }
 
@@ -484,6 +498,7 @@ extension OpenVPN.Configuration {
         builder.sanHost = sanHost
         builder.randomizeEndpoint = randomizeEndpoint
         builder.usesPIAPatches = usesPIAPatches
+        builder.mtu = mtu
         builder.authToken = authToken
         builder.peerId = peerId
         builder.ipv4 = ipv4

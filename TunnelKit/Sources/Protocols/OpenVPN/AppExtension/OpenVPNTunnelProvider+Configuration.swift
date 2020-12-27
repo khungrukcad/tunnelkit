@@ -181,6 +181,8 @@ extension OpenVPNTunnelProvider {
             
             static let usesPIAPatches = "UsesPIAPatches"
             
+            static let mtu = "MTU"
+            
             static let dnsServers = "DNSServers"
             
             static let searchDomains = "SearchDomains"
@@ -407,7 +409,6 @@ extension OpenVPNTunnelProvider {
                 log.info("App version: \(appVersion)")
             }
             sessionConfiguration.print()
-            log.info("\tMTU: \(mtu)")
             log.info("\tDebug: \(shouldDebug)")
             log.info("\tMasks private data: \(masksPrivateData ?? true)")
         }
@@ -528,6 +529,9 @@ private extension OpenVPN.Configuration {
         if let usesPIAPatches = providerConfiguration[S.usesPIAPatches] as? Bool {
             builder.usesPIAPatches = usesPIAPatches
         }
+        if let mtu = providerConfiguration[S.mtu] as? Int {
+            builder.mtu = mtu
+        }
         if let dnsServers = providerConfiguration[S.dnsServers] as? [String] {
             builder.dnsServers = dnsServers
         }
@@ -613,6 +617,9 @@ private extension OpenVPN.Configuration {
         }
         if let usesPIAPatches = usesPIAPatches {
             dict[S.usesPIAPatches] = usesPIAPatches
+        }
+        if let mtu = mtu {
+            dict[S.mtu] = mtu
         }
         if let dnsServers = dnsServers {
             dict[S.dnsServers] = dnsServers
@@ -718,5 +725,6 @@ private extension OpenVPN.Configuration {
         if let proxyBypassDomains = proxyBypassDomains {
             log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
         }
+        log.info("\tMTU: \(fallbackMTU)")
     }
 }
