@@ -72,6 +72,8 @@ extension OpenVPN {
             
             static let remoteRandom = NSRegularExpression("^remote-random")
             
+            static let mtu = NSRegularExpression("^tun-mtu +\\d+")
+            
             // MARK: Server
             
             static let authToken = NSRegularExpression("^auth-token +[a-zA-Z0-9/=+]+")
@@ -216,6 +218,7 @@ extension OpenVPN {
             var optRemotes: [(String, UInt16?, SocketType?)] = [] // address, port, socket
             var optChecksEKU: Bool?
             var optRandomizeEndpoint: Bool?
+            var optMTU: Int?
             //
             var optAuthToken: String?
             var optPeerId: UInt32?
@@ -468,6 +471,13 @@ extension OpenVPN {
                     isHandled = true
                     optRandomizeEndpoint = true
                 }
+                Regex.mtu.enumerateArguments(in: line) {
+                    isHandled = true
+                    guard let str = $0.first else {
+                        return
+                    }
+                    optMTU = Int(str)
+                }
                 
                 // MARK: Server
                 
@@ -677,6 +687,7 @@ extension OpenVPN {
             
             sessionBuilder.checksEKU = optChecksEKU
             sessionBuilder.randomizeEndpoint = optRandomizeEndpoint
+            sessionBuilder.mtu = optMTU
             
             // MARK: Server
             

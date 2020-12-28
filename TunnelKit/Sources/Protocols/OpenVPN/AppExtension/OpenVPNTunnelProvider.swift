@@ -451,10 +451,10 @@ extension OpenVPNTunnelProvider: GenericSocketDelegate {
             return
         }
         if session.canRebindLink() {
-            session.rebindLink(producer.link(withMTU: cfg.mtu))
+            session.rebindLink(producer.link())
             reasserting = false
         } else {
-            session.setLink(producer.link(withMTU: cfg.mtu))
+            session.setLink(producer.link())
         }
     }
     
@@ -788,7 +788,9 @@ extension OpenVPNTunnelProvider: OpenVPNSessionDelegate {
         newSettings.ipv6Settings = ipv6Settings
         newSettings.dnsSettings = dnsSettings
         newSettings.proxySettings = proxySettings
-        newSettings.mtu = NSNumber(value: cfg.mtu)
+        if let mtu = cfg.sessionConfiguration.mtu {
+            newSettings.mtu = NSNumber(value: mtu)
+        }
 
         setTunnelNetworkSettings(newSettings, completionHandler: completionHandler)
     }
