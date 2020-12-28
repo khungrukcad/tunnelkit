@@ -179,8 +179,8 @@ M69t86apMrAxkUxVJAWLRBd9fbYyzJgTW61tFqXWTZpiz6bhuWApSEzaHcL3/f5l
         sessionBuilder.endpointProtocols = [EndpointProtocol(socketType, port)]
         sessionBuilder.clientCertificate = clientCertificate
         sessionBuilder.clientKey = clientKey
+        sessionBuilder.mtu = 1350
         var builder = OpenVPNTunnelProvider.ConfigurationBuilder(sessionConfiguration: sessionBuilder.build())
-        builder.mtu = 1350
         builder.shouldDebug = true
         builder.masksPrivateData = false
         return builder.build()
