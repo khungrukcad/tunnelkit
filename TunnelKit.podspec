@@ -49,7 +49,7 @@ Pod::Spec.new do |s|
                                         "SWIFT_INCLUDE_PATHS" => "${PODS_TARGET_SRCROOT}/TunnelKit/Sources/Protocols/OpenVPN",
                                         "APPLICATION_EXTENSION_API_ONLY" => "YES" }
 
-            p.dependency "OpenSSL-Apple", "~> 1.1.1h.8"
+            p.dependency "OpenSSL-Apple", "~> 1.1.1h.10"
             p.dependency "TunnelKit/Core"
             p.dependency "TunnelKit/AppExtension"
             p.dependency "TunnelKit/Manager"
