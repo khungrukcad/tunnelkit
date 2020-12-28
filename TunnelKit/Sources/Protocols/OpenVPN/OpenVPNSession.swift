@@ -1015,12 +1015,12 @@ public class OpenVPNSession: Session {
     
     // Ruby: q_ctrl
     private func enqueueControlPackets(code: PacketCode, key: UInt8, payload: Data) {
-        guard let link = link else {
+        guard let _ = link else {
             log.warning("Not writing to LINK, interface is down")
             return
         }
 
-        controlChannel.enqueueOutboundPackets(withCode: code, key: key, payload: payload, maxPacketSize: link.mtu)
+        controlChannel.enqueueOutboundPackets(withCode: code, key: key, payload: payload, maxPacketSize: 1000)
         flushControlQueue()
     }
     

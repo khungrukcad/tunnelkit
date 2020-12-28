@@ -165,8 +165,6 @@ extension OpenVPN {
         static let digest: Digest = .sha1
         
         static let compressionFraming: CompressionFraming = .disabled
-        
-        static let mtu = 1250
     }
     
     /// The way to create a `Configuration` object for a `OpenVPNSession`.
@@ -459,11 +457,6 @@ extension OpenVPN {
         /// :nodoc:
         public var fallbackCompressionFraming: CompressionFraming {
             return compressionFraming ?? Fallback.compressionFraming
-        }
-        
-        /// :nodoc:
-        public var fallbackMTU: Int {
-            return mtu ?? Fallback.mtu
         }
     }
 }

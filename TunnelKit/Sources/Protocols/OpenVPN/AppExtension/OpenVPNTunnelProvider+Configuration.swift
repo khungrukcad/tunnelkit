@@ -725,6 +725,10 @@ private extension OpenVPN.Configuration {
         if let proxyBypassDomains = proxyBypassDomains {
             log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
         }
-        log.info("\tMTU: \(fallbackMTU)")
+        if let mtu = mtu {
+            log.info("\tMTU: \(mtu)")
+        } else {
+            log.info("\tMTU: default")
+        }
     }
 }
