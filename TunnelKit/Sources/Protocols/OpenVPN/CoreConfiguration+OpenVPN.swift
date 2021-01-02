@@ -63,7 +63,7 @@ extension CoreConfiguration {
         
         // MARK: Authentication
         
-        static let peerInfo: String = {
+        static func peerInfo(extra: [String: String]? = nil) -> String {
             let platform: String
             #if os(iOS)
             platform = "ios"
@@ -83,9 +83,12 @@ extension CoreConfiguration {
             if LZOIsSupported() {
                 info.append("IV_LZO=1")
             }
+            if let extra = extra {
+                info.append(contentsOf: extra.map { "\($0)=\($1)" })
+            }
             info.append("")
             return info.joined(separator: "\n")
-        }()
+        }
         
         static let randomLength = 32
         
