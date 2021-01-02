@@ -42,6 +42,8 @@ extension OpenVPN {
             
             static let cipher = NSRegularExpression("^cipher +[^,\\s]+")
             
+            static let dataCiphers = NSRegularExpression("^(data-ciphers|ncp-ciphers) +[^,\\s]+(:[^,\\s]+)*")
+            
             static let auth = NSRegularExpression("^auth +[\\w\\-]+")
             
             static let compLZO = NSRegularExpression("^comp-lzo.*")
@@ -199,6 +201,7 @@ extension OpenVPN {
             var currentBlockName: String?
             var currentBlock: [String] = []
             
+            var optDataCiphers: [Cipher]?
             var optCipher: Cipher?
             var optDigest: Digest?
             var optCompressionFraming: CompressionFraming?
@@ -345,8 +348,19 @@ extension OpenVPN {
                         return
                     }
                     optCipher = Cipher(rawValue: rawValue.uppercased())
-                    if optCipher == nil {
-                        unsupportedError = ConfigurationError.unsupportedConfiguration(option: "cipher \(rawValue)")
+                }
+                Regex.dataCiphers.enumerateArguments(in: line) {
+                    isHandled = true
+                    guard let rawValue = $0.first else {
+                        return
+                    }
+                    let rawCiphers = rawValue.components(separatedBy: ":")
+                    optDataCiphers = []
+                    rawCiphers.forEach {
+                        guard let cipher = Cipher(rawValue: $0.uppercased()) else {
+                            return
+                        }
+                        optDataCiphers?.append(cipher)
                     }
                 }
                 Regex.auth.enumerateArguments(in: line) {
@@ -610,8 +624,8 @@ extension OpenVPN {
                 guard let _ = optCA else {
                     throw ConfigurationError.missingConfiguration(option: "ca")
                 }
-                guard let _ = optCipher else {
-                    throw ConfigurationError.missingConfiguration(option: "cipher")
+                guard optCipher != nil || !(optDataCiphers?.isEmpty ?? false) else {
+                    throw ConfigurationError.missingConfiguration(option: "cipher or data-ciphers")
                 }
             }
             
@@ -622,6 +636,7 @@ extension OpenVPN {
             // MARK: General
             
             sessionBuilder.cipher = optCipher
+            sessionBuilder.dataCiphers = optDataCiphers
             sessionBuilder.digest = optDigest
             sessionBuilder.compressionFraming = optCompressionFraming
             sessionBuilder.compressionAlgorithm = optCompressionAlgorithm

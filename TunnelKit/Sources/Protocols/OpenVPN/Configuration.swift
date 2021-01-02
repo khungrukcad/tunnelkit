@@ -178,6 +178,9 @@ extension OpenVPN {
         /// The cipher algorithm for data encryption.
         public var cipher: Cipher?
         
+        /// The set of supported cipher algorithms for data encryption (2.5.).
+        public var dataCiphers: [Cipher]?
+        
         /// The digest algorithm for HMAC.
         public var digest: Digest?
         
@@ -298,6 +301,7 @@ extension OpenVPN {
         public func build() -> Configuration {
             return Configuration(
                 cipher: cipher,
+                dataCiphers: dataCiphers,
                 digest: digest,
                 compressionFraming: compressionFraming,
                 compressionAlgorithm: compressionAlgorithm,
@@ -354,6 +358,9 @@ extension OpenVPN {
 
         /// - Seealso: `ConfigurationBuilder.cipher`
         public let cipher: Cipher?
+        
+        /// - Seealso: `ConfigurationBuilder.dataCiphers`
+        public let dataCiphers: [Cipher]?
         
         /// - Seealso: `ConfigurationBuilder.digest`
         public let digest: Digest?
@@ -476,6 +483,7 @@ extension OpenVPN.Configuration {
     public func builder() -> OpenVPN.ConfigurationBuilder {
         var builder = OpenVPN.ConfigurationBuilder()
         builder.cipher = cipher
+        builder.dataCiphers = dataCiphers
         builder.digest = digest
         builder.compressionFraming = compressionFraming
         builder.compressionAlgorithm = compressionAlgorithm
