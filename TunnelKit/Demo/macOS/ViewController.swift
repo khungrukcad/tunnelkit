@@ -24,12 +24,11 @@
 //
 
 import Cocoa
-import NetworkExtension
 import TunnelKit
 
-private let appGroup = "DTDYD63ZX9.group.com.algoritmico.macos.demo.BasicTunnel"
+private let appGroup = "DTDYD63ZX9.group.com.algoritmico.TunnelKit.Demo"
 
-private let tunnelIdentifier = "com.algoritmico.macos.demo.BasicTunnel.Extension"
+private let tunnelIdentifier = "com.algoritmico.macos.TunnelKit.Demo.Tunnel"
 
 class ViewController: NSViewController {
     @IBOutlet var textUsername: NSTextField!

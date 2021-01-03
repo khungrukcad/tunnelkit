@@ -6,23 +6,36 @@ def shared_pods
     pod 'OpenSSL-Apple', '~> 1.1.1h.10'
 end
 
-abstract_target 'TunnelKit' do
+def demo_pods
+    pod 'SwiftyBeaver'
+end
+
+abstract_target 'ios' do
+    platform :ios, '12.0'
     target 'TunnelKit-iOS' do
-        platform :ios, '12.0'
         shared_pods
     end
     target 'TunnelKitTests-iOS' do
-        platform :ios, '12.0'
     end
     target 'TunnelKitHost' do
-        platform :ios, '12.0'
     end
+    target 'TunnelKitDemo-iOS' do
+        demo_pods
+    end
+    target 'TunnelKitDemoTunnel-iOS' do
+    end
+end
 
+abstract_target 'macos' do
+    platform :osx, '10.15'
     target 'TunnelKit-macOS' do
-        platform :osx, '10.15'
         shared_pods
     end
     target 'TunnelKitTests-macOS' do
-        platform :osx, '10.15'
+    end
+    target 'TunnelKitDemo-macOS' do
+        demo_pods
+    end
+    target 'TunnelKitDemoTunnel-macOS' do
     end
 end

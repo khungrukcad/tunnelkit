@@ -26,9 +26,9 @@
 import UIKit
 import TunnelKit
 
-private let appGroup = "group.com.algoritmico.ios.demo.BasicTunnel"
+private let appGroup = "group.com.algoritmico.TunnelKit.Demo"
 
-private let tunnelIdentifier = "com.algoritmico.ios.demo.BasicTunnel.Extension"
+private let tunnelIdentifier = "com.algoritmico.ios.TunnelKit.Demo.Tunnel"
 
 class ViewController: UIViewController, URLSessionDataDelegate {
     @IBOutlet var textUsername: UITextField!
