@@ -2,7 +2,7 @@ language: objective-c
 osx_image: xcode12.2
 xcode_workspace: TunnelKit.xcworkspace
 xcode_scheme: TunnelKit-iOS
-xcode_destination: platform=iOS Simulator,OS=12.4,name=iPhone 11 Pro Max
+xcode_destination: platform=iOS Simulator,OS=12.4,name=iPhone Xs Max
 cache:
     - bundler
     - cocoapods
