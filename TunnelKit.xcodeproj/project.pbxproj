@@ -2632,6 +2632,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CB9BB9617ACEA441E0AEA67E /* Pods-ios-TunnelKit-iOS.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -2657,6 +2658,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4226303B698C4BB5A2D3EA0B /* Pods-ios-TunnelKit-iOS.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -2682,6 +2684,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ABA2E2882F0B8F6523E34161 /* Pods-macos-TunnelKit-macOS.debug.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -2706,6 +2709,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 237CD7047F4B1693AB36A1A1 /* Pods-macos-TunnelKit-macOS.release.xcconfig */;
 			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
