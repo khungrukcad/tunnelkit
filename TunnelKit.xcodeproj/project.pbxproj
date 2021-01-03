@@ -429,13 +429,11 @@
 		0E500EA522493B5B00CAE560 /* tunnelbear.enc.1.key */ = {isa = PBXFileReference; lastKnownFileType = text; path = tunnelbear.enc.1.key; sourceTree = "<group>"; };
 		0E58BF5522411F37006FB157 /* LZO.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LZO.h; sourceTree = "<group>"; };
 		0E58BF5822411FEF006FB157 /* LZO.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LZO.m; sourceTree = "<group>"; };
-		0E6479DD212EAC96008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
 		0E7F3F69246ABA0F006BE77F /* IPHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPHeader.swift; sourceTree = "<group>"; };
 		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
-		0EA82A272190B220007960EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57332494277A00D0FCE0 /* VPNStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VPNStatus.swift; sourceTree = "<group>"; };
@@ -568,6 +566,7 @@
 				0E23B3D52297451700304C30 /* OpenVPN */,
 				0E23B3D62297452B00304C30 /* LZO */,
 				0E23B3D72297452E00304C30 /* Core */,
+				0E11089E1F77B9E800A92462 /* Info.plist */,
 				0E749F612178911C00BB2701 /* pia-2048.pem */,
 				0E011F832196E25400BA59EE /* pia-hungary.ovpn */,
 				0ECEB11A2252CDAD00E9E551 /* tunnelbear.crt */,
@@ -598,11 +597,7 @@
 			isa = PBXGroup;
 			children = (
 				0E17D7FB1F730D9F009EE129 /* TunnelKit */,
-				0E6479DC212EAC96008E6888 /* TunnelKit-iOS */,
-				0E6479DE212EAC96008E6888 /* TunnelKit-macOS */,
 				0E11089B1F77B9E800A92462 /* TunnelKitTests */,
-				0EA82A2E2190B261007960EB /* TunnelKitTests-iOS */,
-				0EA82A242190B220007960EB /* TunnelKitTests-macOS */,
 				0E1108AA1F77B9F900A92462 /* TunnelKitHost */,
 				0E17D7FA1F730D9F009EE129 /* Products */,
 				4A8A97836BAB183DA0A91902 /* Pods */,
@@ -625,6 +620,7 @@
 		0E17D7FB1F730D9F009EE129 /* TunnelKit */ = {
 			isa = PBXGroup;
 			children = (
+				0E6479E0212EACD6008E6888 /* Info.plist */,
 				0E17D8041F730DDD009EE129 /* Sources */,
 			);
 			path = TunnelKit;
@@ -786,38 +782,6 @@
 				0E23B42022982AF800304C30 /* minilzo.h */,
 			);
 			path = lib;
-			sourceTree = "<group>";
-		};
-		0E6479DC212EAC96008E6888 /* TunnelKit-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				0E6479E0212EACD6008E6888 /* Info.plist */,
-			);
-			path = "TunnelKit-iOS";
-			sourceTree = "<group>";
-		};
-		0E6479DE212EAC96008E6888 /* TunnelKit-macOS */ = {
-			isa = PBXGroup;
-			children = (
-				0E6479DD212EAC96008E6888 /* Info.plist */,
-			);
-			path = "TunnelKit-macOS";
-			sourceTree = "<group>";
-		};
-		0EA82A242190B220007960EB /* TunnelKitTests-macOS */ = {
-			isa = PBXGroup;
-			children = (
-				0EA82A272190B220007960EB /* Info.plist */,
-			);
-			path = "TunnelKitTests-macOS";
-			sourceTree = "<group>";
-		};
-		0EA82A2E2190B261007960EB /* TunnelKitTests-iOS */ = {
-			isa = PBXGroup;
-			children = (
-				0E11089E1F77B9E800A92462 /* Info.plist */,
-			);
-			path = "TunnelKitTests-iOS";
 			sourceTree = "<group>";
 		};
 		0EAC57302494277A00D0FCE0 /* Manager */ = {
@@ -1690,7 +1654,7 @@
 			baseConfigurationReference = 3DE692CD2FA087ED390CB9C6 /* Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = "TunnelKitTests-iOS/Info.plist";
+				INFOPLIST_FILE = TunnelKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1704,7 +1668,7 @@
 			baseConfigurationReference = 82499AC779944BE0D1CA651C /* Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = "TunnelKitTests-iOS/Info.plist";
+				INFOPLIST_FILE = TunnelKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1882,7 +1846,7 @@
 				DYLIB_CURRENT_VERSION = 825;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-iOS/Info.plist";
+				INFOPLIST_FILE = TunnelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.apple.TunnelKit;
@@ -1907,7 +1871,7 @@
 				DYLIB_CURRENT_VERSION = 825;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
-				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-iOS/Info.plist";
+				INFOPLIST_FILE = TunnelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.apple.TunnelKit;
@@ -1932,7 +1896,7 @@
 				DYLIB_CURRENT_VERSION = 825;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-macOS/Info.plist";
+				INFOPLIST_FILE = TunnelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.apple.TunnelKit;
@@ -1956,7 +1920,7 @@
 				DYLIB_CURRENT_VERSION = 825;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				FRAMEWORK_VERSION = A;
-				INFOPLIST_FILE = "$(SRCROOT)/TunnelKit-macOS/Info.plist";
+				INFOPLIST_FILE = TunnelKit/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.apple.TunnelKit;
@@ -1977,7 +1941,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = "TunnelKitTests-macOS/Info.plist";
+				INFOPLIST_FILE = TunnelKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1997,7 +1961,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = "TunnelKitTests-macOS/Info.plist";
+				INFOPLIST_FILE = TunnelKitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
