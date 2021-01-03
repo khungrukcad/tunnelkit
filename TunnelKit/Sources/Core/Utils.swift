@@ -42,3 +42,20 @@ public extension DispatchQueue {
         asyncAfter(deadline: .now() + after, execute: block)
     }
 }
+
+/// :nodoc:
+func fromDictionary<T: Decodable>(_ type: T.Type, _ dictionary: [String: Any]) throws -> T {
+    let data = try JSONSerialization.data(withJSONObject: dictionary, options: .fragmentsAllowed)
+    return try JSONDecoder().decode(T.self, from: data)
+}
+
+/// :nodoc:
+public extension Encodable {
+    func asDictionary() throws -> [String: Any] {
+        let data = try JSONEncoder().encode(self)
+        guard let dictionary = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) as? [String: Any] else {
+            fatalError("JSONSerialization failed to encode")
+        }
+        return dictionary
+    }
+}

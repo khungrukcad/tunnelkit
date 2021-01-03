@@ -1,6 +1,7 @@
 # TunnelKit
 
 ![iOS 12+](https://img.shields.io/badge/ios-12+-green.svg)
+![macOS 10.15+](https://img.shields.io/badge/macos-10.15+-green.svg)
 [![OpenSSL 1.1.1h](https://img.shields.io/badge/openssl-1.1.1h-d69c68.svg)](https://www.openssl.org/news/openssl-1.1.1-notes.html)
 [![License GPLv3](https://img.shields.io/badge/license-GPLv3-lightgray.svg)](LICENSE)
 [![Travis-CI](https://api.travis-ci.org/passepartoutvpn/tunnelkit.svg?branch=master)](https://travis-ci.org/passepartoutvpn/tunnelkit)
@@ -52,8 +53,8 @@ Unsupported:
 
 Ignored:
 
-- MTU overrides
-    - `--*-mtu` and variants
+- Some MTU overrides
+    - `--link-mtu` and variants
     - `--mssfix`
 - Multiple `--remote` with different `host` values (first wins)
 - Static client-side routes
