@@ -432,7 +432,7 @@
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
 		0E7F3F69246ABA0F006BE77F /* IPHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPHeader.swift; sourceTree = "<group>"; };
-		0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TunnelKitHost.entitlements; sourceTree = "<group>"; };
+		0E85A25B202CCA3D0059E9F9 /* Host.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Host.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockVPNProvider.swift; sourceTree = "<group>"; };
@@ -560,7 +560,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0E11089B1F77B9E800A92462 /* TunnelKitTests */ = {
+		0E11089B1F77B9E800A92462 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				0E23B3D52297451700304C30 /* OpenVPN */,
@@ -576,13 +576,13 @@
 				0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */,
 				0E3B65712249247E00EFF4DA /* tunnelbear.key */,
 			);
-			path = TunnelKitTests;
+			path = Tests;
 			sourceTree = "<group>";
 		};
-		0E1108AA1F77B9F900A92462 /* TunnelKitHost */ = {
+		0E1108AA1F77B9F900A92462 /* Host */ = {
 			isa = PBXGroup;
 			children = (
-				0E85A25B202CCA3D0059E9F9 /* TunnelKitHost.entitlements */,
+				0E85A25B202CCA3D0059E9F9 /* Host.entitlements */,
 				0E1108AB1F77B9F900A92462 /* AppDelegate.swift */,
 				0E1108AD1F77B9F900A92462 /* ViewController.swift */,
 				0E1108AF1F77B9F900A92462 /* Main.storyboard */,
@@ -590,15 +590,13 @@
 				0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */,
 				0E1108B71F77B9F900A92462 /* Info.plist */,
 			);
-			path = TunnelKitHost;
+			path = Host;
 			sourceTree = "<group>";
 		};
 		0E17D7EF1F730D9F009EE129 = {
 			isa = PBXGroup;
 			children = (
 				0E17D7FB1F730D9F009EE129 /* TunnelKit */,
-				0E11089B1F77B9E800A92462 /* TunnelKitTests */,
-				0E1108AA1F77B9F900A92462 /* TunnelKitHost */,
 				0E17D7FA1F730D9F009EE129 /* Products */,
 				4A8A97836BAB183DA0A91902 /* Pods */,
 				1B27D1F0B446D5907FAF40E1 /* Frameworks */,
@@ -621,7 +619,9 @@
 			isa = PBXGroup;
 			children = (
 				0E6479E0212EACD6008E6888 /* Info.plist */,
+				0E1108AA1F77B9F900A92462 /* Host */,
 				0E17D8041F730DDD009EE129 /* Sources */,
+				0E11089B1F77B9E800A92462 /* Tests */,
 			);
 			path = TunnelKit;
 			sourceTree = "<group>";
@@ -1654,7 +1654,7 @@
 			baseConfigurationReference = 3DE692CD2FA087ED390CB9C6 /* Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitTests/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1668,7 +1668,7 @@
 			baseConfigurationReference = 82499AC779944BE0D1CA651C /* Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitTests/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -1682,10 +1682,10 @@
 			baseConfigurationReference = 358F3D1B9B9A8FEE29E522F6 /* Pods-TunnelKit-TunnelKitHost.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TunnelKitHost/TunnelKitHost.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TunnelKit/Host/Host.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitHost/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Host/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.TunnelKitHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1699,10 +1699,10 @@
 			baseConfigurationReference = CED3394EFA1921EA509733F9 /* Pods-TunnelKit-TunnelKitHost.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TunnelKitHost/TunnelKitHost.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TunnelKit/Host/Host.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitHost/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Host/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.TunnelKitHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1941,7 +1941,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitTests/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1961,7 +1961,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKitTests/Info.plist;
+				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
