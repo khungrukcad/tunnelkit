@@ -79,18 +79,19 @@ class AppExtensionTests: XCTestCase {
         XCTAssertEqual(proto?.username, credentials.username)
         XCTAssertEqual(proto?.passwordReference, try? Keychain(group: appGroup).passwordReference(for: credentials.username))
 
-        if let pc = proto?.providerConfiguration {
-            print("\(pc)")
+        guard let pc = proto?.providerConfiguration else {
+            return
         }
-        
-        let K = OpenVPNTunnelProvider.Configuration.Keys.self
-        XCTAssertEqual(proto?.providerConfiguration?[K.appGroup] as? String, appGroup)
-        XCTAssertEqual(proto?.providerConfiguration?[K.cipherAlgorithm] as? String, cfg.sessionConfiguration.cipher?.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.digestAlgorithm] as? String, cfg.sessionConfiguration.digest?.rawValue)
-        XCTAssertEqual(proto?.providerConfiguration?[K.ca] as? String, cfg.sessionConfiguration.ca?.pem)
-        XCTAssertEqual(proto?.providerConfiguration?[K.mtu] as? Int, cfg.sessionConfiguration.mtu)
-        XCTAssertEqual(proto?.providerConfiguration?[K.renegotiatesAfter] as? TimeInterval, cfg.sessionConfiguration.renegotiatesAfter)
-        XCTAssertEqual(proto?.providerConfiguration?[K.debug] as? Bool, cfg.shouldDebug)
+        print("\(pc)")
+
+        let pcSession = pc["sessionConfiguration"] as? [String: Any]
+        XCTAssertEqual(pc["appGroup"] as? String, appGroup)
+        XCTAssertEqual(pc["shouldDebug"] as? Bool, cfg.shouldDebug)
+        XCTAssertEqual(pcSession?["cipher"] as? String, cfg.sessionConfiguration.cipher?.rawValue)
+        XCTAssertEqual(pcSession?["digest"] as? String, cfg.sessionConfiguration.digest?.rawValue)
+        XCTAssertEqual(pcSession?["ca"] as? String, cfg.sessionConfiguration.ca?.pem)
+        XCTAssertEqual(pcSession?["mtu"] as? Int, cfg.sessionConfiguration.mtu)
+        XCTAssertEqual(pcSession?["renegotiatesAfter"] as? TimeInterval, cfg.sessionConfiguration.renegotiatesAfter)
     }
     
     func testDNSResolver() {
