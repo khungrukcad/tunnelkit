@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1230"
-   version = "1.3">
+   wasCreatedForAppExtension = "YES"
+   version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -14,9 +15,23 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0E3251C41F95770D00C108D9"
-               BuildableName = "TunnelKit.framework"
-               BlueprintName = "TunnelKit-macOS"
+               BlueprintIdentifier = "0E05427625A239C600EFC5FF"
+               BuildableName = "TunnelKitDemoTunnel-macOS.appex"
+               BlueprintName = "TunnelKitDemoTunnel-macOS"
+               ReferencedContainer = "container:TunnelKit.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0E05422B25A236EB00EFC5FF"
+               BuildableName = "TunnelKitDemo-macOS.app"
+               BlueprintName = "TunnelKitDemo-macOS"
                ReferencedContainer = "container:TunnelKit.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -27,63 +42,49 @@
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0E3251C41F95770D00C108D9"
-            BuildableName = "TunnelKit.framework"
-            BlueprintName = "TunnelKit-macOS"
-            ReferencedContainer = "container:TunnelKit.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0EA82A222190B220007960EB"
-               BuildableName = "TunnelKitTests-macOS.xctest"
-               BlueprintName = "TunnelKitTests-macOS"
-               ReferencedContainer = "container:TunnelKit.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
+      askForAppToLaunch = "Yes"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
-      <MacroExpansion>
+      allowLocationSimulation = "YES"
+      launchAutomaticallySubstyle = "2">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0E3251C41F95770D00C108D9"
-            BuildableName = "TunnelKit.framework"
-            BlueprintName = "TunnelKit-macOS"
+            BlueprintIdentifier = "0E05422B25A236EB00EFC5FF"
+            BuildableName = "TunnelKitDemo-macOS.app"
+            BlueprintName = "TunnelKitDemo-macOS"
             ReferencedContainer = "container:TunnelKit.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      debugDocumentVersioning = "YES"
+      launchAutomaticallySubstyle = "2">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0E3251C41F95770D00C108D9"
-            BuildableName = "TunnelKit.framework"
-            BlueprintName = "TunnelKit-macOS"
+            BlueprintIdentifier = "0E05422B25A236EB00EFC5FF"
+            BuildableName = "TunnelKitDemo-macOS.app"
+            BlueprintName = "TunnelKitDemo-macOS"
             ReferencedContainer = "container:TunnelKit.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
