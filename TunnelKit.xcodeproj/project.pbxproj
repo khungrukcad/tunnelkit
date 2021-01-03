@@ -750,12 +750,12 @@
 		0E23B3F722982AF800304C30 /* AppExtension */ = {
 			isa = PBXGroup;
 			children = (
-				0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */,
-				0E23B3F922982AF800304C30 /* NEUDPLink.swift */,
 				0E23B3FA22982AF800304C30 /* ConnectionStrategy.swift */,
-				0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */,
 				0E23B3FC22982AF800304C30 /* NETCPLink.swift */,
+				0E23B3F922982AF800304C30 /* NEUDPLink.swift */,
 				0E23B3FD22982AF800304C30 /* OpenVPNTunnelProvider.swift */,
+				0E23B3FB22982AF800304C30 /* OpenVPNTunnelProvider+Configuration.swift */,
+				0E23B3F822982AF800304C30 /* OpenVPNTunnelProvider+Interaction.swift */,
 			);
 			path = AppExtension;
 			sourceTree = "<group>";

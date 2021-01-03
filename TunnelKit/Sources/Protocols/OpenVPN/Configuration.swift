@@ -35,6 +35,9 @@
 //
 
 import Foundation
+import SwiftyBeaver
+
+private let log = SwiftyBeaver.self
 
 extension OpenVPN {
     
@@ -504,5 +507,97 @@ extension OpenVPN.Configuration {
         builder.proxyBypassDomains = proxyBypassDomains
         builder.routingPolicies = routingPolicies
         return builder
+    }
+}
+
+// MARK: Encoding
+
+extension OpenVPN.Configuration {
+    func print() {
+        guard let endpointProtocols = endpointProtocols else {
+            fatalError("No sessionConfiguration.endpointProtocols set")
+        }
+        log.info("\tProtocols: \(endpointProtocols)")
+        log.info("\tCipher: \(fallbackCipher)")
+        log.info("\tDigest: \(fallbackDigest)")
+        log.info("\tCompression framing: \(fallbackCompressionFraming)")
+        if let compressionAlgorithm = compressionAlgorithm, compressionAlgorithm != .disabled {
+            log.info("\tCompression algorithm: \(compressionAlgorithm)")
+        } else {
+            log.info("\tCompression algorithm: disabled")
+        }
+        if let _ = clientCertificate {
+            log.info("\tClient verification: enabled")
+        } else {
+            log.info("\tClient verification: disabled")
+        }
+        if let tlsWrap = tlsWrap {
+            log.info("\tTLS wrapping: \(tlsWrap.strategy)")
+        } else {
+            log.info("\tTLS wrapping: disabled")
+        }
+        if let tlsSecurityLevel = tlsSecurityLevel {
+            log.info("\tTLS security level: \(tlsSecurityLevel)")
+        } else {
+            log.info("\tTLS security level: default")
+        }
+        if let keepAliveSeconds = keepAliveInterval, keepAliveSeconds > 0 {
+            log.info("\tKeep-alive interval: \(keepAliveSeconds) seconds")
+        } else {
+            log.info("\tKeep-alive interval: never")
+        }
+        if let keepAliveTimeoutSeconds = keepAliveTimeout, keepAliveTimeoutSeconds > 0 {
+            log.info("\tKeep-alive timeout: \(keepAliveTimeoutSeconds) seconds")
+        } else {
+            log.info("\tKeep-alive timeout: never")
+        }
+        if let renegotiatesAfterSeconds = renegotiatesAfter, renegotiatesAfterSeconds > 0 {
+            log.info("\tRenegotiation: \(renegotiatesAfterSeconds) seconds")
+        } else {
+            log.info("\tRenegotiation: never")
+        }
+        if checksEKU ?? false {
+            log.info("\tServer EKU verification: enabled")
+        } else {
+            log.info("\tServer EKU verification: disabled")
+        }
+        if checksSANHost ?? false {
+            log.info("\tHost SAN verification: enabled (\(sanHost ?? "-"))")
+        } else {
+            log.info("\tHost SAN verification: disabled")
+        }
+        if randomizeEndpoint ?? false {
+            log.info("\tRandomize endpoint: true")
+        }
+        if let routingPolicies = routingPolicies {
+            log.info("\tGateway: \(routingPolicies.map { $0.rawValue })")
+        } else {
+            log.info("\tGateway: not configured")
+        }
+        if let dnsServers = dnsServers, !dnsServers.isEmpty {
+            log.info("\tDNS: \(dnsServers.maskedDescription)")
+        } else {
+            log.info("\tDNS: not configured")
+        }
+        if let searchDomains = searchDomains, !searchDomains.isEmpty {
+            log.info("\tSearch domains: \(searchDomains.maskedDescription)")
+        }
+        if let httpProxy = httpProxy {
+            log.info("\tHTTP proxy: \(httpProxy.maskedDescription)")
+        }
+        if let httpsProxy = httpsProxy {
+            log.info("\tHTTPS proxy: \(httpsProxy.maskedDescription)")
+        }
+        if let proxyAutoConfigurationURL = proxyAutoConfigurationURL {
+            log.info("\tPAC: \(proxyAutoConfigurationURL)")
+        }
+        if let proxyBypassDomains = proxyBypassDomains {
+            log.info("\tProxy bypass domains: \(proxyBypassDomains.maskedDescription)")
+        }
+        if let mtu = mtu {
+            log.info("\tMTU: \(mtu)")
+        } else {
+            log.info("\tMTU: default")
+        }
     }
 }
