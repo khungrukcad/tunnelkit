@@ -93,15 +93,11 @@ Assuming you have a [working CocoaPods environment][dep-cocoapods], setting up t
 
     $ pod install
 
-After that, open `TunnelKit.xcworkspace` in Xcode and run the unit tests found in the `TunnelKitTests` folder. A simple CMD+U while on `TunnelKit-iOS` should do that as well.
+After that, open `TunnelKit.xcworkspace` in Xcode and run the unit tests found in the `TunnelKitTests` folder. A simple CMD+U while on `TunnelKit-(iOS|macOS)` should do that as well.
 
 #### Demo
 
-There is a `Demo` directory containing a simple app for testing the tunnel, called `BasicTunnel`. As usual, prepare for CocoaPods:
-
-    $ pod install
-
-then open `Demo.xcworkspace` and run the `BasicTunnel-iOS` target.
+There are demo targets containing a simple app for testing the tunnel, called `BasicTunnel`.
 
 For the VPN to work properly, the `BasicTunnel` demo requires:
 
@@ -110,7 +106,7 @@ For the VPN to work properly, the `BasicTunnel` demo requires:
 
 both in the main app and the tunnel extension target.
 
-In order to test connection to your own server, modify the file `Demo/BasicTunnel-[iOS|macOS]/ViewController.swift` and make sure to set `ca` to the PEM encoded certificate of your VPN server's CA.
+In order to test connectivity in your own environment, modify the file `TunnelKit/Demo/Configuration.swift` to match your VPN server parameters.
 
 Example:
 
