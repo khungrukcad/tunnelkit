@@ -4,13 +4,13 @@ xcode_workspace: TunnelKit.xcworkspace
 xcode_scheme: TunnelKit-iOS
 xcode_destination: platform=iOS Simulator,OS=12.4,name=iPhone Xs Max
 cache:
-    - bundler
-    - cocoapods
+  bundler: true
+  cocoapods: true
 branches:
-    only:
-        - master
-        - stable
+  only:
+    - master
+    - stable
 install:
-    - bundle install --jobs=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
-    - bundle exec pod repo update
-    - travis_wait 40 bundle exec pod install
+  - bundle install --jobs=3 --deployment --path=${BUNDLE_PATH:-vendor/bundle}
+  - bundle exec pod repo update
+  - travis_wait 40 bundle exec pod install
