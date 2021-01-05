@@ -302,12 +302,12 @@
 		0EFEB4A22006D7F300F81029 /* CoreConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */; };
 		0EFEB4A32006D7F300F81029 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44B2006D3C800F81029 /* Errors.m */; };
 		14A98E2438394F91CA6E81FF /* Pods_ios_TunnelKitDemoTunnel_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */; };
-		1D45502EDF81762E836BE75A /* Pods_TunnelKitTests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */; };
 		2E1C97B5CEB3ACB400B2B654 /* Pods_ios_TunnelKitDemo_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24169970F957D36C9D0765C /* Pods_ios_TunnelKitDemo_iOS.framework */; };
-		3C75BDE9905FECD4B0CC5607 /* Pods_TunnelKitTests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */; };
 		51082C1C1032265B55A0DB50 /* Pods_macos_TunnelKitDemoTunnel_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */; };
+		60D4709E1876FD8D0A59AAB3 /* Pods_ios_TunnelKitTests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C28C44D3C842748FA93DB11C /* Pods_ios_TunnelKitTests_iOS.framework */; };
 		721A20C2EC6A9738AEBC1F44 /* Pods_ios_TunnelKit_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44612F27B9EF890AF8B926DB /* Pods_ios_TunnelKit_iOS.framework */; };
 		FDC8526145844D69D78C0F44 /* Pods_macos_TunnelKitDemo_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 501B04C95D9A457FFA483C3B /* Pods_macos_TunnelKitDemo_macOS.framework */; };
+		FE5A68358C6F47E7CF541DE2 /* Pods_macos_TunnelKitTests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9370F52414D6A6E054554979 /* Pods_macos_TunnelKitTests_macOS.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -587,26 +587,30 @@
 		0EFEB44B2006D3C800F81029 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
 		17923FEB8DE89371412B0207 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		184388CC85C4D4A1D94DAD3A /* Pods-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		21FEED07279DC6DBF8E8A3B0 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		3BD4433EBEFDBF16AB8D8F28 /* Pods-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		44612F27B9EF890AF8B926DB /* Pods_ios_TunnelKit_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKit_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKitDemoTunnel_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EF702DD650A65FCBA51506A /* Pods_macos_TunnelKit_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKit_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		501B04C95D9A457FFA483C3B /* Pods_macos_TunnelKitDemo_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKitDemo_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		753FEF8857FBD0811875B5A0 /* Pods-ios-TunnelKit-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		7A2D5CB910EF83DE9BF55F40 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		7D3CCCC1BD06310A18700CC2 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		7D6085A97C139D633682523B /* Pods-macos-TunnelKit-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		8A3955DF291862862060566F /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9205F89A32303FCE4F75BEA6 /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9370F52414D6A6E054554979 /* Pods_macos_TunnelKitTests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKitTests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		94C0AB202A6A1CD41C81D4D1 /* Pods-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKitTests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKitDemoTunnel_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A827758551614BA288448784 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B24169970F957D36C9D0765C /* Pods_ios_TunnelKitDemo_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKitDemo_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B560F5D6D20E2E4EE17A14B0 /* Pods-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		B75256D6B0ED4155703AEEDB /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		BC1EEEA339E7FFC5661F8396 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C28C44D3C842748FA93DB11C /* Pods_ios_TunnelKitTests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKitTests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C8ED1FA6508ED154E5588325 /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		CA6F961CC84E66D08FDF5BCF /* Pods-macos-TunnelKit-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D3B41DACBA37512BEBC17808 /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKitTests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCE52502D08FAD966B9A1F66 /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		FAEB653535C9ACC3F82B0CF2 /* Pods-ios-TunnelKit-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -651,7 +655,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */,
-				1D45502EDF81762E836BE75A /* Pods_TunnelKitTests_iOS.framework in Frameworks */,
+				60D4709E1876FD8D0A59AAB3 /* Pods_ios_TunnelKitTests_iOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -678,7 +682,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				0EA82A282190B220007960EB /* TunnelKit.framework in Frameworks */,
-				3C75BDE9905FECD4B0CC5607 /* Pods_TunnelKitTests_macOS.framework in Frameworks */,
+				FE5A68358C6F47E7CF541DE2 /* Pods_macos_TunnelKitTests_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1030,8 +1034,8 @@
 				488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */,
 				501B04C95D9A457FFA483C3B /* Pods_macos_TunnelKitDemo_macOS.framework */,
 				A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */,
-				9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */,
-				D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */,
+				C28C44D3C842748FA93DB11C /* Pods_ios_TunnelKitTests_iOS.framework */,
+				9370F52414D6A6E054554979 /* Pods_macos_TunnelKitTests_macOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1055,6 +1059,10 @@
 				BC1EEEA339E7FFC5661F8396 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */,
 				8A3955DF291862862060566F /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */,
 				DCE52502D08FAD966B9A1F66 /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */,
+				7A2D5CB910EF83DE9BF55F40 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */,
+				A827758551614BA288448784 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */,
+				21FEED07279DC6DBF8E8A3B0 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */,
+				7D3CCCC1BD06310A18700CC2 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1482,7 +1490,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TunnelKitTests-iOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-ios-TunnelKitTests-iOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1495,7 +1503,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
@@ -1506,7 +1514,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		468AD4FF69A2C5CF88E1380C /* [CP] Check Pods Manifest.lock */ = {
@@ -1654,7 +1662,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TunnelKitTests-macOS-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-macos-TunnelKitTests-macOS-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1689,7 +1697,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-macOS/SwiftyBeaver.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
 			);
@@ -1700,7 +1708,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -2217,7 +2225,7 @@
 		};
 		0E1108A21F77B9E800A92462 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 94C0AB202A6A1CD41C81D4D1 /* Pods-TunnelKitTests-iOS.debug.xcconfig */;
+			baseConfigurationReference = 7A2D5CB910EF83DE9BF55F40 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
@@ -2230,7 +2238,7 @@
 		};
 		0E1108A31F77B9E800A92462 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3BD4433EBEFDBF16AB8D8F28 /* Pods-TunnelKitTests-iOS.release.xcconfig */;
+			baseConfigurationReference = A827758551614BA288448784 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
@@ -2468,7 +2476,7 @@
 		};
 		0EA82A2C2190B220007960EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B560F5D6D20E2E4EE17A14B0 /* Pods-TunnelKitTests-macOS.debug.xcconfig */;
+			baseConfigurationReference = 21FEED07279DC6DBF8E8A3B0 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -2488,7 +2496,7 @@
 		};
 		0EA82A2D2190B220007960EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 184388CC85C4D4A1D94DAD3A /* Pods-TunnelKitTests-macOS.release.xcconfig */;
+			baseConfigurationReference = 7D3CCCC1BD06310A18700CC2 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";

@@ -15,6 +15,8 @@ abstract_target 'ios' do
     target 'TunnelKit-iOS' do
         shared_pods
     end
+    target 'TunnelKitTests-iOS' do
+    end
     target 'TunnelKitDemo-iOS' do
         demo_pods
     end
@@ -27,18 +29,11 @@ abstract_target 'macos' do
     target 'TunnelKit-macOS' do
         shared_pods
     end
+    target 'TunnelKitTests-macOS' do
+    end
     target 'TunnelKitDemo-macOS' do
         demo_pods
     end
     target 'TunnelKitDemoTunnel-macOS' do
     end
-end
-
-target 'TunnelKitTests-iOS' do
-    platform :ios, '12.0'
-    shared_pods
-end
-target 'TunnelKitTests-macOS' do
-    platform :osx, '10.15'
-    shared_pods
 end
