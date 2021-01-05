@@ -2227,9 +2227,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7A2D5CB910EF83DE9BF55F40 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
+				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2240,9 +2241,10 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = A827758551614BA288448784 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
+				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				"PRODUCT_BUNDLE_IDENTIFIER[sdk=macosx*]" = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2479,16 +2481,13 @@
 			baseConfigurationReference = 21FEED07279DC6DBF8E8A3B0 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
@@ -2499,15 +2498,12 @@
 			baseConfigurationReference = 7D3CCCC1BD06310A18700CC2 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
-				CODE_SIGN_IDENTITY = "Mac Developer";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = macosx;
 				SWIFT_VERSION = 5.0;
 			};
