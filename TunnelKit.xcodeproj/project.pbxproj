@@ -38,11 +38,6 @@
 		0E0B20422278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
 		0E0B20432278A85C007A3CB9 /* RoutingTableEntry.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */; };
 		0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
-		0E1108AC1F77B9F900A92462 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AB1F77B9F900A92462 /* AppDelegate.swift */; };
-		0E1108AE1F77B9F900A92462 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1108AD1F77B9F900A92462 /* ViewController.swift */; };
-		0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108AF1F77B9F900A92462 /* Main.storyboard */; };
-		0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B21F77B9F900A92462 /* Assets.xcassets */; };
-		0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */; };
 		0E12B29E21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */; };
 		0E12B29F21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */; };
 		0E12B2A521454F7F00B4BAE9 /* BidirectionalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */; };
@@ -200,8 +195,6 @@
 		0EAC57402494277A00D0FCE0 /* VPNProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57352494277A00D0FCE0 /* VPNProvider.swift */; };
 		0EAC57412494277A00D0FCE0 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57362494277A00D0FCE0 /* VPN.swift */; };
 		0EAC57422494277A00D0FCE0 /* VPN.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0EAC57362494277A00D0FCE0 /* VPN.swift */; };
-		0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; };
-		0ECAF84B246697DA00D8266A /* TunnelKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 0E17D7F91F730D9F009EE129 /* TunnelKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0ECC60D82254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECC60D92254981A0020BEAC /* ConfigurationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0ECC60D72254981A0020BEAC /* ConfigurationError.swift */; };
 		0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */ = {isa = PBXBuildFile; fileRef = 0ECEB1132252C8E900E9E551 /* tunnelbear.enc.8.ovpn */; };
@@ -310,7 +303,6 @@
 		0EFEB4A32006D7F300F81029 /* Errors.m in Sources */ = {isa = PBXBuildFile; fileRef = 0EFEB44B2006D3C800F81029 /* Errors.m */; };
 		14A98E2438394F91CA6E81FF /* Pods_ios_TunnelKitDemoTunnel_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */; };
 		1D45502EDF81762E836BE75A /* Pods_TunnelKitTests_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */; };
-		24D47356AA83C1945E63EECD /* Pods_TunnelKitHost.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A567C1941332D6DED6CAA8AB /* Pods_TunnelKitHost.framework */; };
 		2E1C97B5CEB3ACB400B2B654 /* Pods_ios_TunnelKitDemo_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B24169970F957D36C9D0765C /* Pods_ios_TunnelKitDemo_iOS.framework */; };
 		3C75BDE9905FECD4B0CC5607 /* Pods_TunnelKitTests_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */; };
 		51082C1C1032265B55A0DB50 /* Pods_macos_TunnelKitDemoTunnel_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */; };
@@ -362,20 +354,6 @@
 			remoteInfo = "TunnelKit-macOS";
 		};
 		0E1108A01F77B9E800A92462 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E17D7F01F730D9F009EE129 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0E17D7F81F730D9F009EE129;
-			remoteInfo = PIATunnel;
-		};
-		0E1108BB1F77BA0200A92462 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 0E17D7F01F730D9F009EE129 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 0E1108A81F77B9F900A92462;
-			remoteInfo = PIATunnelHost;
-		};
-		0E9379CA1F819A4600CE91B6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0E17D7F01F730D9F009EE129 /* Project object */;
 			proxyType = 1;
@@ -436,23 +414,9 @@
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		0ECAF84C246697DA00D8266A /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				0ECAF84B246697DA00D8266A /* TunnelKit.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		003F0DF74DE0A7292E643803 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		03F96C43AF6CA23548C2A462 /* Pods-TunnelKitHost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitHost.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitHost/Pods-TunnelKitHost.debug.xcconfig"; sourceTree = "<group>"; };
-		0AF4DDAD0F2B526865FF49E2 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		0E011F792196D93600BA59EE /* SocketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketType.swift; sourceTree = "<group>"; };
 		0E011F7C2196D97200BA59EE /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		0E011F832196E25400BA59EE /* pia-hungary.ovpn */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "pia-hungary.ovpn"; sourceTree = "<group>"; };
@@ -483,13 +447,6 @@
 		0E0B203F2278A85B007A3CB9 /* RoutingTableEntry.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RoutingTableEntry.m; sourceTree = "<group>"; };
 		0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-iOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0E11089E1F77B9E800A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		0E1108A91F77B9F900A92462 /* TunnelKitHost.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TunnelKitHost.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		0E1108AB1F77B9F900A92462 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		0E1108AD1F77B9F900A92462 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		0E1108B01F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		0E1108B21F77B9F900A92462 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		0E1108B51F77B9F900A92462 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		0E1108B71F77B9F900A92462 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E12B29D21449ADB00B4BAE9 /* NSRegularExpression+Shortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSRegularExpression+Shortcuts.swift"; sourceTree = "<group>"; };
 		0E12B2A421454F7F00B4BAE9 /* BidirectionalState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BidirectionalState.swift; sourceTree = "<group>"; };
 		0E17D7F91F730D9F009EE129 /* TunnelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TunnelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -567,7 +524,6 @@
 		0E6479E0212EACD6008E6888 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0E749F612178911C00BB2701 /* pia-2048.pem */ = {isa = PBXFileReference; lastKnownFileType = text; path = "pia-2048.pem"; sourceTree = "<group>"; };
 		0E7F3F69246ABA0F006BE77F /* IPHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPHeader.swift; sourceTree = "<group>"; };
-		0E85A25B202CCA3D0059E9F9 /* Host.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Host.entitlements; sourceTree = "<group>"; };
 		0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "TunnelKitTests-macOS.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0EAC57312494277A00D0FCE0 /* OpenVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OpenVPNProvider.swift; sourceTree = "<group>"; };
 		0EAC57322494277A00D0FCE0 /* MockVPNProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockVPNProvider.swift; sourceTree = "<group>"; };
@@ -629,54 +585,30 @@
 		0EFEB4492006D3C800F81029 /* LinkInterface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkInterface.swift; sourceTree = "<group>"; };
 		0EFEB44A2006D3C800F81029 /* CoreConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreConfiguration.swift; sourceTree = "<group>"; };
 		0EFEB44B2006D3C800F81029 /* Errors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Errors.m; sourceTree = "<group>"; };
-		1067E0DA76AE8CAF89D71584 /* Pods-ios-Demo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-Demo-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-Demo-iOS/Pods-ios-Demo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		157488BB58C4CC25BC563A54 /* Pods-macos-DemoTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-DemoTunnel-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-DemoTunnel-macOS/Pods-macos-DemoTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		19A83FF5E5B6B4811728D833 /* Pods-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		1DF4ACC345765CF3A1576D4A /* Pods-macos-Demo-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-Demo-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-Demo-macOS/Pods-macos-Demo-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		237CD7047F4B1693AB36A1A1 /* Pods-macos-TunnelKit-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		2DD764A8C3908CB48A442295 /* Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitTests-macOS/Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		33C00B882D0DF7C28257630B /* Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKit-macOS/Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		358F3D1B9B9A8FEE29E522F6 /* Pods-TunnelKit-TunnelKitHost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitHost.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost.debug.xcconfig"; sourceTree = "<group>"; };
-		3DE692CD2FA087ED390CB9C6 /* Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitTests-iOS/Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		3EB4715EDD7F534B7198FDED /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		4226303B698C4BB5A2D3EA0B /* Pods-ios-TunnelKit-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		442D4665BCE9ADD09F63F180 /* Pods-ios-Demo-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-Demo-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-Demo-iOS/Pods-ios-Demo-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		17923FEB8DE89371412B0207 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		184388CC85C4D4A1D94DAD3A /* Pods-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		3BD4433EBEFDBF16AB8D8F28 /* Pods-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		44612F27B9EF890AF8B926DB /* Pods_ios_TunnelKit_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKit_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		453CD8471DBD010438FEC07B /* Pods-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKitDemoTunnel_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4EF702DD650A65FCBA51506A /* Pods_macos_TunnelKit_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKit_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		501B04C95D9A457FFA483C3B /* Pods_macos_TunnelKitDemo_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKitDemo_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		64037042B4D72C5837330825 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitTests-iOS/Pods-ios-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		699D1F9CD94BC7F9348EB407 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitTests-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitTests-macOS/Pods-macos-TunnelKitTests-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		7495E11A5285EEDEFF4CE52C /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		7CE8A5CE244CC80CAF8BD890 /* Pods-TunnelKit-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitTests-macOS/Pods-TunnelKit-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		82499AC779944BE0D1CA651C /* Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitTests-iOS/Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		83830F707A0FDAE3EBFA9008 /* Pods-ios-DemoTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-DemoTunnel-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-DemoTunnel-iOS/Pods-ios-DemoTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		8D69E51508704ECD5ACEBE79 /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		753FEF8857FBD0811875B5A0 /* Pods-ios-TunnelKit-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		7D6085A97C139D633682523B /* Pods-macos-TunnelKit-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		8A3955DF291862862060566F /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9205F89A32303FCE4F75BEA6 /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
+		94C0AB202A6A1CD41C81D4D1 /* Pods-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKitTests_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9D2F19A70BA726DCE60AAFFB /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		A0C15F7E031B3D09730175D7 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		A43E3F5B33D769164DD14EC8 /* Pods-ios-TunnelKitHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitHost.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitHost/Pods-ios-TunnelKitHost.release.xcconfig"; sourceTree = "<group>"; };
 		A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_macos_TunnelKitDemoTunnel_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A567C1941332D6DED6CAA8AB /* Pods_TunnelKitHost.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKitHost.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A6A5F35562CD45748AD8452F /* Pods-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		A762728F862EA173640D3A97 /* Pods-TunnelKit-TunnelKit-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKit-iOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKit-iOS/Pods-TunnelKit-TunnelKit-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		ABA2E2882F0B8F6523E34161 /* Pods-macos-TunnelKit-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		B09331876EB06B7AE0D3FCB8 /* Pods-macos-DemoTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-DemoTunnel-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-DemoTunnel-macOS/Pods-macos-DemoTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		B24169970F957D36C9D0765C /* Pods_ios_TunnelKitDemo_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ios_TunnelKitDemo_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		CB9BB9617ACEA441E0AEA67E /* Pods-ios-TunnelKit-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		CED3394EFA1921EA509733F9 /* Pods-TunnelKit-TunnelKitHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKitHost.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKitHost/Pods-TunnelKit-TunnelKitHost.release.xcconfig"; sourceTree = "<group>"; };
+		B560F5D6D20E2E4EE17A14B0 /* Pods-TunnelKitTests-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-macOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-macOS/Pods-TunnelKitTests-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		B75256D6B0ED4155703AEEDB /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		BC1EEEA339E7FFC5661F8396 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C8ED1FA6508ED154E5588325 /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; sourceTree = "<group>"; };
+		CA6F961CC84E66D08FDF5BCF /* Pods-macos-TunnelKit-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKit-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKit-macOS/Pods-macos-TunnelKit-macOS.debug.xcconfig"; sourceTree = "<group>"; };
+		D3B41DACBA37512BEBC17808 /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemoTunnel-iOS/Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 		D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TunnelKitTests_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D80AB35A70A7134337F2872C /* Pods-TunnelKitTests-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitTests-iOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKitTests-iOS/Pods-TunnelKitTests-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		DADE23B0846CE92650EB7D86 /* Pods-TunnelKit-TunnelKit-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKit-macOS.release.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKit-macOS/Pods-TunnelKit-TunnelKit-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		DE4FDDA826C589F80328BE1D /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitDemo-iOS/Pods-ios-TunnelKitDemo-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		EE99E5D92B1FFAC463F582C2 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemo-macOS/Pods-macos-TunnelKitDemo-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		EEC658ED16E01A856F5DECE3 /* Pods-ios-DemoTunnel-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-DemoTunnel-iOS.release.xcconfig"; path = "Target Support Files/Pods-ios-DemoTunnel-iOS/Pods-ios-DemoTunnel-iOS.release.xcconfig"; sourceTree = "<group>"; };
-		F24743BB5D4C718576B270FA /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
-		F34879B2239747D1719131F3 /* Pods-TunnelKit-TunnelKit-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKit-TunnelKit-iOS.debug.xcconfig"; path = "Target Support Files/Pods-TunnelKit-TunnelKit-iOS/Pods-TunnelKit-TunnelKit-iOS.debug.xcconfig"; sourceTree = "<group>"; };
-		F7902F7ED688CF5A114F2582 /* Pods-macos-Demo-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-Demo-macOS.debug.xcconfig"; path = "Target Support Files/Pods-macos-Demo-macOS/Pods-macos-Demo-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		F9C57886F6F3BEE985AA2D4D /* Pods-ios-TunnelKitHost.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKitHost.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKitHost/Pods-ios-TunnelKitHost.debug.xcconfig"; sourceTree = "<group>"; };
-		FFF1BE329E928321F733FA1D /* Pods-TunnelKitHost.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TunnelKitHost.release.xcconfig"; path = "Target Support Files/Pods-TunnelKitHost/Pods-TunnelKitHost.release.xcconfig"; sourceTree = "<group>"; };
+		DCE52502D08FAD966B9A1F66 /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; path = "Target Support Files/Pods-macos-TunnelKitDemoTunnel-macOS/Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		FAEB653535C9ACC3F82B0CF2 /* Pods-ios-TunnelKit-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ios-TunnelKit-iOS.debug.xcconfig"; path = "Target Support Files/Pods-ios-TunnelKit-iOS/Pods-ios-TunnelKit-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -720,15 +652,6 @@
 			files = (
 				0E11089F1F77B9E800A92462 /* TunnelKit.framework in Frameworks */,
 				1D45502EDF81762E836BE75A /* Pods_TunnelKitTests_iOS.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0E1108A61F77B9F900A92462 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0ECAF84A246697DA00D8266A /* TunnelKit.framework in Frameworks */,
-				24D47356AA83C1945E63EECD /* Pods_TunnelKitHost.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -822,20 +745,6 @@
 			path = Tests;
 			sourceTree = "<group>";
 		};
-		0E1108AA1F77B9F900A92462 /* Host */ = {
-			isa = PBXGroup;
-			children = (
-				0E85A25B202CCA3D0059E9F9 /* Host.entitlements */,
-				0E1108AB1F77B9F900A92462 /* AppDelegate.swift */,
-				0E1108AD1F77B9F900A92462 /* ViewController.swift */,
-				0E1108AF1F77B9F900A92462 /* Main.storyboard */,
-				0E1108B21F77B9F900A92462 /* Assets.xcassets */,
-				0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */,
-				0E1108B71F77B9F900A92462 /* Info.plist */,
-			);
-			path = Host;
-			sourceTree = "<group>";
-		};
 		0E17D7EF1F730D9F009EE129 = {
 			isa = PBXGroup;
 			children = (
@@ -851,7 +760,6 @@
 			children = (
 				0E17D7F91F730D9F009EE129 /* TunnelKit.framework */,
 				0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */,
-				0E1108A91F77B9F900A92462 /* TunnelKitHost.app */,
 				0E3251C51F95770D00C108D9 /* TunnelKit.framework */,
 				0EA82A232190B220007960EB /* TunnelKitTests-macOS.xctest */,
 				0E05416925A232FD00EFC5FF /* TunnelKitDemo-iOS.app */,
@@ -867,7 +775,6 @@
 			children = (
 				0E6479E0212EACD6008E6888 /* Info.plist */,
 				0E05412B25A231D500EFC5FF /* Demo */,
-				0E1108AA1F77B9F900A92462 /* Host */,
 				0E17D8041F730DDD009EE129 /* Sources */,
 				0E11089B1F77B9E800A92462 /* Tests */,
 			);
@@ -1123,7 +1030,6 @@
 				488FA71CA2DC38D2FDF7D1D8 /* Pods_ios_TunnelKitDemoTunnel_iOS.framework */,
 				501B04C95D9A457FFA483C3B /* Pods_macos_TunnelKitDemo_macOS.framework */,
 				A49801900FA52CE67047623B /* Pods_macos_TunnelKitDemoTunnel_macOS.framework */,
-				A567C1941332D6DED6CAA8AB /* Pods_TunnelKitHost.framework */,
 				9A28B16C1B56FF981015111E /* Pods_TunnelKitTests_iOS.framework */,
 				D58FE79EF83234AC13B9620B /* Pods_TunnelKitTests_macOS.framework */,
 			);
@@ -1133,48 +1039,22 @@
 		4A8A97836BAB183DA0A91902 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F34879B2239747D1719131F3 /* Pods-TunnelKit-TunnelKit-iOS.debug.xcconfig */,
-				A762728F862EA173640D3A97 /* Pods-TunnelKit-TunnelKit-iOS.release.xcconfig */,
-				33C00B882D0DF7C28257630B /* Pods-TunnelKit-TunnelKit-macOS.debug.xcconfig */,
-				DADE23B0846CE92650EB7D86 /* Pods-TunnelKit-TunnelKit-macOS.release.xcconfig */,
-				7CE8A5CE244CC80CAF8BD890 /* Pods-TunnelKit-TunnelKitTests-macOS.debug.xcconfig */,
-				2DD764A8C3908CB48A442295 /* Pods-TunnelKit-TunnelKitTests-macOS.release.xcconfig */,
-				358F3D1B9B9A8FEE29E522F6 /* Pods-TunnelKit-TunnelKitHost.debug.xcconfig */,
-				CED3394EFA1921EA509733F9 /* Pods-TunnelKit-TunnelKitHost.release.xcconfig */,
-				3DE692CD2FA087ED390CB9C6 /* Pods-TunnelKit-TunnelKitTests-iOS.debug.xcconfig */,
-				82499AC779944BE0D1CA651C /* Pods-TunnelKit-TunnelKitTests-iOS.release.xcconfig */,
-				1067E0DA76AE8CAF89D71584 /* Pods-ios-Demo-iOS.debug.xcconfig */,
-				442D4665BCE9ADD09F63F180 /* Pods-ios-Demo-iOS.release.xcconfig */,
-				83830F707A0FDAE3EBFA9008 /* Pods-ios-DemoTunnel-iOS.debug.xcconfig */,
-				EEC658ED16E01A856F5DECE3 /* Pods-ios-DemoTunnel-iOS.release.xcconfig */,
-				CB9BB9617ACEA441E0AEA67E /* Pods-ios-TunnelKit-iOS.debug.xcconfig */,
-				4226303B698C4BB5A2D3EA0B /* Pods-ios-TunnelKit-iOS.release.xcconfig */,
-				F9C57886F6F3BEE985AA2D4D /* Pods-ios-TunnelKitHost.debug.xcconfig */,
-				A43E3F5B33D769164DD14EC8 /* Pods-ios-TunnelKitHost.release.xcconfig */,
-				64037042B4D72C5837330825 /* Pods-ios-TunnelKitTests-iOS.debug.xcconfig */,
-				003F0DF74DE0A7292E643803 /* Pods-ios-TunnelKitTests-iOS.release.xcconfig */,
-				ABA2E2882F0B8F6523E34161 /* Pods-macos-TunnelKit-macOS.debug.xcconfig */,
-				237CD7047F4B1693AB36A1A1 /* Pods-macos-TunnelKit-macOS.release.xcconfig */,
-				0AF4DDAD0F2B526865FF49E2 /* Pods-macos-TunnelKitTests-macOS.debug.xcconfig */,
-				699D1F9CD94BC7F9348EB407 /* Pods-macos-TunnelKitTests-macOS.release.xcconfig */,
-				F7902F7ED688CF5A114F2582 /* Pods-macos-Demo-macOS.debug.xcconfig */,
-				1DF4ACC345765CF3A1576D4A /* Pods-macos-Demo-macOS.release.xcconfig */,
-				157488BB58C4CC25BC563A54 /* Pods-macos-DemoTunnel-macOS.debug.xcconfig */,
-				B09331876EB06B7AE0D3FCB8 /* Pods-macos-DemoTunnel-macOS.release.xcconfig */,
-				9D2F19A70BA726DCE60AAFFB /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */,
-				DE4FDDA826C589F80328BE1D /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */,
-				3EB4715EDD7F534B7198FDED /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */,
-				8D69E51508704ECD5ACEBE79 /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */,
-				EE99E5D92B1FFAC463F582C2 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */,
-				A0C15F7E031B3D09730175D7 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */,
-				7495E11A5285EEDEFF4CE52C /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */,
-				F24743BB5D4C718576B270FA /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */,
-				03F96C43AF6CA23548C2A462 /* Pods-TunnelKitHost.debug.xcconfig */,
-				FFF1BE329E928321F733FA1D /* Pods-TunnelKitHost.release.xcconfig */,
-				D80AB35A70A7134337F2872C /* Pods-TunnelKitTests-iOS.debug.xcconfig */,
-				453CD8471DBD010438FEC07B /* Pods-TunnelKitTests-iOS.release.xcconfig */,
-				A6A5F35562CD45748AD8452F /* Pods-TunnelKitTests-macOS.debug.xcconfig */,
-				19A83FF5E5B6B4811728D833 /* Pods-TunnelKitTests-macOS.release.xcconfig */,
+				94C0AB202A6A1CD41C81D4D1 /* Pods-TunnelKitTests-iOS.debug.xcconfig */,
+				3BD4433EBEFDBF16AB8D8F28 /* Pods-TunnelKitTests-iOS.release.xcconfig */,
+				B560F5D6D20E2E4EE17A14B0 /* Pods-TunnelKitTests-macOS.debug.xcconfig */,
+				184388CC85C4D4A1D94DAD3A /* Pods-TunnelKitTests-macOS.release.xcconfig */,
+				FAEB653535C9ACC3F82B0CF2 /* Pods-ios-TunnelKit-iOS.debug.xcconfig */,
+				753FEF8857FBD0811875B5A0 /* Pods-ios-TunnelKit-iOS.release.xcconfig */,
+				9205F89A32303FCE4F75BEA6 /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */,
+				C8ED1FA6508ED154E5588325 /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */,
+				D3B41DACBA37512BEBC17808 /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */,
+				B75256D6B0ED4155703AEEDB /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */,
+				CA6F961CC84E66D08FDF5BCF /* Pods-macos-TunnelKit-macOS.debug.xcconfig */,
+				7D6085A97C139D633682523B /* Pods-macos-TunnelKit-macOS.release.xcconfig */,
+				17923FEB8DE89371412B0207 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */,
+				BC1EEEA339E7FFC5661F8396 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */,
+				8A3955DF291862862060566F /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */,
+				DCE52502D08FAD966B9A1F66 /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -1349,33 +1229,11 @@
 			);
 			dependencies = (
 				0E1108A11F77B9E800A92462 /* PBXTargetDependency */,
-				0E1108BC1F77BA0200A92462 /* PBXTargetDependency */,
 			);
 			name = "TunnelKitTests-iOS";
 			productName = PIATunnelTests;
 			productReference = 0E11089A1F77B9E800A92462 /* TunnelKitTests-iOS.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		0E1108A81F77B9F900A92462 /* TunnelKitHost */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 0E1108B81F77B9F900A92462 /* Build configuration list for PBXNativeTarget "TunnelKitHost" */;
-			buildPhases = (
-				CA4D788CFA7D13907441992A /* [CP] Check Pods Manifest.lock */,
-				0E1108A51F77B9F900A92462 /* Sources */,
-				0E1108A61F77B9F900A92462 /* Frameworks */,
-				0E1108A71F77B9F900A92462 /* Resources */,
-				50E8EAE4BAE91AD6D937A498 /* [CP] Embed Pods Frameworks */,
-				0ECAF84C246697DA00D8266A /* Embed Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				0E9379CB1F819A4600CE91B6 /* PBXTargetDependency */,
-			);
-			name = TunnelKitHost;
-			productName = PIATunnelHost;
-			productReference = 0E1108A91F77B9F900A92462 /* TunnelKitHost.app */;
-			productType = "com.apple.product-type.application";
 		};
 		0E17D7F81F730D9F009EE129 /* TunnelKit-iOS */ = {
 			isa = PBXNativeTarget;
@@ -1465,20 +1323,6 @@
 						CreatedOnToolsVersion = 9.0;
 						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
-						TestTargetID = 0E1108A81F77B9F900A92462;
-					};
-					0E1108A81F77B9F900A92462 = {
-						CreatedOnToolsVersion = 9.0;
-						LastSwiftMigration = 1020;
-						ProvisioningStyle = Automatic;
-						SystemCapabilities = {
-							com.apple.ApplicationGroups.iOS = {
-								enabled = 1;
-							};
-							com.apple.Keychain = {
-								enabled = 1;
-							};
-						};
 					};
 					0E17D7F81F730D9F009EE129 = {
 						CreatedOnToolsVersion = 9.0;
@@ -1514,7 +1358,6 @@
 				0E3251C41F95770D00C108D9 /* TunnelKit-macOS */,
 				0E1108991F77B9E800A92462 /* TunnelKitTests-iOS */,
 				0EA82A222190B220007960EB /* TunnelKitTests-macOS */,
-				0E1108A81F77B9F900A92462 /* TunnelKitHost */,
 				0E05416825A232FD00EFC5FF /* TunnelKitDemo-iOS */,
 				0E05422B25A236EB00EFC5FF /* TunnelKitDemo-macOS */,
 				0E05419E25A2343500EFC5FF /* TunnelKitDemoTunnel-iOS */,
@@ -1569,16 +1412,6 @@
 				0ECEB11B2252CDAD00E9E551 /* tunnelbear.crt in Resources */,
 				0ECEB1152252C8E900E9E551 /* tunnelbear.enc.8.ovpn in Resources */,
 				0E749F622178911D00BB2701 /* pia-2048.pem in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0E1108A71F77B9F900A92462 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0E1108B61F77B9F900A92462 /* LaunchScreen.storyboard in Resources */,
-				0E1108B31F77B9F900A92462 /* Assets.xcassets in Resources */,
-				0E1108B11F77B9F900A92462 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1720,26 +1553,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		50E8EAE4BAE91AD6D937A498 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-TunnelKitHost/Pods-TunnelKitHost-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver-iOS/SwiftyBeaver.framework",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/openssl/openssl.framework/openssl",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TunnelKitHost/Pods-TunnelKitHost-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		5993DE5160477293C12A8D8D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1870,28 +1683,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		CA4D788CFA7D13907441992A /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-TunnelKitHost-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
 		EC46A9855CED96D0C0D296F6 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1974,15 +1765,6 @@
 				0EE2FA4C2291954300F56F49 /* LinkTests.swift in Sources */,
 				0EE2FA442291954300F56F49 /* ConfigurationParserTests.swift in Sources */,
 				0EE2FA482291954300F56F49 /* DataPathPerformanceTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		0E1108A51F77B9F900A92462 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				0E1108AE1F77B9F900A92462 /* ViewController.swift in Sources */,
-				0E1108AC1F77B9F900A92462 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2228,16 +2010,6 @@
 			target = 0E17D7F81F730D9F009EE129 /* TunnelKit-iOS */;
 			targetProxy = 0E1108A01F77B9E800A92462 /* PBXContainerItemProxy */;
 		};
-		0E1108BC1F77BA0200A92462 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0E1108A81F77B9F900A92462 /* TunnelKitHost */;
-			targetProxy = 0E1108BB1F77BA0200A92462 /* PBXContainerItemProxy */;
-		};
-		0E9379CB1F819A4600CE91B6 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 0E17D7F81F730D9F009EE129 /* TunnelKit-iOS */;
-			targetProxy = 0E9379CA1F819A4600CE91B6 /* PBXContainerItemProxy */;
-		};
 		0EA82A2A2190B220007960EB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 0E3251C41F95770D00C108D9 /* TunnelKit-macOS */;
@@ -2270,28 +2042,12 @@
 			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
-		0E1108AF1F77B9F900A92462 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E1108B01F77B9F900A92462 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		0E1108B41F77B9F900A92462 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				0E1108B51F77B9F900A92462 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			sourceTree = "<group>";
-		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		0E05417B25A2330100EFC5FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D2F19A70BA726DCE60AAFFB /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */;
+			baseConfigurationReference = 9205F89A32303FCE4F75BEA6 /* Pods-ios-TunnelKitDemo-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2312,7 +2068,7 @@
 		};
 		0E05417C25A2330100EFC5FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DE4FDDA826C589F80328BE1D /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */;
+			baseConfigurationReference = C8ED1FA6508ED154E5588325 /* Pods-ios-TunnelKitDemo-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2332,7 +2088,7 @@
 		};
 		0E0541AB25A2343500EFC5FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3EB4715EDD7F534B7198FDED /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */;
+			baseConfigurationReference = D3B41DACBA37512BEBC17808 /* Pods-ios-TunnelKitDemoTunnel-iOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = TunnelKit/Demo/iOS/DemoTunnel.entitlements;
@@ -2352,7 +2108,7 @@
 		};
 		0E0541AC25A2343500EFC5FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8D69E51508704ECD5ACEBE79 /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */;
+			baseConfigurationReference = B75256D6B0ED4155703AEEDB /* Pods-ios-TunnelKitDemoTunnel-iOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = TunnelKit/Demo/iOS/DemoTunnel.entitlements;
@@ -2371,7 +2127,7 @@
 		};
 		0E05423925A236EE00EFC5FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EE99E5D92B1FFAC463F582C2 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */;
+			baseConfigurationReference = 17923FEB8DE89371412B0207 /* Pods-macos-TunnelKitDemo-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2395,7 +2151,7 @@
 		};
 		0E05423A25A236EE00EFC5FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A0C15F7E031B3D09730175D7 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */;
+			baseConfigurationReference = BC1EEEA339E7FFC5661F8396 /* Pods-macos-TunnelKitDemo-macOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2418,7 +2174,7 @@
 		};
 		0E05428225A239C600EFC5FF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7495E11A5285EEDEFF4CE52C /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */;
+			baseConfigurationReference = 8A3955DF291862862060566F /* Pods-macos-TunnelKitDemoTunnel-macOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = TunnelKit/Demo/macOS/DemoTunnel.entitlements;
@@ -2440,7 +2196,7 @@
 		};
 		0E05428325A239C600EFC5FF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F24743BB5D4C718576B270FA /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */;
+			baseConfigurationReference = DCE52502D08FAD966B9A1F66 /* Pods-macos-TunnelKitDemoTunnel-macOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = TunnelKit/Demo/macOS/DemoTunnel.entitlements;
@@ -2461,60 +2217,24 @@
 		};
 		0E1108A21F77B9E800A92462 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D80AB35A70A7134337F2872C /* Pods-TunnelKitTests-iOS.debug.xcconfig */;
+			baseConfigurationReference = 94C0AB202A6A1CD41C81D4D1 /* Pods-TunnelKitTests-iOS.debug.xcconfig */;
 			buildSettings = {
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
 				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TunnelKitHost.app/TunnelKitHost";
-			};
-			name = Debug;
-		};
-		0E1108A31F77B9E800A92462 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 453CD8471DBD010438FEC07B /* Pods-TunnelKitTests-iOS.release.xcconfig */;
-			buildSettings = {
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TunnelKitHost.app/TunnelKitHost";
-			};
-			name = Release;
-		};
-		0E1108B91F77B9F900A92462 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 03F96C43AF6CA23548C2A462 /* Pods-TunnelKitHost.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TunnelKit/Host/Host.entitlements;
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKit/Host/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.TunnelKitHost;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
-		0E1108BA1F77B9F900A92462 /* Release */ = {
+		0E1108A31F77B9E800A92462 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FFF1BE329E928321F733FA1D /* Pods-TunnelKitHost.release.xcconfig */;
+			baseConfigurationReference = 3BD4433EBEFDBF16AB8D8F28 /* Pods-TunnelKitTests-iOS.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = TunnelKit/Host/Host.entitlements;
-				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = DTDYD63ZX9;
-				INFOPLIST_FILE = TunnelKit/Host/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.algoritmico.ios.TunnelKitHost;
+				INFOPLIST_FILE = TunnelKit/Tests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2646,7 +2366,7 @@
 		};
 		0E17D8021F730D9F009EE129 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB9BB9617ACEA441E0AEA67E /* Pods-ios-TunnelKit-iOS.debug.xcconfig */;
+			baseConfigurationReference = FAEB653535C9ACC3F82B0CF2 /* Pods-ios-TunnelKit-iOS.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2672,7 +2392,7 @@
 		};
 		0E17D8031F730D9F009EE129 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4226303B698C4BB5A2D3EA0B /* Pods-ios-TunnelKit-iOS.release.xcconfig */;
+			baseConfigurationReference = 753FEF8857FBD0811875B5A0 /* Pods-ios-TunnelKit-iOS.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -2698,7 +2418,7 @@
 		};
 		0E3251CB1F95770D00C108D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = ABA2E2882F0B8F6523E34161 /* Pods-macos-TunnelKit-macOS.debug.xcconfig */;
+			baseConfigurationReference = CA6F961CC84E66D08FDF5BCF /* Pods-macos-TunnelKit-macOS.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -2723,7 +2443,7 @@
 		};
 		0E3251CC1F95770D00C108D9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 237CD7047F4B1693AB36A1A1 /* Pods-macos-TunnelKit-macOS.release.xcconfig */;
+			baseConfigurationReference = 7D6085A97C139D633682523B /* Pods-macos-TunnelKit-macOS.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "-";
@@ -2748,7 +2468,7 @@
 		};
 		0EA82A2C2190B220007960EB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A6A5F35562CD45748AD8452F /* Pods-TunnelKitTests-macOS.debug.xcconfig */;
+			baseConfigurationReference = B560F5D6D20E2E4EE17A14B0 /* Pods-TunnelKitTests-macOS.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -2768,7 +2488,7 @@
 		};
 		0EA82A2D2190B220007960EB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 19A83FF5E5B6B4811728D833 /* Pods-TunnelKitTests-macOS.release.xcconfig */;
+			baseConfigurationReference = 184388CC85C4D4A1D94DAD3A /* Pods-TunnelKitTests-macOS.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_IDENTITY = "Mac Developer";
@@ -2829,15 +2549,6 @@
 			buildConfigurations = (
 				0E1108A21F77B9E800A92462 /* Debug */,
 				0E1108A31F77B9E800A92462 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		0E1108B81F77B9F900A92462 /* Build configuration list for PBXNativeTarget "TunnelKitHost" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				0E1108B91F77B9F900A92462 /* Debug */,
-				0E1108BA1F77B9F900A92462 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

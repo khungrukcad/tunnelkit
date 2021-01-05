@@ -36,10 +36,9 @@ end
 
 target 'TunnelKitTests-iOS' do
     platform :ios, '12.0'
-end
-target 'TunnelKitHost' do
-    platform :ios, '12.0'
+    shared_pods
 end
 target 'TunnelKitTests-macOS' do
     platform :osx, '10.15'
+    shared_pods
 end
