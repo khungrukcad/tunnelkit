@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Handle `--data-ciphers` from OpenVPN 2.5
+- Handle `--data-ciphers` and `data-ciphers-fallback` from OpenVPN 2.5
 
 ## 3.2.0 (2021-01-07)
 

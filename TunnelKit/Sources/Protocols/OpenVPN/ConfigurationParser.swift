@@ -44,6 +44,8 @@ extension OpenVPN {
             
             static let dataCiphers = NSRegularExpression("^(data-ciphers|ncp-ciphers) +[^,\\s]+(:[^,\\s]+)*")
             
+            static let dataCiphersFallback = NSRegularExpression("^data-ciphers-fallback +[^,\\s]+")
+            
             static let auth = NSRegularExpression("^auth +[\\w\\-]+")
             
             static let compLZO = NSRegularExpression("^comp-lzo.*")
@@ -202,6 +204,7 @@ extension OpenVPN {
             var currentBlock: [String] = []
             
             var optDataCiphers: [Cipher]?
+            var optDataCiphersFallback: Cipher?
             var optCipher: Cipher?
             var optDigest: Digest?
             var optCompressionFraming: CompressionFraming?
@@ -362,6 +365,13 @@ extension OpenVPN {
                         }
                         optDataCiphers?.append(cipher)
                     }
+                }
+                Regex.dataCiphersFallback.enumerateArguments(in: line) {
+                    isHandled = true
+                    guard let rawValue = $0.first else {
+                        return
+                    }
+                    optDataCiphersFallback = Cipher(rawValue: rawValue.uppercased())
                 }
                 Regex.auth.enumerateArguments(in: line) {
                     isHandled = true
@@ -635,7 +645,7 @@ extension OpenVPN {
             
             // MARK: General
             
-            sessionBuilder.cipher = optCipher
+            sessionBuilder.cipher = optDataCiphersFallback ?? optCipher
             sessionBuilder.dataCiphers = optDataCiphers
             sessionBuilder.digest = optDigest
             sessionBuilder.compressionFraming = optCompressionFraming
